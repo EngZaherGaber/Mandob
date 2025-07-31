@@ -1,0 +1,61 @@
+/* Add to your component's styles */
+@use "../../../../../public/mixin" as *;
+.main-container {
+  position: relative;
+  .sidebar {
+    width: 16.6667%;
+    transition: width 0.5s ease-in;
+    overflow: hidden;
+    box-shadow: 0px 0px 10px 2px var(--p-surface-50);
+    position: relative;
+    z-index: 1;
+    &.collapsed {
+      width: 0;
+      padding: 0;
+    }
+  }
+  .main-content {
+    transition: width 0.5s ease-in;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    overflow-y: hidden;
+    .head-content {
+      position: relative;
+      // border-bottom: 4px solid var(--p-primary-500);
+      z-index: 2;
+    }
+    .rout-conent {
+      position: relative;
+      box-shadow: inset 0px 0px 10px 5px var(--p-surface-50);
+      > * {
+        padding-inline: 0;
+      }
+      .rout-div {
+        position: relative;
+        height: 100%;
+        z-index: 1;
+      }
+      .copyRight {
+        position: absolute;
+        width: 300px;
+        opacity: 0.1;
+        bottom: 25px;
+        left: calc(50% - 150px);
+        z-index: 0;
+      }
+    }
+  }
+  @include forTablet() {
+    .sidebar {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 75%;
+      height: 100%;
+      background-color: var(--p-surface-50);
+      z-index: 999;
+    }
+  }
+}

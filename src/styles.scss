@@ -1,1 +1,46 @@
 /* You can add global styles to this file, and also import other style files */
+@use "../public/_general.scss" as *;
+@use "../public/_font.scss" as *;
+@use "../public/_mixin.scss" as *;
+@use "../public/_color.scss" as *;
+@import "primeicons/primeicons.css";
+html,
+body {
+  height: 100%;
+  width: 100%;
+  font-family: "Noto Kufi";
+  direction: rtl;
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  @include responsive-headings();
+  @include form-theme-mode();
+}
+body {
+  overflow: hidden;
+  /* The entire scrollbar */
+  ::-webkit-scrollbar {
+    width: 7.5px; /* Width of the vertical scrollbar */
+    height: 7.5px; /* Height of the horizontal scrollbar */
+  }
+
+  /* The track (background) of the scrollbar */
+  ::-webkit-scrollbar-track {
+    background-color: $c3-tr; /* Color of the track */
+    border-radius: 10px; /* Rounded corners */
+  }
+
+  /* The handle (thumb) of the scrollbar */
+  ::-webkit-scrollbar-thumb {
+    background: $c5; /* Color of the thumb */
+    border-radius: 10px; /* Rounded corners */
+  }
+
+  /* The handle (thumb) on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: $c1; /* Color of the thumb on hover */
+  }
+}

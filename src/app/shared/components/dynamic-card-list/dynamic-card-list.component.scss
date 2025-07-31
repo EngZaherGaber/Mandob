@@ -1,0 +1,42 @@
+@use "../.././../../../public/mixin" as *;
+.full-con {
+  background-color: var(--p-surface-100);
+  box-shadow: inset 0px 0px 10px 2px var(--p-surface-300);
+  .item-con-list {
+    max-width: calc(50% - 0.5rem);
+  }
+  .item-con {
+    // border-color: var(--p-amber-500) !important;
+    background-color: var(--p-primary-400);
+    color: var(--p-surface-50);
+    // max-width: 20%;
+    .buttons-template {
+      background-color: var(--p-primary-300);
+      height: fit-content;
+    }
+    .img {
+      background-color: var(--p-primary-300);
+    }
+  }
+  @include forTablet() {
+    /* md and up */
+    .w-md-auto {
+      width: 100% !important;
+    }
+  }
+  @include forMobile() {
+    .item-con-list {
+      max-width: calc(100%);
+    }
+  }
+  .item-con:hover {
+    color: var(--p-surface-50);
+    background-color: var(--p-amber-500);
+  }
+}
+.max-vh-70 {
+  max-height: 70vh;
+}
+::ng-deep .p-paginator-rpp-dropdown {
+  width: auto !important;
+}

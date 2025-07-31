@@ -1,0 +1,50 @@
+@use "../../../../../public/mixin" as *;
+.container-fluid {
+  background-color: var(--p-surface-100);
+  position: relative;
+  .login-container {
+    box-shadow: 0px 0px 5px 0px var(--p-surface-500);
+    background: var(--p-primary-500);
+    .logo-container {
+      z-index: 2;
+
+      img {
+        filter: brightness(0.5) invert(1);
+      }
+    }
+    .login-form {
+      background-color: var(--p-surface-100);
+      box-shadow: inset 0px 0px 5px 0px var(--p-surface-500);
+      .title-logo-container {
+        background-color: var(--p-amber-600) !important;
+        img {
+          filter: brightness(0.5) invert(1);
+        }
+        // border-width: 10px !important;
+      }
+    }
+  }
+}
+@include forTablet() {
+  .login-container {
+    // height: calc(100vh - 1rem) !important;
+    > .row {
+      .logo-container {
+        img {
+          height: calc(25vh - 1.5rem);
+        }
+      }
+      .login-form-container {
+        // height: calc(75vh - 1.5rem);
+        .login-form {
+          .w-75 {
+            width: 90% !important;
+          }
+        }
+      }
+    }
+  }
+  .space-container {
+    display: none;
+  }
+}

@@ -1,0 +1,35 @@
+<div class="header-container row w-full" style="height: 40px;">
+    <div class="col">
+        <div class="row" style="align-items: center;">
+            <div class="w-auto justify-content-start p-0 ">
+                <p-button (onClick)="stateSrv.collapseSideNav()" [text]="true" styleClass="collapseButton"
+                    [icon]="stateSrv.isOpenedSideNav() ? 'pi pi-angle-right' : 'pi pi-angle-left'" severity="primary" />
+            </div>
+            <div class="col  d-flex align-items-center p-0 ">
+                <ng-container *ngIf="isBrowser; then browserView; else serverView"></ng-container>
+
+                <!-- Client-side template with animations -->
+                <ng-template #browserView>
+                    <div @fade *ngIf="!isChanging()"
+                        class="typewriter-container border-start border-2 border-secondary ps-4">
+                        <p class="typewriter-text fw-bold">
+                            {{displayText()}}
+                            <span class="cursor" *ngIf="isTyping()">|</span>
+                        </p>
+                    </div>
+                </ng-template>
+
+                <!-- Server-side template (static) -->
+                <ng-template #serverView>
+                    <p>{{currentState()}}</p>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+    <div class="col d-flex justify-content-end">
+        <p-button icon="pi pi-bell" [rounded]="true" [text]="true" severity="primary" pTooltip="الاشعارات" />
+        <p-button icon="pi pi-user" [rounded]="true" [text]="true" severity="primary" pTooltip="الحساب" />
+        <p-button icon="pi pi-sign-out" (onClick)="logout()" [rounded]="true" [text]="true" severity="primary"
+            pTooltip="تسجيل خروج" />
+    </div>
+</div>

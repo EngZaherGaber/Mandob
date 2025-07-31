@@ -1,0 +1,35 @@
+@use "../../../../../public/font" as *;
+@use "../../../../../public/mixin" as *;
+
+::ng-deep .p-menu-submenu-label {
+  padding-left: 0 !important;
+  padding-bottom: 0 !important;
+  font-weight: normal !important;
+  @include responsive-font-sizes(16px, 12px, 12px, 12px);
+}
+::ng-deep .p-menu-item-label {
+  font-weight: 600;
+  @include responsive-font-sizes(15px, 15px, 15px, 15px);
+}
+::ng-deep .p-menu-item-link-active {
+  background-color: var(--p-surface-200);
+  border-left: 3px solid var(--p-primary-500);
+  box-sizing: border-box;
+  color: var(--p-primary-500);
+  * {
+    color: var(--p-primary-500);
+  }
+}
+.logo {
+  border-bottom: 4px solid var(--p-primary-500);
+}
+.navbtn {
+  display: none;
+}
+@include forTablet() {
+  .navbtn {
+    display: block;
+    position: absolute;
+    left: 0;
+  }
+}

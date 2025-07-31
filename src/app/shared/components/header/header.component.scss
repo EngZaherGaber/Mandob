@@ -1,0 +1,40 @@
+@use "../../../../../public/font" as *;
+::ng-deep .collapseButton {
+  padding: 0 !important;
+  .p-button-icon {
+    @include responsive-font-sizes(16px, 22px, 22px, 22px);
+  }
+}
+.header-container {
+  .typewriter-container {
+    display: inline-block;
+    overflow: hidden;
+    // color: var(--p-primary-500);
+    border-color: var(--p-primary-500) !important;
+    border-width: 4px !important;
+  }
+
+  .typewriter-text {
+    font-family: monospace;
+    white-space: nowrap;
+    margin: 0;
+    letter-spacing: 0.15em;
+    display: inline-block;
+    position: relative;
+  }
+
+  .cursor {
+    animation: blink 1s step-end infinite;
+    opacity: 1;
+  }
+}
+
+@keyframes blink {
+  from,
+  to {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}

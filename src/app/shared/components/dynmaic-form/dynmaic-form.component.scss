@@ -1,0 +1,59 @@
+@import "../../../../../public/mixin";
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  .right-buttons {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .left-buttons {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+::ng-deep .p-steps{
+  padding-bottom: 5px !important;
+}
+::ng-deep .p-card{
+  height: 100% !important;
+}
+.animation-fade {
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: fadeInTop 0.7s ease-in-out forwards;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 100%;
+  gap: 15px;
+  justify-content: space-between;
+  align-items: center;
+  @include forTablet() {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @include forMobile() {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @include forSmallMobile() {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+::ng-deep .p-steps {
+  padding-block: 20px;
+}
+.above{
+  padding: 15px;
+  .Nbtn{
+    // padding: 5%;
+    z-index: 9999;
+  }
+}
+@keyframes fadeInTop {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

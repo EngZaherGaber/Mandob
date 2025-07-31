@@ -1,0 +1,18 @@
+.green {
+  color: var(--p-green-400) !important;
+  border-color: var(--p-green-400) !important;
+}
+.red {
+  color: var(--p-red-400) !important;
+}
+.con {
+  position: relative;
+  h1 {
+    z-index: 2;
+  }
+  h4 {
+    z-index: 1;
+    display: inline-block;
+    position: relative; // or absolute
+  }
+}

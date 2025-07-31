@@ -1,0 +1,24 @@
+@mixin translate-animation(
+  $name,
+  $start,
+  $end,
+  $duration: 0.3s,
+  $delay: 0s,
+  $easing: ease-out,
+  $infinite: false
+) {
+  animation: #{$name} #{$duration} #{$delay} #{$easing} #{if(
+      $infinite,
+      infinite,
+      forwards
+    )};
+
+  @keyframes #{$name} {
+    0% {
+      transform: #{$start};
+    }
+    100% {
+      transform: #{$end};
+    }
+  }
+}

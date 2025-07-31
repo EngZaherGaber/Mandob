@@ -1,0 +1,60 @@
+<div class="above">
+    <p-button class="Nbtn" severity="info" *ngIf="withBackBtn && activeIndex === 0" pTooltip="Back"
+        icon="pi pi-arrow-left" (click)="back()" />
+    <p-steps step *ngIf="showSteps" [(activeIndex)]="activeIndex" [model]="stepsList" [readonly]="true"></p-steps>
+</div>
+<p-card card>
+    <ng-template pTemplate="content">
+        <p-scrollPanel [style]="{width: '100%', height: scrollHeight}" styleClass="custombar2"
+            (keydown.enter)="handleEnterKey()">
+            <div style="display: flex;flex-direction: column;">
+                <div>
+                    <ng-content></ng-content>
+                </div>
+                <div class="tab-content" id="cardPillContent"
+                    *ngFor="let key of keys; let i = index; let first = first; let last = last"
+                    [ngSwitch]="activeIndex">
+                    <ng-template class="p-fluid row p-mb-6 animation-fade" [ngSwitchCase]="i">
+                        <div class="animation-fade"
+                            [style]="{'display':'flex','flex-direction':'row','align-items':'center','flex-wrap':'wrap','justify-content':'flex-start'}">
+                            <div *ngFor="let obj of objs[key]; let k = index" class="z-field"
+                                [style.display]="obj.visible ? 'block' : 'none'"
+                                style="min-width: 30%;padding-top: 5px;">
+                                <div *ngIf="obj.visible">
+                                    <div
+                                        style="display: flex;max-width: 300px; justify-content: space-between; gap: -11px;margin-bottom: 20px !important;">
+                                        <dynamic-input [style]="'width: 100%;'"
+                                            *ngIf="form.controls[key] && form.get([key,obj.key])"
+                                            [FEcontrol]="isFormGroup(form.get([key,obj.key]) ?? undefined)"
+                                            [object]="obj"></dynamic-input>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+        </p-scrollPanel>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <div class="button-container">
+            <div class="left-buttons">
+                <button pButton label="Back" icon="pi pi-angle-left"
+                    (click)="back();onActiveIndexChange.emit(activeIndex);" *ngIf="activeIndex !== 0"></button>
+            </div>
+            <div class="right-buttons">
+                <button #nextBtn
+                    *ngIf="activeIndex < stepsList.length - 1 || (activeIndex === 0 && stepsList.length > 1)" pButton
+                    label="Next" icon="pi pi-angle-right" [disabled]="form.controls[keys[activeIndex]].invalid"
+                    (click)="activeIndex = activeIndex + 1;onActiveIndexChange.emit(activeIndex);"></button>
+                <button *ngIf="activeIndex === stepsList.length - 1 && isShow" pButton label="Exit"
+                    icon="pi pi-angle-right" (click)="exit()"></button>
+                <button id="saveBtn" #saveBtn
+                    *ngIf="(activeIndex === stepsList.length - 1 && (justOneStep || activeIndex !== 0)) && !isShow"
+                    pButton pRipple [label]="submitLabel ? submitLabel : 'Save'" icon="pi pi-check"
+                    [disabled]="form.controls[keys[activeIndex]].invalid || disableSaveButton" class="p-button-success"
+                    (click)="submitFunc()"></button>
+            </div>
+        </div>
+    </ng-template>
+</p-card>

@@ -1,0 +1,12 @@
+<div class="container relative">
+    <div class="navbtn justify-content-start p-0 ">
+        <p-button (onClick)="stateSrv.collapseSideNav()" [text]="true" styleClass="collapseButton"
+            [icon]="stateSrv.isOpenedSideNav() ? 'pi pi-angle-right' : 'pi pi-angle-left'" severity="primary" />
+    </div>
+    <a class="row logo" style="height: 40px;padding-bottom: 5px;" [routerLink]="['']" [routerLinkActive]="['']">
+        <img src="proj_title.svg" height="30" width="150">
+    </a>
+    <div class="row align-items-start" style="height: 100%;">
+        <p-menu [model]="items" class="p-0" />
+    </div>
+</div>

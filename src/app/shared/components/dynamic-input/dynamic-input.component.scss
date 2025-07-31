@@ -1,0 +1,27 @@
+::ng-deep .p-floatlabel {
+  // min-width: 250px;
+  label {
+    z-index: 2;
+    padding-left: 15px;
+  }
+}
+.required::after {
+  content: " *";
+  color: red;
+}
+::ng-deep .p-select-overlay {
+  max-width: 250px;
+}
+::ng-deep .p-checkbox.p-disabled .p-checkbox-box {
+  background-color: #8f8f8f !important;
+}
+.helper {
+  position: absolute;
+  color: #919191;
+}
+::ng-deep .p-virtualscroller {
+  min-height: 100px !important;
+  .p-autocomplete-option {
+    height: 30px !important;
+  }
+}

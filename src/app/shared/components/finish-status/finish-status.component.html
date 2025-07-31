@@ -1,0 +1,10 @@
+<div [class]="'con w-100 d-flex flex-column justify-content-center align-items-center py-2 ' + info.color" [@show]
+    (@show.done)="onDone($event)" [@.disabled]="false" *ngIf="visible">
+    <h1 class="border border-3 rounded-circle" style="color: inherit !important;border-color: inherit !important;">
+        <div style="font-size: inherit !important;" class="circle p-2 rounded-circle">
+            <i [class]="'rounded-circle p-2 pi '+ info.icon"
+                style="color: inherit !important;font-size: inherit !important;background-color: var(--p-primary-50);"></i>
+        </div>
+    </h1>
+    <h4 class="row">{{info.word}}!</h4>|
+</div>

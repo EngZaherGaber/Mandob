@@ -1,0 +1,251 @@
+<div class="container-fluid">
+    <div class="row">
+        <p-dataview class="p-0" #dv currentPageReportTemplate="Showing {currentPage} of {totalPages} entries"
+            [rowsPerPageOptions]="[5,10,25,50,100,200,500,800]"
+            [alwaysShowPaginator]="dv.value ? dv.value.length > 0 : false" [value]="body.data" [rows]="5"
+            [paginator]="true" [layout]="layout">
+            <ng-template #header>
+                <p-toolbar>
+                    <ng-template #start>
+
+                        <ng-container *ngIf="captionButton && captionButton.length > 0">
+                            <ng-container *ngFor="let btn of captionButton">
+                                <p-button size="small" [severity]="'secondary'"
+                                    *ngIf="btn && btn.permission && ((btn.showCommand && btn.showCommand(body.data) ) || (!btn.showCommand && true)) && btn.isShow"
+                                    [pTooltip]="btn.tooltip" [icon]="btn.icon ?? ''"
+                                    (click)="btn.command ? btn.command(body.data) : null" />
+                                <p-button size="small" [severity]="'secondary'"
+                                    *ngIf="btn && !btn.permission &&((btn.showCommand && btn.showCommand(body.data) ) || (!btn.showCommand && true)) && btn.isShow"
+                                    [pTooltip]="btn.tooltip" [icon]="btn.icon ?? ''"
+                                    (click)="btn.command ? btn.command(body.data) : null" />
+
+                            </ng-container>
+                        </ng-container>
+                    </ng-template>
+                    <ng-template #end>
+                        <p-selectbutton [(ngModel)]="layout" [options]="options" [allowEmpty]="false">
+                            <ng-template #item let-item>
+                                <i class="pi "
+                                    [ngClass]="{ 'pi-bars': item === 'list', 'pi-table': item === 'grid' }"></i>
+                            </ng-template>
+                        </p-selectbutton>
+
+                    </ng-template>
+                </p-toolbar>
+            </ng-template>
+            <ng-template #list let-items>
+                <div
+                    class="full-con max-vh-70 overflow-y-auto d-flex jsutify-content-start flex-row flex-wrap align-items-start gap-2 px-3 py-2">
+                    <div class="item-con item-con-list w-100 border border-3 rounded-3 d-flex flex-column flex-md-row"
+                        *ngFor="let item of items">
+                        <div class="col-12 col-md-3 d-flex justify-content-center align-items-center img  py-2">
+                            <ng-container *ngIf="item.imgSrv then img else icon"></ng-container>
+                            <ng-template #img>
+                                <img style="width: 100px;" [src]="item.imgSrv ? item.imgSrv : 'delivery-man.svg'"
+                                    alt="">
+                            </ng-template>
+                            <ng-template #icon>
+                                <i class="pi pi-user" style="font-size: 100px !important;"></i>
+                            </ng-template>
+                        </div>
+                        <div class="col-12 col-md-8  d-flex flex-column gap-2 p-2">
+                            <div class="d-flex gap-2 justify-content-between" *ngFor="let col of body.columns">
+                                <small class="col fw-bold">{{col.header}}: </small>
+                                <div [ngClass]="col.HeaderType === 'bool' || col.HeaderType === 'img' ? 'bool-cell' : ''"
+                                    style="display: flex;" [style]="{'justify-content':getAlignment(col.field)}">
+                                    <small
+                                        *ngIf="col.HeaderType != 'DateTime' &&
+                                                                                                                             col.HeaderType != 'DateTimeO' &&
+                                                                                                                              col.HeaderType != 'Toggle' &&
+                                                                                                                              col.HeaderType != 'json' &&
+                                                                                                                              col.HeaderType !== 'float' &&
+                                                                                                                              col.HeaderType !== 'bool' &&
+                                                                                                                              col.HeaderType !== 'double' &&
+                                                                                                                              col.HeaderType !== 'currency' &&
+                                                                                                                              col.HeaderType !== 'img' &&
+                                                                                                                              col.HeaderType !== 'tag'">
+                                        {{item[col.field]}}
+                                    </small>
+                                    <i *ngIf="col.HeaderType === 'bool'" class="pi"
+                                        [ngClass]="{
+                                                                                                                                            'text-green-500 pi-check-circle': item[col.field],
+                                                                                                                                            'text-red-500 pi-times-circle': !item[col.field]
+                                                                                                                                        }"></i>
+                                    <div *ngIf="col.HeaderType === 'DateTime' ">
+                                        <small *ngIf="item[col.field] !== null">
+                                            {{ item[col.field] | date: 'dd-MM-yyyy'}}
+                                        </small>
+                                        <small *ngIf="item[col.field] === null">
+                                            {{ item[col.field] }}
+                                        </small>
+                                    </div>
+                                    <div *ngIf="col.HeaderType === 'DateTimeO' ">
+                                        <small *ngIf="item[col.field] !== null">
+                                            {{ item[col.field] | date: 'dd-MM-yyyy HH:mm'}}
+                                        </small>
+                                        <small *ngIf="item[col.field] === null">
+                                            {{ item[col.field] }}
+                                        </small>
+                                    </div>
+                                    <div *ngIf="col.HeaderType === 'float' || col.HeaderType === 'double' ">
+                                        <small *ngIf="item[col.field] !== null">
+                                            {{ item[col.field] | number:'1.2-2'}}
+                                        </small>
+                                    </div>
+                                    <div *ngIf="col.HeaderType === 'currency'">
+                                        <small *ngIf="item[col.field] !== null">
+                                            {{ item[col.field] | number:'1.0-2'}}
+                                        </small>
+                                    </div>
+                                    <div *ngIf="col.HeaderType == 'Toggle' ">
+                                        <p-toggleswitch [pTooltip]="item[col.field] ? 'True': 'False'"
+                                            *ngIf="hasToggleShow(col.field,item)" [(ngModel)]=" item[col.field]"
+                                            [disabled]="hasToggledisable(col.field,item) ?? false"
+                                            (onChange)="handleChange($event,col.field,item)"></p-toggleswitch>
+                                        <small *ngIf="!hasToggleShow(col.field,item)">
+                                            {{item[col.field]}}
+                                        </small>
+                                    </div>
+                                    <div *ngIf="col.HeaderType === 'json'">
+                                        <button pButton pRipple pTooltip="download JSON file" icon="pi pi-download"
+                                            (click)="downloadJSON(item[col.field])"></button>
+                                    </div>
+                                    <div *ngIf="col.HeaderType === 'img'" style="margin: 5px;">
+                                        <img *ngIf="item[col.field]" [src]="item[col.field]" width="150" height="75">
+                                    </div>
+                                    <div *ngIf="col.HeaderType === 'tag'">
+                                        <p-tag [value]="item[col.field]" [severity]="getSeverity(item)" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-1 d-flex align-items-md-end justify-content-md-end gap-2">
+                            <div
+                                class="buttons-template w-auto w-md-auto h-100 d-flex flex-row flex-md-column align-items-center justify-content-center gap-2 p-2 rounded-start">
+                                <ng-container *ngFor="let btn of item.buttons">
+                                    <p-button size="small" [severity]="'secondary'" [rounded]="true"
+                                        *ngIf="((btn.showCommand && btn.showCommand(item)) || btn.isShow) && btn.permission"
+                                        [pTooltip]="btn.tooltip" [icon]="btn.icon ?? ''"
+                                        (click)="btn.command(item,item.buttons);hitAction.emit({key:btn.key,rowDataId:item.Id})" />
+
+                                    <p-button size="small" [severity]="'secondary'" [rounded]="true"
+                                        *ngIf="((btn.showCommand && btn.showCommand(item)) || btn.isShow) && !btn.permission"
+                                        [pTooltip]="btn.tooltip" [icon]="btn.icon ?? ''"
+                                        (click)="btn.command(item,item.buttons);hitAction.emit({key:btn.key,rowDataId:item.Id})" />
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template #grid let-items>
+                <div class="full-con w-100 py-2">
+                    <div
+                        class="d-flex max-vh-70 overflow-auto flex-lg-wrap justify-content-start align-items-start gap-2 px-3 py-2">
+                        <div class="item-con col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2  border border-3 gap-2 d-flex flex-column justify-content-start p-0 rounded-3"
+                            *ngFor="let item of items">
+                            <div class="w-100 py-2 img d-flex justify-content-center">
+
+                                <ng-container *ngIf="item.imgSrv then img else icon"></ng-container>
+                                <ng-template #img>
+                                    <img style="height: 100px;" [src]="item.imgSrv ? item.imgSrv : 'delivery-man.svg'"
+                                        alt="">
+                                </ng-template>
+                                <ng-template #icon>
+                                    <i class="pi pi-user" style="font-size: 100px !important;"></i>
+                                </ng-template>
+                            </div>
+                            <div class="w-100 d-flex flex-column flex-wrap gap-2 px-2">
+                                <div class="d-flex justify-content-between gap-2" *ngFor="let col of body.columns">
+                                    <small class="fw-bold">{{col.header}}: </small>
+                                    <div [ngClass]="col.HeaderType === 'bool' || col.HeaderType === 'img' ? 'bool-cell' : ''"
+                                        style="display: flex;" [style]="{'justify-content':getAlignment(col.field)}">
+                                        <small
+                                            *ngIf="col.HeaderType != 'DateTime' &&
+                                                                                             col.HeaderType != 'DateTimeO' &&
+                                                                                              col.HeaderType != 'Toggle' &&
+                                                                                              col.HeaderType != 'json' &&
+                                                                                              col.HeaderType !== 'float' &&
+                                                                                              col.HeaderType !== 'bool' &&
+                                                                                              col.HeaderType !== 'double' &&
+                                                                                              col.HeaderType !== 'currency' &&
+                                                                                              col.HeaderType !== 'img' &&
+                                                                                              col.HeaderType !== 'tag'">
+                                            {{item[col.field]}}
+                                        </small>
+                                        <i *ngIf="col.HeaderType === 'bool'" class="pi" [ngClass]="{
+                                                                                                            'text-green-500 pi-check-circle': item[col.field],
+                                                                                                            'text-red-500 pi-times-circle': !item[col.field]
+                                                                                                        }"></i>
+                                        <div *ngIf="col.HeaderType === 'DateTime' ">
+                                            <small *ngIf="item[col.field] !== null">
+                                                {{ item[col.field] | date: 'dd-MM-yyyy'}}
+                                            </small>
+                                            <small *ngIf="item[col.field] === null">
+                                                {{ item[col.field] }}
+                                            </small>
+                                        </div>
+                                        <div *ngIf="col.HeaderType === 'DateTimeO' ">
+                                            <small *ngIf="item[col.field] !== null">
+                                                {{ item[col.field] | date: 'dd-MM-yyyy HH:mm'}}
+                                            </small>
+                                            <small *ngIf="item[col.field] === null">
+                                                {{ item[col.field] }}
+                                            </small>
+                                        </div>
+                                        <div *ngIf="col.HeaderType === 'float' || col.HeaderType === 'double' ">
+                                            <small *ngIf="item[col.field] !== null">
+                                                {{ item[col.field] | number:'1.2-2'}}
+                                            </small>
+                                        </div>
+                                        <div *ngIf="col.HeaderType === 'currency'">
+                                            <small *ngIf="item[col.field] !== null">
+                                                {{ item[col.field] | number:'1.0-2'}}
+                                            </small>
+                                        </div>
+                                        <div *ngIf="col.HeaderType == 'Toggle' ">
+                                            <p-toggleswitch [pTooltip]="item[col.field] ? 'True': 'False'"
+                                                *ngIf="hasToggleShow(col.field,item)" [(ngModel)]=" item[col.field]"
+                                                [disabled]="hasToggledisable(col.field,item) ?? false"
+                                                (onChange)="handleChange($event,col.field,item)"></p-toggleswitch>
+                                            <small *ngIf="!hasToggleShow(col.field,item)">
+                                                {{item[col.field]}}
+                                            </small>
+                                        </div>
+                                        <div *ngIf="col.HeaderType === 'json'">
+                                            <button pButton pRipple pTooltip="download JSON file" icon="pi pi-download"
+                                                (click)="downloadJSON(item[col.field])"></button>
+                                        </div>
+                                        <div *ngIf="col.HeaderType === 'img'" style="margin: 5px;">
+                                            <img *ngIf="item[col.field]" [src]="item[col.field]" width="150"
+                                                height="75">
+                                        </div>
+                                        <div *ngIf="col.HeaderType === 'tag'">
+                                            <p-tag [value]="item[col.field]" [severity]="getSeverity(item)" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-100  d-flex align-items-end justify-content-center gap-2">
+                                <div
+                                    class="buttons-template w-100 d-flex align-items-end justify-content-center rounded-bottom  gap-2 p-2 ">
+                                    <ng-container *ngFor="let btn of item.buttons">
+                                        <p-button size="small" [severity]="'secondary'" [rounded]="true"
+                                            *ngIf="((btn.showCommand && btn.showCommand(item)) || btn.isShow) && btn.permission"
+                                            [pTooltip]="btn.tooltip" [icon]="btn.icon ?? ''"
+                                            (click)="btn.command(item,item.buttons);hitAction.emit({key:btn.key,rowDataId:item.Id})" />
+
+                                        <p-button size="small" [severity]="'secondary'" [rounded]="true"
+                                            *ngIf="((btn.showCommand && btn.showCommand(item)) || btn.isShow) && !btn.permission"
+                                            [pTooltip]="btn.tooltip" [icon]="btn.icon ?? ''"
+                                            (click)="btn.command(item,item.buttons);hitAction.emit({key:btn.key,rowDataId:item.Id})" />
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </p-dataview>
+    </div>
+</div>
