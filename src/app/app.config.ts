@@ -11,6 +11,10 @@ import { MyPreset } from '../../public/theme';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MessageService } from 'primeng/api';
+import { UserStateService } from './general/services/user-state.service';
+import { CompanyStrategy } from './company/classes/company-strategy';
+import { MarketStrategy } from './market/classes/market-strategy';
+import { DistributorStrategy } from './distributor/classes/distributor-strategy';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,6 +24,10 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideHttpClient(withFetch()),
     MessageService,
+    UserStateService,
+    CompanyStrategy,
+    MarketStrategy,
+    DistributorStrategy,
     providePrimeNG({
       theme: {
         preset: MyPreset,

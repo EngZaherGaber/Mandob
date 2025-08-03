@@ -5,6 +5,8 @@ import { InputDynamic } from '../../../shared/interface/input-dynamic';
 import { ButtonModule } from 'primeng/button';
 import { MessageToastService } from '../../../shared/service/message-toast.service';
 import { Router } from '@angular/router';
+import { User } from '../../interfaces/user.model';
+import { UserStateService } from '../../services/user-state.service';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +16,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
   loginForm: FormGroup = new FormGroup({
-    email: new FormControl(null),
+    input: new FormControl(null),
     password: new FormControl(null, [Validators.min(8)]),
   });
   objs: InputDynamic[] = [
@@ -40,12 +42,12 @@ export class LoginComponent {
   /**
    *
    */
-  constructor(private msgSrv: MessageToastService, private router: Router) {}
+  constructor(private msgSrv: MessageToastService, private router: Router, private userStateService: UserStateService) { }
   getControl(name: string) {
     return this.loginForm.get(name) as FormControl;
   }
   login() {
-    this.msgSrv.showSuccess('تم تسجيل الدخول');
-    this.router.navigate(['']);
+    const formValue = this.loginForm.value;
+    this.userStateService.login(formValue['input'], formValue['password']);
   }
 }

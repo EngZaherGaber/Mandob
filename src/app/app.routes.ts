@@ -12,6 +12,7 @@ export const routes: Routes = [
   },
   {
     path: '',
+    canActivate:[loginGuard],
     canActivateChild: [loginGuard],
     component: LayoutComponent,
     children: [

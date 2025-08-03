@@ -16,12 +16,13 @@ import { CommonModule } from '@angular/common';
 export class AdCompanyShowComponent {
   tableConfig: InfoTable;
   type: 'table' | 'list' | string = 'table';
+
   constructor(private tableSrv: DyTableService, private route: ActivatedRoute) {
     this.tableConfig = tableSrv.getStandardInfo(
-      () => {},
-      () => {},
-      () => {},
-      () => {}
+      () => { },
+      () => { },
+      () => { },
+      () => { }
     );
   }
 

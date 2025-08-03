@@ -5246,7 +5246,7 @@ export const MyPreset = definePreset(Aura, {
         borderRadius: '{content.border.radius}',
         color: '{content.color}',
         gap: '0.5rem',
-        padding: '0.75rem',
+        padding: '0.25rem 0.5rem',
       },
     },
     virtualscroller: {

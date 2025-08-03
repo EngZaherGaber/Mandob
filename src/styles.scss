@@ -23,24 +23,25 @@ body {
   overflow: hidden;
   /* The entire scrollbar */
   ::-webkit-scrollbar {
-    width: 7.5px; /* Width of the vertical scrollbar */
-    height: 7.5px; /* Height of the horizontal scrollbar */
+    position: absolute;
+    width: 10px; /* Width of the vertical scrollbar */
+    height: 10px; /* Height of the horizontal scrollbar */
   }
 
   /* The track (background) of the scrollbar */
   ::-webkit-scrollbar-track {
-    background-color: $c3-tr; /* Color of the track */
-    border-radius: 10px; /* Rounded corners */
+    background-color: var(--p-surface-300); /* Color of the track */
+    border-radius: 2px; /* Rounded corners */
   }
 
   /* The handle (thumb) of the scrollbar */
   ::-webkit-scrollbar-thumb {
-    background: $c5; /* Color of the thumb */
-    border-radius: 10px; /* Rounded corners */
+    background: var(--p-amber-600); /* Color of the thumb */
+    border-radius: 2px; /* Rounded corners */
   }
 
   /* The handle (thumb) on hover */
   ::-webkit-scrollbar-thumb:hover {
-    background: $c1; /* Color of the thumb on hover */
+    background: var(--p-amber-500); /* Color of the thumb on hover */
   }
 }
