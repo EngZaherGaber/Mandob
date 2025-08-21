@@ -1,0 +1,4 @@
+@use "../../../../../public/animation" as *;
+#logo {
+  @include translate-animation(slideLeftIn, translateX(-30vw), translateX(30vw), 2s, 0s, ease-in-out, true);
+}

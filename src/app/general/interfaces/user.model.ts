@@ -1,10 +1,13 @@
 export interface User {
-  id: number;
+  id?: number;
   username: string;
   email: string;
-  firstName: string;
-  lastName: string;
+  name: string;
   phoneNumber: string;
+  commercialRegistrationNumber: string;
+  address: string;
+  isActive?: boolean;
+  companyLogos: string[];
   password: string;
-  role: 'company' | 'market' | 'distributor';
+  role: 'company' | 'client' | 'distributor' | 'owner';
 }

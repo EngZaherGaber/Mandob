@@ -139,56 +139,31 @@ export class DynamicAttributeService {
       return element;
     });
   }
-  makeAllVisibleWithout(
-    objs: InputDynamic[],
-    key: string,
-    unVisibleAtt: { [key: string]: string[] }
-  ): InputDynamic[] {
+  makeAllVisibleWithout(objs: InputDynamic[], key: string, unVisibleAtt: { [key: string]: string[] }): InputDynamic[] {
     return objs.map((element: InputDynamic) => {
-      if (
-        unVisibleAtt[key] &&
-        unVisibleAtt[key].find(
-          (x) => x.toLowerCase() === element.key.toLowerCase()
-        )
-      ) {
-        element.visible && element.visible === true
-          ? (element.visible = false)
-          : '';
+      if (unVisibleAtt[key] && unVisibleAtt[key].find((x) => x.toLowerCase() === element.key.toLowerCase())) {
+        element.visible && element.visible === true ? (element.visible = false) : '';
       } else {
-        element.visible === undefined
-          ? (element.visible = true)
-          : (element.visible = element.visible);
+        element.visible === undefined ? (element.visible = true) : (element.visible = element.visible);
       }
       return element;
     });
   }
-  disableInput(
-    disableSteps: { [key: string]: string[] },
-    key: string,
-    form: FormGroup
-  ) {
+  disableInput(disableSteps: { [key: string]: string[] }, key: string, form: FormGroup) {
     disableSteps[key]
       ? disableSteps[key].forEach((att) => {
-          (form.controls[key] as FormGroup) &&
-          (form.controls[key] as FormGroup).controls[att]
+          (form.controls[key] as FormGroup) && (form.controls[key] as FormGroup).controls[att]
             ? (form.controls[key] as FormGroup).controls[att].disable()
             : '';
         })
       : '';
   }
-  disableInputRecursion(
-    disableSteps: { [key: string]: any[] },
-    key: string,
-    form: any,
-    enable: boolean
-  ) {
+  disableInputRecursion(disableSteps: { [key: string]: any[] }, key: string, form: any, enable: boolean) {
     if (disableSteps[key]) {
       for (let index = 0; index < disableSteps[key].length; index++) {
         const element = disableSteps[key][index];
         (element as string[]).forEach((att) => {
-          const control = form.controls[key].controls[index]?.controls[
-            att
-          ] as FormControl;
+          const control = form.controls[key].controls[index]?.controls[att] as FormControl;
           if (control) {
             enable ? control.enable() : control.disable();
           }
@@ -232,12 +207,7 @@ export class DynamicAttributeService {
       : '';
     return objs;
   }
-  valueForAllDateTime(
-    form: any,
-    objs: any,
-    recursionSteps: string[],
-    withIdSteps: string[]
-  ) {
+  valueForAllDateTime(form: any, objs: any, recursionSteps: string[], withIdSteps: string[]) {
     const body = form;
     Object.keys(objs).forEach((key) => {
       let index = 0;
@@ -261,10 +231,7 @@ export class DynamicAttributeService {
         }
       } else {
         Object.keys(objs[key]).forEach((att) => {
-          if (
-            (objs[key][att] as InputDynamic).dataType.toLowerCase() ===
-            'datetime'
-          ) {
+          if ((objs[key][att] as InputDynamic).dataType.toLowerCase() === 'datetime') {
             const inpt: InputDynamic = objs[key][att];
             if (body[key] && body[key][inpt.key]) {
               body[key][inpt.key] = new Date(body[key][inpt.key]);
@@ -278,59 +245,34 @@ export class DynamicAttributeService {
   clearMap(step: string, roadMap: string[], objs: any, form: FormGroup) {
     (objs[step] as InputDynamic[]).forEach((obj) => {
       if (!roadMap.includes(obj.key)) {
-        this.changeVisibleStatus(
-          'installationConfig',
-          obj.key,
-          form,
-          objs,
-          null,
-          false
-        );
+        this.changeVisibleStatus('installationConfig', obj.key, form, objs, null, false);
         obj.value = null;
       }
     });
   }
-  getInputDynamic(parent: string, child: string, objs: any): any {
-    return (objs[parent] as InputDynamic[]).find(
-      (x) => x.key.toLowerCase() === child.toLowerCase()
-    );
+  getInputDynamic(parent: string, child: string, objs: any): InputDynamic | undefined {
+    return (objs[parent] as InputDynamic[]).find((x) => x.key.toLowerCase() === child.toLowerCase());
   }
-  getFormControl(
-    parent: string,
-    child: string,
-    form: FormGroup
-  ): FormControl | null {
-    const realKey = Object.keys(
-      (form.controls[parent] as FormGroup).controls
-    ).find((key) => key.toLowerCase() === child.toLowerCase());
+  getFormControl(parent: string, child: string, form: FormGroup): FormControl | null {
+    const realKey = Object.keys((form.controls[parent] as FormGroup).controls).find(
+      (key) => key.toLowerCase() === child.toLowerCase()
+    );
     if (realKey) {
-      return (form.controls[parent] as FormGroup).controls[
-        realKey
-      ] as FormControl;
+      return (form.controls[parent] as FormGroup).controls[realKey] as FormControl;
     }
     return null;
   }
   getNameFromList(element: InputDynamic, id: string) {
     return element.options?.find((x) => x.id === id)?.name;
   }
-  changeVisibleStatus(
-    parent: string,
-    child: string,
-    form: FormGroup,
-    objs: any,
-    value: any,
-    isVisible: boolean
-  ) {
+  changeVisibleStatus(parent: string, child: string, form: FormGroup, objs: any, value: any, isVisible: boolean) {
     const control = this.getFormControl(parent, child, form);
     const inpt = this.getInputDynamic(parent, child, objs);
     if (control && inpt) {
       if (isVisible) {
         if (inpt.dataType.toLowerCase() === 'int') {
           control.addValidators(Validators.min(1));
-        } else if (
-          inpt.dataType.toLowerCase() === 'float' ||
-          inpt.dataType.toLowerCase() === 'double'
-        ) {
+        } else if (inpt.dataType.toLowerCase() === 'float' || inpt.dataType.toLowerCase() === 'double') {
           control.addValidators(Validators.min(0.01));
         }
         control.addValidators(Validators.required);
@@ -352,18 +294,10 @@ export class DynamicAttributeService {
       }
     }
   }
-  mergeObjs(
-    orginObjs: any,
-    newObjs: any,
-    unVisibleAtt: { [key: string]: string[] }
-  ) {
+  mergeObjs(orginObjs: any, newObjs: any, unVisibleAtt: { [key: string]: string[] }) {
     let keys = Object.keys(newObjs);
     keys.forEach((key) => {
-      newObjs[key] = this.makeAllVisibleWithout(
-        newObjs[key],
-        key,
-        unVisibleAtt
-      );
+      newObjs[key] = this.makeAllVisibleWithout(newObjs[key], key, unVisibleAtt);
     });
     return { ...orginObjs, ...newObjs };
   }

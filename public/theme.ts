@@ -308,7 +308,7 @@ export const MyPreset = definePreset(Aura, {
       style: 'solid',
       color: '{primary.color}',
       offset: '2px',
-      shadow: 'none',
+      shadow: '{surface.500}',
     },
     disabledOpacity: '0.6',
     iconSize: '1rem',
@@ -391,24 +391,20 @@ export const MyPreset = definePreset(Aura, {
     overlay: {
       select: {
         borderRadius: '{border.radius.lg}',
-        shadow:
-          '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
+        shadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
       },
       popover: {
         borderRadius: '{border.radius.lg}',
         padding: '0.75rem',
-        shadow:
-          '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
+        shadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
       },
       modal: {
         borderRadius: '{border.radius.xl}',
         padding: '1.25rem',
-        shadow:
-          '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
+        shadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
       },
       navigation: {
-        shadow:
-          '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
+        shadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
       },
     },
     colorScheme: {
@@ -540,22 +536,22 @@ export const MyPreset = definePreset(Aura, {
       dark: {
         surface: {
           0: '#ffffff',
-          50: '#fafafa',
-          100: '#f4f4f5',
-          200: '#e4e4e7',
-          300: '#d4d4d8',
-          400: '#a1a1aa',
-          500: '#71717a',
-          600: '#52525b',
-          700: '#3f3f46',
-          800: '#27272a',
-          900: '#18181b',
-          950: '#09090b',
+          50: '#f6f6f8',
+          100: '#d4d4de',
+          200: '#b2b2c4',
+          300: '#9091aa',
+          400: '#6e6f90',
+          500: '#4c4d76',
+          600: '#414164',
+          700: '#353653',
+          800: '#2a2a41',
+          900: 'rgba(30, 31, 47, 1)',
+          950: '#13131e',
         },
         primary: {
-          color: '{primary.400}',
+          color: '{surface.0}',
           contrastColor: '{surface.900}',
-          hoverColor: '{primary.300}',
+          hoverColor: '{surface.0}',
           activeColor: '{primary.200}',
         },
         highlight: {
@@ -565,7 +561,7 @@ export const MyPreset = definePreset(Aura, {
           focusColor: 'rgba(255,255,255,.87)',
         },
         mask: {
-          background: 'rgba(0,0,0,0.6)',
+          background: 'rgba(30, 31, 47, 1)',
           color: '{surface.200}',
         },
         formField: {
@@ -1131,15 +1127,15 @@ export const MyPreset = definePreset(Aura, {
               },
             },
             contrast: {
-              background: '{surface.950}',
-              hoverBackground: '{surface.900}',
-              activeBackground: '{surface.800}',
-              borderColor: '{surface.950}',
-              hoverBorderColor: '{surface.900}',
-              activeBorderColor: '{surface.800}',
+              background: '{amber.500}',
+              hoverBackground: '{amber.300}',
+              activeBackground: '{amber.600}',
+              borderColor: '{amber.500}',
+              hoverBorderColor: '{amber.300}',
+              activeBorderColor: '{amber.600}',
               color: '{surface.0}',
-              hoverColor: '{primary.500}',
-              activeColor: '{primary.500}',
+              hoverColor: '{surface.0}',
+              activeColor: '{surface.0}',
               focusRing: {
                 color: '{surface.950}',
                 shadow: 'none',
@@ -1309,7 +1305,7 @@ export const MyPreset = definePreset(Aura, {
               borderColor: '{green.400}',
               hoverBorderColor: '{green.300}',
               activeBorderColor: '{green.200}',
-              color: '{green.950}',
+              color: '{text.color}',
               hoverColor: '{green.950}',
               activeColor: '{green.950}',
               focusRing: {
@@ -1324,7 +1320,7 @@ export const MyPreset = definePreset(Aura, {
               borderColor: '{orange.400}',
               hoverBorderColor: '{orange.300}',
               activeBorderColor: '{orange.200}',
-              color: '{orange.950}',
+              color: '{text.color}',
               hoverColor: '{orange.950}',
               activeColor: '{orange.950}',
               focusRing: {
@@ -1339,7 +1335,7 @@ export const MyPreset = definePreset(Aura, {
               borderColor: '{purple.400}',
               hoverBorderColor: '{purple.300}',
               activeBorderColor: '{purple.200}',
-              color: '{purple.950}',
+              color: '{text.color}',
               hoverColor: '{purple.950}',
               activeColor: '{purple.950}',
               focusRing: {
@@ -1354,7 +1350,7 @@ export const MyPreset = definePreset(Aura, {
               borderColor: '{red.400}',
               hoverBorderColor: '{red.300}',
               activeBorderColor: '{red.200}',
-              color: '{red.950}',
+              color: '{text.color}',
               hoverColor: '{red.950}',
               activeColor: '{red.950}',
               focusRing: {
@@ -1380,10 +1376,8 @@ export const MyPreset = definePreset(Aura, {
           },
           outlined: {
             primary: {
-              hoverBackground:
-                'color-mix(in srgb, {primary.color}, transparent 96%)',
-              activeBackground:
-                'color-mix(in srgb, {primary.color}, transparent 84%)',
+              hoverBackground: 'color-mix(in srgb, {primary.color}, transparent 96%)',
+              activeBackground: 'color-mix(in srgb, {primary.color}, transparent 84%)',
               borderColor: '{primary.700}',
               color: '{primary.color}',
             },
@@ -1394,40 +1388,32 @@ export const MyPreset = definePreset(Aura, {
               color: '{surface.400}',
             },
             success: {
-              hoverBackground:
-                'color-mix(in srgb, {green.400}, transparent 96%)',
-              activeBackground:
-                'color-mix(in srgb, {green.400}, transparent 84%)',
+              hoverBackground: 'color-mix(in srgb, {green.400}, transparent 96%)',
+              activeBackground: 'color-mix(in srgb, {green.400}, transparent 84%)',
               borderColor: '{green.700}',
               color: '{green.400}',
             },
             info: {
               hoverBackground: 'color-mix(in srgb, {sky.400}, transparent 96%)',
-              activeBackground:
-                'color-mix(in srgb, {sky.400}, transparent 84%)',
+              activeBackground: 'color-mix(in srgb, {sky.400}, transparent 84%)',
               borderColor: '{sky.700}',
               color: '{sky.400}',
             },
             warn: {
-              hoverBackground:
-                'color-mix(in srgb, {orange.400}, transparent 96%)',
-              activeBackground:
-                'color-mix(in srgb, {orange.400}, transparent 84%)',
+              hoverBackground: 'color-mix(in srgb, {orange.400}, transparent 96%)',
+              activeBackground: 'color-mix(in srgb, {orange.400}, transparent 84%)',
               borderColor: '{orange.700}',
               color: '{orange.400}',
             },
             help: {
-              hoverBackground:
-                'color-mix(in srgb, {purple.400}, transparent 96%)',
-              activeBackground:
-                'color-mix(in srgb, {purple.400}, transparent 84%)',
+              hoverBackground: 'color-mix(in srgb, {purple.400}, transparent 96%)',
+              activeBackground: 'color-mix(in srgb, {purple.400}, transparent 84%)',
               borderColor: '{purple.700}',
               color: '{purple.400}',
             },
             danger: {
               hoverBackground: 'color-mix(in srgb, {red.400}, transparent 96%)',
-              activeBackground:
-                'color-mix(in srgb, {red.400}, transparent 84%)',
+              activeBackground: 'color-mix(in srgb, {red.400}, transparent 84%)',
               borderColor: '{red.700}',
               color: '{red.400}',
             },
@@ -1446,10 +1432,8 @@ export const MyPreset = definePreset(Aura, {
           },
           text: {
             primary: {
-              hoverBackground:
-                'color-mix(in srgb, {primary.color}, transparent 96%)',
-              activeBackground:
-                'color-mix(in srgb, {primary.color}, transparent 84%)',
+              hoverBackground: 'color-mix(in srgb, {primary.color}, transparent 96%)',
+              activeBackground: 'color-mix(in srgb, {primary.color}, transparent 84%)',
               color: '{primary.color}',
             },
             secondary: {
@@ -1458,36 +1442,28 @@ export const MyPreset = definePreset(Aura, {
               color: '{surface.400}',
             },
             success: {
-              hoverBackground:
-                'color-mix(in srgb, {green.400}, transparent 96%)',
-              activeBackground:
-                'color-mix(in srgb, {green.400}, transparent 84%)',
+              hoverBackground: 'color-mix(in srgb, {green.400}, transparent 96%)',
+              activeBackground: 'color-mix(in srgb, {green.400}, transparent 84%)',
               color: '{green.400}',
             },
             info: {
               hoverBackground: 'color-mix(in srgb, {sky.400}, transparent 96%)',
-              activeBackground:
-                'color-mix(in srgb, {sky.400}, transparent 84%)',
+              activeBackground: 'color-mix(in srgb, {sky.400}, transparent 84%)',
               color: '{sky.400}',
             },
             warn: {
-              hoverBackground:
-                'color-mix(in srgb, {orange.400}, transparent 96%)',
-              activeBackground:
-                'color-mix(in srgb, {orange.400}, transparent 84%)',
+              hoverBackground: 'color-mix(in srgb, {orange.400}, transparent 96%)',
+              activeBackground: 'color-mix(in srgb, {orange.400}, transparent 84%)',
               color: '{orange.400}',
             },
             help: {
-              hoverBackground:
-                'color-mix(in srgb, {purple.400}, transparent 96%)',
-              activeBackground:
-                'color-mix(in srgb, {purple.400}, transparent 84%)',
+              hoverBackground: 'color-mix(in srgb, {purple.400}, transparent 96%)',
+              activeBackground: 'color-mix(in srgb, {purple.400}, transparent 84%)',
               color: '{purple.400}',
             },
             danger: {
               hoverBackground: 'color-mix(in srgb, {red.400}, transparent 96%)',
-              activeBackground:
-                'color-mix(in srgb, {red.400}, transparent 84%)',
+              activeBackground: 'color-mix(in srgb, {red.400}, transparent 84%)',
               color: '{red.400}',
             },
             contrast: {
@@ -1660,8 +1636,7 @@ export const MyPreset = definePreset(Aura, {
         background: '{content.background}',
         borderRadius: '{border.radius.xl}',
         color: '{content.color}',
-        shadow:
-          '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)',
+        shadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)',
       },
       body: {
         padding: '1.25rem',
@@ -1964,8 +1939,7 @@ export const MyPreset = definePreset(Aura, {
       },
       footer: {
         gap: '0.5rem',
-        padding:
-          '0 {overlay.popover.padding} {overlay.popover.padding} {overlay.popover.padding}',
+        padding: '0 {overlay.popover.padding} {overlay.popover.padding} {overlay.popover.padding}',
       },
     },
     contextmenu: {
@@ -2017,7 +1991,7 @@ export const MyPreset = definePreset(Aura, {
         padding: '0',
       },
       header: {
-        background: '{primary.500}',
+        background: '{content.background}',
         color: '{content.color}',
         borderColor: '{content.border.color}',
         borderWidth: '0 0 1px 0',
@@ -2025,7 +1999,7 @@ export const MyPreset = definePreset(Aura, {
         borderRadius: '0',
       },
       content: {
-        background: '{content.background}',
+        background: 'transparent',
         color: '{content.color}',
         borderColor: 'transparent',
         borderWidth: '0',
@@ -2054,7 +2028,7 @@ export const MyPreset = definePreset(Aura, {
         transitionDuration: '{transition.duration}',
       },
       header: {
-        background: '{primary.500}',
+        background: '{content.background}',
         borderColor: '{datatable.border.color}',
         color: '{content.color}',
         borderWidth: '0 0 1px 0',
@@ -2238,12 +2212,10 @@ export const MyPreset = definePreset(Aura, {
         fontWeight: '600',
       },
       content: {
-        padding:
-          '0 {overlay.modal.padding} {overlay.modal.padding} {overlay.modal.padding}',
+        padding: '0 {overlay.modal.padding} {overlay.modal.padding} {overlay.modal.padding}',
       },
       footer: {
-        padding:
-          '0 {overlay.modal.padding} {overlay.modal.padding} {overlay.modal.padding}',
+        padding: '0 {overlay.modal.padding} {overlay.modal.padding} {overlay.modal.padding}',
         gap: '0.5rem',
       },
     },
@@ -2305,8 +2277,7 @@ export const MyPreset = definePreset(Aura, {
         fontWeight: '600',
       },
       content: {
-        padding:
-          '0 {overlay.modal.padding} {overlay.modal.padding} {overlay.modal.padding}',
+        padding: '0 {overlay.modal.padding} {overlay.modal.padding} {overlay.modal.padding}',
       },
       footer: {
         padding: '{overlay.modal.padding}',
@@ -2476,14 +2447,14 @@ export const MyPreset = definePreset(Aura, {
     },
     galleria: {
       root: {
-        borderWidth: '1px',
+        borderWidth: '0px',
         borderColor: '{content.border.color}',
         borderRadius: '{content.border.radius}',
         transitionDuration: '{transition.duration}',
       },
       navButton: {
-        background: 'rgba(255, 255, 255, 0.1)',
-        hoverBackground: 'rgba(255, 255, 255, 0.2)',
+        background: '{primary.500}',
+        hoverBackground: '{primary.300}',
         color: '{surface.100}',
         hoverColor: '{surface.0}',
         size: '3rem',
@@ -2685,43 +2656,37 @@ export const MyPreset = definePreset(Aura, {
             background: 'color-mix(in srgb, {blue.50}, transparent 5%)',
             borderColor: '{blue.200}',
             color: '{blue.600}',
-            shadow:
-              '0px 4px 8px 0px color-mix(in srgb, {blue.500}, transparent 96%)',
+            shadow: '0px 4px 8px 0px color-mix(in srgb, {blue.500}, transparent 96%)',
           },
           success: {
             background: 'color-mix(in srgb, {green.300}, transparent 5%)',
             borderColor: '{green.200}',
             color: '{green.600}',
-            shadow:
-              '0px 4px 8px 0px color-mix(in srgb, {green.500}, transparent 96%)',
+            shadow: '0px 4px 8px 0px color-mix(in srgb, {green.500}, transparent 96%)',
           },
           warn: {
             background: 'color-mix(in srgb,{yellow.50}, transparent 5%)',
             borderColor: '{yellow.200}',
             color: '{yellow.600}',
-            shadow:
-              '0px 4px 8px 0px color-mix(in srgb, {yellow.500}, transparent 96%)',
+            shadow: '0px 4px 8px 0px color-mix(in srgb, {yellow.500}, transparent 96%)',
           },
           error: {
             background: 'color-mix(in srgb, {red.50}, transparent 5%)',
             borderColor: '{red.200}',
             color: '{red.600}',
-            shadow:
-              '0px 4px 8px 0px color-mix(in srgb, {red.500}, transparent 96%)',
+            shadow: '0px 4px 8px 0px color-mix(in srgb, {red.500}, transparent 96%)',
           },
           secondary: {
             background: '{surface.100}',
             borderColor: '{surface.200}',
             color: '{surface.600}',
-            shadow:
-              '0px 4px 8px 0px color-mix(in srgb, {surface.500}, transparent 96%)',
+            shadow: '0px 4px 8px 0px color-mix(in srgb, {surface.500}, transparent 96%)',
           },
           contrast: {
             background: '{surface.900}',
             borderColor: '{surface.950}',
             color: '{surface.50}',
-            shadow:
-              '0px 4px 8px 0px color-mix(in srgb, {surface.950}, transparent 96%)',
+            shadow: '0px 4px 8px 0px color-mix(in srgb, {surface.950}, transparent 96%)',
           },
         },
         dark: {
@@ -2729,43 +2694,37 @@ export const MyPreset = definePreset(Aura, {
             background: 'color-mix(in srgb, {blue.500}, transparent 84%)',
             borderColor: 'color-mix(in srgb, {blue.700}, transparent 64%)',
             color: '{blue.500}',
-            shadow:
-              '0px 4px 8px 0px color-mix(in srgb, {blue.500}, transparent 96%)',
+            shadow: '0px 4px 8px 0px color-mix(in srgb, {blue.500}, transparent 96%)',
           },
           success: {
             background: 'color-mix(in srgb, {green.500}, transparent 84%)',
             borderColor: 'color-mix(in srgb, {green.700}, transparent 64%)',
             color: '{green.500}',
-            shadow:
-              '0px 4px 8px 0px color-mix(in srgb, {green.500}, transparent 96%)',
+            shadow: '0px 4px 8px 0px color-mix(in srgb, {green.500}, transparent 96%)',
           },
           warn: {
             background: 'color-mix(in srgb, {yellow.500}, transparent 84%)',
             borderColor: 'color-mix(in srgb, {yellow.700}, transparent 64%)',
             color: '{yellow.500}',
-            shadow:
-              '0px 4px 8px 0px color-mix(in srgb, {yellow.500}, transparent 96%)',
+            shadow: '0px 4px 8px 0px color-mix(in srgb, {yellow.500}, transparent 96%)',
           },
           error: {
             background: 'color-mix(in srgb, {red.500}, transparent 84%)',
             borderColor: 'color-mix(in srgb, {red.700}, transparent 64%)',
             color: '{red.500}',
-            shadow:
-              '0px 4px 8px 0px color-mix(in srgb, {red.500}, transparent 96%)',
+            shadow: '0px 4px 8px 0px color-mix(in srgb, {red.500}, transparent 96%)',
           },
           secondary: {
             background: '{surface.800}',
             borderColor: '{surface.700}',
             color: '{surface.300}',
-            shadow:
-              '0px 4px 8px 0px color-mix(in srgb, {surface.500}, transparent 96%)',
+            shadow: '0px 4px 8px 0px color-mix(in srgb, {surface.500}, transparent 96%)',
           },
           contrast: {
             background: '{surface.0}',
             borderColor: '{surface.100}',
             color: '{surface.950}',
-            shadow:
-              '0px 4px 8px 0px color-mix(in srgb, {surface.950}, transparent 96%)',
+            shadow: '0px 4px 8px 0px color-mix(in srgb, {surface.950}, transparent 96%)',
           },
         },
       },
@@ -3092,7 +3051,7 @@ export const MyPreset = definePreset(Aura, {
     },
     menu: {
       root: {
-        background: '{transparent}',
+        background: '{content.background}',
         borderColor: '{transparent}', //content.border.color
         color: '{content.color}',
         borderRadius: '{content.border.radius}',
@@ -3111,8 +3070,8 @@ export const MyPreset = definePreset(Aura, {
         borderRadius: '{navigation.item.border.radius}',
         gap: '{navigation.item.gap}',
         icon: {
-          color: '{navigation.item.icon.color}',
-          focusColor: '{navigation.item.icon.focus.color}',
+          color: '{navigation.item.color}',
+          focusColor: '{navigation.item.focus.color}',
         },
       },
       submenuLabel: {
@@ -3257,8 +3216,7 @@ export const MyPreset = definePreset(Aura, {
             background: 'color-mix(in srgb, {blue.50}, transparent 5%)',
             borderColor: '{blue.200}',
             color: '{blue.600}',
-            shadow:
-              '0px 4px 8px 0px color-mix(in srgb, {blue.500}, transparent 96%)',
+            shadow: '0px 4px 8px 0px color-mix(in srgb, {blue.500}, transparent 96%)',
             closeButton: {
               hoverBackground: '{blue.100}',
               focusRing: {
@@ -3278,8 +3236,7 @@ export const MyPreset = definePreset(Aura, {
             background: 'color-mix(in srgb, {green.300}, transparent 5%)',
             borderColor: '{green.200}',
             color: '{green.600}',
-            shadow:
-              '0px 4px 8px 0px color-mix(in srgb, {green.500}, transparent 96%)',
+            shadow: '0px 4px 8px 0px color-mix(in srgb, {green.500}, transparent 96%)',
             closeButton: {
               hoverBackground: '{green.100}',
               focusRing: {
@@ -3299,8 +3256,7 @@ export const MyPreset = definePreset(Aura, {
             background: 'color-mix(in srgb,{yellow.50}, transparent 5%)',
             borderColor: '{yellow.200}',
             color: '{yellow.600}',
-            shadow:
-              '0px 4px 8px 0px color-mix(in srgb, {yellow.500}, transparent 96%)',
+            shadow: '0px 4px 8px 0px color-mix(in srgb, {yellow.500}, transparent 96%)',
             closeButton: {
               hoverBackground: '{yellow.100}',
               focusRing: {
@@ -3320,8 +3276,7 @@ export const MyPreset = definePreset(Aura, {
             background: 'color-mix(in srgb, {red.50}, transparent 5%)',
             borderColor: '{red.200}',
             color: '{red.600}',
-            shadow:
-              '0px 4px 8px 0px color-mix(in srgb, {red.500}, transparent 96%)',
+            shadow: '0px 4px 8px 0px color-mix(in srgb, {red.500}, transparent 96%)',
             closeButton: {
               hoverBackground: '{red.100}',
               focusRing: {
@@ -3341,8 +3296,7 @@ export const MyPreset = definePreset(Aura, {
             background: '{surface.100}',
             borderColor: '{surface.200}',
             color: '{surface.600}',
-            shadow:
-              '0px 4px 8px 0px color-mix(in srgb, {surface.500}, transparent 96%)',
+            shadow: '0px 4px 8px 0px color-mix(in srgb, {surface.500}, transparent 96%)',
             closeButton: {
               hoverBackground: '{surface.200}',
               focusRing: {
@@ -3362,8 +3316,7 @@ export const MyPreset = definePreset(Aura, {
             background: '{surface.900}',
             borderColor: '{surface.950}',
             color: '{surface.50}',
-            shadow:
-              '0px 4px 8px 0px color-mix(in srgb, {surface.950}, transparent 96%)',
+            shadow: '0px 4px 8px 0px color-mix(in srgb, {surface.950}, transparent 96%)',
             closeButton: {
               hoverBackground: '{surface.800}',
               focusRing: {
@@ -3385,8 +3338,7 @@ export const MyPreset = definePreset(Aura, {
             background: 'color-mix(in srgb, {blue.500}, transparent 84%)',
             borderColor: 'color-mix(in srgb, {blue.700}, transparent 64%)',
             color: '{blue.500}',
-            shadow:
-              '0px 4px 8px 0px color-mix(in srgb, {blue.500}, transparent 96%)',
+            shadow: '0px 4px 8px 0px color-mix(in srgb, {blue.500}, transparent 96%)',
             closeButton: {
               hoverBackground: 'rgba(255, 255, 255, 0.05)',
               focusRing: {
@@ -3406,8 +3358,7 @@ export const MyPreset = definePreset(Aura, {
             background: 'color-mix(in srgb, {green.500}, transparent 84%)',
             borderColor: 'color-mix(in srgb, {green.700}, transparent 64%)',
             color: '{green.500}',
-            shadow:
-              '0px 4px 8px 0px color-mix(in srgb, {green.500}, transparent 96%)',
+            shadow: '0px 4px 8px 0px color-mix(in srgb, {green.500}, transparent 96%)',
             closeButton: {
               hoverBackground: 'rgba(255, 255, 255, 0.05)',
               focusRing: {
@@ -3427,8 +3378,7 @@ export const MyPreset = definePreset(Aura, {
             background: 'color-mix(in srgb, {yellow.500}, transparent 84%)',
             borderColor: 'color-mix(in srgb, {yellow.700}, transparent 64%)',
             color: '{yellow.500}',
-            shadow:
-              '0px 4px 8px 0px color-mix(in srgb, {yellow.500}, transparent 96%)',
+            shadow: '0px 4px 8px 0px color-mix(in srgb, {yellow.500}, transparent 96%)',
             closeButton: {
               hoverBackground: 'rgba(255, 255, 255, 0.05)',
               focusRing: {
@@ -3448,8 +3398,7 @@ export const MyPreset = definePreset(Aura, {
             background: 'color-mix(in srgb, {red.500}, transparent 84%)',
             borderColor: 'color-mix(in srgb, {red.700}, transparent 64%)',
             color: '{red.500}',
-            shadow:
-              '0px 4px 8px 0px color-mix(in srgb, {red.500}, transparent 96%)',
+            shadow: '0px 4px 8px 0px color-mix(in srgb, {red.500}, transparent 96%)',
             closeButton: {
               hoverBackground: 'rgba(255, 255, 255, 0.05)',
               focusRing: {
@@ -3469,8 +3418,7 @@ export const MyPreset = definePreset(Aura, {
             background: '{surface.800}',
             borderColor: '{surface.700}',
             color: '{surface.300}',
-            shadow:
-              '0px 4px 8px 0px color-mix(in srgb, {surface.500}, transparent 96%)',
+            shadow: '0px 4px 8px 0px color-mix(in srgb, {surface.500}, transparent 96%)',
             closeButton: {
               hoverBackground: '{surface.700}',
               focusRing: {
@@ -3490,8 +3438,7 @@ export const MyPreset = definePreset(Aura, {
             background: '{surface.0}',
             borderColor: '{surface.100}',
             color: '{surface.950}',
-            shadow:
-              '0px 4px 8px 0px color-mix(in srgb, {surface.950}, transparent 96%)',
+            shadow: '0px 4px 8px 0px color-mix(in srgb, {surface.950}, transparent 96%)',
             closeButton: {
               hoverBackground: '{surface.100}',
               focusRing: {
@@ -3691,17 +3638,17 @@ export const MyPreset = definePreset(Aura, {
         padding: '0.5rem 1rem',
         gap: '0.25rem',
         borderRadius: '0',
-        background: '{primary.500}',
+        background: '{content.background}',
         color: '{highlight.color}',
         transitionDuration: '{transition.duration}',
       },
       navButton: {
         background: 'transparent',
         hoverBackground: '{content.hover.background}',
-        selectedBackground: '{surface.100}',
-        color: '{highlight.color}',
+        selectedBackground: '{content.hover.background}',
+        color: '{text.color}',
         hoverColor: '{highlight.color}',
-        selectedColor: '{text.color}',
+        selectedColor: '{highlight.color}',
         width: '1.5rem',
         height: '1.5rem',
         borderRadius: '20%',
@@ -3714,7 +3661,7 @@ export const MyPreset = definePreset(Aura, {
         },
       },
       currentPageReport: {
-        color: '{highlight.color}',
+        color: '{text.color}',
       },
       jumpToPageInput: {
         maxWidth: '2.5rem',
@@ -4108,8 +4055,7 @@ export const MyPreset = definePreset(Aura, {
           hoverBackground: '{content.background}',
           width: '16px',
           height: '16px',
-          shadow:
-            '0px 0.5px 0px 0px rgba(0, 0, 0, 0.08), 0px 1px 1px 0px rgba(0, 0, 0, 0.14)',
+          shadow: '0px 0.5px 0px 0px rgba(0, 0, 0, 0.08), 0px 1px 1px 0px rgba(0, 0, 0, 0.14)',
         },
         focusRing: {
           width: '{focus.ring.width}',
@@ -4211,8 +4157,7 @@ export const MyPreset = definePreset(Aura, {
         fontSize: '1.143rem',
         fontWeight: '500',
         borderRadius: '50%',
-        shadow:
-          '0px 0.5px 0px 0px rgba(0, 0, 0, 0.06), 0px 1px 1px 0px rgba(0, 0, 0, 0.12)',
+        shadow: '0px 0.5px 0px 0px rgba(0, 0, 0, 0.06), 0px 1px 1px 0px rgba(0, 0, 0, 0.12)',
       },
       steppanels: {
         padding: '0.875rem 0.5rem 1.125rem 0.5rem',
@@ -4229,7 +4174,7 @@ export const MyPreset = definePreset(Aura, {
         transitionDuration: '{transition.duration}',
       },
       separator: {
-        background: '{content.border.color}',
+        background: '{amber.500}',
       },
       itemLink: {
         borderRadius: '{content.border.radius}',
@@ -4248,18 +4193,17 @@ export const MyPreset = definePreset(Aura, {
         fontWeight: '500',
       },
       itemNumber: {
-        background: '{content.background}',
-        activeBackground: '{content.background}',
+        background: '{surface.50}',
+        activeBackground: '{primary.500}',
         borderColor: '{content.border.color}',
         activeBorderColor: '{content.border.color}',
-        color: '{text.muted.color}',
-        activeColor: '{primary.color}',
+        color: '{primary.500}',
+        activeColor: '{surface.50}',
         size: '2rem',
         fontSize: '1.143rem',
         fontWeight: '500',
         borderRadius: '50%',
-        shadow:
-          '0px 0.5px 0px 0px rgba(0, 0, 0, 0.06), 0px 1px 1px 0px rgba(0, 0, 0, 0.12)',
+        shadow: '0px 0.5px 0px 0px rgba(0, 0, 0, 0.06), 0px 1px 1px 0px rgba(0, 0, 0, 0.12)',
       },
     },
     tabmenu: {
@@ -4375,8 +4319,7 @@ export const MyPreset = definePreset(Aura, {
         },
         dark: {
           navButton: {
-            shadow:
-              '0px 0px 10px 50px color-mix(in srgb, {content.background}, transparent 50%)',
+            shadow: '0px 0px 10px 50px color-mix(in srgb, {content.background}, transparent 50%)',
           },
         },
       },
@@ -4413,8 +4356,7 @@ export const MyPreset = definePreset(Aura, {
         },
         dark: {
           navButton: {
-            shadow:
-              '0px 0px 10px 50px color-mix(in srgb, {content.background}, transparent 50%)',
+            shadow: '0px 0px 10px 50px color-mix(in srgb, {content.background}, transparent 50%)',
           },
         },
       },
@@ -4614,8 +4556,7 @@ export const MyPreset = definePreset(Aura, {
           borderRadius: '50%',
           size: '0.375rem',
           background: '{primary.color}',
-          insetShadow:
-            '0px 0.5px 0px 0px rgba(0, 0, 0, 0.06), 0px 1px 1px 0px rgba(0, 0, 0, 0.12)',
+          insetShadow: '0px 0.5px 0px 0px rgba(0, 0, 0, 0.06), 0px 1px 1px 0px rgba(0, 0, 0, 0.12)',
         },
       },
       eventConnector: {
@@ -4656,8 +4597,7 @@ export const MyPreset = definePreset(Aura, {
       content: {
         left: '0.25rem',
         top: '0.25rem',
-        checkedShadow:
-          '0px 1px 2px 0px rgba(0, 0, 0, 0.02), 0px 1px 2px 0px rgba(0, 0, 0, 0.04)',
+        checkedShadow: '0px 1px 2px 0px rgba(0, 0, 0, 0.02), 0px 1px 2px 0px rgba(0, 0, 0, 0.04)',
       },
       colorScheme: {
         light: {
@@ -5058,8 +4998,7 @@ export const MyPreset = definePreset(Aura, {
             borderColor: '{blue.200}',
             color: '{blue.600}',
             detailColor: '{surface.700}',
-            shadow:
-              '0px 4px 8px 0px color-mix(in srgb, {blue.500}, transparent 96%)',
+            shadow: '0px 4px 8px 0px color-mix(in srgb, {blue.500}, transparent 96%)',
             closeButton: {
               hoverBackground: '{blue.100}',
               focusRing: {
@@ -5073,8 +5012,7 @@ export const MyPreset = definePreset(Aura, {
             borderColor: '{green.100}',
             color: '{green.500}',
             detailColor: '{surface.700}',
-            shadow:
-              '0px 4px 8px 0px color-mix(in srgb, {green.500}, transparent 96%)',
+            shadow: '0px 4px 8px 0px color-mix(in srgb, {green.500}, transparent 96%)',
             closeButton: {
               hoverBackground: '{green.100}',
               focusRing: {
@@ -5088,8 +5026,7 @@ export const MyPreset = definePreset(Aura, {
             borderColor: '{yellow.200}',
             color: '{yellow.600}',
             detailColor: '{surface.700}',
-            shadow:
-              '0px 4px 8px 0px color-mix(in srgb, {yellow.500}, transparent 96%)',
+            shadow: '0px 4px 8px 0px color-mix(in srgb, {yellow.500}, transparent 96%)',
             closeButton: {
               hoverBackground: '{yellow.100}',
               focusRing: {
@@ -5103,8 +5040,7 @@ export const MyPreset = definePreset(Aura, {
             borderColor: '{red.200}',
             color: '{red.600}',
             detailColor: '{surface.700}',
-            shadow:
-              '0px 4px 8px 0px color-mix(in srgb, {red.500}, transparent 96%)',
+            shadow: '0px 4px 8px 0px color-mix(in srgb, {red.500}, transparent 96%)',
             closeButton: {
               hoverBackground: '{red.100}',
               focusRing: {
@@ -5118,8 +5054,7 @@ export const MyPreset = definePreset(Aura, {
             borderColor: '{surface.200}',
             color: '{surface.600}',
             detailColor: '{surface.700}',
-            shadow:
-              '0px 4px 8px 0px color-mix(in srgb, {surface.500}, transparent 96%)',
+            shadow: '0px 4px 8px 0px color-mix(in srgb, {surface.500}, transparent 96%)',
             closeButton: {
               hoverBackground: '{surface.200}',
               focusRing: {
@@ -5133,8 +5068,7 @@ export const MyPreset = definePreset(Aura, {
             borderColor: '{surface.950}',
             color: '{surface.50}',
             detailColor: '{surface.0}',
-            shadow:
-              '0px 4px 8px 0px color-mix(in srgb, {surface.950}, transparent 96%)',
+            shadow: '0px 4px 8px 0px color-mix(in srgb, {surface.950}, transparent 96%)',
             closeButton: {
               hoverBackground: '{surface.800}',
               focusRing: {
@@ -5151,8 +5085,7 @@ export const MyPreset = definePreset(Aura, {
             borderColor: 'color-mix(in srgb, {blue.700}, transparent 64%)',
             color: '{blue.500}',
             detailColor: '{surface.0}',
-            shadow:
-              '0px 4px 8px 0px color-mix(in srgb, {blue.500}, transparent 96%)',
+            shadow: '0px 4px 8px 0px color-mix(in srgb, {blue.500}, transparent 96%)',
             closeButton: {
               hoverBackground: 'rgba(255, 255, 255, 0.05)',
               focusRing: {
@@ -5162,12 +5095,11 @@ export const MyPreset = definePreset(Aura, {
             },
           },
           success: {
-            background: 'color-mix(in srgb, {green.500}, transparent 84%)',
+            background: 'color-mix(in srgb, {green.500}, transparent 30%)',
             borderColor: 'color-mix(in srgb, {green.700}, transparent 64%)',
-            color: '{green.500}',
+            color: '{text.color}',
             detailColor: '{surface.0}',
-            shadow:
-              '0px 4px 8px 0px color-mix(in srgb, {green.500}, transparent 96%)',
+            shadow: '0px 4px 8px 0px color-mix(in srgb, {green.500}, transparent 96%)',
             closeButton: {
               hoverBackground: 'rgba(255, 255, 255, 0.05)',
               focusRing: {
@@ -5181,8 +5113,7 @@ export const MyPreset = definePreset(Aura, {
             borderColor: 'color-mix(in srgb, {yellow.700}, transparent 64%)',
             color: '{yellow.500}',
             detailColor: '{surface.0}',
-            shadow:
-              '0px 4px 8px 0px color-mix(in srgb, {yellow.500}, transparent 96%)',
+            shadow: '0px 4px 8px 0px color-mix(in srgb, {yellow.500}, transparent 96%)',
             closeButton: {
               hoverBackground: 'rgba(255, 255, 255, 0.05)',
               focusRing: {
@@ -5196,8 +5127,7 @@ export const MyPreset = definePreset(Aura, {
             borderColor: 'color-mix(in srgb, {red.700}, transparent 64%)',
             color: '{red.500}',
             detailColor: '{surface.0}',
-            shadow:
-              '0px 4px 8px 0px color-mix(in srgb, {red.500}, transparent 96%)',
+            shadow: '0px 4px 8px 0px color-mix(in srgb, {red.500}, transparent 96%)',
             closeButton: {
               hoverBackground: 'rgba(255, 255, 255, 0.05)',
               focusRing: {
@@ -5211,8 +5141,7 @@ export const MyPreset = definePreset(Aura, {
             borderColor: '{surface.700}',
             color: '{surface.300}',
             detailColor: '{surface.0}',
-            shadow:
-              '0px 4px 8px 0px color-mix(in srgb, {surface.500}, transparent 96%)',
+            shadow: '0px 4px 8px 0px color-mix(in srgb, {surface.500}, transparent 96%)',
             closeButton: {
               hoverBackground: '{surface.700}',
               focusRing: {
@@ -5226,8 +5155,7 @@ export const MyPreset = definePreset(Aura, {
             borderColor: '{surface.100}',
             color: '{surface.950}',
             detailColor: '{surface.950}',
-            shadow:
-              '0px 4px 8px 0px color-mix(in srgb, {surface.950}, transparent 96%)',
+            shadow: '0px 4px 8px 0px color-mix(in srgb, {surface.950}, transparent 96%)',
             closeButton: {
               hoverBackground: '{surface.100}',
               focusRing: {
@@ -5241,8 +5169,8 @@ export const MyPreset = definePreset(Aura, {
     },
     toolbar: {
       root: {
-        background: '{primary.500}',
-        borderColor: '{primary.500}',
+        background: '{content.background}',
+        borderColor: '{content.background}',
         borderRadius: '{content.border.radius}',
         color: '{content.color}',
         gap: '0.5rem',

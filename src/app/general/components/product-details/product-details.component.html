@@ -1,0 +1,141 @@
+<!-- <p-card> -->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-md-6 position-relative">
+            <div class="row">
+                <div class="w-100 col-12 d-flex justify-content-between border-bottom border-4 pb-2"
+                    style="color: var(--p-primary-500);border-color: var(--p-primary-500) !important;">
+                    <h1 class="fw-bold" style="color: var(--p-primary-500);">عنوان المنتج
+                    </h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <div class=" row py-2 pb-2">
+                        <p class="mb-2">الخيارات</p>
+                        <div class="d-flex flex-column gap-2">
+                            <dynamic-input [style]="'width: 100%;'" [FEcontrol]="control"
+                                [object]="obj"></dynamic-input>
+
+                            <!-- <p-selectbutton size="small" [options]="obj.options" optionLabel="name" optionValue="id"
+                                    [formControl]="control" optionLabel="justify">
+                                    <ng-template #item let-item>
+                                        <div class="d-flex justify-content-between gap-2">
+                                            <span class="rounded-circle"
+                                                [style]="'background-color: ' + item.color +';width:25px;height:25px;'"></span>
+                                        </div>
+                                    </ng-template>
+                                </p-selectbutton> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="row d-flex flex-column gap-4 justify-content-between h-100"
+                        style="transform: rotate(-0deg);">
+                        <div class="d-flex-flex-column gap-2">
+                            <h4 class="fw-bold p-1 text-center w-100"
+                                style="color: var(--p-primary-500);text-decoration: line-through;">
+                                {{5000 |
+                                currency}}</h4>
+                            <h4 class=" fw-bold p-1 text-center w-100" style="color: var(--p-amber-500);">
+                                {{4900 |
+                                currency}}</h4>
+                            <p class=" fw-bold p-1 text-center w-100">المجموع
+                                {{countControl.value * 4900 |
+                                currency}}</p>
+                        </div>
+                        <div class="button-div d-flex flex-column gap-2">
+                            <dynamic-input [style]="'width: 100%;'" [FEcontrol]="countControl"
+                                [object]="countObj"></dynamic-input>
+                            <p-button [ngClass]="'w-100 d-block'" [raised]="true" [style]="{'width':'100%'}"
+                                label="طلب شحن" icon="pi pi-truck" />
+                            <p-button [ngClass]="'w-100 d-block'" severity="secondary" [style]="{'width':'100%'}"
+                                label="وضع في السلة" icon="pi pi-cart-plus" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row my-2">
+                <p class="p-0">الوصف:</p>
+                <pre style="white-space: pre-line;font-family: inherit;" class="w-100 overflow-visible p-0 pe-3">استمتع بتجربة مميزة من النكهة اللذيذة والراحة الفورية مع
+                        إندومي – المعكرونة
+                        سريعة التحضير التي أصبحت
+                        الخيار الأول
+                        للملايين حول العالم. تجمع إندومي بين المذاق الشهي وسهولة التحضير، مما يجعلها الرفيق المثالي في كل
+                        الأوقات، سواء في
+                        المنزل أو المكتب أو أثناء الدراسة أو السفر.
+                        تم إعداد إندومي من أجود أنواع دقيق القمح الصافي، وتم تصنيعها وفقًا لأعلى معايير الجودة العالمية،
+                        لتمنحك طعامًا سريعًا
+                        وآمنًا وغنيًا بالنكهة. تأتيك نكهة الدجاج الأصلية لتأخذك في رحلة من الذوق الأصيل، مع خلطات التوابل
+                        الفريدة التي تضيف
+                        مذاقًا لا يُنسى في كل قضمة.
+                        إندومي ليست فقط وجبة سريعة، بل هي لحظة من السعادة يمكن تحضيرها في أقل من 3 دقائق. كل عبوة تحتوي على
+                        شعيرية مطهوة مسبقًا
+                        ومجففة بعناية، مع كيس توابل، زيت منكّه، وخليط خضار مجفف، لتكتمل النكهة وتصبح أكثر تميزًا.
+                        كما أن إندومي خيار مثالي لمن يبحث عن وجبة خفيفة ولذيذة بدون الحاجة إلى الطهي أو الجهد. فقط أضف الماء
+                        المغلي، انتظر
+                        قليلاً، وها هي وجبتك جاهزة!
+                        المميزات:
+                        نكهة دجاج غنية وشهية
+                        تحضير سريع خلال دقائق
+                        مثالية للغداء، العشاء، أو الوجبات الخفيفة
+                        مصنوعة من مكونات طبيعية وآمنة
+                        عبوة عملية يمكن حملها بسهولة في أي مكان
+                        طريقة التحضير:
+                        اغلي 400 مل من الماء في قدر.
+                        أضف الشعيرية واتركها تطهى لمدة 2-3 دقائق.
+                        أضف محتويات أكياس التوابل والزيت والمنكهات.
+                        قلب جيدًا واستمتع بالمذاق الرائع!
+                    ستمتع بتجربة مميزة من النكهة اللذيذة والراحة الفورية مع
+                    إندومي – المعكرونة
+                    سريعة التحضير التي أصبحت
+                    الخيار الأول
+                    للملايين حول العالم. تجمع إندومي بين المذاق الشهي وسهولة التحضير، مما يجعلها الرفيق المثالي في كل
+                    الأوقات، سواء في
+                    المنزل أو المكتب أو أثناء الدراسة أو السفر.
+                    تم إعداد إندومي من أجود أنواع دقيق القمح الصافي، وتم تصنيعها وفقًا لأعلى معايير الجودة العالمية،
+                    لتمنحك طعامًا سريعًا
+                    وآمنًا وغنيًا بالنكهة. تأتيك نكهة الدجاج الأصلية لتأخذك في رحلة من الذوق الأصيل، مع خلطات التوابل
+                    الفريدة التي تضيف
+                    مذاقًا لا يُنسى في كل قضمة.
+                    إندومي ليست فقط وجبة سريعة، بل هي لحظة من السعادة يمكن تحضيرها في أقل من 3 دقائق. كل عبوة تحتوي على
+                    شعيرية مطهوة مسبقًا
+                    ومجففة بعناية، مع كيس توابل، زيت منكّه، وخليط خضار مجفف، لتكتمل النكهة وتصبح أكثر تميزًا.
+                    كما أن إندومي خيار مثالي لمن يبحث عن وجبة خفيفة ولذيذة بدون الحاجة إلى الطهي أو الجهد. فقط أضف الماء
+                    المغلي، انتظر
+                    قليلاً، وها هي وجبتك جاهزة!
+                    المميزات:
+                    نكهة دجاج غنية وشهية
+                    تحضير سريع خلال دقائق
+                    مثالية للغداء، العشاء، أو الوجبات الخفيفة
+                    مصنوعة من مكونات طبيعية وآمنة
+                    عبوة عملية يمكن حملها بسهولة في أي مكان
+                    طريقة التحضير:
+                    اغلي 400 مل من الماء في قدر.
+                    أضف الشعيرية واتركها تطهى لمدة 2-3 دقائق.
+                    أضف محتويات أكياس التوابل والزيت والمنكهات.
+                    قلب جيدًا واستمتع بالمذاق الرائع!</pre>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 py-4 px-2 position-relative">
+            <p-galleria [ngClass]="'position-sticky top-0'" [value]="images()" [responsiveOptions]="responsiveOptions"
+                [showThumbnailNavigators]="false" [showItemNavigatorsOnHover]="true" [showItemNavigators]="true"
+                [showTransitionOptions]="'250ms cubic-bezier(0, 0, 0.2, 1)'" [containerStyle]="{ 'max-width': '640px' }"
+                [numVisible]="5">
+                <ng-template #item let-item>
+                    <img [src]="item.itemImageSrc" style="width:100%;height: 50vh;" />
+                </ng-template>
+                <ng-template #thumbnail let-item>
+                    <img [src]="item.itemImageSrc" width="50px" height="50px" />
+                </ng-template>
+            </p-galleria>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <product-list [header]="'منتجات اخرى لنفس المصدر'"></product-list>
+    </div>
+    <div class="row mt-5">
+        <product-list [header]="'منتجات اخرى ذات صلة'"></product-list>
+    </div>
+</div>
+<!-- </p-card> -->

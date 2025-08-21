@@ -64,14 +64,7 @@ export class DynamicTableComponent {
   @Input() changeColor: (rowData: any) => any = () => {};
   @Input() getSeverity: (
     rowData: any
-  ) =>
-    | 'success'
-    | 'info'
-    | 'warn'
-    | 'danger'
-    | 'secondary'
-    | 'contrast'
-    | undefined = () => {
+  ) => 'success' | 'info' | 'warn' | 'danger' | 'secondary' | 'contrast' | undefined = () => {
     return 'secondary';
   };
   @Input() captionButton: DyButton[] = [];
@@ -89,8 +82,10 @@ export class DynamicTableComponent {
     alignment: 'right' | 'center';
   }[] = [];
   @Input() currenciesColumn: string[] = [];
-  @Output() hitAction: EventEmitter<{ key: string; rowDataId: number }> =
-    new EventEmitter<{ key: string; rowDataId: number }>();
+  @Output() hitAction: EventEmitter<{ key: string; rowDataId: number }> = new EventEmitter<{
+    key: string;
+    rowDataId: number;
+  }>();
   @Output() RowExpand: EventEmitter<any> = new EventEmitter<any>();
   @Output() onLazy: EventEmitter<any> = new EventEmitter<any>();
 
@@ -141,9 +136,7 @@ export class DynamicTableComponent {
                 row = { ...row, buttons: arr };
                 (body.columns as any[])
                   .filter(
-                    (col) =>
-                      col.HeaderType.toLowerCase() === 'datetime' ||
-                      col.HeaderType.toLowerCase() === 'datetimeo'
+                    (col) => col.HeaderType.toLowerCase() === 'datetime' || col.HeaderType.toLowerCase() === 'datetimeo'
                   )
                   .forEach((col) => {
                     if (row[col.field]) {
@@ -157,9 +150,7 @@ export class DynamicTableComponent {
               })
             : body.data;
         if (this.sortColumn) {
-          body.data = body.data.sort((a: any, b: any) =>
-            a[this.sortColumn]?.localeCompare(b[this.sortColumn])
-          );
+          body.data = body.data.sort((a: any, b: any) => a[this.sortColumn]?.localeCompare(b[this.sortColumn]));
         }
         (body.columns as any[])
           .filter((x) => x.HeaderType === 'json')
@@ -209,11 +200,7 @@ export class DynamicTableComponent {
       return {
         label: btn.tooltip,
         icon: btn.icon,
-        visible: this.visibleBtn(
-          btn.isShow ?? true,
-          btn.permission,
-          btn.showCommand
-        ),
+        visible: this.visibleBtn(btn.isShow ?? true, btn.permission, btn.showCommand),
         command: () => {
           if (btn && btn.command) {
             btn.command(this.selectedItem);
@@ -226,11 +213,7 @@ export class DynamicTableComponent {
       };
     });
   }
-  visibleBtn(
-    isShow: boolean,
-    permission?: string,
-    showCommand?: (body: any) => boolean
-  ) {
+  visibleBtn(isShow: boolean, permission?: string, showCommand?: (body: any) => boolean) {
     if (permission) {
       if (showCommand) {
         const y = showCommand(this.selectedItem);
@@ -270,8 +253,7 @@ export class DynamicTableComponent {
       arr = arr.map((x) => {
         let z: any = {};
         this.body.columns.forEach((col: any) => {
-          if (this.selectedColumns.includes(col.header))
-            z[col.header] = x[col.field];
+          if (this.selectedColumns.includes(col.header)) z[col.header] = x[col.field];
         });
         return z;
       });
@@ -306,41 +288,31 @@ export class DynamicTableComponent {
   }
 
   handleChange(e: any, field: string, rowData: any) {
-    const actionEl = this.columnsEvent.find(
-      (x) => x.field.toLowerCase() === field.toLowerCase()
-    );
+    const actionEl = this.columnsEvent.find((x) => x.field.toLowerCase() === field.toLowerCase());
     if (actionEl && actionEl.command) {
       actionEl.command(e, field, rowData);
     }
   }
   getTogglePermission(field: string) {
-    return this.columnsEvent.find(
-      (x) => x.field.toLowerCase() === field.toLowerCase()
-    )?.permission;
+    return this.columnsEvent.find((x) => x.field.toLowerCase() === field.toLowerCase())?.permission;
   }
 
   hasToggleShow(field: string, rowData: any) {
-    const column = this.columnsEvent.find(
-      (x) => x.field.toLowerCase() === field.toLowerCase()
-    );
+    const column = this.columnsEvent.find((x) => x.field.toLowerCase() === field.toLowerCase());
     if (column && typeof column.visible === 'function') {
       return column.visible(rowData);
     }
     return null;
   }
   hasToggledisable(field: string, rowData: any) {
-    const column = this.columnsEvent.find(
-      (x) => x.field.toLowerCase() === field.toLowerCase()
-    );
+    const column = this.columnsEvent.find((x) => x.field.toLowerCase() === field.toLowerCase());
     if (column && typeof column.disable === 'function') {
       return column.disable(field, rowData);
     }
     return null;
   }
   getCarosulPage() {
-    return this.body.data[this.carsoulPage]
-      ? [this.body.data[this.carsoulPage]]
-      : [];
+    return this.body.data[this.carsoulPage] ? [this.body.data[this.carsoulPage]] : [];
   }
   newPage(operation: number) {
     switch (operation) {
@@ -369,10 +341,6 @@ export class DynamicTableComponent {
   }
 
   getAlignment(column: string) {
-    return this.tableSrv.getAlignment(
-      column,
-      this.columnAlignment,
-      this.body.columns
-    );
+    return this.tableSrv.getAlignment(column, this.columnAlignment, this.body.columns);
   }
 }

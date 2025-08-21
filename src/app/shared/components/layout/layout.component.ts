@@ -5,32 +5,27 @@ import { HeaderComponent } from '../header/header.component';
 import { StateService } from '../../service/state.service';
 import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { ButtonModule } from 'primeng/button';
+import { UserStateService } from '../../../general/services/user-state.service';
 
 @Component({
   selector: 'app-layout',
-  imports: [SidenavComponent, RouterOutlet, HeaderComponent, CommonModule],
+  imports: [SidenavComponent, RouterOutlet, HeaderComponent, CommonModule, ButtonModule],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
   animations: [
     trigger('sidebarAnimation', [
       transition(':enter', [
         style({ width: '0', overflow: 'hidden' }),
-        animate('0.5s ease-in', style({ width: '16.6667%' }))
+        animate('0.5s ease-in', style({ width: '16.6667%' })),
       ]),
-      transition(':leave', [
-        animate('0.5s ease-in', style({ width: '0', overflow: 'hidden' }))
-      ])
+      transition(':leave', [animate('0.5s ease-in', style({ width: '0', overflow: 'hidden' }))]),
     ]),
-    trigger('contentAnimation', [
-      transition('* <=> *', [
-        animate('0.5s ease-in', style({ width: '*' }))
-      ])
-    ])
-  ]
+    trigger('contentAnimation', [transition('* <=> *', [animate('0.5s ease-in', style({ width: '*' }))])]),
+  ],
 })
 export class LayoutComponent {
-
-
-  constructor(public stateSrv: StateService) {
+  constructor(public stateSrv: StateService, private userState: UserStateService) {
+    this.userState.getUser();
   }
 }

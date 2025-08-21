@@ -1,5 +1,5 @@
-<div class="header-container row w-full" style="height: 40px;">
-    <div class="col">
+<div class="header-container row w-full">
+    <div class="col d-flex justify-content-start">
         <div class="row" style="align-items: center;">
             <div class="w-auto justify-content-start p-0 ">
                 <p-button (onClick)="stateSrv.collapseSideNav()" [text]="true" styleClass="collapseButton"
@@ -27,9 +27,16 @@
         </div>
     </div>
     <div class="col d-flex justify-content-end">
+        <p-button (onClick)="stateSrv.setIsDark(!stateSrv.isDark())"
+            [icon]="stateSrv.isDark() ? 'pi pi-sun' : 'pi pi-moon'" [rounded]="true" [text]="true" severity="primary"
+            [pTooltip]="stateSrv.isDark() ? 'الوضع النهاري' : 'الوضع الليلي'" />
         <p-button icon="pi pi-bell" [rounded]="true" [text]="true" severity="primary" pTooltip="الاشعارات" />
-        <p-button icon="pi pi-user" [rounded]="true" [text]="true" severity="primary" pTooltip="الحساب" />
-        <p-button icon="pi pi-sign-out" (onClick)="logout()" [rounded]="true" [text]="true" severity="primary"
-            pTooltip="تسجيل خروج" />
+        <p-button icon="pi pi-truck" (onClick)="stateSrv.collapseCart()" [rounded]="true" [text]="true"
+            severity="primary" pTooltip="الشاحنة" />
+        <p-button icon="pi pi-user" (onClick)="menu.toggle($event)" [rounded]="true" [text]="true" severity="primary"
+            pTooltip="الحساب" />
+        <p-menu #menu [model]="items" [popup]="true" />
+
+
     </div>
 </div>

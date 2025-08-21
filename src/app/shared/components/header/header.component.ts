@@ -5,18 +5,20 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { TooltipModule } from 'primeng/tooltip';
 import { UserStateService } from '../../../general/services/user-state.service';
+import { Router } from '@angular/router';
+import { MenuItem } from 'primeng/api';
+import { MenuModule } from 'primeng/menu';
+import { eventNames } from 'process';
+import { User } from '../../../general/interfaces/user.model';
 
 @Component({
   selector: 'header',
-  imports: [ButtonModule, CommonModule, TooltipModule],
+  imports: [ButtonModule, CommonModule, TooltipModule, MenuModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
   animations: [
     trigger('fade', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate('300ms ease-out', style({ opacity: 1 })),
-      ]),
+      transition(':enter', [style({ opacity: 0 }), animate('300ms ease-out', style({ opacity: 1 }))]),
       transition(':leave', [animate('300ms ease-in', style({ opacity: 0 }))]),
     ]),
     trigger('typewriter', [
@@ -32,13 +34,45 @@ export class HeaderComponent {
   displayText = signal('');
   isChanging = signal(false);
   isTyping = signal(false); // New signal to track typing state
+  user: User;
   private platformId = inject(PLATFORM_ID);
   isBrowser = isPlatformBrowser(this.platformId);
-
-  constructor(
-    public stateSrv: StateService,
-    private userStateSrv: UserStateService
-  ) {
+  items: MenuItem[] | undefined;
+  constructor(public stateSrv: StateService, private router: Router, private userStateSrv: UserStateService) {
+    this.user = userStateSrv.getUserState();
+    this.items = [
+      {
+        label: 'اسم المستخدم : ' + this.user.username,
+        disabled: true,
+        icon: 'pi pi-id-card',
+      },
+      {
+        label: 'نوع الحساب : ' + this.user.role.toUpperCase(),
+        icon: 'pi pi-shield',
+        disabled: true,
+      },
+      {
+        separator: true,
+      },
+      {
+        label: 'الحساب',
+        icon: 'pi pi-cog',
+        command: (event) => {
+          this.openAccount();
+        },
+      },
+      {
+        label: 'تغيير كلمة السر',
+        icon: 'pi pi-lock',
+      },
+      {
+        label: 'تسجيل الخروج',
+        icon: 'pi pi-sign-out',
+        command: () => {
+          this.logout();
+        },
+      },
+    ];
     // Only run effects on browser
     if (this.isBrowser) {
       effect(() => {
@@ -76,8 +110,17 @@ export class HeaderComponent {
     this.isTyping.set(false); // Hide cursor after typing completes
   }
 
+  openAccount() {
+    switch (this.user.role) {
+      case 'owner':
+        this.router.navigate(['admin/account']);
+        break;
+
+      default:
+        break;
+    }
+  }
   logout() {
-    console.log('hi');
     this.userStateSrv.logout();
   }
 }

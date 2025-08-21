@@ -2,11 +2,41 @@
 @use "../../../../../public/mixin" as *;
 .main-container {
   position: relative;
+  @include forTablet() {
+    .sidebar {
+      position: absolute !important;
+      right: 0;
+      top: 0;
+      width: 75% !important;
+      height: 100%;
+      background-color: var(--p-content-background);
+      z-index: 999 !important;
+    }
+    .cart {
+      width: 75% !important;
+    }
+  }
+  @include forMobile() {
+    .main-content {
+      .head-content {
+        height: 80px !important;
+      }
+      .rout-conent {
+        min-height: calc(100vh - 90px) !important;
+        max-height: calc(100vh - 90px) !important;
+      }
+    }
+  }
+  .cart {
+    width: 25%;
+    box-shadow: 0px 0px 5px 0px var(--p-focus-ring-shadow);
+    overflow: hidden;
+  }
   .sidebar {
     width: 16.6667%;
-    transition: width 0.5s ease-in;
+    // transition: width 0.5s ease-in;
     overflow: hidden;
-    box-shadow: 0px 0px 10px 2px var(--p-surface-50);
+    // box-shadow: 3px 0px 7px 0px var(--p-focus-ring-shadow);
     position: relative;
     z-index: 1;
     &.collapsed {
@@ -23,12 +53,15 @@
     overflow-y: hidden;
     .head-content {
       position: relative;
+      height: 40px;
       // border-bottom: 4px solid var(--p-primary-500);
       z-index: 2;
     }
     .rout-conent {
       position: relative;
-      box-shadow: inset 0px 0px 10px 5px var(--p-surface-50);
+      min-height: calc(100vh - 50px);
+      max-height: calc(100vh - 50px);
+      box-shadow: inset 0px 0px 10px -7.5px var(--p-focus-ring-shadow);
       > * {
         padding-inline: 0;
       }
@@ -45,17 +78,6 @@
         left: calc(50% - 150px);
         z-index: 0;
       }
-    }
-  }
-  @include forTablet() {
-    .sidebar {
-      position: absolute;
-      right: 0;
-      top: 0;
-      width: 75%;
-      height: 100%;
-      background-color: var(--p-surface-50);
-      z-index: 999;
     }
   }
 }

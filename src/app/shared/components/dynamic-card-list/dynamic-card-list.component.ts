@@ -2,18 +2,20 @@ import {
   Component,
   ContentChild,
   EventEmitter,
+  Inject,
   Input,
   Output,
+  PLATFORM_ID,
   TemplateRef,
   ViewChild,
 } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { ContextMenu, ContextMenuModule } from 'primeng/contextmenu';
 import { Table } from 'primeng/table';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { DyButton } from '../../interface/dy-button';
 import { CardModule } from 'primeng/card';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { DataViewModule } from 'primeng/dataview';
 import { Calendar } from 'primeng/calendar';
@@ -23,6 +25,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { FormsModule } from '@angular/forms';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { ToolbarModule } from 'primeng/toolbar';
+import { UserStateService } from '../../../general/services/user-state.service';
 
 @Component({
   selector: 'dynamic-card-list',
@@ -59,14 +62,7 @@ export class DynamicCardListComponent {
   @Input() changeColor: (rowData: any) => any = () => {};
   @Input() getSeverity: (
     rowData: any
-  ) =>
-    | 'success'
-    | 'info'
-    | 'warn'
-    | 'danger'
-    | 'secondary'
-    | 'contrast'
-    | undefined = () => {
+  ) => 'success' | 'info' | 'warn' | 'danger' | 'secondary' | 'contrast' | undefined = () => {
     return 'secondary';
   };
   @Input() captionButton: DyButton[] = [];
@@ -84,8 +80,10 @@ export class DynamicCardListComponent {
     alignment: 'right' | 'center';
   }[] = [];
   @Input() currenciesColumn: string[] = [];
-  @Output() hitAction: EventEmitter<{ key: string; rowDataId: number }> =
-    new EventEmitter<{ key: string; rowDataId: number }>();
+  @Output() hitAction: EventEmitter<{ key: string; rowDataId: number }> = new EventEmitter<{
+    key: string;
+    rowDataId: number;
+  }>();
   @Output() RowExpand: EventEmitter<any> = new EventEmitter<any>();
   @Output() onLazy: EventEmitter<any> = new EventEmitter<any>();
 
@@ -108,11 +106,16 @@ export class DynamicCardListComponent {
   columns: string[] = [];
   selectedColumns: string[] = [];
   havePermission: boolean = false;
+  show: boolean = false;
   selectedItem: any | null = null;
   items: MenuItem[] = [];
   layout: 'grid' | 'list' = 'grid';
   options = ['list', 'grid'];
-  constructor(private tableSrv: DyTableService) {}
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private tableSrv: DyTableService,
+    private userState: UserStateService
+  ) {}
   ngOnInit(): void {
     Calendar.prototype.dateFormat = 'dd-mm-yy';
   }
@@ -137,9 +140,7 @@ export class DynamicCardListComponent {
                 row = { ...row, buttons: arr };
                 (body.columns as any[])
                   .filter(
-                    (col) =>
-                      col.HeaderType.toLowerCase() === 'datetime' ||
-                      col.HeaderType.toLowerCase() === 'datetimeo'
+                    (col) => col.HeaderType.toLowerCase() === 'datetime' || col.HeaderType.toLowerCase() === 'datetimeo'
                   )
                   .forEach((col) => {
                     if (row[col.field]) {
@@ -153,9 +154,7 @@ export class DynamicCardListComponent {
               })
             : body.data;
         if (this.sortColumn) {
-          body.data = body.data.sort((a: any, b: any) =>
-            a[this.sortColumn]?.localeCompare(b[this.sortColumn])
-          );
+          body.data = body.data.sort((a: any, b: any) => a[this.sortColumn]?.localeCompare(b[this.sortColumn]));
         }
         (body.columns as any[])
           .filter((x) => x.HeaderType === 'json')
@@ -166,7 +165,6 @@ export class DynamicCardListComponent {
             });
           });
       }
-
       this.columns = (body.columns as any[]).map((x) => x.header);
       this.selectedColumns = this.columns;
       this.totalRecords = this.lazyLoading ? body.count : body.data.length;
@@ -189,35 +187,30 @@ export class DynamicCardListComponent {
       });
     });
   }
+  loadCarsLazy(event: any) {
+    if (this.userState && this.userState.isBrowser()) {
+      this.onLazy.emit(event);
+    }
+  }
   getAlignment(column: string) {
-    return this.tableSrv.getAlignment(
-      column,
-      this.columnAlignment,
-      this.body.columns
-    );
+    return this.tableSrv.getAlignment(column, this.columnAlignment, this.body.columns);
   }
   hasToggleShow(field: string, rowData: any) {
-    const column = this.columnsEvent.find(
-      (x) => x.field.toLowerCase() === field.toLowerCase()
-    );
+    const column = this.columnsEvent.find((x) => x.field.toLowerCase() === field.toLowerCase());
     if (column && typeof column.visible === 'function') {
       return column.visible(rowData);
     }
     return null;
   }
   hasToggledisable(field: string, rowData: any) {
-    const column = this.columnsEvent.find(
-      (x) => x.field.toLowerCase() === field.toLowerCase()
-    );
+    const column = this.columnsEvent.find((x) => x.field.toLowerCase() === field.toLowerCase());
     if (column && typeof column.disable === 'function') {
       return column.disable(field, rowData);
     }
     return null;
   }
   handleChange(e: any, field: string, rowData: any) {
-    const actionEl = this.columnsEvent.find(
-      (x) => x.field.toLowerCase() === field.toLowerCase()
-    );
+    const actionEl = this.columnsEvent.find((x) => x.field.toLowerCase() === field.toLowerCase());
     if (actionEl && actionEl.command) {
       actionEl.command(e, field, rowData);
     }

@@ -1,8 +1,18 @@
-import { MenuItem } from "primeng/api";
-import { UserStrategy } from "../../general/interfaces/user-strategy";
-import { User } from "../../general/interfaces/user.model";
+import { MenuItem } from 'primeng/api';
+import { UserStrategy } from '../../general/interfaces/user-strategy';
+import { User } from '../../general/interfaces/user.model';
+import { TableLazyLoadEvent } from 'primeng/table';
+import { APIResponse } from '../../shared/interface/response';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
+import { Injectable } from '@angular/core';
 
+@Injectable({
+  providedIn: 'root', // or inside providers: [] of a module
+})
 export class CompanyStrategy implements UserStrategy {
+  url = environment.api + 'Company';
+  constructor(private http: HttpClient) {}
   getNavMenu(role: string): MenuItem[] {
     if (role === 'company') {
       return [
@@ -12,7 +22,7 @@ export class CompanyStrategy implements UserStrategy {
             {
               label: 'المتابعات',
               icon: 'pi pi-eye',
-              routerLink: [''],
+              routerLink: ['ss'],
             },
           ],
         },
@@ -22,12 +32,12 @@ export class CompanyStrategy implements UserStrategy {
             {
               label: 'قائمة الموزعين',
               icon: 'pi pi-sitemap',
-              routerLink: ['admin/company/list'],
+              routerLink: ['company/distributor/show/list'],
             },
             {
               label: 'جدول الموزعين',
               icon: 'pi pi-table',
-              routerLink: ['admin/company/table'],
+              routerLink: ['company/distributor/show/table'],
             },
           ],
         },
@@ -37,7 +47,7 @@ export class CompanyStrategy implements UserStrategy {
             {
               label: 'قائمة المنتجات',
               icon: 'pi pi-box', // 📦 منتج
-              routerLink: ['item'],
+              routerLink: ['company/product'],
             },
             {
               label: 'العروض',
@@ -71,5 +81,20 @@ export class CompanyStrategy implements UserStrategy {
       ];
     }
     return [];
+  }
+  getAll(body: TableLazyLoadEvent) {
+    return this.http.post<APIResponse<any[]>>(this.url + '/GetAll', body);
+  }
+  getById(id: number) {
+    return this.http.get<APIResponse<any>>(this.url + '/' + id);
+  }
+  delete(id: number) {
+    return this.http.delete<APIResponse<any>>(this.url + '/' + id);
+  }
+  add(body: any) {
+    return this.http.post<APIResponse<any>>(this.url, body);
+  }
+  edit(body: any, id: number) {
+    return this.http.put<APIResponse<any>>(this.url + '/' + id, body);
   }
 }

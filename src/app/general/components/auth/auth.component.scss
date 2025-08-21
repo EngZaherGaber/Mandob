@@ -1,0 +1,40 @@
+@use "../../../../../public/mixin" as *;
+.container-fluid {
+  background-color: var(--p-content-background);
+  position: relative;
+  .login-container {
+    box-shadow: 0px 0px 5px 0px var(--p-focus-ring-shadow);
+    background: var(--p-primary-500);
+    .logo-container {
+      z-index: 2;
+    }
+    .login-form {
+      background-color: var(--p-content-background);
+      box-shadow: inset 0px 0px 5px 0px var(--p-focus-ring-shadow);
+      .title-logo-container {
+        background-color: var(--p-amber-500) !important;
+      }
+    }
+  }
+}
+@include forTablet() {
+  .login-container {
+    > .row {
+      .logo-container {
+        img {
+          height: calc(25vh - 1.5rem);
+        }
+      }
+      .login-form-container {
+        .login-form {
+          .w-75 {
+            width: 90% !important;
+          }
+        }
+      }
+    }
+  }
+  .space-container {
+    display: none;
+  }
+}

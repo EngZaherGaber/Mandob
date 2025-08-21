@@ -11,13 +11,16 @@
   font-weight: 600;
   @include responsive-font-sizes(15px, 15px, 15px, 15px);
 }
-::ng-deep .p-menu-item-link-active {
-  background-color: var(--p-surface-200);
-  border-left: 3px solid var(--p-primary-500);
-  box-sizing: border-box;
-  color: var(--p-primary-500);
-  * {
+::ng-deep .main-menu .p-menu {
+  background: transparent !important;
+  .p-menu-item-link-active {
+    background-color: var(--p-surface-100);
+    border-left: 3px solid var(--p-primary-500);
+    box-sizing: border-box;
     color: var(--p-primary-500);
+    * {
+      color: var(--p-primary-500) !important;
+    }
   }
 }
 .logo {

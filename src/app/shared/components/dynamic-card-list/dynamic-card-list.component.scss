@@ -1,7 +1,7 @@
 @use "../.././../../../public/mixin" as *;
 .full-con {
-  background-color: var(--p-surface-100);
-  box-shadow: inset 0px 0px 10px 2px var(--p-surface-300);
+  // background-color: var(--p-surface-100);
+  box-shadow: inset -2px 0px 5px 0px var(--p-focus-ring-shadow);
   .item-con-list {
     max-width: calc(50% - 0.5rem);
   }

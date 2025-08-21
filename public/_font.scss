@@ -12,12 +12,7 @@ $small-mobile: 576px;
   font-style: normal;
 }
 
-@mixin responsive-font-sizes(
-  $f-mobile: 14px,
-  $f-tablet: 16px,
-  $f-desktop: 18px,
-  $f-large-desktop: 20px
-) {
+@mixin responsive-font-sizes($f-mobile: 14px, $f-tablet: 16px, $f-desktop: 18px, $f-large-desktop: 20px) {
   font-size: $f-mobile !important;
 
   @media screen and (min-width: $mobile) {
@@ -38,7 +33,7 @@ $small-mobile: 576px;
     text-wrap: auto;
   }
   h1 {
-    @include responsive-font-sizes(1.2px, 34px, 38px, 44px);
+    @include responsive-font-sizes(20px, 34px, 38px, 44px);
   }
 
   h2 {

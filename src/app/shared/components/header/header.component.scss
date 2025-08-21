@@ -1,4 +1,5 @@
 @use "../../../../../public/font" as *;
+@use "../../../../../public/mixin" as *;
 ::ng-deep .collapseButton {
   padding: 0 !important;
   .p-button-icon {
@@ -6,10 +7,11 @@
   }
 }
 .header-container {
+  height: 40px;
   .typewriter-container {
     display: inline-block;
     overflow: hidden;
-    // color: var(--p-primary-500);
+    color: var(--p-text-color);
     border-color: var(--p-primary-500) !important;
     border-width: 4px !important;
   }
@@ -28,7 +30,12 @@
     opacity: 1;
   }
 }
-
+@include forMobile() {
+  .header-container {
+    height: auto;
+    flex-direction: column-reverse;
+  }
+}
 @keyframes blink {
   from,
   to {

@@ -6,6 +6,8 @@ import { ActivatedRoute } from '@angular/router';
 import { DynamicCardListComponent } from '../../../shared/components/dynamic-card-list/dynamic-card-list.component';
 import { DynamicTableComponent } from '../../../shared/components/dynamic-table/dynamic-table.component';
 import { CommonModule } from '@angular/common';
+import { UserStateService } from '../../../general/services/user-state.service';
+import { CompanyStrategy } from '../../../company/classes/company-strategy';
 
 @Component({
   selector: 'app-ad-company-show',
@@ -16,13 +18,48 @@ import { CommonModule } from '@angular/common';
 export class AdCompanyShowComponent {
   tableConfig: InfoTable;
   type: 'table' | 'list' | string = 'table';
-
-  constructor(private tableSrv: DyTableService, private route: ActivatedRoute) {
+  columns = [
+    {
+      field: 'name',
+      header: 'الاسم',
+      HeaderType: 'string',
+    },
+    {
+      field: 'subscribeDate',
+      header: 'تاريخ الاشتراك',
+      HeaderType: 'DateTime',
+    },
+    {
+      field: 'subscribeDate1',
+      header: 'تاريخ الانتهاء',
+      HeaderType: 'DateTime',
+    },
+    {
+      field: 'region',
+      header: 'المنطقة',
+      HeaderType: 'string',
+    },
+    {
+      field: 'count',
+      header: 'عدد الطلبات',
+      HeaderType: 'int',
+    },
+    {
+      field: 'status',
+      header: 'الحالة',
+      HeaderType: 'tag',
+    },
+  ];
+  constructor(
+    private tableSrv: DyTableService,
+    private route: ActivatedRoute,
+    private companyStrategy: CompanyStrategy
+  ) {
     this.tableConfig = tableSrv.getStandardInfo(
-      () => { },
-      () => { },
-      () => { },
-      () => { }
+      () => {},
+      () => {},
+      () => {},
+      () => {}
     );
   }
 
@@ -32,11 +69,11 @@ export class AdCompanyShowComponent {
       this.tableConfig.get$ = this.tableConfig.getSub$.pipe(
         switchMap((body: any) => {
           if (body) {
-            return of(body).pipe(
+            return this.companyStrategy.getAll(body).pipe(
               switchMap((res) =>
                 of({
                   data: res.data,
-                  columns: res.columns,
+                  columns: this.columns,
                   loading: false,
                   count: res.data.length,
                 })
@@ -47,130 +84,7 @@ export class AdCompanyShowComponent {
           return of({ loading: false, data: [], columns: [] });
         })
       );
-      this.tableConfig.getSub$.next({
-        data: [
-          {
-            name: 'Tolido',
-            subscribeDate: new Date(),
-            subscribeDate1: new Date(),
-            region: 'Damascus',
-            count: 12,
-            status: 'Active',
-          },
-          {
-            name: 'Tolido1',
-            subscribeDate: new Date(),
-            subscribeDate1: new Date(),
-            region: 'Damascus',
-            count: 12,
-            status: 'Active',
-          },
-          {
-            name: 'Tolido2',
-            subscribeDate: new Date(),
-            subscribeDate1: new Date(),
-            region: 'Damascus',
-            count: 12,
-            status: 'Active',
-          },
-          {
-            name: 'Tolido3',
-            subscribeDate: new Date(),
-            subscribeDate1: new Date(),
-            region: 'Damascus',
-            count: 12,
-            status: 'Active',
-          },
-          {
-            name: 'Tolido3',
-            subscribeDate: new Date(),
-            subscribeDate1: new Date(),
-            region: 'Damascus',
-            count: 12,
-            status: 'Active',
-          },
-          {
-            name: 'Tolido3',
-            subscribeDate: new Date(),
-            subscribeDate1: new Date(),
-            region: 'Damascus',
-            count: 12,
-            status: 'Active',
-          },
-          {
-            name: 'Tolido3',
-            subscribeDate: new Date(),
-            subscribeDate1: new Date(),
-            region: 'Damascus',
-            count: 12,
-            status: 'Active',
-          },
-          {
-            name: 'Tolido3',
-            subscribeDate: new Date(),
-            subscribeDate1: new Date(),
-            region: 'Damascus',
-            count: 12,
-            status: 'Active',
-          },
-          {
-            name: 'Tolido3',
-            subscribeDate: new Date(),
-            subscribeDate1: new Date(),
-            region: 'Damascus',
-            count: 12,
-            status: 'Active',
-          },
-          {
-            name: 'Tolido3',
-            subscribeDate: new Date(),
-            subscribeDate1: new Date(),
-            region: 'Damascus',
-            count: 12,
-            status: 'Active',
-          },
-          {
-            name: 'Tolido3',
-            subscribeDate: new Date(),
-            subscribeDate1: new Date(),
-            region: 'Damascus',
-            count: 12,
-            status: 'Active',
-          },
-        ],
-        columns: [
-          {
-            field: 'name',
-            header: 'الاسم',
-            HeaderType: 'string',
-          },
-          {
-            field: 'subscribeDate',
-            header: 'تاريخ الاشتراك',
-            HeaderType: 'DateTime',
-          },
-          {
-            field: 'subscribeDate1',
-            header: 'تاريخ الانتهاء',
-            HeaderType: 'DateTime',
-          },
-          {
-            field: 'region',
-            header: 'المنطقة',
-            HeaderType: 'string',
-          },
-          {
-            field: 'count',
-            header: 'عدد الطلبات',
-            HeaderType: 'int',
-          },
-          {
-            field: 'status',
-            header: 'الحالة',
-            HeaderType: 'tag',
-          },
-        ],
-      });
+      this.tableConfig.getSub$.next({});
     });
   }
 }

@@ -23,14 +23,7 @@ import { InputDynamic } from '../../interface/input-dynamic';
 
 @Component({
   selector: 'dynmaic-form',
-  imports: [
-    DynamicInputComponent,
-    ScrollPanelModule,
-    CardModule,
-    StepsModule,
-    CommonModule,
-    ButtonModule,
-  ],
+  imports: [DynamicInputComponent, ScrollPanelModule, CardModule, StepsModule, CommonModule, ButtonModule],
   templateUrl: './dynmaic-form.component.html',
   styleUrl: './dynmaic-form.component.scss',
 })
@@ -55,6 +48,7 @@ export class DynmaicFormComponent {
   @Input() disableSaveButton: boolean = false;
   @Input() justOneStep: boolean = false;
   @Input() showSteps: boolean = false;
+  @Input() stepsList: MenuItem[] = [];
   @Input() triggers: {
     [key: string]: {
       key: string;
@@ -64,17 +58,12 @@ export class DynmaicFormComponent {
   @Output() submit: EventEmitter<any> = new EventEmitter<any>();
   @Output() onActiveIndexChange: EventEmitter<any> = new EventEmitter<any>();
   public form: FormGroup = new FormGroup({});
-  stepsList: MenuItem[] = [];
   keys: string[] = [];
   activeIndex: number = 0;
-  constructor(
-    private route: Router,
-    private DySrv: DynamicAttributeService,
-    private cd: ChangeDetectorRef
-  ) { }
+  constructor(private route: Router, private DySrv: DynamicAttributeService, private cd: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.reLoad()
+    this.reLoad();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -82,42 +71,27 @@ export class DynmaicFormComponent {
   }
   reLoad() {
     if (this.objs) {
-      this.stepsList = this.DySrv.createStepsFromObjs(this.objs);
+      this.stepsList = this.stepsList.length > 0 ? this.stepsList : this.DySrv.createStepsFromObjs(this.objs);
       this.keys = Object.keys(this.objs);
       this.keys.forEach((key) => {
-        (this.objs as any)[key] = this.DySrv.addCommand(
-          this.triggers,
-          (this.objs as any)[key],
-          key
-        );
+        (this.objs as any)[key] = this.DySrv.addCommand(this.triggers, (this.objs as any)[key], key);
       });
       this.createForm();
       this.isShow ? this.form.disable() : '';
     }
-
   }
   listenAgain() {
     this.keys.forEach((key) => {
-      if (
-        !this.withIdSteps.includes(key) &&
-        !this.disableSteps.includes(key) &&
-        !this.recursionSteps.includes(key)
-      ) {
+      if (!this.withIdSteps.includes(key) && !this.disableSteps.includes(key) && !this.recursionSteps.includes(key)) {
         (this.objs as any)[key].forEach((element: InputDynamic) => {
           if (element.value !== null) {
             this.DySrv.firstTime = true;
             if (element.dataType.toLowerCase() === 'list') {
-              (this.form.controls[key] as FormGroup).controls[
-                element.key
-              ].setValue(
-                element.value.id || element.value.id === 0
-                  ? element.value.id
-                  : element.value
+              (this.form.controls[key] as FormGroup).controls[element.key].setValue(
+                element.value.id || element.value.id === 0 ? element.value.id : element.value
               );
             } else {
-              (this.form.controls[key] as FormGroup).controls[
-                element.key
-              ].setValue(element.value);
+              (this.form.controls[key] as FormGroup).controls[element.key].setValue(element.value);
             }
           }
         });
@@ -126,15 +100,9 @@ export class DynmaicFormComponent {
   }
   listenToChange() {
     this.keys.forEach((key) => {
-      if (
-        !this.withIdSteps.includes(key) &&
-        !this.disableSteps.includes(key) &&
-        !this.recursionSteps.includes(key)
-      ) {
+      if (!this.withIdSteps.includes(key) && !this.disableSteps.includes(key) && !this.recursionSteps.includes(key)) {
         (this.objs as any)[key].forEach((element: InputDynamic) => {
-          const control = (this.form.controls[key] as FormGroup).controls[
-            element.key
-          ];
+          const control = (this.form.controls[key] as FormGroup).controls[element.key];
           control.valueChanges.subscribe((x) => {
             element.value = x;
             if (element.command) {
@@ -146,7 +114,6 @@ export class DynmaicFormComponent {
     });
   }
   resetForm() {
-
     this.form = new FormGroup({});
   }
   createForm() {
@@ -154,12 +121,7 @@ export class DynmaicFormComponent {
       if (this.recursionSteps.includes(key)) {
         const con = this.DySrv.createFormFromAttForAddForArrays((this.objs as any)[key]);
         this.form.addControl(key, con);
-        this.DySrv.disableInputRecursion(
-          this.disableAtt,
-          key,
-          this.form,
-          false
-        );
+        this.DySrv.disableInputRecursion(this.disableAtt, key, this.form, false);
       } else if (this.withIdSteps.includes(key)) {
         const dynmaic = new FormArray<any>([]);
         (this.objs as any)[key].forEach((obj: InputDynamic[]) => {
@@ -171,15 +133,10 @@ export class DynmaicFormComponent {
         this.form.addControl(key, dynmaic);
         this.DySrv.disableInput(this.disableAtt, key, this.form);
       } else {
-        this.form.addControl(
-          key,
-          this.DySrv.createFormFromAttForAdd((this.objs as any)[key])
-        );
+        this.form.addControl(key, this.DySrv.createFormFromAttForAdd((this.objs as any)[key]));
         this.DySrv.disableInput(this.disableAtt, key, this.form);
       }
-      this.disableSteps.includes(key) || this.isShow
-        ? this.form.controls[key].disable()
-        : '';
+      this.disableSteps.includes(key) || this.isShow ? this.form.controls[key].disable() : '';
     });
     this.listenToChange();
   }
@@ -207,11 +164,9 @@ export class DynmaicFormComponent {
         this.activeIndex = this.activeIndex + 1;
         this.onActiveIndexChange.emit(this.activeIndex);
       }
-    }
-    else if (this.activeIndex === this.stepsList.length - 1 && this.isShow) {
+    } else if (this.activeIndex === this.stepsList.length - 1 && this.isShow) {
       this.exit();
-    }
-    else {
+    } else {
       // If Save button is available and not disabled, trigger it
       if (!this.form.controls[this.keys[this.activeIndex]].invalid && !this.disableSaveButton) {
         this.submitFunc();
@@ -219,18 +174,8 @@ export class DynmaicFormComponent {
     }
   }
   submitFunc() {
-    this.DySrv.returnIfDisable(
-      this.returnIfDisable,
-      this.form,
-      this.recursionSteps,
-      this.withIdSteps
-    );
-    let body = this.DySrv.valueForAllDateTime(
-      this.form.value,
-      this.objs,
-      this.recursionSteps,
-      this.withIdSteps
-    );
+    this.DySrv.returnIfDisable(this.returnIfDisable, this.form, this.recursionSteps, this.withIdSteps);
+    let body = this.DySrv.valueForAllDateTime(this.form.value, this.objs, this.recursionSteps, this.withIdSteps);
     this.form;
     this.submit.emit(this.justOneStep ? body.general : body);
 
@@ -238,26 +183,13 @@ export class DynmaicFormComponent {
       if (this.disableSteps.includes(key)) {
         this.form.controls[key].disable();
       }
-      if (
-        !this.withIdSteps.includes(key) &&
-        this.recursionSteps.includes(key)
-      ) {
+      if (!this.withIdSteps.includes(key) && this.recursionSteps.includes(key)) {
         if (this.recursionSteps.includes(key)) {
-          const con = this.DySrv.createFormFromAttForAddForArrays(
-            (this.objs as any)[key]
-          );
+          const con = this.DySrv.createFormFromAttForAddForArrays((this.objs as any)[key]);
           this.form.addControl(key, con);
-          this.DySrv.disableInputRecursion(
-            this.disableAtt,
-            key,
-            this.form,
-            false
-          );
+          this.DySrv.disableInputRecursion(this.disableAtt, key, this.form, false);
         }
-      } else if (
-        !this.withIdSteps.includes(key) &&
-        !this.recursionSteps.includes(key)
-      ) {
+      } else if (!this.withIdSteps.includes(key) && !this.recursionSteps.includes(key)) {
         this.DySrv.disableInput(this.disableAtt, key, this.form);
       }
     });

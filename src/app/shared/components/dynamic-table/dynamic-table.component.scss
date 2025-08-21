@@ -42,12 +42,6 @@ tr {
     justify-content: center !important;
   }
 }
-::ng-deep .p-contextmenu-item-icon {
-  color: $c5 !important;
-}
-::ng-deep .p-contextmenu-item-link {
-  color: $c5 !important;
-}
 ::ng-deep .p-datatable-table-container table {
   // width: 100% !important;
   min-width: 100% !important;
@@ -59,22 +53,20 @@ tr {
 ::ng-deep .p-toolbar-end {
   gap: 10px;
 }
-::ng-deep .p-datatable-loading-icon {
+::ng-deep .p-datatable-mask {
   width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  img {
-    @include translate-animation(
-      slideLeftIn,
-      translateX(-300%),
-      translateX(300%),
-      3s,
-      0s,
-      ease-in,
-      true
-    );
+  .p-datatable-loading-icon {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      width: 250px;
+      height: 250px;
+      @include translate-animation(slideLeftIn, translateX(-50vw), translateX(50vw), 5s, 0s, ease-in-out, true);
+    }
   }
 }
 ::ng-deep .p-paginator {
@@ -87,13 +79,10 @@ tr {
   height: 35px;
   width: 35px;
 }
-::ng-deep
-  .p-datatable-hoverable
-  .p-datatable-tbody
-  > tr:not(.p-datatable-row-selected):hover {
+::ng-deep .p-datatable-hoverable .p-datatable-tbody > tr:not(.p-datatable-row-selected):hover {
   background-color: var(--p-amber-500) !important;
   color: var(--p-text-hover-color) !important;
-  box-shadow: 0px 0px 5px;
+  box-shadow: 0px 0px 0px;
   position: relative;
 }
 ::ng-deep .p-datatable.p-datatable-sm .p-datatable-header {
@@ -101,9 +90,4 @@ tr {
 }
 ::ng-deep .p-datatable-thead {
   box-shadow: 0px 0px 5px;
-  tr th,
-  tr .p-datatable-frozen-column {
-    color: var(--p-text-color);
-    background-color: var(--p-surface-50);
-  }
 }

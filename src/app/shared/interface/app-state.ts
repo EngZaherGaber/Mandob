@@ -1,4 +1,7 @@
 export interface AppState {
-    page: string,
-    isOpenedSideNav:boolean
+  page: string;
+  width: number;
+  isDark: boolean;
+  isOpenedSideNav: boolean;
+  isOpenedCart: boolean;
 }

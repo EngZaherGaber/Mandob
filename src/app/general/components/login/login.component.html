@@ -1,48 +1,21 @@
-<div class="container-fluid h-100 position-relative">
-    <div class="row h-100 position-absolute start-0 top-0 w-100 z-1">
-        <div class="col-12 col-lg-9 p-0 p-lg-4 d-flex flex-column justify-content-center">
-            <div class="login-container justify-content-center d-flex flex-wrap  w-100 py-4 rounded-4">
-                <div class="row p-2 w-100 flex-column-reverse flex-lg-row">
-                    <div
-                        class="login-form-container col-12 col-lg-7 p-2 p-lg-4 d-flex flex-column justify-content-center">
-                        <div
-                            class="login-form w-100 rounded-4 d-flex flex-column justify-content-start justify-content-lg-center">
-                            <div class="d-flex flex-column align-items-center justify-content-center py-4 px-1 p-lg-4">
-                                <div class="w-75 title-logo-container p-2 mb-2 rounded-4"
-                                    style="transform: rotate(-5deg);">
-                                    <img src="proj_title.svg" class="title-logo pb-2" alt="">
-                                </div>
-                                <div class="d-flex flex-column w-75 gap-4 pt-4">
-                                    <dynamic-input [style]="'width: 100%;'" [FEcontrol]="getControl('input')"
-                                        [object]="objs[0]"></dynamic-input>
-                                    <dynamic-input [style]="'width: 100%;'" [FEcontrol]="getControl('password')"
-                                        [object]="objs[1]"></dynamic-input>
-                                    <p-button label="تسجيل الدخول" icon="pi pi-sign-in" styleClass="w-100"
-                                        [style]="{width:'100%'}" (onClick)="login()" />
-                                </div>
-                                <div class="d-flex flex-column w-75 gap-1 pt-2 pt-lg-2">
-                                    <p-button severity="secondary" label="حساب جوجل" icon="pi pi-google"
-                                        styleClass="w-100" [style]="{width:'100%'}" />
-                                    <p-button severity="secondary" label="حساب فيسبوك" icon="pi pi-facebook"
-                                        styleClass="w-100" [style]="{width:'100%'}" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-lg-5 d-flex flex-column justify-content-center align-items-center">
-                        <div class="logo-container w-100 d-flex justify-content-center">
-                            <img src="proj_man.svg" alt="">
-
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <div class="space-container col-12 col-lg-3 ">
-        </div>
+<div *ngIf="!loading" class="d-flex flex-column align-items-center w-100 p-0">
+    <div class="d-flex flex-column w-75 gap-4 pt-4">
+        <dynamic-input [style]="'width: 100%;'" [FEcontrol]="getControl('input')" [object]="objs[0]"></dynamic-input>
+        <dynamic-input [style]="'width: 100%;'" [FEcontrol]="getControl('password')" [object]="objs[1]"></dynamic-input>
+        <p-button label="تسجيل الدخول" icon="pi pi-sign-in" styleClass="w-100" [style]="{width:'100%'}"
+            (onClick)="login()" />
     </div>
-    <div class="position-absolute start-0 top-0 z-0 w-100 h-100 d-flex align-items-end justify-content-end">
-        <img class="w-50" src="boxes.svg" alt="" style="filter: blur(5px);pointer-events: none;">
+    <div class="d-flex flex-column w-75 gap-1 pt-2 pt-lg-2">
+        <p-button label="انشاء حساب" icon="pi pi-user-plus" [severity]="'contrast'" styleClass="w-100"
+            [style]="{width:'100%'}" (onClick)="goToRegister()" />
+        <p-button severity="secondary" label="حساب جوجل" icon="pi pi-google" styleClass="w-100"
+            [style]="{width:'100%'}" />
+        <p-button severity="secondary" label="حساب فيسبوك" icon="pi pi-facebook" styleClass="w-100"
+            [style]="{width:'100%'}" />
+        <p-button size="small" label="نسيت كلمة المرور؟" [variant]="'text'" styleClass="w-100"
+            [style]="{width:'100%','font-size':'smaller'}" (onClick)="forgetPassword()" />
     </div>
+</div>
+<div *ngIf="loading" class="w-100 overflow-hidden">
+    <loading />
 </div>
