@@ -188,7 +188,7 @@ export class DynamicCardListComponent {
     });
   }
   loadCarsLazy(event: any) {
-    if (this.userState && this.userState.isBrowser()) {
+    if (this.userState) {
       this.onLazy.emit(event);
     }
   }

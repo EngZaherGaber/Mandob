@@ -1,4 +1,4 @@
-@import "../../../../../public/mixin";
+@use "../../../../../public/mixin" as *;
 ::ng-deep .form-box {
   .button-container {
     display: flex;

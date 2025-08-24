@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { switchMap, of, catchError } from 'rxjs';
 import { InfoTable } from '../../../shared/interface/info-table';
 import { DyTableService } from '../../../shared/service/dy-table.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DynamicCardListComponent } from '../../../shared/components/dynamic-card-list/dynamic-card-list.component';
 import { DynamicTableComponent } from '../../../shared/components/dynamic-table/dynamic-table.component';
 import { CommonModule } from '@angular/common';
@@ -50,16 +50,20 @@ export class AdCompanyShowComponent {
       HeaderType: 'tag',
     },
   ];
+  addFunc: () => void = () => {
+    this.router.navigate(['admin/company/add']);
+  };
   constructor(
     private tableSrv: DyTableService,
     private route: ActivatedRoute,
+    private router: Router,
     private companyStrategy: CompanyStrategy
   ) {
     this.tableConfig = tableSrv.getStandardInfo(
       () => {},
       () => {},
       () => {},
-      () => {}
+      this.addFunc
     );
   }
 
