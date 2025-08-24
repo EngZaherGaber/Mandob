@@ -165,7 +165,9 @@ export class ForgetPasswordComponent {
     this.authSrv.resetPassword(formValue).subscribe(
       (res) => {
         this.loading = false;
-        this.router.navigate(['']);
+        if (res.succeeded) {
+          this.router.navigate(['']);
+        }
       },
       (err) => {
         this.loading = false;

@@ -12,4 +12,5 @@ export interface UserStrategy {
   delete(id: number): Observable<APIResponse<any>>;
   add(body: any): Observable<APIResponse<any>>;
   edit(body: any, id: number): Observable<APIResponse<any>>;
+  requestVerfication(body: any): Observable<APIResponse<any>>;
 }

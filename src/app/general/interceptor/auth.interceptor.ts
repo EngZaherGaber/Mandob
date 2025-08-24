@@ -14,15 +14,16 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const msgSrv: MessageToastService = inject(MessageToastService);
   const router: Router = inject(Router);
   if (userState.isBrowser() && localStorage.getItem('accessToken')) {
+    const token = `Bearer ${localStorage.getItem('accessToken')}`;
     newReq = req.clone({
       setHeaders: {
-        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        Authorization: token,
       },
     });
   } else {
     newReq = req;
   }
-  newReq = req.clone({
+  newReq = newReq.clone({
     setHeaders: {
       'Device-Id': `${localStorage.getItem('fingerPrint')}`,
     },

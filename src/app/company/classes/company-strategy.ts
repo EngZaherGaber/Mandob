@@ -6,15 +6,17 @@ import { APIResponse } from '../../shared/interface/response';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Injectable } from '@angular/core';
+import { AuthService } from '../../general/services/auth.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root', // or inside providers: [] of a module
 })
 export class CompanyStrategy implements UserStrategy {
   url = environment.api + 'Company';
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authSrv: AuthService) {}
   getNavMenu(role: string): MenuItem[] {
-    if (role === 'company') {
+    if (role.toLowerCase() === 'company') {
       return [
         {
           label: 'المتابعات',
@@ -96,5 +98,8 @@ export class CompanyStrategy implements UserStrategy {
   }
   edit(body: any, id: number) {
     return this.http.put<APIResponse<any>>(this.url + '/' + id, body);
+  }
+  requestVerfication(body: any): Observable<APIResponse<any>> {
+    return this.authSrv.requestVerficationCodeCompanyDistributor(body);
   }
 }

@@ -15,18 +15,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
   providedIn: 'root',
 })
 export class UserStateService {
-  private userState = signal<User>({
-    id: 0,
-    username: '',
-    name: '',
-    address: '',
-    commercialRegistrationNumber: '',
-    companyLogos: [],
-    email: '',
-    phoneNumber: '',
-    role: 'company',
-    password: '',
-  });
+  private userState = signal<User | null>(null);
   isBrowser = computed(() => isPlatformBrowser(this.platformId));
   token = computed(() => {
     let token;
@@ -35,7 +24,20 @@ export class UserStateService {
     }
     return token;
   });
-
+  role = computed(() => {
+    if (this.isBrowser()) {
+      const token = localStorage.getItem('accessToken');
+      if (token) return this.helper.decodeToken(token).role;
+    }
+    return null;
+  });
+  getNavMenu = computed(() => {
+    const user = this.userState();
+    if (user) {
+      return this.strategy && user?.role ? this.strategy.getNavMenu(user.role) : [];
+    }
+    return [];
+  });
   strategy: UserStrategy | null = null;
   helper = new JwtHelperService();
   constructor(
@@ -52,7 +54,7 @@ export class UserStateService {
       const token = localStorage.getItem('accessToken');
       if (token) {
         const role = this.helper.decodeToken(token).role;
-        switch (role) {
+        switch ((role as string).toLowerCase()) {
           case 'company':
             this.strategy = this.companyStrategy;
             break;
@@ -78,25 +80,12 @@ export class UserStateService {
         this.setStrategy();
         localStorage.setItem('user', JSON.stringify(user));
       } else {
-        this.userState.set({
-          id: 0,
-          username: '',
-          name: '',
-          address: '',
-          commercialRegistrationNumber: '',
-          companyLogos: [],
-          email: '',
-          phoneNumber: '',
-          role: 'company',
-          password: '',
-        });
+        this.userState.set(null);
         localStorage.clear();
       }
     }
   }
-  getNavMenu(): MenuItem[] {
-    return this.strategy ? this.strategy.getNavMenu(this.userState().role) : [];
-  }
+
   checkUser(): boolean {
     if (this.isBrowser()) {
       const token = localStorage.getItem('accessToken');
@@ -107,7 +96,7 @@ export class UserStateService {
     return false;
   }
   getUserState() {
-    return this.userState();
+    return this.userState;
   }
   setToken(accessToken: string, refreshToken: string) {
     if (this.isBrowser()) {
@@ -123,11 +112,14 @@ export class UserStateService {
     if (this.isBrowser()) {
       const token = localStorage.getItem('accessToken');
       const user = localStorage.getItem('user');
-      if (token && !user) {
-        const userId = this.helper.decodeToken(token).nameid;
+      if (token) {
+        const tokenDecrypt = this.helper.decodeToken(token);
+        const userId = tokenDecrypt.nameid;
+        const role = tokenDecrypt.role;
         this.setStrategy();
         this.strategy?.getById(+userId).subscribe((res) => {
-          this.storeUser(res.data);
+          const user = { ...res.data, role: role };
+          this.storeUser(user);
           this.msgSrv.showSuccess('اهلا وسهلا ' + res.data.name);
         });
       }

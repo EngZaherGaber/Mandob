@@ -33,6 +33,7 @@ export const routes: Routes = [
       {
         path: 'verfication',
         component: VerficationComponent,
+        canActivate: [authGuard],
         title: 'تأكيد الحساب',
       },
       {

@@ -1,4 +1,4 @@
-import { Component, effect, inject, PLATFORM_ID, signal } from '@angular/core';
+import { Component, effect, inject, PLATFORM_ID, Signal, signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { StateService } from '../../service/state.service';
 import { animate, style, transition, trigger } from '@angular/animations';
@@ -8,12 +8,15 @@ import { UserStateService } from '../../../general/services/user-state.service';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { MenuModule } from 'primeng/menu';
-import { eventNames } from 'process';
+import { DialogModule } from 'primeng/dialog';
 import { User } from '../../../general/interfaces/user.model';
+import { AuthService } from '../../../general/services/auth.service';
+import { DynmaicFormComponent } from '../dynmaic-form/dynmaic-form.component';
+import { InputDynamic } from '../../interface/input-dynamic';
 
 @Component({
   selector: 'header',
-  imports: [ButtonModule, CommonModule, TooltipModule, MenuModule],
+  imports: [ButtonModule, CommonModule, TooltipModule, MenuModule, DynmaicFormComponent, DialogModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
   animations: [
@@ -34,20 +37,27 @@ export class HeaderComponent {
   displayText = signal('');
   isChanging = signal(false);
   isTyping = signal(false); // New signal to track typing state
-  user: User;
+  user: Signal<User | null>;
   private platformId = inject(PLATFORM_ID);
   isBrowser = isPlatformBrowser(this.platformId);
-  items: MenuItem[] | undefined;
-  constructor(public stateSrv: StateService, private router: Router, private userStateSrv: UserStateService) {
+  items: MenuItem[] = [];
+  changePasswordForm: { [key: string]: InputDynamic[] } = {};
+  visible: boolean = false;
+  constructor(
+    public stateSrv: StateService,
+    private router: Router,
+    private userStateSrv: UserStateService,
+    private authSrv: AuthService
+  ) {
     this.user = userStateSrv.getUserState();
     this.items = [
       {
-        label: 'اسم المستخدم : ' + this.user.username,
+        label: 'اسم المستخدم : ' + this.user()?.userName,
         disabled: true,
         icon: 'pi pi-id-card',
       },
       {
-        label: 'نوع الحساب : ' + this.user.role.toUpperCase(),
+        label: 'نوع الحساب : ' + this.user()?.role.toUpperCase(),
         icon: 'pi pi-shield',
         disabled: true,
       },
@@ -81,6 +91,12 @@ export class HeaderComponent {
           this.changeStateWithAnimation(newValue);
         }
       });
+      effect(() => {
+        if (this.user()) {
+          this.items[0] ? (this.items[0].label = 'اسم المستخدم : ' + this.user()?.userName) : '';
+          this.items[1] ? (this.items[1].label = 'نوع الحساب : ' + this.user()?.role.toUpperCase()) : '';
+        }
+      });
     } else {
       // SSR fallback - show full text immediately
       effect(() => {
@@ -88,6 +104,28 @@ export class HeaderComponent {
         this.displayText.set(this.stateSrv.page());
       });
     }
+    this.changePasswordForm = {
+      general: [
+        {
+          key: 'oldPassword',
+          label: 'كلمة السر القديمة',
+          value: null,
+          dataType: 'string',
+          required: true,
+          visible: true,
+          options: [],
+        },
+        {
+          key: 'newPassword',
+          label: 'كلمة السر الجديدة',
+          value: null,
+          dataType: 'string',
+          required: true,
+          visible: true,
+          options: [],
+        },
+      ],
+    };
   }
 
   private async changeStateWithAnimation(newValue: string) {
@@ -109,18 +147,28 @@ export class HeaderComponent {
     }
     this.isTyping.set(false); // Hide cursor after typing completes
   }
-
+  changePassword(body: any) {
+    this.authSrv.changePassword(body).subscribe((res) => {
+      if (res.succeeded) {
+        this.router.navigate(['auth/login']);
+      }
+    });
+  }
   openAccount() {
-    switch (this.user.role) {
-      case 'owner':
-        this.router.navigate(['admin/account']);
-        break;
+    if (this.user) {
+      switch (this.user()?.role) {
+        case 'owner':
+          this.router.navigate(['admin/account']);
+          break;
 
-      default:
-        break;
+        default:
+          break;
+      }
     }
   }
   logout() {
-    this.userStateSrv.logout();
+    this.authSrv.logout().subscribe((res) => {
+      this.userStateSrv.logout();
+    });
   }
 }

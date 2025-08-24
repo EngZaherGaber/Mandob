@@ -21,7 +21,7 @@ export class AdAccountComponent {
         {
           key: 'username',
           label: 'اسم المستخدم',
-          value: user.username,
+          value: user()?.userName,
           dataType: 'string',
           lang: 'ar',
           required: true,
@@ -31,7 +31,7 @@ export class AdAccountComponent {
         {
           key: 'name',
           label: 'الاسم الاول',
-          value: user.name,
+          value: user()?.name,
           dataType: 'string',
           required: true,
           visible: true,
@@ -40,7 +40,7 @@ export class AdAccountComponent {
         {
           key: 'address',
           label: 'العنوان',
-          value: user.address,
+          value: user()?.address,
           dataType: 'string',
           required: true,
           visible: true,
@@ -49,7 +49,7 @@ export class AdAccountComponent {
         {
           key: 'commercialRegistrationNumber',
           label: 'العنوان',
-          value: user.commercialRegistrationNumber,
+          value: user()?.commercialRegistrationNumber,
           dataType: 'string',
           required: true,
           visible: true,
@@ -58,7 +58,7 @@ export class AdAccountComponent {
         {
           key: 'email',
           label: 'الايميل',
-          value: user.email,
+          value: user()?.email,
           dataType: 'string',
           required: true,
           visible: true,
@@ -67,7 +67,7 @@ export class AdAccountComponent {
         {
           key: 'phoneNumber',
           label: 'الرقم',
-          value: user.phoneNumber,
+          value: user()?.phoneNumber,
           dataType: 'string',
           required: true,
           visible: true,

@@ -59,9 +59,11 @@ export class LoginComponent {
     private authSrv: AuthService,
     private userState: UserStateService,
     private socialAuthService: SocialAuthService
-  ) {}
-  ngOnInit() {
+  ) {
     this.userState.storeUser(null);
+  }
+  ngOnInit() {
+    // this.userState.storeUser(null);
     this.socialAuthService.authState.subscribe((user) => {
       this.user = user;
     });
@@ -82,11 +84,12 @@ export class LoginComponent {
     const formValue = this.loginForm.value;
     this.authSrv.login(formValue['input'], formValue['password']).subscribe(
       (res: any) => {
+        debugger;
         this.loading = false;
         this.userState.setToken(res.data.accessToken, res.data.refreshToken);
-        const token = this.authSrv.helper.decodeToken(res.data.token);
+        const token = this.authSrv.helper.decodeToken(res.data.accessToken);
         this.msgSrv.showSuccess(' تم تسجيل الدخول' + token.unique_name);
-        if (token.IsVerified || token.IsActive) {
+        if (token.IsVerified.toLowerCase() === 'true' && token.IsActive.toLowerCase() === 'true') {
           this.router.navigate(['']);
         } else {
           this.router.navigate(['auth/verfication']);

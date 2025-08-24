@@ -6,15 +6,16 @@ import { TableLazyLoadEvent } from 'primeng/table';
 import { environment } from '../../../environments/environment';
 import { APIResponse } from '../../shared/interface/response';
 import { Injectable } from '@angular/core';
+import { AuthService } from '../../general/services/auth.service';
 @Injectable({
   providedIn: 'root', // or inside providers: [] of a module
 })
 export class AdminStrategy implements UserStrategy {
   url = environment.api + 'Owner';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authSrv: AuthService) {}
   getNavMenu(role: string): MenuItem[] {
-    if (role === 'owner') {
+    if (role.toLowerCase() === 'owner') {
       return [
         {
           label: 'المتابعات',
@@ -84,5 +85,8 @@ export class AdminStrategy implements UserStrategy {
   }
   edit(body: any, id: number) {
     return this.http.put<APIResponse<any>>(this.url + '/' + id, body);
+  }
+  requestVerfication(body: any) {
+    return this.authSrv.requestVerficationCodeOwnerClient(body);
   }
 }

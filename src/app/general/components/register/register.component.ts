@@ -13,10 +13,11 @@ import { DynamicAttributeService } from '../../../shared/service/dynamic-attribu
 import { User } from '../../interfaces/user.model';
 import { CommonModule } from '@angular/common';
 import { LoadingComponent } from '../../../shared/components/loading/loading.component';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
   selector: 'app-register',
-  imports: [ButtonModule, DynmaicFormComponent, CommonModule, LoadingComponent],
+  imports: [ButtonModule, DynmaicFormComponent, CommonModule, LoadingComponent, DialogModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })
@@ -37,6 +38,7 @@ export class RegisterComponent {
   /**
    *
    */
+
   constructor(
     private msgSrv: MessageToastService,
     private clientSrv: ClientService,
@@ -159,7 +161,7 @@ export class RegisterComponent {
       this.msgSrv.showError('تاكيد كلمة السر ليس مطابق');
     } else {
       const user: User = {
-        username: body.loginInfo.username,
+        userName: body.loginInfo.userName,
         email: body.loginInfo.email,
         name: body.loginInfo.name,
         phoneNumber: body.loginInfo.phoneNumber,

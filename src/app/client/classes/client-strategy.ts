@@ -5,14 +5,16 @@ import { APIResponse } from '../../shared/interface/response';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { AuthService } from '../../general/services/auth.service';
 @Injectable({
   providedIn: 'root', // or inside providers: [] of a module
 })
 export class ClientStrategy implements UserStrategy {
   url: string = environment.api + 'Client';
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authSrv: AuthService) {}
   getNavMenu(role: string): MenuItem[] {
-    if (role === 'market') {
+    if (role.toLowerCase() === 'client') {
       return [
         {
           label: 'المتابعات',
@@ -70,5 +72,8 @@ export class ClientStrategy implements UserStrategy {
   }
   edit(body: any, id: number) {
     return this.http.put<APIResponse<any>>(this.url + '/' + id, body);
+  }
+  requestVerfication(body: any): Observable<APIResponse<any>> {
+    return this.authSrv.requestVerficationCodeOwnerClient(body);
   }
 }

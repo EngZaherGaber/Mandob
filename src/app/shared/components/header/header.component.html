@@ -40,3 +40,7 @@
 
     </div>
 </div>
+<p-dialog header="تغيير كلمة السر" [modal]="true" *ngIf="visible" [(visible)]="visible" [style]="{ width: '25rem' }">
+    <dynmaic-form class="dyn-frm" [scrollHeight]="'25vh'" (submit)="changePassword($event)" [display]="'flex'"
+        [withBackBtn]="false" [objs]="changePasswordForm" style="width: 100%;" [justOneStep]="true"></dynmaic-form>
+</p-dialog>

@@ -5,14 +5,15 @@ import { TableLazyLoadEvent } from 'primeng/table';
 import { environment } from '../../../environments/environment';
 import { APIResponse } from '../../shared/interface/response';
 import { Injectable } from '@angular/core';
+import { AuthService } from '../../general/services/auth.service';
 @Injectable({
   providedIn: 'root', // or inside providers: [] of a module
 })
 export class DistributorStrategy implements UserStrategy {
   url = environment.api + 'Distributor';
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authSrv: AuthService) {}
   getNavMenu(role: string): MenuItem[] {
-    if (role === 'distributor') {
+    if (role.toLowerCase() === 'distributor') {
       return [
         {
           label: 'المتابعات',
@@ -73,5 +74,8 @@ export class DistributorStrategy implements UserStrategy {
   }
   edit(body: any, id: number) {
     return this.http.put<APIResponse<any>>(this.url + '/' + id, body);
+  }
+  requestVerfication(body: any) {
+    return this.authSrv.requestVerficationCodeCompanyDistributor(body);
   }
 }
