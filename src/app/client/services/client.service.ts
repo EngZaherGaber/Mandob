@@ -3,8 +3,9 @@ import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { MessageToastService } from '../../shared/service/message-toast.service';
-import { User } from '../../general/interfaces/user.model';
+import { User } from '../../general/interfaces/user';
 import { APIResponse } from '../../shared/interface/response';
+import { Client } from '../interfaces/client';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,7 @@ import { APIResponse } from '../../shared/interface/response';
 export class ClientService {
   url = environment.api + 'Client';
   constructor(private http: HttpClient, private router: Router, private msgSrv: MessageToastService) {}
-  create(body: User) {
-    return this.http.post<APIResponse<User>>(this.url, body);
+  create(body: Partial<Client>) {
+    return this.http.post<APIResponse<Client>>(this.url, body);
   }
 }

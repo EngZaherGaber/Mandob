@@ -10,10 +10,11 @@ import { DynmaicFormComponent } from '../../../shared/components/dynmaic-form/dy
 import { MenuItem } from 'primeng/api';
 import { ClientService } from '../../../client/services/client.service';
 import { DynamicAttributeService } from '../../../shared/service/dynamic-attribute.service';
-import { User } from '../../interfaces/user.model';
+import { User } from '../../interfaces/user';
 import { CommonModule } from '@angular/common';
 import { LoadingComponent } from '../../../shared/components/loading/loading.component';
 import { DialogModule } from 'primeng/dialog';
+import { Client } from '../../../client/interfaces/client';
 
 @Component({
   selector: 'app-register',
@@ -58,7 +59,7 @@ export class RegisterComponent {
           options: [],
         },
         {
-          key: 'username',
+          key: 'userName',
           label: 'اسم المستخدم',
           value: null,
           dataType: 'string',
@@ -66,30 +67,6 @@ export class RegisterComponent {
           required: true,
           visible: true,
           options: [],
-        },
-        {
-          key: 'email',
-          label: 'الايميل',
-          value: null,
-          dataType: 'email',
-          required: true,
-          visible: true,
-          options: [],
-          command: (value?: any, input?: InputDynamic, form?: FormGroup, objs?: any) => {
-            this.makeOneRequired('phoneNumber', value, input, form, objs);
-          },
-        },
-        {
-          key: 'phoneNumber',
-          label: 'الرقم',
-          value: null,
-          dataType: 'string',
-          required: true,
-          visible: true,
-          options: [],
-          command: (value?: any, input?: InputDynamic, form?: FormGroup, objs?: any) => {
-            this.makeOneRequired('email', value, input, form, objs);
-          },
         },
       ],
       security: [
@@ -134,42 +111,17 @@ export class RegisterComponent {
       ],
     };
   }
-  makeOneRequired(another: string, value?: any, input?: InputDynamic, form?: FormGroup, objs?: any) {
-    if (form && objs) {
-      if (value) {
-        const anotherInpt = this.dyAttSrv.getInputDynamic('loginInfo', another, objs);
-        const anotherControl = this.dyAttSrv.getFormControl('loginInfo', another, form);
-        if (anotherInpt && anotherControl) {
-          anotherInpt.required = false;
-          anotherControl.clearValidators();
-          anotherControl.updateValueAndValidity({ emitEvent: false });
-        }
-      } else {
-        const anotherInpt = this.dyAttSrv.getInputDynamic('loginInfo', another, objs);
-        const anotherControl = this.dyAttSrv.getFormControl('loginInfo', another, form);
-        if (anotherInpt && anotherControl) {
-          anotherInpt.required = true;
-          anotherControl.addValidators(Validators.required);
-          anotherControl.updateValueAndValidity({ emitEvent: false });
-        }
-      }
-    }
-  }
 
   register(body: any) {
     if (body.security.password !== body.security.confirmPassword) {
       this.msgSrv.showError('تاكيد كلمة السر ليس مطابق');
     } else {
-      const user: User = {
-        userName: body.loginInfo.userName,
-        email: body.loginInfo.email,
+      const user = {
         name: body.loginInfo.name,
-        phoneNumber: body.loginInfo.phoneNumber,
+        userName: body.loginInfo.userName,
+        password: body.security.password,
         commercialRegistrationNumber: body.generalInfo.commercialRegistrationNumber,
         address: body.generalInfo.address,
-        companyLogos: [],
-        password: body.security.password,
-        role: 'client',
       };
       this.loading = true;
       this.clientSrv.create(user).subscribe(

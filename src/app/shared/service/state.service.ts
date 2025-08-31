@@ -42,7 +42,9 @@ export class StateService {
         '(max-width: 992px)', // Tablet threshold
       ])
       .subscribe((result) => {
-        this.setWidth(window.innerWidth);
+        if (this.isBrowser()) {
+          this.setWidth(window.innerWidth);
+        }
       });
     this.getIsDark();
     this.setIsDark(this.isDark());
@@ -80,10 +82,12 @@ export class StateService {
     }
   }
   setIsDark(isDark: boolean) {
-    localStorage.setItem('isDark', String(isDark));
-    const element = document.querySelector('html');
-    element?.classList.toggle('dark', isDark);
-    this.getIsDark();
+    if (this.isBrowser()) {
+      localStorage.setItem('isDark', String(isDark));
+      const element = document.querySelector('html');
+      element?.classList.toggle('dark', isDark);
+      this.getIsDark();
+    }
   }
   setPage(page: string) {
     this.state.update((prev) => ({

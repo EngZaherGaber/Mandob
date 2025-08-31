@@ -12,7 +12,7 @@ import { UserStateService } from './general/services/user-state.service';
 import { CompanyStrategy } from './company/classes/company-strategy';
 import { ClientStrategy } from './client/classes/client-strategy';
 import { DistributorStrategy } from './distributor/classes/distributor-strategy';
-import { AdminStrategy } from './admin/classes/admin-strategy';
+import { OwnerStrategy } from './owner/classes/owner-strategy';
 import { SocialLoginModule, SocialAuthServiceConfig } from '@abacritt/angularx-social-login';
 import { GoogleLoginProvider, FacebookLoginProvider } from '@abacritt/angularx-social-login';
 import { authInterceptor } from './general/interceptor/auth.interceptor';
@@ -46,7 +46,7 @@ export const appConfig: ApplicationConfig = {
     CompanyStrategy,
     ClientStrategy,
     DistributorStrategy,
-    AdminStrategy,
+    OwnerStrategy,
     provideAppInitializer(() => {}),
     providePrimeNG({
       theme: {

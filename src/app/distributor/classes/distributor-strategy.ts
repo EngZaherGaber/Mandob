@@ -1,81 +1,61 @@
 import { MenuItem } from 'primeng/api';
-import { UserStrategy } from '../../general/interfaces/user-strategy';
 import { HttpClient } from '@angular/common/http';
-import { TableLazyLoadEvent } from 'primeng/table';
 import { environment } from '../../../environments/environment';
-import { APIResponse } from '../../shared/interface/response';
 import { Injectable } from '@angular/core';
 import { AuthService } from '../../general/services/auth.service';
+import { Distributor } from '../interfaces/distributor';
+import { BaseUserStrategy } from '../../general/classes/base-user-strategy';
+import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root', // or inside providers: [] of a module
 })
-export class DistributorStrategy implements UserStrategy {
+export class DistributorStrategy extends BaseUserStrategy<Distributor> {
   url = environment.api + 'Distributor';
-  constructor(private http: HttpClient, private authSrv: AuthService) {}
-  getNavMenu(role: string): MenuItem[] {
-    if (role.toLowerCase() === 'distributor') {
-      return [
+  navMenu: MenuItem[] = [
+    {
+      label: 'المتابعات',
+      items: [
         {
           label: 'المتابعات',
-          items: [
-            {
-              label: 'المتابعات',
-              icon: 'pi pi-eye',
-              routerLink: [''],
-            },
-          ],
+          icon: 'pi pi-eye',
+          routerLink: [''],
         },
+      ],
+    },
+    {
+      label: 'المحلات التجارية',
+      items: [
         {
           label: 'المحلات التجارية',
-          items: [
-            {
-              label: 'المحلات التجارية',
-              icon: 'pi pi-send', // 📤 تم تسليمها
-            },
-          ],
+          icon: 'pi pi-send', // 📤 تم تسليمها
+        },
+      ],
+    },
+    {
+      label: 'الطلبات',
+      items: [
+        {
+          label: 'الطلبات المسلمة',
+          icon: 'pi pi-send', // 📤 تم تسليمها
         },
         {
-          label: 'الطلبات',
-          items: [
-            {
-              label: 'الطلبات المسلمة',
-              icon: 'pi pi-send', // 📤 تم تسليمها
-            },
-            {
-              label: 'الطلبات الواردة',
-              icon: 'pi pi-inbox', // 📥 واردة
-            },
-          ],
+          label: 'الطلبات الواردة',
+          icon: 'pi pi-inbox', // 📥 واردة
         },
+      ],
+    },
+    {
+      label: 'احصائيات',
+      items: [
         {
           label: 'احصائيات',
-          items: [
-            {
-              label: 'احصائيات',
-              icon: 'pi pi-chart-line', // 📈 تفصيل إحصائي
-            },
-          ],
+          icon: 'pi pi-chart-line', // 📈 تفصيل إحصائي
         },
-      ];
-    }
-    return [];
-  }
-  getAll(body: TableLazyLoadEvent) {
-    return this.http.post<APIResponse<any[]>>(this.url + '/GetAll', body);
-  }
-  getById(id: number) {
-    return this.http.get<APIResponse<any>>(this.url + '/' + id);
-  }
-  delete(id: number) {
-    return this.http.delete<APIResponse<any>>(this.url + '/' + id);
-  }
-  add(body: any) {
-    return this.http.post<APIResponse<any>>(this.url, body);
-  }
-  edit(body: any, id: number) {
-    return this.http.put<APIResponse<any>>(this.url + '/' + id, body);
-  }
-  requestVerfication(body: any) {
-    return this.authSrv.requestVerficationCodeCompanyDistributor(body);
+      ],
+    },
+  ];
+
+  constructor(http: HttpClient, authSrv: AuthService, router: Router) {
+    super(http, authSrv, router);
   }
 }

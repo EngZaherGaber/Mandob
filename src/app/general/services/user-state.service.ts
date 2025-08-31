@@ -1,128 +1,84 @@
-import { computed, effect, Inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
-import { User } from '../interfaces/user.model';
-import { Router } from '@angular/router';
-import { CompanyStrategy } from '../../company/classes/company-strategy';
-import { UserStrategy } from '../interfaces/user-strategy';
-import { MenuItem } from 'primeng/api';
-import { MessageToastService } from '../../shared/service/message-toast.service';
-import { DistributorStrategy } from '../../distributor/classes/distributor-strategy';
-import { AdminStrategy } from '../../admin/classes/admin-strategy';
-import { isPlatformBrowser } from '@angular/common';
+import { computed, Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import FingerprintJS from '@fingerprintjs/fingerprintjs';
 import { ClientStrategy } from '../../client/classes/client-strategy';
-import { JwtHelperService } from '@auth0/angular-jwt';
+import { Client } from '../../client/interfaces/client';
+import { CompanyStrategy } from '../../company/classes/company-strategy';
+import { Company } from '../../company/interfaces/company';
+import { DistributorStrategy } from '../../distributor/classes/distributor-strategy';
+import { Distributor } from '../../distributor/interfaces/distributor';
+import { OwnerStrategy } from '../../owner/classes/owner-strategy';
+import { Owner } from '../../owner/interfaces/owner';
+import { UserStrategy } from '../interfaces/user-strategy';
+import { isPlatformBrowser } from '@angular/common';
+import { User } from '../interfaces/user';
+import { Observable, of, catchError, switchMap } from 'rxjs';
+import { AuthService } from './auth.service';
 
+interface StrategyRegistry {
+  client: Client;
+  company: Company;
+  distributor: Distributor;
+  owner: Owner;
+}
 @Injectable({
   providedIn: 'root',
 })
 export class UserStateService {
-  private userState = signal<User | null>(null);
+  private strategies: { [K in keyof StrategyRegistry]: UserStrategy<StrategyRegistry[K]> };
   isBrowser = computed(() => isPlatformBrowser(this.platformId));
-  token = computed(() => {
-    let token;
-    if (this.isBrowser()) {
-      token = localStorage.getItem('accessToken');
-    }
-    return token;
-  });
-  role = computed(() => {
-    if (this.isBrowser()) {
-      const token = localStorage.getItem('accessToken');
-      if (token) return this.helper.decodeToken(token).role;
+  role = computed(() => (this.user ? this.user.role : null));
+  fingerPrint = computed(() => this.getFingerPrint());
+  user: User | null = null;
+  strategy = computed(() => {
+    const role = this.role();
+    if (this.isBrowser() && role && this.isValidRole(role)) {
+      return this.getStrategy(role);
     }
     return null;
   });
-  getNavMenu = computed(() => {
-    const user = this.userState();
-    if (user) {
-      return this.strategy && user?.role ? this.strategy.getNavMenu(user.role) : [];
-    }
-    return [];
-  });
-  strategy: UserStrategy | null = null;
-  helper = new JwtHelperService();
   constructor(
-    private router: Router,
-    private companyStrategy: CompanyStrategy,
-    private clientStrategy: ClientStrategy,
-    private distributorStrategy: DistributorStrategy,
-    private adminStrategy: AdminStrategy,
-    @Inject(PLATFORM_ID) private platformId: Object,
-    private msgSrv: MessageToastService
-  ) {}
-  setStrategy() {
+    private company: CompanyStrategy,
+    private client: ClientStrategy,
+    private distributor: DistributorStrategy,
+    private owner: OwnerStrategy,
+    private authSrv: AuthService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    this.strategies = {
+      client: this.client,
+      company: this.company,
+      distributor: this.distributor,
+      owner: this.owner,
+    };
+  }
+  private isValidRole(role: string): role is keyof StrategyRegistry {
+    return ['client', 'company', 'distributor', 'owner'].includes(role);
+  }
+  private getStrategy<K extends keyof StrategyRegistry>(role: K): UserStrategy<StrategyRegistry[K]> {
+    return this.strategies[role];
+  }
+  private async getFingerPrint(): Promise<string> {
     if (this.isBrowser()) {
-      const token = localStorage.getItem('accessToken');
-      if (token) {
-        const role = this.helper.decodeToken(token).role;
-        switch ((role as string).toLowerCase()) {
-          case 'company':
-            this.strategy = this.companyStrategy;
-            break;
-          case 'client':
-            this.strategy = this.clientStrategy;
-            break;
-          case 'distributor':
-            this.strategy = this.distributorStrategy;
-            break;
-          case 'owner':
-            this.strategy = this.adminStrategy;
-            break;
-          default:
-            throw new Error('Unsupported role');
+      const fp = await FingerprintJS.load();
+      const result = await fp.get();
+      return result.visitorId;
+    }
+    return '';
+  }
+  checkUser(): Observable<boolean> {
+    if (this.user) {
+      return of(true); // user already exists locally
+    }
+    return this.authSrv.myInfo().pipe(
+      switchMap((res) => {
+        if (res.succeeded) {
+          this.user = res.data;
+          return of(true);
+        } else {
+          return of(false);
         }
-      }
-    }
-  }
-  storeUser(user: User | null) {
-    if (this.isBrowser()) {
-      if (user) {
-        this.userState.set(user);
-        this.setStrategy();
-        localStorage.setItem('user', JSON.stringify(user));
-      } else {
-        this.userState.set(null);
-        localStorage.clear();
-      }
-    }
-  }
-
-  checkUser(): boolean {
-    if (this.isBrowser()) {
-      const token = localStorage.getItem('accessToken');
-      if (token) {
-        return true;
-      }
-    }
-    return false;
-  }
-  getUserState() {
-    return this.userState;
-  }
-  setToken(accessToken: string, refreshToken: string) {
-    if (this.isBrowser()) {
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('refreshToken', refreshToken);
-    }
-  }
-  logout() {
-    this.storeUser(null);
-    this.router.navigate(['auth/login']);
-  }
-  getUser() {
-    if (this.isBrowser()) {
-      const token = localStorage.getItem('accessToken');
-      const user = localStorage.getItem('user');
-      if (token) {
-        const tokenDecrypt = this.helper.decodeToken(token);
-        const userId = tokenDecrypt.nameid;
-        const role = tokenDecrypt.role;
-        this.setStrategy();
-        this.strategy?.getById(+userId).subscribe((res) => {
-          const user = { ...res.data, role: role };
-          this.storeUser(user);
-          this.msgSrv.showSuccess('اهلا وسهلا ' + res.data.name);
-        });
-      }
-    }
+      }),
+      catchError(() => of(false)) // handle errors
+    );
   }
 }

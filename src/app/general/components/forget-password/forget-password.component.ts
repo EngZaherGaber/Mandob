@@ -20,9 +20,7 @@ import { UserStateService } from '../../services/user-state.service';
 })
 export class ForgetPasswordComponent {
   form: FormGroup = new FormGroup({
-    preferredVerificationMethod: new FormControl(null),
     email: new FormControl(null),
-    phoneNumber: new FormControl(null),
     code: new FormControl(null),
     newPassword: new FormControl(null),
   });
@@ -30,33 +28,12 @@ export class ForgetPasswordComponent {
   loading: boolean = false;
   objs: InputDynamic[] = [
     {
-      key: 'preferredVerificationMethod',
-      value: null,
-      label: 'طريقة التاكيد',
-      dataType: 'list',
-      required: true,
-      visible: true,
-      options: [
-        { id: 1, name: 'الايميل' },
-        { id: 2, name: 'رقم الهاتف' },
-      ],
-    },
-    {
       key: 'email',
       value: null,
       label: 'الايميل',
       dataType: 'string',
       required: true,
-      visible: false,
-      options: [],
-    },
-    {
-      key: 'phoneNumber',
-      value: null,
-      label: 'رقم الهاتف',
-      dataType: 'password',
-      required: true,
-      visible: false,
+      visible: true,
       options: [],
     },
     {
@@ -83,43 +60,17 @@ export class ForgetPasswordComponent {
     private authSrv: AuthService,
     private userState: UserStateService,
     private socialAuthService: SocialAuthService
-  ) {
-    this.getControl('preferredVerificationMethod').valueChanges.subscribe((value) => {
-      switch (value) {
-        case 1:
-          this.objs[1].visible = true;
-          this.objs[1].value = null;
-          this.objs[2].visible = false;
-          this.objs[2].value = null;
-          break;
-        case 2:
-          this.objs[2].visible = true;
-          this.objs[2].value = null;
-          this.objs[1].visible = false;
-          this.objs[1].value = null;
-          break;
-
-        default:
-          this.objs[2].visible = false;
-          this.objs[2].value = null;
-          this.objs[1].visible = false;
-          this.objs[1].value = null;
-          break;
-      }
-    });
-  }
+  ) {}
   getControl(name: string) {
     return this.form.get(name) as FormControl;
   }
   login() {
     this.router.navigate(['auth/login']);
   }
-  sentCode() {
+  forgetPassword() {
     this.loading = true;
     const formValue = {
-      preferredVerificationMethod: this.form.value.preferredVerificationMethod,
       email: this.form.value.email,
-      phoneNumber: this.form.value.phoneNumber,
     };
     this.authSrv.forgetPassword(formValue).subscribe(
       (res) => {
@@ -138,12 +89,11 @@ export class ForgetPasswordComponent {
     const formValue = {
       code: this.form.value.code,
       email: this.form.value.email,
-      phoneNumber: this.form.value.phoneNumber,
     };
     this.authSrv.verfiyCodeForForgetPassword(formValue).subscribe(
       (res) => {
         this.loading = false;
-        this.userState.setToken(res.data.accessToken, res.data.refreshToken);
+        // this.userState.setToken(res.data.accessToken, res.data.refreshToken);
         const token = this.authSrv.helper.decodeToken(res.data.token);
         this.step = 3;
         this.loading = false;
@@ -157,10 +107,8 @@ export class ForgetPasswordComponent {
     this.loading = true;
     const formValue = {
       code: this.form.value.code,
-      verificationMethod: this.form.value.preferredVerificationMethod,
       newPassword: this.form.value.newPassword,
       email: this.form.value.email,
-      phoneNumber: this.form.value.phoneNumber,
     };
     this.authSrv.resetPassword(formValue).subscribe(
       (res) => {
@@ -172,12 +120,6 @@ export class ForgetPasswordComponent {
       (err) => {
         this.loading = false;
       }
-    );
-  }
-  ifValid() {
-    return (
-      !this.getControl('preferredVerificationMethod').value &&
-      !(this.getControl('email').value || this.getControl('phoneNumber').value)
     );
   }
 }

@@ -13,12 +13,11 @@ import { UserStateService } from '../../../general/services/user-state.service';
   styleUrl: './sidenav.component.scss',
 })
 export class SidenavComponent implements OnInit {
-  items: Signal<MenuItem[]>;
-  showMenu: boolean = false;
-  constructor(public stateSrv: StateService, private userState: UserStateService) {
-    this.items = this.userState.getNavMenu;
+  items: MenuItem[] = [];
+  constructor(public stateSrv: StateService, userState: UserStateService) {
     effect(() => {
-      if (this.items().length > 0) this.showMenu = true;
+      const strategy = userState.strategy();
+      this.items = strategy ? strategy.navMenu : [];
     });
   }
   ngOnInit(): void {}

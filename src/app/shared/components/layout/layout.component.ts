@@ -26,6 +26,6 @@ import { UserStateService } from '../../../general/services/user-state.service';
 })
 export class LayoutComponent {
   constructor(public stateSrv: StateService, private userState: UserStateService) {
-    this.userState.getUser();
+    
   }
 }

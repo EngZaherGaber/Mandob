@@ -450,7 +450,7 @@ export const MyPreset = definePreset(Aura, {
           focusBorderColor: '{primary.color}',
           invalidBorderColor: '{red.400}',
           color: '{surface.700}',
-          disabledColor: '{surface.50}',
+          disabledColor: '{surface.500}',
           placeholderColor: '{surface.500}',
           invalidPlaceholderColor: '{red.600}',
           floatLabelColor: '{surface.500}',

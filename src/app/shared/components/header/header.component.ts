@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { MenuModule } from 'primeng/menu';
 import { DialogModule } from 'primeng/dialog';
-import { User } from '../../../general/interfaces/user.model';
+import { User } from '../../../general/interfaces/user';
 import { AuthService } from '../../../general/services/auth.service';
 import { DynmaicFormComponent } from '../dynmaic-form/dynmaic-form.component';
 import { InputDynamic } from '../../interface/input-dynamic';
@@ -37,7 +37,7 @@ export class HeaderComponent {
   displayText = signal('');
   isChanging = signal(false);
   isTyping = signal(false); // New signal to track typing state
-  user: Signal<User | null>;
+  user: Partial<User> | null;
   private platformId = inject(PLATFORM_ID);
   isBrowser = isPlatformBrowser(this.platformId);
   items: MenuItem[] = [];
@@ -46,18 +46,18 @@ export class HeaderComponent {
   constructor(
     public stateSrv: StateService,
     private router: Router,
-    private userStateSrv: UserStateService,
+    private userState: UserStateService,
     private authSrv: AuthService
   ) {
-    this.user = userStateSrv.getUserState();
+    this.user = null;
     this.items = [
       {
-        label: 'اسم المستخدم : ' + this.user()?.userName,
+        label: '',
         disabled: true,
         icon: 'pi pi-id-card',
       },
       {
-        label: 'نوع الحساب : ' + this.user()?.role.toUpperCase(),
+        label: '',
         icon: 'pi pi-shield',
         disabled: true,
       },
@@ -92,10 +92,8 @@ export class HeaderComponent {
         }
       });
       effect(() => {
-        if (this.user()) {
-          this.items[0] ? (this.items[0].label = 'اسم المستخدم : ' + this.user()?.userName) : '';
-          this.items[1] ? (this.items[1].label = 'نوع الحساب : ' + this.user()?.role.toUpperCase()) : '';
-        }
+        this.items[0] ? (this.items[0].label = 'اسم المستخدم : ' + userState.user?.name) : '';
+        this.items[1] ? (this.items[1].label = 'نوع الحساب : ' + userState.user?.role?.toUpperCase()) : '';
       });
     } else {
       // SSR fallback - show full text immediately
@@ -156,9 +154,9 @@ export class HeaderComponent {
   }
   openAccount() {
     if (this.user) {
-      switch (this.user()?.role) {
+      switch (this.user?.role) {
         case 'owner':
-          this.router.navigate(['admin/account']);
+          this.router.navigate(['owner/account']);
           break;
 
         default:
@@ -167,8 +165,6 @@ export class HeaderComponent {
     }
   }
   logout() {
-    this.authSrv.logout().subscribe((res) => {
-      this.userStateSrv.logout();
-    });
+    this.userState.strategy()?.logout();
   }
 }

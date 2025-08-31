@@ -1,0 +1,78 @@
+import { Component } from '@angular/core';
+import { switchMap, of, catchError } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { DynamicCardListComponent } from '../../../../shared/components/dynamic-card-list/dynamic-card-list.component';
+import { DynamicTableComponent } from '../../../../shared/components/dynamic-table/dynamic-table.component';
+import { InfoTable } from '../../../../shared/interface/info-table';
+import { DyTableService } from '../../../../shared/service/dy-table.service';
+import { OwnerStrategy } from '../../../classes/owner-strategy';
+
+@Component({
+  selector: 'ad-owner-show',
+  imports: [
+    // DynamicTableComponent, DynamicCardListComponent,
+    CommonModule,
+  ],
+  templateUrl: './ad-owner-show.component.html',
+  styleUrl: './ad-owner-show.component.scss',
+})
+export class AdOwnerShowComponent {
+  // tableConfig: InfoTable;
+  // type: 'table' | 'list' | string = '';
+  // columns = [
+  //   {
+  //     field: 'name',
+  //     header: 'الاسم',
+  //     HeaderType: 'string',
+  //   },
+  //   {
+  //     field: 'userName',
+  //     header: 'اسم المستخدم',
+  //     HeaderType: 'string',
+  //   },
+  //   {
+  //     field: 'email',
+  //     header: 'الايميل',
+  //     HeaderType: 'string',
+  //   },
+  //   {
+  //     field: 'phoneNumber',
+  //     header: 'رقم الهاتف',
+  //     HeaderType: 'string',
+  //   },
+  //   {
+  //     field: 'isActive',
+  //     header: 'فعال',
+  //     HeaderType: 'tag',
+  //   },
+  // ];
+  // constructor(private tableSrv: DyTableService, private route: ActivatedRoute, private OwnerStrategy: OwnerStrategy) {
+  //   this.tableConfig = tableSrv.getStandardInfo(
+  //     () => {},
+  //     () => {},
+  //     () => {},
+  //     () => {}
+  //   );
+  //   this.tableConfig.get$ = this.tableConfig.getSub$.pipe(
+  //     switchMap((body: any) => {
+  //       if (body) {
+  //         return this.OwnerStrategy.getAll(body).pipe(
+  //           switchMap((res) =>
+  //             of({
+  //               data: res.data,
+  //               columns: this.columns,
+  //               loading: false,
+  //               count: res.data.length,
+  //             })
+  //           ),
+  //           catchError(() => of({ loading: false, data: [], columns: [] }))
+  //         );
+  //       }
+  //       return of({ loading: false, data: [], columns: [] });
+  //     })
+  //   );
+  //   this.type = this.route.snapshot.params['type'];
+  // }
+  // ngOnInit() {}
+}

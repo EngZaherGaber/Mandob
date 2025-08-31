@@ -60,6 +60,7 @@ export class DynmaicFormComponent {
   public form: FormGroup = new FormGroup({});
   keys: string[] = [];
   activeIndex: number = 0;
+  finsih: boolean = false;
   constructor(private route: Router, private DySrv: DynamicAttributeService, private cd: ChangeDetectorRef) {}
 
   ngOnInit(): void {
@@ -71,13 +72,16 @@ export class DynmaicFormComponent {
   }
   reLoad() {
     if (this.objs) {
+      this.finsih = false;
       this.stepsList = this.stepsList.length > 0 ? this.stepsList : this.DySrv.createStepsFromObjs(this.objs);
       this.keys = Object.keys(this.objs);
       this.keys.forEach((key) => {
         (this.objs as any)[key] = this.DySrv.addCommand(this.triggers, (this.objs as any)[key], key);
       });
       this.createForm();
+
       this.isShow ? this.form.disable() : '';
+      this.finsih = true;
     }
   }
   listenAgain() {
@@ -136,6 +140,7 @@ export class DynmaicFormComponent {
         this.form.addControl(key, this.DySrv.createFormFromAttForAdd((this.objs as any)[key]));
         this.DySrv.disableInput(this.disableAtt, key, this.form);
       }
+
       this.disableSteps.includes(key) || this.isShow ? this.form.controls[key].disable() : '';
     });
     this.listenToChange();

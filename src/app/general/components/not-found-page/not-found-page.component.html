@@ -1,6 +1,8 @@
-<div class="container-fluid ">
-    <div class="row justify-content-center" style="min-height: 50vh;">
-        <img src="IconBlue.svg" class="w-50 p-4" alt="">
+<div class="container-fluid h-100 d-flex flex-column justify-content-center">
+    <div class="row d-flex flex-column align-items-center justify-content-center gap-2 " style="min-height: 50vh;">
+        <img src="IconBlue.svg" style="height: 50vh;" class="p-4" alt="">
         <h1 class="w-100 text-center fw-bold" style="color: var(--p-primary-500);">هذه الصفحة غير موجودة</h1>
+        <p-button (onClick)="goTo()" class="w-auto mt-5" label="العودة للصفحة الرئيسية"
+            icon="pi pi-arrow-left"></p-button>
     </div>
 </div>

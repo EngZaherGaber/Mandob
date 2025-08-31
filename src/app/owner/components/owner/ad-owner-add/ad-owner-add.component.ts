@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
-import { DynmaicFormComponent } from '../../../shared/components/dynmaic-form/dynmaic-form.component';
-import { InputDynamic } from '../../../shared/interface/input-dynamic';
 import { CommonModule } from '@angular/common';
 import { MenuItem } from 'primeng/api';
+import { DynmaicFormComponent } from '../../../../shared/components/dynmaic-form/dynmaic-form.component';
+import { InputDynamic } from '../../../../shared/interface/input-dynamic';
 
 @Component({
-  selector: 'app-ad-company-add',
+  selector: 'ad-owner-add',
   imports: [DynmaicFormComponent, CommonModule],
-  templateUrl: './ad-company-add.component.html',
-  styleUrl: './ad-company-add.component.scss',
+  templateUrl: './ad-owner-add.component.html',
+  styleUrl: './ad-owner-add.component.scss',
 })
-export class AdCompanyAddComponent {
+export class AdOwnerAddComponent {
   resetObjs: { [key: string]: InputDynamic[] } = {};
   stepsList: MenuItem[] = [{ label: 'المعلومات العامة' }, { label: 'المعلومات الخاصة' }];
   constructor() {

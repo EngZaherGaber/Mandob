@@ -1,19 +1,20 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './shared/guards/auth.guard';
 import { LayoutComponent } from './shared/components/layout/layout.component';
-import { AdCompanyShowComponent } from './admin/company/ad-company-show/ad-company-show.component';
+import { AdCompanyShowComponent } from './owner/components/company/ad-company-show/ad-company-show.component';
 import { ComDistributorShowComponent } from './company/components/distributor/com-distributor-show/com-distributor-show.component';
 import { AuthComponent } from './general/components/auth/auth.component';
 import { NotFoundPageComponent } from './general/components/not-found-page/not-found-page.component';
 import { ProductDetailsComponent } from './general/components/product-details/product-details.component';
-import { AdCompanyAddComponent } from './admin/company/ad-company-add/ad-company-add.component';
-import { AdAccountComponent } from './admin/ad-account/ad-account.component';
-import { AdOwnerAddComponent } from './admin/owner/ad-owner-add/ad-owner-add.component';
-import { AdOwnerShowComponent } from './admin/owner/ad-owner-show/ad-owner-show.component';
+import { AdCompanyAddComponent } from './owner/components/company/ad-company-add/ad-company-add.component';
+import { AdAccountComponent } from './owner/components/ad-account/ad-account.component';
+import { AdOwnerAddComponent } from './owner/components/owner/ad-owner-add/ad-owner-add.component';
+import { AdOwnerShowComponent } from './owner/components/owner/ad-owner-show/ad-owner-show.component';
 import { LoginComponent } from './general/components/login/login.component';
 import { RegisterComponent } from './general/components/register/register.component';
 import { VerficationComponent } from './general/components/verfication/verfication.component';
 import { ForgetPasswordComponent } from './general/components/forget-password/forget-password.component';
+import { AdCompanyDetailComponent } from './owner/components/company/ad-company-detail/ad-company-detail.component';
 
 export const routes: Routes = [
   {
@@ -46,7 +47,8 @@ export const routes: Routes = [
   {
     path: '',
     canActivate: [authGuard],
-    canActivateChild: [authGuard],
+    title: 'الصفحة الرئيسية',
+    // canActivateChild: [authGuard],
     component: LayoutComponent,
     children: [
       {
@@ -59,6 +61,11 @@ export const routes: Routes = [
                 path: 'show/:type',
                 title: 'عرض الشركات',
                 component: AdCompanyShowComponent,
+              },
+              {
+                path: 'detail/:type/:id',
+                title: 'بيانات الشركة',
+                component: AdCompanyDetailComponent,
               },
               {
                 path: 'add',
@@ -108,10 +115,10 @@ export const routes: Routes = [
           },
         ],
       },
-      {
-        path: '**',
-        component: NotFoundPageComponent,
-      },
     ],
+  },
+  {
+    path: '**',
+    component: NotFoundPageComponent,
   },
 ];

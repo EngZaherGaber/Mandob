@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DynamicInputComponent } from '../../../shared/components/dynamic-input/dynamic-input.component';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -48,7 +48,7 @@ export class LoginComponent {
       options: [],
     },
   ];
-
+  isBrowser: Signal<boolean>;
   user: SocialUser | null = null;
   /**
    *
@@ -60,10 +60,10 @@ export class LoginComponent {
     private userState: UserStateService,
     private socialAuthService: SocialAuthService
   ) {
-    this.userState.storeUser(null);
+    // this.userState.strategy()?.storeUser(null);
+    this.isBrowser = authSrv.isBrowser;
   }
   ngOnInit() {
-    // this.userState.storeUser(null);
     this.socialAuthService.authState.subscribe((user) => {
       this.user = user;
     });
@@ -83,16 +83,15 @@ export class LoginComponent {
     this.loading = true;
     const formValue = this.loginForm.value;
     this.authSrv.login(formValue['input'], formValue['password']).subscribe(
-      (res: any) => {
-        debugger;
-        this.loading = false;
-        this.userState.setToken(res.data.accessToken, res.data.refreshToken);
-        const token = this.authSrv.helper.decodeToken(res.data.accessToken);
-        this.msgSrv.showSuccess(' تم تسجيل الدخول' + token.unique_name);
-        if (token.IsVerified.toLowerCase() === 'true' && token.IsActive.toLowerCase() === 'true') {
-          this.router.navigate(['']);
+      (res) => {
+        if (res.succeeded) {
+          const data = res.data;
+          localStorage.setItem('role', data.role);
+          localStorage.setItem('name', data.name);
+          if (data.isVerified === true) this.router.navigate(['']);
+          else this.router.navigate(['auth/verfication']);
         } else {
-          this.router.navigate(['auth/verfication']);
+          this.loading = false;
         }
       },
       (err) => {
