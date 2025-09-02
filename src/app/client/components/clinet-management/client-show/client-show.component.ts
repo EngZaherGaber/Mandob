@@ -1,17 +1,16 @@
 import { Component } from '@angular/core';
-import { ClientManagementService } from '../../services/client-management.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { switchMap, of, catchError } from 'rxjs';
-import { DynamicCardListComponent } from '../../../shared/components/dynamic-card-list/dynamic-card-list.component';
-import { DynamicTableComponent } from '../../../shared/components/dynamic-table/dynamic-table.component';
-import { InfoTable } from '../../../shared/interface/info-table';
-import { DyTableService } from '../../../shared/service/dy-table.service';
-import { MessageToastService } from '../../../shared/service/message-toast.service';
+import { InfoTable } from '../../../../shared/interface/info-table';
+import { DyTableService } from '../../../../shared/service/dy-table.service';
+import { MessageToastService } from '../../../../shared/service/message-toast.service';
+import { ClientManagementService } from '../../../services/client-management.service';
+import { DynamicViewComponent } from '../../../../shared/components/dynamic-view/dynamic-view.component';
 
 @Component({
   selector: 'app-client-show',
-  imports: [DynamicTableComponent, DynamicCardListComponent, CommonModule],
+  imports: [CommonModule, DynamicViewComponent],
   templateUrl: './client-show.component.html',
   styleUrl: './client-show.component.scss',
 })
@@ -66,9 +65,6 @@ export class ClientShowComponent {
       }
     });
   }
-  addFunc: () => void = () => {
-    this.router.navigate(['owner/client-management/add']);
-  };
   displayFunc: (rowData: any) => void = (rowData: any) => {
     this.router.navigate(['owner/client-management/detail/display/' + rowData.userId]);
   };
@@ -79,7 +75,7 @@ export class ClientShowComponent {
     private router: Router,
     private clientManagementSrv: ClientManagementService
   ) {
-    this.tableConfig = tableSrv.getStandardInfo(undefined, undefined, this.displayFunc, this.addFunc);
+    this.tableConfig = tableSrv.getStandardInfo(undefined, undefined, this.displayFunc, undefined);
     this.route.params.subscribe((param) => {
       this.type = param['type'];
       this.tableConfig.get$ = this.tableConfig.getSub$.pipe(

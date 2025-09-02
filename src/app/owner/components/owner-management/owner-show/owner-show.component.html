@@ -1,0 +1,3 @@
+<dynamic-view [columnsEvent]="columnsEvent" [lazyLoading]="true" (onLazy)="tableConfig.getSub$.next($event)"
+    [load]="tableConfig.get$" [buttons]="tableConfig.Buttons" [showHeader]="true"
+    [captionButton]="tableConfig.captionButton"></dynamic-view>

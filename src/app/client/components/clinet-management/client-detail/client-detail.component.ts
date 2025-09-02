@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { ClientManagementService } from '../../services/client-management.service';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { switchMap } from 'rxjs';
-import { Owner } from '../../../owner/interfaces/owner';
-import { DynmaicFormComponent } from '../../../shared/components/dynmaic-form/dynmaic-form.component';
-import { InputDynamic } from '../../../shared/interface/input-dynamic';
+import { Owner } from '../../../../owner/interfaces/owner';
+import { DynmaicFormComponent } from '../../../../shared/components/dynmaic-form/dynmaic-form.component';
+import { InputDynamic } from '../../../../shared/interface/input-dynamic';
+import { ClientManagementService } from '../../../services/client-management.service';
 
 @Component({
   selector: 'app-client-detail',

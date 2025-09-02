@@ -1,0 +1,15 @@
+<p-selectbutton [(ngModel)]="layout" [options]="options" [allowEmpty]="false">
+    <ng-template #item let-item>
+        <i class="pi" [ngClass]="{
+                    'pi-bars': item === 'list',
+                    'pi-sitemap':item==='grid',
+                    'pi-table': item === 'table',
+                  }"></i>
+    </ng-template>
+</p-selectbutton>
+<dynamic-table *ngIf="layout === 'table'" [columnsEvent]="columnsEvent" [lazyLoading]="true"
+    (onLazy)="onLazy.emit($event)" [load]="load" [buttons]="buttons" [showHeader]="true"
+    [captionButton]="captionButton"></dynamic-table>
+<dynamic-card-list *ngIf="layout === 'grid' || layout === 'list'" [layout]="layout" [load]="load"
+    [columnsEvent]="columnsEvent" [buttons]="buttons" [lazyLoading]="true" (onLazy)="onLazy.emit($event)"
+    [captionButton]="captionButton"></dynamic-card-list>

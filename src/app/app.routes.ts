@@ -6,19 +6,22 @@ import { AuthComponent } from './general/components/auth/auth.component';
 import { NotFoundPageComponent } from './general/components/not-found-page/not-found-page.component';
 import { ProductDetailsComponent } from './general/components/product-details/product-details.component';
 import { AccountComponent } from './general/components/account/account.component';
-import { OwnerShowComponent } from './owner/components/owner-show/owner-show.component';
+import { OwnerShowComponent } from './owner/components/owner-management/owner-show/owner-show.component';
 import { LoginComponent } from './general/components/login/login.component';
 import { RegisterComponent } from './general/components/register/register.component';
 import { VerficationComponent } from './general/components/verfication/verfication.component';
 import { ForgetPasswordComponent } from './general/components/forget-password/forget-password.component';
-import { CompShowComponent } from './company/components/comp-show/comp-show.component';
-import { CompDetailComponent } from './company/components/comp-detail/comp-detail.component';
-import { CompAddComponent } from './company/components/comp-add/comp-add.component';
-import { OwnerAddComponent } from './owner/components/owner-add/owner-add.component';
-import { OwnerDetailComponent } from './owner/components/owner-detail/owner-detail.component';
+import { CompShowComponent } from './company/components/comp-management/comp-show/comp-show.component';
+import { CompDetailComponent } from './company/components/comp-management/comp-detail/comp-detail.component';
+import { CompAddComponent } from './company/components/comp-management/comp-add/comp-add.component';
+import { OwnerAddComponent } from './owner/components/owner-management/owner-add/owner-add.component';
+import { OwnerDetailComponent } from './owner/components/owner-management/owner-detail/owner-detail.component';
 import { GalleryComponent } from './general/components/gallery/gallery.component';
-import { ClientDetailComponent } from './client/components/client-detail/client-detail.component';
-import { ClientShowComponent } from './client/components/client-show/client-show.component';
+import { ClientDetailComponent } from './client/components/clinet-management/client-detail/client-detail.component';
+import { ClientShowComponent } from './client/components/clinet-management/client-show/client-show.component';
+import { PlanAddComponent } from './company/components/plan-management/plan-add/plan-add.component';
+import { PlanDetailComponent } from './company/components/plan-management/plan-detail/plan-detail.component';
+import { PlanShowComponent } from './company/components/plan-management/plan-show/plan-show.component';
 
 export const routes: Routes = [
   {
@@ -83,6 +86,26 @@ export const routes: Routes = [
                 path: 'detail/display/:id',
                 title: 'بيانات ماركت',
                 component: ClientDetailComponent,
+              },
+            ],
+          },
+          {
+            path: 'plan-management',
+            children: [
+              {
+                path: 'show/:type',
+                title: 'عرض الباقات',
+                component: PlanShowComponent,
+              },
+              {
+                path: 'add',
+                title: 'اضافة باقة',
+                component: PlanAddComponent,
+              },
+              {
+                path: 'detail/:type/:id',
+                title: 'بيانات باقة',
+                component: PlanDetailComponent,
               },
             ],
           },

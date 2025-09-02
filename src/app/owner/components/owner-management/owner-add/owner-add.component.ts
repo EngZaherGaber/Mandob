@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MenuItem } from 'primeng/api';
-import { DynmaicFormComponent } from '../../../shared/components/dynmaic-form/dynmaic-form.component';
-import { InputDynamic } from '../../../shared/interface/input-dynamic';
 import { Router } from '@angular/router';
-import { OwnerManagementService } from '../../services/owner-management.service';
-import { MessageToastService } from '../../../shared/service/message-toast.service';
+import { DynmaicFormComponent } from '../../../../shared/components/dynmaic-form/dynmaic-form.component';
+import { InputDynamic } from '../../../../shared/interface/input-dynamic';
+import { MessageToastService } from '../../../../shared/service/message-toast.service';
+import { OwnerManagementService } from '../../../services/owner-management.service';
 
 @Component({
   selector: 'owner-add',

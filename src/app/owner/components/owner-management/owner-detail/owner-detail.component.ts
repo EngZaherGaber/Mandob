@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DynmaicFormComponent } from '../../../shared/components/dynmaic-form/dynmaic-form.component';
-import { InputDynamic } from '../../../shared/interface/input-dynamic';
 import { ActivatedRoute, Router } from '@angular/router';
-import { OwnerManagementService } from '../../services/owner-management.service';
-import { MessageToastService } from '../../../shared/service/message-toast.service';
-import { Owner } from '../../interfaces/owner';
 import { switchMap } from 'rxjs/operators';
+import { DynmaicFormComponent } from '../../../../shared/components/dynmaic-form/dynmaic-form.component';
+import { InputDynamic } from '../../../../shared/interface/input-dynamic';
+import { MessageToastService } from '../../../../shared/service/message-toast.service';
+import { Owner } from '../../../interfaces/owner';
+import { OwnerManagementService } from '../../../services/owner-management.service';
 
 @Component({
   selector: 'owner-detail',

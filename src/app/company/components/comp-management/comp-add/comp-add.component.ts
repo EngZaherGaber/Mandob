@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MenuItem } from 'primeng/api';
-import { DynmaicFormComponent } from '../../../shared/components/dynmaic-form/dynmaic-form.component';
-import { InputDynamic } from '../../../shared/interface/input-dynamic';
-import { MessageToastService } from '../../../shared/service/message-toast.service';
-import { PlanService } from '../../services/plan.service';
 import { Router } from '@angular/router';
-import { CompanyManagementService } from '../../services/company-management.service';
+import { DynmaicFormComponent } from '../../../../shared/components/dynmaic-form/dynmaic-form.component';
+import { InputDynamic } from '../../../../shared/interface/input-dynamic';
+import { MessageToastService } from '../../../../shared/service/message-toast.service';
+import { CompanyManagementService } from '../../../services/company-management.service';
+import { PlanService } from '../../../services/plan.service';
 
 @Component({
   selector: 'comp-add',

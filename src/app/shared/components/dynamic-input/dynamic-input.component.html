@@ -1,9 +1,11 @@
 <ng-container [ngSwitch]="object.dataType">
     <div style="position: relative;">
         <p-floatlabel class="w-full md:w-56" variant="on">
-            <label [ngClass]="{ required: object.required }">{{
-                object.label
-                }}</label>
+            <ng-container *ngIf="object.dataType !== 'bool'">
+                <label [ngClass]="{ required: object.required }">{{
+                    object.label
+                    }}</label>
+            </ng-container>
             <ng-template ngSwitchCase="list">
                 <p-select optionDisabled="disable" #drop (onChange)="drop.resetFilter()" [id]="object.label"
                     [appendTo]="'body'" [options]="object.options" [formControl]="FEcontrol" optionLabel="name"

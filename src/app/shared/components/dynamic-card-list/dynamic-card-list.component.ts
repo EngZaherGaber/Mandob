@@ -22,6 +22,7 @@ import { Calendar } from 'primeng/calendar';
 import { DyTableService } from '../../service/dy-table.service';
 import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { FormsModule } from '@angular/forms';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { ToolbarModule } from 'primeng/toolbar';
@@ -38,6 +39,7 @@ import { UserStateService } from '../../../general/services/user-state.service';
     SelectButtonModule,
     DataViewModule,
     ToolbarModule,
+    ToggleSwitchModule,
     TagModule,
     TooltipModule,
   ],
@@ -60,6 +62,7 @@ export class DynamicCardListComponent {
   @Input() dataKey: string = 'id';
   @Input() scrollHeight: string = '55vh';
   @Input() expandedTable: boolean = false;
+  @Input() layout: 'grid' | 'list' = 'grid';
   @Input() changeColor: (rowData: any) => any = () => {};
   @Input() getSeverity: (
     rowData: any
@@ -110,7 +113,7 @@ export class DynamicCardListComponent {
   show: boolean = false;
   selectedItem: any | null = null;
   items: MenuItem[] = [];
-  layout: 'grid' | 'list' = 'grid';
+
   options = ['list', 'grid'];
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -201,6 +204,7 @@ export class DynamicCardListComponent {
   hasToggleShow(field: string, rowData: any) {
     const column = this.columnsEvent.find((x) => x.field.toLowerCase() === field.toLowerCase());
     if (column && typeof column.visible === 'function') {
+      console.log(column.visible(rowData));
       return column.visible(rowData);
     }
     return null;

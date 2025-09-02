@@ -2,17 +2,15 @@ import { Component } from '@angular/core';
 import { switchMap, of, catchError } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { DynamicCardListComponent } from '../../../shared/components/dynamic-card-list/dynamic-card-list.component';
-import { DynamicTableComponent } from '../../../shared/components/dynamic-table/dynamic-table.component';
-import { InfoTable } from '../../../shared/interface/info-table';
-import { DyTableService } from '../../../shared/service/dy-table.service';
-import { OwnerStrategy } from '../../classes/owner-strategy';
-import { OwnerManagementService } from '../../services/owner-management.service';
-import { MessageToastService } from '../../../shared/service/message-toast.service';
+import { InfoTable } from '../../../../shared/interface/info-table';
+import { DyTableService } from '../../../../shared/service/dy-table.service';
+import { MessageToastService } from '../../../../shared/service/message-toast.service';
+import { OwnerManagementService } from '../../../services/owner-management.service';
+import { DynamicViewComponent } from '../../../../shared/components/dynamic-view/dynamic-view.component';
 
 @Component({
   selector: 'owner-show',
-  imports: [DynamicTableComponent, DynamicCardListComponent, CommonModule],
+  imports: [DynamicViewComponent, CommonModule],
   templateUrl: './owner-show.component.html',
   styleUrl: './owner-show.component.scss',
 })

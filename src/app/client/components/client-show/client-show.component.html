@@ -1,6 +1,0 @@
-<dynamic-table *ngIf="type === 'table'" [columnsEvent]="columnsEvent" [lazyLoading]="true"
-    (onLazy)="tableConfig.getSub$.next($event)" [load]="tableConfig.get$" [buttons]="tableConfig.Buttons"
-    [showHeader]="true" [captionButton]="tableConfig.captionButton"></dynamic-table>
-<dynamic-card-list *ngIf="type === 'list'" [load]="tableConfig.get$" [columnsEvent]="columnsEvent"
-    [buttons]="tableConfig.Buttons" [lazyLoading]="true" (onLazy)="tableConfig.getSub$.next($event)"
-    [captionButton]="tableConfig.captionButton"></dynamic-card-list>

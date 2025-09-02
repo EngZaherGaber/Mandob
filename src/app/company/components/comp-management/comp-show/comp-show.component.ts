@@ -1,23 +1,22 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { InfoTable } from '../../../shared/interface/info-table';
-import { DyTableService } from '../../../shared/service/dy-table.service';
-import { CompanyStrategy } from '../../classes/company-strategy';
+import { InfoTable } from '../../../../shared/interface/info-table';
+import { DyTableService } from '../../../../shared/service/dy-table.service';
 import { switchMap, of, catchError } from 'rxjs';
-import { DynamicCardListComponent } from '../../../shared/components/dynamic-card-list/dynamic-card-list.component';
-import { DynamicTableComponent } from '../../../shared/components/dynamic-table/dynamic-table.component';
-import { MessageToastService } from '../../../shared/service/message-toast.service';
-import { CompanyManagementService } from '../../services/company-management.service';
+import { MessageToastService } from '../../../../shared/service/message-toast.service';
+import { CompanyManagementService } from '../../../services/company-management.service';
+import { DynamicViewComponent } from '../../../../shared/components/dynamic-view/dynamic-view.component';
 
 @Component({
   selector: 'comp-show',
-  imports: [DynamicTableComponent, DynamicCardListComponent, CommonModule],
+  imports: [DynamicViewComponent, CommonModule],
   templateUrl: './comp-show.component.html',
   styleUrl: './comp-show.component.scss',
 })
 export class CompShowComponent {
   tableConfig: InfoTable;
+  imageField: string = '';
   type: 'table' | 'list' | string = 'table';
   columns = [
     {

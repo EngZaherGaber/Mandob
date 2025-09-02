@@ -23,7 +23,7 @@ export class OwnerStrategy extends BaseUserStrategy<Owner> {
       ],
     },
     {
-      label: 'الشركات',
+      label: 'ادارة الشركات',
       items: [
         {
           label: 'قائمة الشركات',
@@ -35,15 +35,10 @@ export class OwnerStrategy extends BaseUserStrategy<Owner> {
           icon: 'pi pi-table',
           routerLink: ['owner/company-management/show/table'],
         },
-        {
-          label: 'اضافة شركة',
-          icon: 'pi pi-plus',
-          routerLink: ['owner/company-management/add'],
-        },
       ],
     },
     {
-      label: 'المدراء',
+      label: 'ادارة المدراء',
       items: [
         {
           label: 'قائمة المدراء',
@@ -55,15 +50,10 @@ export class OwnerStrategy extends BaseUserStrategy<Owner> {
           icon: 'pi pi-table',
           routerLink: ['owner/owner-management/show/table'],
         },
-        {
-          label: 'اضافة مدير',
-          icon: 'pi pi-plus',
-          routerLink: ['owner/owner-management/add'],
-        },
       ],
     },
     {
-      label: 'الماركت',
+      label: 'ادارة الماركت',
       items: [
         {
           label: 'قائمة الماركت',
@@ -75,10 +65,20 @@ export class OwnerStrategy extends BaseUserStrategy<Owner> {
           icon: 'pi pi-table',
           routerLink: ['owner/client-management/show/table'],
         },
+      ],
+    },
+    {
+      label: 'ادارة الباقات',
+      items: [
         {
-          label: 'اضافة ماركت',
-          icon: 'pi pi-plus',
-          routerLink: ['owner/client-management/add'],
+          label: 'قائمة الباقات',
+          icon: 'pi pi-sitemap',
+          routerLink: ['owner/plan-management/show/list'],
+        },
+        {
+          label: 'جدول الباقات',
+          icon: 'pi pi-table',
+          routerLink: ['owner/plan-management/show/table'],
         },
       ],
     },

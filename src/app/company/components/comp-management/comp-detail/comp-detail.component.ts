@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { forkJoin, switchMap } from 'rxjs';
-import { CompanyManagementService } from '../../services/company-management.service';
-import { DynmaicFormComponent } from '../../../shared/components/dynmaic-form/dynmaic-form.component';
-import { InputDynamic } from '../../../shared/interface/input-dynamic';
-import { MessageToastService } from '../../../shared/service/message-toast.service';
-import { Company } from '../../interfaces/company';
-import { PlanService } from '../../services/plan.service';
+import { DynmaicFormComponent } from '../../../../shared/components/dynmaic-form/dynmaic-form.component';
+import { InputDynamic } from '../../../../shared/interface/input-dynamic';
+import { MessageToastService } from '../../../../shared/service/message-toast.service';
+import { Company } from '../../../interfaces/company';
+import { CompanyManagementService } from '../../../services/company-management.service';
+import { PlanService } from '../../../services/plan.service';
 
 @Component({
   selector: 'ad-company-detail',
