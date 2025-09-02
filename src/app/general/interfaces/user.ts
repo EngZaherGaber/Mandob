@@ -5,5 +5,7 @@ export interface User {
   name: string;
   phoneNumber: string;
   isActive?: boolean;
+  logo?: string;
   role: string;
+  images: string[];
 }

@@ -45,7 +45,7 @@
             <div class="col-12 col-md-4 d-flex justify-content-center align-items-center img py-2">
               <ng-container *ngIf="item.imgSrv; then img; else icon"></ng-container>
               <ng-template #img>
-                <img style="width: 75px" [src]="item.imgSrv ? item.imgSrv : 'delivery-man.svg'" alt="" />
+                <img style="width: 75px" [src]="item.imageField ? item.imageField : 'delivery-man.svg'" />
               </ng-template>
               <ng-template #icon>
                 <i class="pi pi-user" style="font-size: 75px !important"></i>
@@ -181,9 +181,6 @@
             <div *ngIf="col.HeaderType === 'json'">
               <button pButton pRipple pTooltip="download JSON file" icon="pi pi-download"
                 (click)="downloadJSON(item[col.field])"></button>
-            </div>
-            <div *ngIf="col.HeaderType === 'img'" style="margin: 5px">
-              <img *ngIf="item[col.field]" [src]="item[col.field]" width="150" height="75" />
             </div>
             <div *ngIf="col.HeaderType === 'tag'">
               <p-tag [value]="item[col.field]" [severity]="getSeverity(item)" />

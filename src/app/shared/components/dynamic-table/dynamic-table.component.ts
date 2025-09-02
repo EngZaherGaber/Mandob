@@ -55,6 +55,7 @@ export class DynamicTableComponent {
   @Input() buttons: DyButton[] = [];
   @Input() historyPermission: string = '';
   @Input() title: string = '';
+  @Input() imageField: string = '';
   @Input() sortColumn: string = '';
   @Input() tableName: string = '';
   @Input() uniqueState: string = '';

@@ -28,17 +28,17 @@ export class OwnerStrategy extends BaseUserStrategy<Owner> {
         {
           label: 'قائمة الشركات',
           icon: 'pi pi-sitemap',
-          routerLink: ['owner/company/show/list'],
+          routerLink: ['owner/company-management/show/list'],
         },
         {
           label: 'جدول الشركات',
           icon: 'pi pi-table',
-          routerLink: ['owner/company/show/table'],
+          routerLink: ['owner/company-management/show/table'],
         },
         {
           label: 'اضافة شركة',
           icon: 'pi pi-plus',
-          routerLink: ['owner/company/add'],
+          routerLink: ['owner/company-management/add'],
         },
       ],
     },
@@ -48,17 +48,37 @@ export class OwnerStrategy extends BaseUserStrategy<Owner> {
         {
           label: 'قائمة المدراء',
           icon: 'pi pi-sitemap',
-          routerLink: ['owner/owner/show/list'],
+          routerLink: ['owner/owner-management/show/list'],
         },
         {
           label: 'جدول المدراء',
           icon: 'pi pi-table',
-          routerLink: ['owner/owner/show/table'],
+          routerLink: ['owner/owner-management/show/table'],
         },
         {
           label: 'اضافة مدير',
           icon: 'pi pi-plus',
-          routerLink: ['owner/owner/add'],
+          routerLink: ['owner/owner-management/add'],
+        },
+      ],
+    },
+    {
+      label: 'الماركت',
+      items: [
+        {
+          label: 'قائمة الماركت',
+          icon: 'pi pi-sitemap',
+          routerLink: ['owner/client-management/show/list'],
+        },
+        {
+          label: 'جدول الماركت',
+          icon: 'pi pi-table',
+          routerLink: ['owner/client-management/show/table'],
+        },
+        {
+          label: 'اضافة ماركت',
+          icon: 'pi pi-plus',
+          routerLink: ['owner/client-management/add'],
         },
       ],
     },

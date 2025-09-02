@@ -3,12 +3,13 @@ import { RouterModule } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
+import { PanelMenu } from 'primeng/panelmenu';
 import { StateService } from '../../service/state.service';
 import { UserStateService } from '../../../general/services/user-state.service';
 
 @Component({
   selector: 'sidenav',
-  imports: [MenuModule, RouterModule, ButtonModule],
+  imports: [MenuModule, RouterModule, ButtonModule, PanelMenu],
   templateUrl: './sidenav.component.html',
   styleUrl: './sidenav.component.scss',
 })

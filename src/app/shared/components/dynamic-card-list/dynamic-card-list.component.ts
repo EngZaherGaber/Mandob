@@ -53,6 +53,7 @@ export class DynamicCardListComponent {
   @Input() buttons: DyButton[] = [];
   @Input() historyPermission: string = '';
   @Input() title: string = '';
+  @Input() imageField: string = '';
   @Input() sortColumn: string = '';
   @Input() tableName: string = '';
   @Input() uniqueState: string = '';
@@ -185,6 +186,8 @@ export class DynamicCardListComponent {
           },
         };
       });
+      this.columnsEvent;
+      this.columns;
     });
   }
   loadCarsLazy(event: any) {

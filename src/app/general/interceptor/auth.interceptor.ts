@@ -15,7 +15,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         setHeaders: {
           'Device-Id': `${fingerPrint}`,
         },
-        withCredentials: !req.url.includes('login'),
+        withCredentials: true,
       });
       return next(newReq).pipe(
         catchError((error) => {

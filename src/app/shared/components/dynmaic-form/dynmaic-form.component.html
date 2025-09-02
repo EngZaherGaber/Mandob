@@ -3,7 +3,7 @@
         <ng-template #header>
             <div class="above">
                 <p-button class="Nbtn" severity="info" *ngIf="withBackBtn && activeIndex === 0" pTooltip="Back"
-                    icon="pi pi-arrow-left" (click)="back()" />
+                    icon="pi pi-arrow-right" (click)="back()" />
                 <p-steps step *ngIf="showSteps" [(activeIndex)]="activeIndex" [model]="stepsList"
                     [readonly]="true"></p-steps>
             </div>

@@ -45,22 +45,12 @@ export class HeaderComponent {
   visible: boolean = false;
   constructor(
     public stateSrv: StateService,
+    public userState: UserStateService,
     private router: Router,
-    private userState: UserStateService,
     private authSrv: AuthService
   ) {
     this.user = null;
     this.items = [
-      {
-        label: '',
-        disabled: true,
-        icon: 'pi pi-id-card',
-      },
-      {
-        label: '',
-        icon: 'pi pi-shield',
-        disabled: true,
-      },
       {
         separator: true,
       },
@@ -69,6 +59,13 @@ export class HeaderComponent {
         icon: 'pi pi-cog',
         command: (event) => {
           this.openAccount();
+        },
+      },
+      {
+        label: 'معرض الصور',
+        icon: 'pi pi-images',
+        command: (event) => {
+          this.openGallery();
         },
       },
       {
@@ -92,8 +89,7 @@ export class HeaderComponent {
         }
       });
       effect(() => {
-        this.items[0] ? (this.items[0].label = 'اسم المستخدم : ' + userState.user?.name) : '';
-        this.items[1] ? (this.items[1].label = 'نوع الحساب : ' + userState.user?.role?.toUpperCase()) : '';
+        this.user = userState.user;
       });
     } else {
       // SSR fallback - show full text immediately
@@ -153,16 +149,10 @@ export class HeaderComponent {
     });
   }
   openAccount() {
-    if (this.user) {
-      switch (this.user?.role) {
-        case 'owner':
-          this.router.navigate(['owner/account']);
-          break;
-
-        default:
-          break;
-      }
-    }
+    this.router.navigate(['/account']);
+  }
+  openGallery() {
+    this.router.navigate(['/gallery']);
   }
   logout() {
     this.userState.strategy()?.logout();

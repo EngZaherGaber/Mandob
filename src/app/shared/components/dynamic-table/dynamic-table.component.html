@@ -90,7 +90,6 @@
                                 [placeholder]="col.header" appendTo="body"></p-columnFilter>
                         </div>
                         <div *ngSwitchCase="'img'">
-
                         </div>
                         <div *ngSwitchCase="'float'">
                             <p-columnFilter type="numeric" [maxFractionDigits]="2" [field]="col.field"
@@ -140,6 +139,10 @@
                         [pTooltip]="btn.tooltip" [icon]="btn.icon ?? ''"
                         (click)="btn.command(rowData,rowData.buttons,dt);hitAction.emit({key:btn.key,rowDataId:rowData.Id})" />
                 </ng-container>
+            </td>
+            <td *ngIf="imageField">
+                <img *ngIf="rowData.imageField" [src]="rowData.imageField" width="75" height="75">
+                <p-skeleton *ngIf="!rowData.imageField" width="75px" class="m-2" />
             </td>
             <ng-container *ngFor="let col of columns">
                 <td *ngIf="isSelect(col.header)">
@@ -199,9 +202,6 @@
                         <div *ngIf="col.HeaderType === 'json'">
                             <button pButton pRipple pTooltip="download JSON file" icon="pi pi-download"
                                 (click)="downloadJSON(rowData[col.field])"></button>
-                        </div>
-                        <div *ngIf="col.HeaderType === 'img'" style="margin: 5px;">
-                            <img *ngIf="rowData[col.field]" [src]="rowData[col.field]" width="150" height="75">
                         </div>
                         <div *ngIf="col.HeaderType === 'tag'">
                             <p-tag [value]="rowData[col.field]" [severity]="getSeverity(rowData)" />

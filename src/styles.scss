@@ -74,3 +74,23 @@ html.dark body {
     background-color: var(--p-surface-800);
   }
 }
+/* Define keyframe animations */
+@keyframes rotate-out {
+  to {
+    transform: rotate(90deg);
+  }
+}
+@keyframes rotate-in {
+  from {
+    transform: rotate(-90deg);
+  }
+}
+/* Target view transition pseudo-elements */
+::view-transition-old(count),
+::view-transition-new(count) {
+  animation-duration: 2000ms;
+  animation-name: -ua-view-transition-fade-in, rotate-in;
+}
+::view-transition-old(count) {
+  animation-name: -ua-view-transition-fade-out, rotate-out;
+}

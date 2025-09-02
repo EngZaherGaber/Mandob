@@ -35,7 +35,24 @@
             severity="primary" pTooltip="الشاحنة" />
         <p-button icon="pi pi-user" (onClick)="menu.toggle($event)" [rounded]="true" [text]="true" severity="primary"
             pTooltip="الحساب" />
-        <p-menu #menu [model]="items" [popup]="true" />
+        <p-menu #menu [model]="items" [popup]="true">
+            <ng-template #start>
+                <div class="d-flex flex-column align-items-end p-2"
+                    style="background-color: var(--p-primary-500);color: var(--p-text-hover-color);">
+                    <div class="d-flex justify-content-between align-items-center w-100">
+                        <div class="d-flex flex-column align-items-center w-100">
+                            <p class="fw-bold">{{userState.user?.name}}</p>
+                            <span class="fw-bold">{{userState.user?.role}}</span>
+                        </div>
+                        <div class="rounded-4 d-flex justify-content-center" style="width: 50px;height: 50px;">
+                            <img class="rounded-4" *ngIf="userState.user?.logo" [src]="userState.user?.logo"
+                                [alt]="userState.user?.name" width="50px" height="50px">
+                            <i *ngIf="!userState.user?.logo" class="pi pi-user" style="font-size: 40px !important;"></i>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </p-menu>
 
 
     </div>

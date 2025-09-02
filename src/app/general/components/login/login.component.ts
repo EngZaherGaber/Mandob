@@ -1,4 +1,4 @@
-import { Component, Signal } from '@angular/core';
+import { afterNextRender, Component, Signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DynamicInputComponent } from '../../../shared/components/dynamic-input/dynamic-input.component';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -53,14 +53,7 @@ export class LoginComponent {
   /**
    *
    */
-  constructor(
-    private msgSrv: MessageToastService,
-    private router: Router,
-    private authSrv: AuthService,
-    private userState: UserStateService,
-    private socialAuthService: SocialAuthService
-  ) {
-    // this.userState.strategy()?.storeUser(null);
+  constructor(private router: Router, private authSrv: AuthService, private socialAuthService: SocialAuthService) {
     this.isBrowser = authSrv.isBrowser;
   }
   ngOnInit() {

@@ -26,11 +26,10 @@ export class AuthService {
   ) {}
 
   login(input: string, password: string) {
-    const lowerInput = input;
     return this.http.post<APIResponse<loginResponse>>(
-      this.url + '/login',
-      { input: lowerInput, password: password },
-      { withCredentials: false }
+      this.url + '/login', // 👈 always start with /api
+      { input, password },
+      { withCredentials: true }
     );
   }
   forgetPassword(body: { email: string }) {

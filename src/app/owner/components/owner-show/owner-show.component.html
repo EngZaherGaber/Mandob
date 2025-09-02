@@ -1,6 +1,6 @@
-<!-- <dynamic-table *ngIf="type === 'table'" [lazyLoading]="true" (onLazy)="tableConfig.getSub$.next($event)"
+<dynamic-table *ngIf="type === 'table'" [lazyLoading]="true" (onLazy)="tableConfig.getSub$.next($event)"
     [load]="tableConfig.get$" [buttons]="tableConfig.Buttons" [showHeader]="true"
     [captionButton]="tableConfig.captionButton"></dynamic-table>
 <dynamic-card-list *ngIf="type === 'list'" [load]="tableConfig.get$" [buttons]="tableConfig.Buttons"
     [lazyLoading]="true" (onLazy)="tableConfig.getSub$.next($event)"
-    [captionButton]="tableConfig.captionButton"></dynamic-card-list> -->
+    [captionButton]="tableConfig.captionButton"></dynamic-card-list>
