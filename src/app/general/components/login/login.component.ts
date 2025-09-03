@@ -53,7 +53,12 @@ export class LoginComponent {
   /**
    *
    */
-  constructor(private router: Router, private authSrv: AuthService, private socialAuthService: SocialAuthService) {
+  constructor(
+    private router: Router,
+    private authSrv: AuthService,
+    private socialAuthService: SocialAuthService,
+    private msgSrv: MessageToastService
+  ) {
     this.isBrowser = authSrv.isBrowser;
   }
   ngOnInit() {
@@ -77,14 +82,17 @@ export class LoginComponent {
     const formValue = this.loginForm.value;
     this.authSrv.login(formValue['input'], formValue['password']).subscribe(
       (res) => {
+        const data = res.data;
         if (res.succeeded) {
-          const data = res.data;
           localStorage.setItem('role', data.role);
           localStorage.setItem('name', data.name);
+          debugger;
           if (data.isVerified === true) this.router.navigate(['']);
-          else this.router.navigate(['auth/verfication']);
         } else {
           this.loading = false;
+          this.msgSrv.showError(res.message);
+          if (data.isVerified === false)
+            this.router.navigate(['auth/verfication'], { state: { input: formValue['input'] } });
         }
       },
       (err) => {

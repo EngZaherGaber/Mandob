@@ -128,7 +128,7 @@ export class CompAddComponent {
       };
       this.companyManagementSrv.add(value).subscribe((res) => {
         if (res.succeeded) {
-          this.router.navigate(['owner/company-management/show/table']);
+          this.router.navigate(['owner/company-management/show']);
         }
       });
     }

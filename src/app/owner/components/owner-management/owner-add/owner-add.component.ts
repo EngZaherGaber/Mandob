@@ -84,7 +84,7 @@ export class OwnerAddComponent {
       };
       this.ownerManagementSrv.add(value).subscribe((res) => {
         if (res.succeeded) {
-          this.router.navigate(['owner/owner-management/show/table']);
+          this.router.navigate(['owner/owner-management/show']);
         }
       });
     }

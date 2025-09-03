@@ -21,6 +21,7 @@ import { error } from 'console';
 })
 export class VerficationComponent {
   codeControl: FormControl = new FormControl(null);
+  input: string = '';
   loading: boolean = false;
   codeInput: InputDynamic;
   // role: Signal<string | null>;
@@ -29,6 +30,10 @@ export class VerficationComponent {
    */
   constructor(private router: Router, private userState: UserStateService, private authSrv: AuthService) {
     // this.role = userState.role;
+    const nav = this.router.getCurrentNavigation();
+    if (nav?.extras.state) {
+      this.input = nav.extras.state['input'] ?? '';
+    }
     this.codeInput = {
       key: 'code',
       value: null,
@@ -41,7 +46,7 @@ export class VerficationComponent {
   }
 
   verfication() {
-    this.authSrv.verifyCode({ code: this.codeControl.value }).subscribe((res) => {
+    this.authSrv.verifyCode({ code: this.codeControl.value, email: this.input }).subscribe((res) => {
       if (res.succeeded) this.router.navigate(['']);
     });
   }

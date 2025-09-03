@@ -20,7 +20,7 @@ export abstract class BaseUserStrategy<T extends User> implements UserStrategy<T
     return this.http.put<APIResponse<T>>(this.url, body);
   }
 
-  verifyCode(body: { code: string }): Observable<APIResponse<any>> {
+  verifyCode(body: { code: string; email: string }): Observable<APIResponse<any>> {
     return this.authSrv.verifyCode(body);
   }
 

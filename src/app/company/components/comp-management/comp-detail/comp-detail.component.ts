@@ -119,7 +119,7 @@ export class CompDetailComponent {
     if (this.companyId) {
       this.companyManagementSrv.edit(this.companyId, event).subscribe((res) => {
         if (res.succeeded) {
-          this.router.navigate(['owner/company-management/show/table']);
+          this.router.navigate(['owner/company-management/show']);
         }
       });
     }

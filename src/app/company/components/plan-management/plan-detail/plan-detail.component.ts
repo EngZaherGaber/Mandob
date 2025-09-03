@@ -110,7 +110,7 @@ export class PlanDetailComponent {
       this.planSrv.edit(this.planId, event).subscribe((res) => {
         if (res.succeeded) {
           this.msgSrv.showSuccess('تم تعديل المدير');
-          this.router.navigate(['owner/plan-management/show/table']);
+          this.router.navigate(['owner/plan-management/show']);
         }
       });
     }

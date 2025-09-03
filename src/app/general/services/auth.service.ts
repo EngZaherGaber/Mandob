@@ -51,25 +51,10 @@ export class AuthService {
     return this.http.put<APIResponse<any>>(this.url + '/change-password', body);
   }
 
-  verifyCode(body: { code: string }) {
+  verifyCode(body: { code: string; email: string }) {
     return this.http.post<APIResponse<any>>(this.url + '/verify-code', body);
   }
   myInfo() {
     return this.http.get<APIResponse<any>>(this.url + '/me');
-    return of({
-      succeeded: true,
-      message: 'string',
-      data: {
-        userId: 1,
-        userName: 'string',
-        email: 'string',
-        name: 'string',
-        phoneNumber: 'string',
-        isActive: true,
-        role: 'client',
-      },
-      error: [],
-      count: 0,
-    });
   }
 }

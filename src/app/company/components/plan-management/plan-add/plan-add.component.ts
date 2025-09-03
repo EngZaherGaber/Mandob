@@ -88,7 +88,7 @@ export class PlanAddComponent {
   submit(event: any) {
     this.planSrv.add(event).subscribe((res) => {
       if (res.succeeded) {
-        this.router.navigate(['owner/plan-management/show/table']);
+        this.router.navigate(['owner/plan-management/show']);
       }
     });
   }

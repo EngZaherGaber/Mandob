@@ -34,7 +34,7 @@ export class CompanyStrategy extends BaseUserStrategy<Company> {
         {
           label: 'جدول الموزعين',
           icon: 'pi pi-table',
-          routerLink: ['company/distributor/show/table'],
+          routerLink: ['company/distributor/show'],
         },
       ],
     },

@@ -4602,8 +4602,8 @@ export const MyPreset = definePreset(Aura, {
       colorScheme: {
         light: {
           root: {
-            background: '{surface.100}',
-            checkedBackground: '{surface.100}',
+            background: '{surface.200}',
+            checkedBackground: '{surface.300}',
             hoverBackground: '{surface.100}',
             borderColor: '{surface.100}',
             color: '{surface.500}',
@@ -4622,7 +4622,7 @@ export const MyPreset = definePreset(Aura, {
         },
         dark: {
           root: {
-            background: '{surface.950}',
+            background: '{surface.800}',
             checkedBackground: '{surface.950}',
             hoverBackground: '{surface.950}',
             borderColor: '{surface.950}',

@@ -38,7 +38,7 @@ export const routes: Routes = [
             path: 'company-management',
             children: [
               {
-                path: 'show/:type',
+                path: 'show',
                 title: 'عرض الشركات',
                 component: CompShowComponent,
               },
@@ -58,7 +58,7 @@ export const routes: Routes = [
             path: 'owner-management',
             children: [
               {
-                path: 'show/:type',
+                path: 'show',
                 title: 'عرض المدراء',
                 component: OwnerShowComponent,
               },
@@ -78,7 +78,7 @@ export const routes: Routes = [
             path: 'client-management',
             children: [
               {
-                path: 'show/:type',
+                path: 'show',
                 title: 'عرض الماركت',
                 component: ClientShowComponent,
               },
@@ -93,7 +93,7 @@ export const routes: Routes = [
             path: 'plan-management',
             children: [
               {
-                path: 'show/:type',
+                path: 'show',
                 title: 'عرض الباقات',
                 component: PlanShowComponent,
               },
@@ -118,7 +118,7 @@ export const routes: Routes = [
             path: 'distributor',
             children: [
               {
-                path: 'show/:type',
+                path: 'show',
                 title: 'عرض الموزعين',
                 component: ComDistributorShowComponent,
               },
@@ -159,7 +159,6 @@ export const routes: Routes = [
       {
         path: 'verfication',
         component: VerficationComponent,
-        canActivate: [authGuard],
         title: 'تأكيد الحساب',
       },
       {

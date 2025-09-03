@@ -23,65 +23,39 @@ export class OwnerStrategy extends BaseUserStrategy<Owner> {
       ],
     },
     {
-      label: 'ادارة الشركات',
+      label: 'الادارة',
+      icon: 'pi pi-cog', // ⚙ management / settings
       items: [
         {
-          label: 'قائمة الشركات',
-          icon: 'pi pi-sitemap',
-          routerLink: ['owner/company-management/show/list'],
+          label: ' الشركات',
+          icon: 'pi pi-building', // 🏢 companies
+          routerLink: ['owner/company-management/show'],
         },
         {
-          label: 'جدول الشركات',
-          icon: 'pi pi-table',
-          routerLink: ['owner/company-management/show/table'],
+          label: ' المدراء',
+          icon: 'pi pi-users', // 👥 managers
+          routerLink: ['owner/owner-management/show'],
+        },
+        {
+          label: ' الماركت',
+          icon: 'pi pi-shopping-bag', // 🛍️ market
+          routerLink: ['owner/client-management/show'],
+        },
+        {
+          label: ' الباقات',
+          icon: 'pi pi-box', // 📦 packages/plans
+          routerLink: ['owner/plan-management/show'],
         },
       ],
     },
-    {
-      label: 'ادارة المدراء',
-      items: [
-        {
-          label: 'قائمة المدراء',
-          icon: 'pi pi-sitemap',
-          routerLink: ['owner/owner-management/show/list'],
-        },
-        {
-          label: 'جدول المدراء',
-          icon: 'pi pi-table',
-          routerLink: ['owner/owner-management/show/table'],
-        },
-      ],
-    },
-    {
-      label: 'ادارة الماركت',
-      items: [
-        {
-          label: 'قائمة الماركت',
-          icon: 'pi pi-sitemap',
-          routerLink: ['owner/client-management/show/list'],
-        },
-        {
-          label: 'جدول الماركت',
-          icon: 'pi pi-table',
-          routerLink: ['owner/client-management/show/table'],
-        },
-      ],
-    },
-    {
-      label: 'ادارة الباقات',
-      items: [
-        {
-          label: 'قائمة الباقات',
-          icon: 'pi pi-sitemap',
-          routerLink: ['owner/plan-management/show/list'],
-        },
-        {
-          label: 'جدول الباقات',
-          icon: 'pi pi-table',
-          routerLink: ['owner/plan-management/show/table'],
-        },
-      ],
-    },
+    // {
+    //   label: 'ادارة الماركت',
+    //   items: [],
+    // },
+    // {
+    //   label: 'ادارة الباقات',
+    //   items: [],
+    // },
   ];
   constructor(http: HttpClient, authSrv: AuthService, router: Router) {
     super(http, authSrv, router);
