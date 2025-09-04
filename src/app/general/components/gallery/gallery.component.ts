@@ -1,26 +1,20 @@
 import { Component } from '@angular/core';
-import { FileUpload, UploadEvent } from 'primeng/fileupload';
-import { ButtonModule } from 'primeng/button';
-import { CommonModule } from '@angular/common';
-import { BadgeModule } from 'primeng/badge';
-import { ProgressBar } from 'primeng/progressbar';
-import { MessageToastService } from '../../../shared/service/message-toast.service';
-import { Tooltip } from 'primeng/tooltip';
-import { UploadsService } from '../../services/uploads.service';
-import { UserStateService } from '../../services/user-state.service';
 import { FormsModule } from '@angular/forms';
 import { Observable, of, Subject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { APIResponse } from '../../../shared/interface/response';
+import { PrimeNgSharedModule } from '../../../shared/modules/shared/primeng-shared.module';
+import { MessageToastService } from '../../../shared/service/message-toast.service';
+import { UploadsService } from '../../services/uploads.service';
+import { UserStateService } from '../../services/user-state.service';
 @Component({
   selector: 'app-gallery',
-  imports: [FileUpload, ButtonModule, BadgeModule, CommonModule, Tooltip, FormsModule],
+  imports: [PrimeNgSharedModule, FormsModule],
   templateUrl: './gallery.component.html',
   styleUrl: './gallery.component.scss',
 })
 export class GalleryComponent {
   uploadedFiles: File[] = [];
-  images: string[] = [];
+  images: { imageUrl: string; imageId: number }[] = [];
   getSub$: Subject<any> = new Subject();
   get$: Observable<any> = new Observable();
   constructor(
@@ -64,7 +58,7 @@ export class GalleryComponent {
       }
     });
   }
-  delete(id: number) {
+  deleteImage(id: number) {
     this.uploadSrv.delete(id).subscribe((res) => {
       if (res.succeeded) {
         this.msgSrv.showSuccess('تم حذف الصورة');

@@ -1,10 +1,9 @@
 import { ApplicationConfig } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { providePrimeNG } from 'primeng/config';
-import Aura from '@primeng/themes/aura';
 import { definePreset } from '@primeng/themes';
+import { providePrimeNG } from 'primeng/config';
 
-export const MyPreset = definePreset(Aura, {
+export const MyPreset = definePreset({
   primitive: {
     borderRadius: {
       none: '0',
@@ -404,7 +403,7 @@ export const MyPreset = definePreset(Aura, {
         shadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
       },
       navigation: {
-        shadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
+        shadow: '0 4px 6px -1px var(--p-surface-500), 0 2px 4px -2px var(--p-surface-300)',
       },
     },
     colorScheme: {
@@ -2371,7 +2370,7 @@ export const MyPreset = definePreset(Aura, {
       },
       content: {
         highlightBorderColor: '{primary.color}',
-        padding: '0 1.125rem 1.125rem 1.125rem',
+        padding: '0 0 1.125rem 0',
         gap: '1rem',
       },
       file: {

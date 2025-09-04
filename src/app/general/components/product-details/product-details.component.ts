@@ -1,29 +1,16 @@
 import { Component, model } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { GalleriaModule } from 'primeng/galleria';
+import { catchError, of, switchMap } from 'rxjs';
 import { DynamicInputComponent } from '../../../shared/components/dynamic-input/dynamic-input.component';
-import { InputDynamic } from '../../../shared/interface/input-dynamic';
-import { ButtonModule } from 'primeng/button';
-import { DynamicCardListComponent } from '../../../shared/components/dynamic-card-list/dynamic-card-list.component';
 import { InfoTable } from '../../../shared/interface/info-table';
+import { InputDynamic } from '../../../shared/interface/input-dynamic';
+import { PrimeNgSharedModule } from '../../../shared/modules/shared/primeng-shared.module';
 import { DyTableService } from '../../../shared/service/dy-table.service';
-import { switchMap, of, catchError } from 'rxjs';
 import { ProductListComponent } from '../product-list/product-list.component';
-import { SelectButtonModule } from 'primeng/selectbutton';
-import { CardModule } from 'primeng/card';
 
 @Component({
   selector: 'app-product-details',
-  imports: [
-    GalleriaModule,
-    SelectButtonModule,
-    ReactiveFormsModule,
-    CardModule,
-    DynamicInputComponent,
-    FormsModule,
-    ButtonModule,
-    ProductListComponent,
-  ],
+  imports: [ReactiveFormsModule, DynamicInputComponent, FormsModule, PrimeNgSharedModule, ProductListComponent],
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.scss',
 })

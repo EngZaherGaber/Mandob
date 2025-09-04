@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
-import { CarouselModule } from 'primeng/carousel';
-import { TagModule } from 'primeng/tag';
+import { Carousel } from 'primeng/carousel';
+import { Tag } from 'primeng/tag';
+import { PrimeNgSharedModule } from '../../../shared/modules/shared/primeng-shared.module';
 
 interface Product {
   id: string;
@@ -32,7 +32,7 @@ interface ProductChoice {
 }
 @Component({
   selector: 'product-list',
-  imports: [CarouselModule, ButtonModule, TagModule, CommonModule],
+  imports: [Carousel, PrimeNgSharedModule, Tag, CommonModule],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss',
 })

@@ -1,53 +1,20 @@
-import {
-  afterNextRender,
-  Component,
-  ContentChild,
-  EventEmitter,
-  Input,
-  Output,
-  TemplateRef,
-  ViewChild,
-} from '@angular/core';
-import { map, Observable } from 'rxjs';
-import { Table } from 'primeng/table';
-import { ContextMenu, ContextMenuModule } from 'primeng/contextmenu';
-import { SkeletonModule } from 'primeng/skeleton';
-import { TagModule } from 'primeng/tag';
-import { ToggleSwitchModule } from 'primeng/toggleswitch';
-import { TooltipModule } from 'primeng/tooltip';
-import { ButtonModule } from 'primeng/button';
-import { TableModule } from 'primeng/table';
-import { ToolbarModule } from 'primeng/toolbar';
-import { CommonModule } from '@angular/common';
+import { Component, ContentChild, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { DyButton } from '../../interface/dy-button';
-import { MultiSelectModule } from 'primeng/multiselect';
-import { Calendar } from 'primeng/calendar';
-import * as XLSX from 'xlsx-js-style';
 import { MenuItem } from 'primeng/api';
+import { Table } from 'primeng/table';
+import { Observable } from 'rxjs';
+import { DyButton } from '../../interface/dy-button';
+import { PrimeNgSharedModule } from '../../modules/shared/primeng-shared.module';
 import { DyTableService } from '../../service/dy-table.service';
 
 @Component({
   selector: 'dynamic-table',
-  imports: [
-    TableModule,
-    ToggleSwitchModule,
-    SkeletonModule,
-    TooltipModule,
-    CommonModule,
-    ButtonModule,
-    FormsModule,
-    ToolbarModule,
-    TagModule,
-    MultiSelectModule,
-    ContextMenuModule,
-  ],
+  imports: [PrimeNgSharedModule, FormsModule],
   templateUrl: './dynamic-table.component.html',
   styleUrl: './dynamic-table.component.scss',
 })
 export class DynamicTableComponent {
   @ViewChild('dt') table: Table | undefined;
-  @ViewChild('cm') contextMenu: ContextMenu | undefined;
   @ContentChild('rowExpansionContent', { static: true })
   rowExpansionContent: TemplateRef<any> | null = null;
   @Input() load: Observable<any> = new Observable();
@@ -113,9 +80,7 @@ export class DynamicTableComponent {
   items: MenuItem[] = [];
   constructor(private tableSrv: DyTableService) {}
 
-  ngOnInit(): void {
-    Calendar.prototype.dateFormat = 'dd-mm-yy';
-  }
+  ngOnInit(): void {}
   ngAfterContentInit(): void {
     this.load.subscribe((body) => {
       if (this.columnsEvent && this.columnsEvent.length > 0) {
@@ -249,32 +214,43 @@ export class DynamicTableComponent {
     this.table?.reset();
   }
   exportExcel() {
-    let arr = this.table?.filteredValue ?? this.table?.value;
-    if (arr && arr.length > 0) {
-      arr = arr.map((x) => {
-        let z: any = {};
-        this.body.columns.forEach((col: any) => {
-          if (this.selectedColumns.includes(col.header)) z[col.header] = x[col.field];
-        });
-        return z;
-      });
-      const filterData = arr.map(({ buttons, ...rest }) => {
-        const seenKeys = new Set<string>();
-        return Object.keys(rest).reduce((acc, key) => {
-          const lowerCaseKey = key.toLowerCase();
-          if (!seenKeys.has(lowerCaseKey)) {
-            seenKeys.add(lowerCaseKey);
-            acc[key] = rest[key];
-          }
-          return acc;
-        }, {} as { [key: string]: any });
-      });
-
-      const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filterData);
-      const wb: XLSX.WorkBook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-      XLSX.writeFile(wb, `${this.tableName}.xlsx`);
-    }
+    //   let arr = this.table?.filteredValue ?? this.table?.value;
+    //   if (arr && arr.length > 0) {
+    //     // Filter and map data
+    //     arr = arr.map((x) => {
+    //       let z: any = {};
+    //       this.body.columns.forEach((col: any) => {
+    //         if (this.selectedColumns.includes(col.header)) z[col.header] = x[col.field];
+    //       });
+    //       return z;
+    //     });
+    //     // Remove duplicate keys
+    //     const filterData = arr.map(({ buttons, ...rest }) => {
+    //       const seenKeys = new Set<string>();
+    //       return Object.keys(rest).reduce((acc, key) => {
+    //         const lowerCaseKey = key.toLowerCase();
+    //         if (!seenKeys.has(lowerCaseKey)) {
+    //           seenKeys.add(lowerCaseKey);
+    //           acc[key] = rest[key];
+    //         }
+    //         return acc;
+    //       }, {} as { [key: string]: any });
+    //     });
+    //     // Create workbook and worksheet
+    //     const workbook = new ExcelJS.Workbook();
+    //     const worksheet = workbook.addWorksheet('Sheet1');
+    //     // Add header row
+    //     worksheet.addRow(Object.keys(filterData[0]));
+    //     // Add data rows
+    //     filterData.forEach((row) => {
+    //       worksheet.addRow(Object.values(row));
+    //     });
+    //     // Write to a buffer and trigger download (browser)
+    //     workbook.xlsx.writeBuffer().then((buffer) => {
+    //       const blob = new Blob([buffer], { type: 'application/octet-stream' });
+    //       saveAs(blob, `${this.tableName}.xlsx`);
+    //     });
+    //   }
   }
   resetPaginator() {
     if (this.table) {

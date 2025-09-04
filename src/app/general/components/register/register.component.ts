@@ -1,24 +1,18 @@
 import { Component } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
-import { DynamicInputComponent } from '../../../shared/components/dynamic-input/dynamic-input.component';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { InputDynamic } from '../../../shared/interface/input-dynamic';
-import { MessageToastService } from '../../../shared/service/message-toast.service';
-import { UserStateService } from '../../services/user-state.service';
 import { Router } from '@angular/router';
-import { DynmaicFormComponent } from '../../../shared/components/dynmaic-form/dynmaic-form.component';
 import { MenuItem } from 'primeng/api';
 import { ClientService } from '../../../client/services/client.service';
-import { DynamicAttributeService } from '../../../shared/service/dynamic-attribute.service';
-import { User } from '../../interfaces/user';
-import { CommonModule } from '@angular/common';
+import { DynmaicFormComponent } from '../../../shared/components/dynmaic-form/dynmaic-form.component';
 import { LoadingComponent } from '../../../shared/components/loading/loading.component';
-import { DialogModule } from 'primeng/dialog';
-import { Client } from '../../../client/interfaces/client';
+import { InputDynamic } from '../../../shared/interface/input-dynamic';
+import { PrimeNgSharedModule } from '../../../shared/modules/shared/primeng-shared.module';
+import { DynamicAttributeService } from '../../../shared/service/dynamic-attribute.service';
+import { MessageToastService } from '../../../shared/service/message-toast.service';
+import { UserStateService } from '../../services/user-state.service';
 
 @Component({
   selector: 'app-register',
-  imports: [ButtonModule, DynmaicFormComponent, CommonModule, LoadingComponent, DialogModule],
+  imports: [PrimeNgSharedModule, DynmaicFormComponent, LoadingComponent],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })

@@ -1,22 +1,19 @@
-import { Component, effect, inject, PLATFORM_ID, Signal, signal } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
-import { StateService } from '../../service/state.service';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { TooltipModule } from 'primeng/tooltip';
-import { UserStateService } from '../../../general/services/user-state.service';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, effect, inject, PLATFORM_ID, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
-import { MenuModule } from 'primeng/menu';
-import { DialogModule } from 'primeng/dialog';
 import { User } from '../../../general/interfaces/user';
 import { AuthService } from '../../../general/services/auth.service';
-import { DynmaicFormComponent } from '../dynmaic-form/dynmaic-form.component';
+import { UserStateService } from '../../../general/services/user-state.service';
 import { InputDynamic } from '../../interface/input-dynamic';
+import { PrimeNgSharedModule } from '../../modules/shared/primeng-shared.module';
+import { StateService } from '../../service/state.service';
+import { DynmaicFormComponent } from '../dynmaic-form/dynmaic-form.component';
 
 @Component({
   selector: 'header',
-  imports: [ButtonModule, CommonModule, TooltipModule, MenuModule, DynmaicFormComponent, DialogModule],
+  imports: [PrimeNgSharedModule, DynmaicFormComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
   animations: [
@@ -45,7 +42,7 @@ export class HeaderComponent {
   visible: boolean = false;
   constructor(
     public stateSrv: StateService,
-    public userState: UserStateService,
+    private userState: UserStateService,
     private router: Router,
     private authSrv: AuthService
   ) {
@@ -90,6 +87,7 @@ export class HeaderComponent {
       });
       effect(() => {
         this.user = userState.user;
+        console.log(this.user);
       });
     } else {
       // SSR fallback - show full text immediately

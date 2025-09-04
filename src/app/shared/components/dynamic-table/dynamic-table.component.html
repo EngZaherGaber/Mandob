@@ -1,5 +1,4 @@
 <!-- <div> -->
-<p-contextmenu #cm [model]="items" (onHide)="selectedItem = null" appendTo="body" />
 
 <p-table (onContextMenuSelect)="changeVisible()" [(contextMenuSelection)]="selectedItem" [value]="body.data"
     [paginator]="true" [rowHover]="true" [rows]="25" [rowsPerPageOptions]="[5,10,25,50,100,200,500,800]"

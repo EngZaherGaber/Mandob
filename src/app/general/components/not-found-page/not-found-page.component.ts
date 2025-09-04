@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
 import { Router } from '@angular/router';
+import { PrimeNgSharedModule } from '../../../shared/modules/shared/primeng-shared.module';
 
 @Component({
   selector: 'app-not-found-page',
-  imports: [ButtonModule],
+  imports: [PrimeNgSharedModule],
   templateUrl: './not-found-page.component.html',
   styleUrl: './not-found-page.component.scss',
 })

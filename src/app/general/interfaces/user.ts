@@ -7,5 +7,5 @@ export interface User {
   isActive?: boolean;
   logo?: string;
   role: string;
-  images: string[];
+  images: { imageUrl: string; imageId: number }[];
 }

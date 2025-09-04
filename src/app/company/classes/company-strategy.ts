@@ -24,20 +24,17 @@ export class CompanyStrategy extends BaseUserStrategy<Company> {
       ],
     },
     {
-      label: 'الموزعين',
+      label: 'الادارة',
+      icon: 'pi pi-cog', // ⚙ management / settings
       items: [
         {
-          label: 'قائمة الموزعين',
-          icon: 'pi pi-sitemap',
-          routerLink: ['company/distributor/show/list'],
-        },
-        {
-          label: 'جدول الموزعين',
-          icon: 'pi pi-table',
-          routerLink: ['company/distributor/show'],
+          label: ' الموزعين',
+          icon: 'pi pi-building', // 🏢 companies
+          routerLink: ['company/distributor-management/show'],
         },
       ],
     },
+
     {
       label: 'المنتجات',
       items: [

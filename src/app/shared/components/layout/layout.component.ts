@@ -1,16 +1,15 @@
-import { Component, effect } from '@angular/core';
-import { SidenavComponent } from '../sidenav/sidenav.component';
+import { animate, style, transition, trigger } from '@angular/animations';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { HeaderComponent } from '../header/header.component';
-import { StateService } from '../../service/state.service';
-import { CommonModule } from '@angular/common';
-import { trigger, transition, style, animate } from '@angular/animations';
-import { ButtonModule } from 'primeng/button';
 import { UserStateService } from '../../../general/services/user-state.service';
+import { PrimeNgSharedModule } from '../../modules/shared/primeng-shared.module';
+import { StateService } from '../../service/state.service';
+import { HeaderComponent } from '../header/header.component';
+import { SidenavComponent } from '../sidenav/sidenav.component';
 
 @Component({
   selector: 'app-layout',
-  imports: [SidenavComponent, RouterOutlet, HeaderComponent, CommonModule, ButtonModule],
+  imports: [SidenavComponent, RouterOutlet, HeaderComponent, PrimeNgSharedModule],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
   animations: [
@@ -25,7 +24,5 @@ import { UserStateService } from '../../../general/services/user-state.service';
   ],
 })
 export class LayoutComponent {
-  constructor(public stateSrv: StateService, private userState: UserStateService) {
-    
-  }
+  constructor(public stateSrv: StateService, private userState: UserStateService) {}
 }

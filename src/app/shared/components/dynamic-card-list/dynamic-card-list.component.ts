@@ -1,53 +1,20 @@
-import {
-  Component,
-  ContentChild,
-  EventEmitter,
-  Inject,
-  Input,
-  Output,
-  PLATFORM_ID,
-  TemplateRef,
-  ViewChild,
-} from '@angular/core';
-import { MenuItem } from 'primeng/api';
-import { ContextMenu, ContextMenuModule } from 'primeng/contextmenu';
-import { Table } from 'primeng/table';
-import { Observable, Subject, takeUntil } from 'rxjs';
-import { DyButton } from '../../interface/dy-button';
-import { CardModule } from 'primeng/card';
-import { CommonModule, isPlatformBrowser, isPlatformServer } from '@angular/common';
-import { ButtonModule } from 'primeng/button';
-import { DataViewModule } from 'primeng/dataview';
-import { Calendar } from 'primeng/calendar';
-import { DyTableService } from '../../service/dy-table.service';
-import { TagModule } from 'primeng/tag';
-import { TooltipModule } from 'primeng/tooltip';
-import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { Component, ContentChild, EventEmitter, Inject, Input, Output, PLATFORM_ID, TemplateRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { SelectButtonModule } from 'primeng/selectbutton';
-import { ToolbarModule } from 'primeng/toolbar';
+import { MenuItem } from 'primeng/api';
+import { Table } from 'primeng/table';
+import { Observable } from 'rxjs';
 import { UserStateService } from '../../../general/services/user-state.service';
+import { DyButton } from '../../interface/dy-button';
+import { PrimeNgSharedModule } from '../../modules/shared/primeng-shared.module';
+import { DyTableService } from '../../service/dy-table.service';
 
 @Component({
   selector: 'dynamic-card-list',
-  imports: [
-    CardModule,
-    CommonModule,
-    ButtonModule,
-    ContextMenuModule,
-    FormsModule,
-    SelectButtonModule,
-    DataViewModule,
-    ToolbarModule,
-    ToggleSwitchModule,
-    TagModule,
-    TooltipModule,
-  ],
+  imports: [FormsModule, PrimeNgSharedModule],
   templateUrl: './dynamic-card-list.component.html',
   styleUrl: './dynamic-card-list.component.scss',
 })
 export class DynamicCardListComponent {
-  @ViewChild('cm') contextMenu: ContextMenu | undefined;
   @ContentChild('rowExpansionContent', { static: true })
   rowExpansionContent: TemplateRef<any> | null = null;
   @Input() load: Observable<any> = new Observable();
@@ -120,9 +87,7 @@ export class DynamicCardListComponent {
     private tableSrv: DyTableService,
     private userState: UserStateService
   ) {}
-  ngOnInit(): void {
-    Calendar.prototype.dateFormat = 'dd-mm-yy';
-  }
+  ngOnInit(): void {}
   ngAfterContentInit(): void {
     this.load.subscribe((body) => {
       if (this.columnsEvent && this.columnsEvent.length > 0) {

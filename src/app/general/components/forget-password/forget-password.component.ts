@@ -1,20 +1,17 @@
 import { SocialAuthService } from '@abacritt/angularx-social-login';
 import { Component } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { InputDynamic } from '../../../shared/interface/input-dynamic';
-import { MessageToastService } from '../../../shared/service/message-toast.service';
-import { AuthService } from '../../services/auth.service';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ButtonModule } from 'primeng/button';
 import { DynamicInputComponent } from '../../../shared/components/dynamic-input/dynamic-input.component';
-import { DynamicAttributeService } from '../../../shared/service/dynamic-attribute.service';
-import { CommonModule } from '@angular/common';
 import { LoadingComponent } from '../../../shared/components/loading/loading.component';
+import { InputDynamic } from '../../../shared/interface/input-dynamic';
+import { PrimeNgSharedModule } from '../../../shared/modules/shared/primeng-shared.module';
+import { AuthService } from '../../services/auth.service';
 import { UserStateService } from '../../services/user-state.service';
 
 @Component({
   selector: 'app-forget-password',
-  imports: [ButtonModule, DynamicInputComponent, CommonModule, LoadingComponent],
+  imports: [PrimeNgSharedModule, DynamicInputComponent, LoadingComponent],
   templateUrl: './forget-password.component.html',
   styleUrl: './forget-password.component.scss',
 })

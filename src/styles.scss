@@ -1,8 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-@use "../public/_general.scss" as *;
 @use "../public/_font.scss" as *;
-@use "../public/_mixin.scss" as *;
-@use "../public/_color.scss" as *;
 @import "primeicons/primeicons.css";
 html,
 body {
@@ -18,7 +15,6 @@ body {
   }
 
   @include responsive-headings();
-  @include form-theme-mode();
 }
 body {
   overflow: hidden;
@@ -58,6 +54,11 @@ body {
   ::-webkit-scrollbar-thumb:hover {
     background: var(--p-amber-500); /* Color of the thumb on hover */
   }
+}
+.p-inputwrapper,
+.p-inputtext {
+  display: flex;
+  width: 100%;
 }
 html.dark body {
   ::-webkit-scrollbar-track {

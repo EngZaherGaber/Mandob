@@ -1,35 +1,12 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './shared/guards/auth.guard';
-import { LayoutComponent } from './shared/components/layout/layout.component';
-import { ComDistributorShowComponent } from './company/components/distributor/com-distributor-show/com-distributor-show.component';
-import { AuthComponent } from './general/components/auth/auth.component';
-import { NotFoundPageComponent } from './general/components/not-found-page/not-found-page.component';
-import { ProductDetailsComponent } from './general/components/product-details/product-details.component';
-import { AccountComponent } from './general/components/account/account.component';
-import { OwnerShowComponent } from './owner/components/owner-management/owner-show/owner-show.component';
-import { LoginComponent } from './general/components/login/login.component';
-import { RegisterComponent } from './general/components/register/register.component';
-import { VerficationComponent } from './general/components/verfication/verfication.component';
-import { ForgetPasswordComponent } from './general/components/forget-password/forget-password.component';
-import { CompShowComponent } from './company/components/comp-management/comp-show/comp-show.component';
-import { CompDetailComponent } from './company/components/comp-management/comp-detail/comp-detail.component';
-import { CompAddComponent } from './company/components/comp-management/comp-add/comp-add.component';
-import { OwnerAddComponent } from './owner/components/owner-management/owner-add/owner-add.component';
-import { OwnerDetailComponent } from './owner/components/owner-management/owner-detail/owner-detail.component';
-import { GalleryComponent } from './general/components/gallery/gallery.component';
-import { ClientDetailComponent } from './client/components/clinet-management/client-detail/client-detail.component';
-import { ClientShowComponent } from './client/components/clinet-management/client-show/client-show.component';
-import { PlanAddComponent } from './company/components/plan-management/plan-add/plan-add.component';
-import { PlanDetailComponent } from './company/components/plan-management/plan-detail/plan-detail.component';
-import { PlanShowComponent } from './company/components/plan-management/plan-show/plan-show.component';
 
 export const routes: Routes = [
   {
     path: '',
     canActivate: [authGuard],
     title: 'الصفحة الرئيسية',
-    // canActivateChild: [authGuard],
-    component: LayoutComponent,
+    loadComponent: () => import('./shared/components/layout/layout.component').then((m) => m.LayoutComponent),
     children: [
       {
         path: 'owner',
@@ -40,17 +17,26 @@ export const routes: Routes = [
               {
                 path: 'show',
                 title: 'عرض الشركات',
-                component: CompShowComponent,
+                loadComponent: () =>
+                  import('./company/components/comp-management/comp-show/comp-show.component').then(
+                    (m) => m.CompShowComponent
+                  ),
               },
               {
                 path: 'detail/:type/:id',
                 title: 'بيانات الشركة',
-                component: CompDetailComponent,
+                loadComponent: () =>
+                  import('./company/components/comp-management/comp-detail/comp-detail.component').then(
+                    (m) => m.CompDetailComponent
+                  ),
               },
               {
                 path: 'add',
                 title: 'اضافة شركة',
-                component: CompAddComponent,
+                loadComponent: () =>
+                  import('./company/components/comp-management/comp-add/comp-add.component').then(
+                    (m) => m.CompAddComponent
+                  ),
               },
             ],
           },
@@ -60,17 +46,26 @@ export const routes: Routes = [
               {
                 path: 'show',
                 title: 'عرض المدراء',
-                component: OwnerShowComponent,
+                loadComponent: () =>
+                  import('./owner/components/owner-management/owner-show/owner-show.component').then(
+                    (m) => m.OwnerShowComponent
+                  ),
               },
               {
                 path: 'add',
                 title: 'اضافة مدير',
-                component: OwnerAddComponent,
+                loadComponent: () =>
+                  import('./owner/components/owner-management/owner-add/owner-add.component').then(
+                    (m) => m.OwnerAddComponent
+                  ),
               },
               {
                 path: 'detail/:type/:id',
                 title: 'بيانات مدير',
-                component: OwnerDetailComponent,
+                loadComponent: () =>
+                  import('./owner/components/owner-management/owner-detail/owner-detail.component').then(
+                    (m) => m.OwnerDetailComponent
+                  ),
               },
             ],
           },
@@ -80,12 +75,18 @@ export const routes: Routes = [
               {
                 path: 'show',
                 title: 'عرض الماركت',
-                component: ClientShowComponent,
+                loadComponent: () =>
+                  import('./client/components/clinet-management/client-show/client-show.component').then(
+                    (m) => m.ClientShowComponent
+                  ),
               },
               {
                 path: 'detail/display/:id',
                 title: 'بيانات ماركت',
-                component: ClientDetailComponent,
+                loadComponent: () =>
+                  import('./client/components/clinet-management/client-detail/client-detail.component').then(
+                    (m) => m.ClientDetailComponent
+                  ),
               },
             ],
           },
@@ -95,17 +96,26 @@ export const routes: Routes = [
               {
                 path: 'show',
                 title: 'عرض الباقات',
-                component: PlanShowComponent,
+                loadComponent: () =>
+                  import('./company/components/plan-management/plan-show/plan-show.component').then(
+                    (m) => m.PlanShowComponent
+                  ),
               },
               {
                 path: 'add',
                 title: 'اضافة باقة',
-                component: PlanAddComponent,
+                loadComponent: () =>
+                  import('./company/components/plan-management/plan-add/plan-add.component').then(
+                    (m) => m.PlanAddComponent
+                  ),
               },
               {
                 path: 'detail/:type/:id',
                 title: 'بيانات باقة',
-                component: PlanDetailComponent,
+                loadComponent: () =>
+                  import('./company/components/plan-management/plan-detail/plan-detail.component').then(
+                    (m) => m.PlanDetailComponent
+                  ),
               },
             ],
           },
@@ -115,61 +125,89 @@ export const routes: Routes = [
         path: 'company',
         children: [
           {
-            path: 'distributor',
+            path: 'distributor-management',
             children: [
               {
                 path: 'show',
-                title: 'عرض الموزعين',
-                component: ComDistributorShowComponent,
+                title: 'عرض الباقات',
+                loadComponent: () =>
+                  import(
+                    './distributor/components/distributor-management/distributor-show/distributor-show.component'
+                  ).then((m) => m.DistributorShowComponent),
+              },
+              {
+                path: 'add',
+                title: 'اضافة باقة',
+                loadComponent: () =>
+                  import(
+                    './distributor/components/distributor-management/distributor-add/distributor-add.component'
+                  ).then((m) => m.DistributorAddComponent),
+              },
+              {
+                path: 'detail/:type/:id',
+                title: 'بيانات باقة',
+                loadComponent: () =>
+                  import(
+                    './distributor/components/distributor-management/distributor-detail/distributor-detail.component'
+                  ).then((m) => m.DistributorDetailComponent),
               },
             ],
           },
           {
             path: 'product',
-            component: ProductDetailsComponent,
+            loadComponent: () =>
+              import('./general/components/product-details/product-details.component').then(
+                (m) => m.ProductDetailsComponent
+              ),
           },
         ],
       },
       {
         path: 'account',
         title: 'معلومات الحساب',
-        component: AccountComponent,
+        loadComponent: () => import('./general/components/account/account.component').then((m) => m.AccountComponent),
       },
       {
         path: 'gallery',
         title: 'معرض الصور',
-        component: GalleryComponent,
+        loadComponent: () => import('./general/components/gallery/gallery.component').then((m) => m.GalleryComponent),
       },
     ],
   },
   {
     path: 'auth',
-    component: AuthComponent,
+    loadComponent: () => import('./general/components/auth/auth.component').then((m) => m.AuthComponent),
     children: [
       {
         path: 'login',
-        component: LoginComponent,
         title: 'تسجيل الدخول',
+        loadComponent: () => import('./general/components/login/login.component').then((m) => m.LoginComponent),
       },
       {
         path: 'register',
-        component: RegisterComponent,
         title: 'انشاء حساب',
+        loadComponent: () =>
+          import('./general/components/register/register.component').then((m) => m.RegisterComponent),
       },
       {
         path: 'verfication',
-        component: VerficationComponent,
         title: 'تأكيد الحساب',
+        loadComponent: () =>
+          import('./general/components/verfication/verfication.component').then((m) => m.VerficationComponent),
       },
       {
         path: 'forget-password',
-        component: ForgetPasswordComponent,
         title: 'استعادة كلمة المرور',
+        loadComponent: () =>
+          import('./general/components/forget-password/forget-password.component').then(
+            (m) => m.ForgetPasswordComponent
+          ),
       },
     ],
   },
   {
     path: '**',
-    component: NotFoundPageComponent,
+    loadComponent: () =>
+      import('./general/components/not-found-page/not-found-page.component').then((m) => m.NotFoundPageComponent),
   },
 ];

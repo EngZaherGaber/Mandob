@@ -1,15 +1,15 @@
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { DyButton } from '../../interface/dy-button';
-import { DynamicTableComponent } from '../dynamic-table/dynamic-table.component';
+import { PrimeNgSharedModule } from '../../modules/shared/primeng-shared.module';
 import { DynamicCardListComponent } from '../dynamic-card-list/dynamic-card-list.component';
-import { CommonModule } from '@angular/common';
-import { SelectButtonModule } from 'primeng/selectbutton';
-import { FormsModule } from '@angular/forms';
+import { DynamicTableComponent } from '../dynamic-table/dynamic-table.component';
 
 @Component({
   selector: 'dynamic-view',
-  imports: [DynamicTableComponent, DynamicCardListComponent, CommonModule, SelectButtonModule, FormsModule],
+  imports: [DynamicTableComponent, DynamicCardListComponent, CommonModule, PrimeNgSharedModule, FormsModule],
   templateUrl: './dynamic-view.component.html',
   styleUrl: './dynamic-view.component.scss',
 })

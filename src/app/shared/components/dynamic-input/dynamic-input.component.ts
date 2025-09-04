@@ -1,39 +1,11 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AutoCompleteModule } from 'primeng/autocomplete';
-import { CalendarModule } from 'primeng/calendar';
-import { CheckboxModule } from 'primeng/checkbox';
-import { Dropdown, DropdownModule } from 'primeng/dropdown';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { MultiSelectModule } from 'primeng/multiselect';
-import { CommonModule } from '@angular/common';
 import { InputDynamic } from '../../interface/input-dynamic';
-import { FloatLabelModule } from 'primeng/floatlabel';
-import { InputTextModule } from 'primeng/inputtext';
-import { PasswordModule } from 'primeng/password';
-import { SelectModule } from 'primeng/select';
-import { DatePickerModule } from 'primeng/datepicker';
-import { KeyFilterModule } from 'primeng/keyfilter';
+import { PrimeNgSharedModule } from '../../modules/shared/primeng-shared.module';
 
 @Component({
   selector: 'dynamic-input',
-  imports: [
-    InputNumberModule,
-    DropdownModule,
-    CheckboxModule,
-    AutoCompleteModule,
-    CalendarModule,
-    MultiSelectModule,
-    ReactiveFormsModule,
-    CommonModule,
-    FormsModule,
-    FloatLabelModule,
-    InputTextModule,
-    PasswordModule,
-    SelectModule,
-    DatePickerModule,
-    KeyFilterModule
-  ],
+  imports: [ReactiveFormsModule, PrimeNgSharedModule, FormsModule],
   templateUrl: './dynamic-input.component.html',
   styleUrl: './dynamic-input.component.scss',
 })
@@ -48,7 +20,6 @@ export class DynamicInputComponent {
     options: [],
   };
   @Input() FEcontrol: FormControl = new FormControl('');
-  @ViewChild('drop') drop: Dropdown | null = null;
   items: any[] | undefined = [];
   autoCompleteValue: any;
   arabicPattern: RegExp = /^[\u0600-\u06FF\s]+$/;
@@ -62,25 +33,22 @@ export class DynamicInputComponent {
     let today = new Date();
     let month = today.getMonth();
     let year = today.getFullYear();
-    let prevMonth = (month === 0) ? 11 : month - 1;
-    let prevYear = (prevMonth === 11) ? year - 1 : year;
-    let nextMonth = (month === 11) ? 0 : month + 1;
-    let nextYear = (nextMonth === 0) ? year + 1 : year;
+    let prevMonth = month === 0 ? 11 : month - 1;
+    let prevYear = prevMonth === 11 ? year - 1 : year;
+    let nextMonth = month === 11 ? 0 : month + 1;
+    let nextYear = nextMonth === 0 ? year + 1 : year;
     this.minDate = new Date();
     this.minDate.setMonth(prevMonth);
     this.minDate.setFullYear(prevYear);
     this.maxDate = new Date();
     this.maxDate.setMonth(nextMonth);
     this.maxDate.setFullYear(nextYear);
-
   }
   ngOnInit(): void {
     if (this.FEcontrol.value === null && this.FEcontrol.value !== 0) {
       if (this.object.dataType.toLowerCase() === 'autocomplete') {
         this.items;
-        const value = this.object.options?.find(
-          (x) => x.id === this.FEcontrol.value
-        );
+        const value = this.object.options?.find((x) => x.id === this.FEcontrol.value);
         value ? (this.autoCompleteValue = value) : '';
       } else if (
         this.object.dataType.toLowerCase() === 'float' ||
@@ -94,11 +62,11 @@ export class DynamicInputComponent {
         this.FEcontrol.setValue(new Date());
       } else if (this.object.dataType.toLowerCase() === 'year' || this.object.dataType.toLowerCase() === 'month') {
         if (this.object.dataType.toLowerCase() === 'year') {
-          this.autoCompleteValue = (new Date());
+          this.autoCompleteValue = new Date();
           this.FEcontrol.setValue(new Date().getFullYear());
         } else {
           // this.FEcontrol.setValue(this.autoCompleteValue);
-          this.autoCompleteValue = (new Date());
+          this.autoCompleteValue = new Date();
           this.FEcontrol.setValue(new Date().getMonth() + 1);
         }
       }
@@ -109,18 +77,16 @@ export class DynamicInputComponent {
         }
       } else if (this.object.dataType.toLowerCase() === 'autocomplete') {
         this.items;
-        this.autoCompleteValue = this.object.options?.find(
-          (x) => x.id === this.FEcontrol.value
-        );
+        this.autoCompleteValue = this.object.options?.find((x) => x.id === this.FEcontrol.value);
       } else if (this.object.dataType.toLowerCase() === 'datetime') {
         const va = new Date(this.FEcontrol.value);
         this.FEcontrol.setValue(va);
       } else if (this.object.dataType.toLowerCase() === 'year' || this.object.dataType.toLowerCase() === 'month') {
         const type = this.object.dataType.toLowerCase() === 'year' ? 'yy' : 'mm';
         if (this.object.dataType.toLowerCase() === 'year') {
-          this.autoCompleteValue = (new Date());
+          this.autoCompleteValue = new Date();
         } else {
-          this.autoCompleteValue = (new Date());
+          this.autoCompleteValue = new Date();
         }
         const yy = this.autoCompleteValue.getFullYear();
         const mm = this.autoCompleteValue.getMonth() + 1;
@@ -139,9 +105,9 @@ export class DynamicInputComponent {
     return obj;
   }
   getSuggestions(event: any) {
-    this.items = this.object.options?.filter((x) =>
-      (x.name as string).toLowerCase().includes(event.query.toLowerCase())
-    ).sort((a, b) => (a.name as string).localeCompare((b.name as string)));
+    this.items = this.object.options
+      ?.filter((x) => (x.name as string).toLowerCase().includes(event.query.toLowerCase()))
+      .sort((a, b) => (a.name as string).localeCompare(b.name as string));
   }
   selectValue(event: any) {
     this.autoCompleteValue = event;
@@ -154,25 +120,20 @@ export class DynamicInputComponent {
     const date = new Date(event);
     const yy = date.getFullYear();
     const mm = date.getMonth() + 1;
-    this.FEcontrol.setValue(type === 'mm' ? mm : yy)
+    this.FEcontrol.setValue(type === 'mm' ? mm : yy);
   }
   disableAutoComplete() {
     return this.FEcontrol.disabled;
   }
-  filterList(event: any) {
-    const searchValue = (event.filter as string)
-      ? (event.filter as string).toLowerCase().replace(/\s+/g, '')
-      : null;
-    if (this.drop) {
+  filterList(event: any, drop: any) {
+    const searchValue = (event.filter as string) ? (event.filter as string).toLowerCase().replace(/\s+/g, '') : null;
+    if (drop) {
       if (searchValue) {
-        this.drop.options = this.object.options?.filter((x) =>
-          (x.name as string)
-            .toLowerCase()
-            .replace(/\s+/g, '')
-            .includes(searchValue)
+        drop.options = this.object.options?.filter((x) =>
+          (x.name as string).toLowerCase().replace(/\s+/g, '').includes(searchValue)
         );
       } else {
-        this.drop.options = this.drop.options;
+        drop.options = drop.options;
       }
     }
   }

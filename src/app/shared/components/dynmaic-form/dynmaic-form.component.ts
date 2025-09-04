@@ -1,29 +1,15 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  Output,
-  SimpleChanges,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
-import { fromEvent, switchMap, takeUntil } from 'rxjs';
+import { InputDynamic } from '../../interface/input-dynamic';
+import { PrimeNgSharedModule } from '../../modules/shared/primeng-shared.module';
 import { DynamicAttributeService } from '../../service/dynamic-attribute.service';
 import { DynamicInputComponent } from '../dynamic-input/dynamic-input.component';
-import { ScrollPanelModule } from 'primeng/scrollpanel';
-import { CardModule } from 'primeng/card';
-import { ButtonModule } from 'primeng/button';
-import { StepsModule } from 'primeng/steps';
-import { CommonModule } from '@angular/common';
-import { InputDynamic } from '../../interface/input-dynamic';
 
 @Component({
   selector: 'dynmaic-form',
-  imports: [DynamicInputComponent, ScrollPanelModule, CardModule, StepsModule, CommonModule, ButtonModule],
+  imports: [DynamicInputComponent, PrimeNgSharedModule],
   templateUrl: './dynmaic-form.component.html',
   styleUrl: './dynmaic-form.component.scss',
 })

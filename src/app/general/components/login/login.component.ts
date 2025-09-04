@@ -1,24 +1,22 @@
-import { afterNextRender, Component, Signal } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
-import { DynamicInputComponent } from '../../../shared/components/dynamic-input/dynamic-input.component';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { InputDynamic } from '../../../shared/interface/input-dynamic';
-import { MessageToastService } from '../../../shared/service/message-toast.service';
-import { UserStateService } from '../../services/user-state.service';
-import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
 import {
   FacebookLoginProvider,
   GoogleLoginProvider,
   SocialAuthService,
   SocialUser,
 } from '@abacritt/angularx-social-login';
+import { Component, Signal } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { DynamicInputComponent } from '../../../shared/components/dynamic-input/dynamic-input.component';
 import { LoadingComponent } from '../../../shared/components/loading/loading.component';
-import { CommonModule } from '@angular/common';
+import { InputDynamic } from '../../../shared/interface/input-dynamic';
+import { PrimeNgSharedModule } from '../../../shared/modules/shared/primeng-shared.module';
+import { MessageToastService } from '../../../shared/service/message-toast.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'login',
-  imports: [ButtonModule, DynamicInputComponent, LoadingComponent, CommonModule],
+  imports: [PrimeNgSharedModule, DynamicInputComponent, LoadingComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
@@ -86,7 +84,6 @@ export class LoginComponent {
         if (res.succeeded) {
           localStorage.setItem('role', data.role);
           localStorage.setItem('name', data.name);
-          debugger;
           if (data.isVerified === true) this.router.navigate(['']);
         } else {
           this.loading = false;

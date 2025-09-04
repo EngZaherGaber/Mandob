@@ -1,7 +1,7 @@
 <div class="container-fluid border-0">
     <div class="row">
         <p-fileupload #fu accept="image/*" name="myfile[]" [multiple]="false" maxFileSize="1000000"
-            (onSelect)="onSelect($event)">
+            (onSelect)="onSelect($event)" class="p-0">
             <ng-template class="p-0" #header let-files let-chooseCallback="chooseCallback"
                 let-clearCallback="clearCallback" let-uploadCallback="uploadCallback">
                 <div class="container-fluid g-0 p-0">
@@ -26,12 +26,15 @@
             </ng-template>
         </p-fileupload>
         <div class="d-flex flex-wrap border border-2 rounded-4 gap-2 p-2">
-            <div class="position-relative" style="width: calc(25% - 0.5rem);height: 250px;" *ngFor="let img of images">
-                <img [src]="img" class="w-100 h-100" [alt]="'image-of-'+userState.user?.name">
-                <div class="position-absolute end-0 bottom-0 d-flex gap-2 px-2">
+            <div class="position-relative border border-1 rounded-4" style="width: calc(20% - 0.5rem);height: 200px;"
+                *ngFor="let img of images">
+                <img [src]="img.imageUrl" class="w-100 h-100 rounded-4" [alt]="'image-of-'+userState.user?.name">
+                <div class="position-absolute end-0 bottom-0 w-100 d-flex gap-2 px-2 rounded-4 py-1">
 
-                    <p-button pTooltip="الرئيسية" icon="pi pi-key"></p-button>
-                    <p-button pTooltip="احذف" icon="pi pi-trash" severity="danger"></p-button>
+                    <p-button size="small" pTooltip="الرئيسية" (onClick)="setMain(img.imageId)"
+                        icon="pi pi-key"></p-button>
+                    <p-button size="small" pTooltip="احذف" icon="pi pi-trash" severity="danger"
+                        (onClick)="deleteImage(img.imageId)"></p-button>
                 </div>
             </div>
 

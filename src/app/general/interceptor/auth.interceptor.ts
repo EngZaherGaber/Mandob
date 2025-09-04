@@ -45,9 +45,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
                   msgSrv.showError(msg);
                   break;
                 case 500:
-                case 0:
-                  msgSrv.showError('Internal Server Error');
-                  break;
                 default:
                   msgSrv.showError('An unexpected error occurred');
                   break;

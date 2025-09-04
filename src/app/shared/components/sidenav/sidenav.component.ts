@@ -1,15 +1,13 @@
-import { Component, effect, OnInit, Signal } from '@angular/core';
+import { Component, effect, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MenuItem } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
-import { MenuModule } from 'primeng/menu';
-import { PanelMenu } from 'primeng/panelmenu';
-import { StateService } from '../../service/state.service';
 import { UserStateService } from '../../../general/services/user-state.service';
+import { PrimeNgSharedModule } from '../../modules/shared/primeng-shared.module';
+import { StateService } from '../../service/state.service';
 
 @Component({
   selector: 'sidenav',
-  imports: [MenuModule, RouterModule, ButtonModule, PanelMenu],
+  imports: [RouterModule, PrimeNgSharedModule],
   templateUrl: './sidenav.component.html',
   styleUrl: './sidenav.component.scss',
 })
