@@ -1,6 +1,7 @@
 {
   "name": "mandob",
   "version": "0.0.0",
+  "type": "module",
   "scripts": {
     "ng": "ng",
     "analyze": "ng build --configuration production --source-map && source-map-explorer dist/**/*.js --no-border-checks",
@@ -8,7 +9,8 @@
     "build": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:Mandob": "node dist/mandob/server/server.mjs"
+    "serve:ssr:Mandob": "node dist/mandob/server/server.mjs",
+    "start:ssr": "node ./start.mjs"
   },
   "private": true,
   "dependencies": {
