@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
-import { catchError, map, Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { APIResponse } from '../../shared/interface/response';
 import { User } from '../interfaces/user';
 import { UserStrategy } from '../interfaces/user-strategy';
 import { AuthService } from '../services/auth.service';
-import { Router } from '@angular/router';
 
 export abstract class BaseUserStrategy<T extends User> implements UserStrategy<T> {
   abstract url: string;

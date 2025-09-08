@@ -53,8 +53,8 @@ export class RegisterComponent {
           options: [],
         },
         {
-          key: 'userName',
-          label: 'اسم المستخدم',
+          key: 'email',
+          label: 'الايميل',
           value: null,
           dataType: 'string',
           lang: 'en',
@@ -112,7 +112,7 @@ export class RegisterComponent {
     } else {
       const user = {
         name: body.loginInfo.name,
-        userName: body.loginInfo.userName,
+        email: body.loginInfo.email,
         password: body.security.password,
         commercialRegistrationNumber: body.generalInfo.commercialRegistrationNumber,
         address: body.generalInfo.address,

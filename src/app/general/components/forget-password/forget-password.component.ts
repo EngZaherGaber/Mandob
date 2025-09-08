@@ -1,4 +1,3 @@
-import { SocialAuthService } from '@abacritt/angularx-social-login';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -6,6 +5,7 @@ import { DynamicInputComponent } from '../../../shared/components/dynamic-input/
 import { LoadingComponent } from '../../../shared/components/loading/loading.component';
 import { InputDynamic } from '../../../shared/interface/input-dynamic';
 import { PrimeNgSharedModule } from '../../../shared/modules/shared/primeng-shared.module';
+import { MessageToastService } from '../../../shared/service/message-toast.service';
 import { AuthService } from '../../services/auth.service';
 import { UserStateService } from '../../services/user-state.service';
 
@@ -56,7 +56,7 @@ export class ForgetPasswordComponent {
     private router: Router,
     private authSrv: AuthService,
     private userState: UserStateService,
-    private socialAuthService: SocialAuthService
+    private msgSrv: MessageToastService
   ) {}
   getControl(name: string) {
     return this.form.get(name) as FormControl;
@@ -73,6 +73,7 @@ export class ForgetPasswordComponent {
       (res) => {
         if (res.data) {
           this.loading = false;
+          this.msgSrv.showSuccess(res.message);
           this.step = 2;
         }
       },

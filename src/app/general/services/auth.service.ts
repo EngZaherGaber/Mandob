@@ -1,14 +1,12 @@
-import { computed, effect, inject, Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { environment } from '../../../environments/environment';
-import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { MessageToastService } from '../../shared/service/message-toast.service';
-import { JwtHelperService } from '@auth0/angular-jwt';
-import { APIResponse } from '../../shared/interface/response';
 import { isPlatformBrowser } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { computed, Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Router } from '@angular/router';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { environment } from '../../../environments/environment';
+import { APIResponse } from '../../shared/interface/response';
+import { MessageToastService } from '../../shared/service/message-toast.service';
 import { loginResponse } from '../interfaces/login';
-import { Observable, of } from 'rxjs';
-import { User } from '../interfaces/user';
 
 @Injectable({
   providedIn: 'root',
@@ -40,6 +38,9 @@ export class AuthService {
   }
   resetPassword(body: { newPassword: string; email: string; code: string }) {
     return this.http.post<APIResponse<any>>(this.url + '/reset-password', body);
+  }
+  resetPasswordAdmin(body: { newPassword: string; email: string; adminPassword: string }) {
+    return this.http.post<APIResponse<any>>(this.url + '/reset-password-for-admin', body);
   }
   updateToken(refreshToken: string) {
     return this.http.post<APIResponse<any>>(this.url + '/UpdateToken', { refreshToken });

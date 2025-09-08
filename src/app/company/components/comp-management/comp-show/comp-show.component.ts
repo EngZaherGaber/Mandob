@@ -1,16 +1,21 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { catchError, of, switchMap } from 'rxjs';
+import { UserStateService } from '../../../../general/services/user-state.service';
+import { OwnerStrategy } from '../../../../owner/classes/owner-strategy';
+import { DynamicInputComponent } from '../../../../shared/components/dynamic-input/dynamic-input.component';
+import { DynamicViewComponent } from '../../../../shared/components/dynamic-view/dynamic-view.component';
 import { InfoTable } from '../../../../shared/interface/info-table';
+import { InputDynamic } from '../../../../shared/interface/input-dynamic';
+import { PrimeNgSharedModule } from '../../../../shared/modules/shared/primeng-shared.module';
 import { DyTableService } from '../../../../shared/service/dy-table.service';
-import { switchMap, of, catchError } from 'rxjs';
 import { MessageToastService } from '../../../../shared/service/message-toast.service';
 import { CompanyManagementService } from '../../../services/company-management.service';
-import { DynamicViewComponent } from '../../../../shared/components/dynamic-view/dynamic-view.component';
 
 @Component({
   selector: 'comp-show',
-  imports: [DynamicViewComponent, CommonModule],
+  imports: [DynamicViewComponent, DynamicInputComponent, PrimeNgSharedModule],
   templateUrl: './comp-show.component.html',
   styleUrl: './comp-show.component.scss',
 })
@@ -78,6 +83,42 @@ export class CompShowComponent {
       },
     },
   ];
+  step: number = 1;
+  resetDialogVisible: boolean = false;
+  form: FormGroup = new FormGroup({
+    email: new FormControl(null),
+    adminPassword: new FormControl(null),
+    newPassword: new FormControl(null),
+  });
+  objs: InputDynamic[] = [
+    {
+      key: 'email',
+      value: null,
+      label: 'الايميل',
+      dataType: 'string',
+      required: true,
+      visible: true,
+      options: [],
+    },
+    {
+      key: 'adminPassword',
+      value: null,
+      label: 'كلمة سر المدير',
+      dataType: 'string',
+      required: true,
+      visible: true,
+      options: [],
+    },
+    {
+      key: 'newPassword',
+      value: null,
+      label: 'كلمة السر الجديدة',
+      dataType: 'string',
+      required: true,
+      visible: true,
+      options: [],
+    },
+  ];
   changeState(rowData: any) {
     this.companyManagementSrv.changeStatus(rowData.userId).subscribe((res) => {
       if (res.succeeded) {
@@ -105,14 +146,30 @@ export class CompShowComponent {
       }
     });
   };
+  resetFunc: (rowData: any) => void = (rowData: any) => {
+    this.getControl('email').setValue(rowData.email);
+    this.getControl('email').disable();
+    this.resetDialogVisible = true;
+  };
   constructor(
-    private tableSrv: DyTableService,
+    tableSrv: DyTableService,
     private msgSrv: MessageToastService,
     private route: ActivatedRoute,
     private router: Router,
+    private userState: UserStateService,
     private companyManagementSrv: CompanyManagementService
   ) {
     this.tableConfig = tableSrv.getStandardInfo(this.deleteFunc, this.editFunc, this.displayFunc, this.addFunc);
+    this.tableConfig.Buttons.push({
+      isShow: true,
+      tooltip: 'تغيير كلمة السر',
+      icon: 'pi pi-key',
+      key: 'Delete',
+      severity: 'contrast',
+      command: (rowData: any) => {
+        this.resetFunc(rowData);
+      },
+    });
   }
   ngOnInit() {
     this.route.params.subscribe((param) => {
@@ -137,5 +194,14 @@ export class CompShowComponent {
       );
       this.tableConfig.getSub$.next({});
     });
+  }
+  getControl(name: string) {
+    return this.form.get(name) as FormControl;
+  }
+  resetPassword() {
+    const strategy = this.userState.strategy();
+    if (strategy instanceof OwnerStrategy) {
+      strategy.resetPasswordAdmin(this.form.getRawValue()).subscribe((res) => this.msgSrv.showSuccess(res.message));
+    }
   }
 }

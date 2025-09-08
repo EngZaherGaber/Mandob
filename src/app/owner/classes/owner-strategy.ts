@@ -1,11 +1,11 @@
-import { MenuItem } from 'primeng/api';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { MenuItem } from 'primeng/api';
+import { environment } from '../../../environments/environment';
+import { BaseUserStrategy } from '../../general/classes/base-user-strategy';
 import { AuthService } from '../../general/services/auth.service';
 import { Owner } from '../interfaces/owner';
-import { BaseUserStrategy } from '../../general/classes/base-user-strategy';
-import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root', // or inside providers: [] of a module
 })
@@ -59,5 +59,9 @@ export class OwnerStrategy extends BaseUserStrategy<Owner> {
   ];
   constructor(http: HttpClient, authSrv: AuthService, router: Router) {
     super(http, authSrv, router);
+  }
+
+  resetPasswordAdmin(body: { newPassword: string; email: string; adminPassword: string }) {
+    return this.authSrv.resetPasswordAdmin(body);
   }
 }

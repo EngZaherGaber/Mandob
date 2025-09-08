@@ -87,7 +87,6 @@ export class HeaderComponent {
       });
       effect(() => {
         this.user = userState.user;
-        console.log(this.user);
       });
     } else {
       // SSR fallback - show full text immediately
@@ -153,6 +152,7 @@ export class HeaderComponent {
     this.router.navigate(['/gallery']);
   }
   logout() {
+    this.userState.user = null;
     this.userState.strategy()?.logout();
   }
 }

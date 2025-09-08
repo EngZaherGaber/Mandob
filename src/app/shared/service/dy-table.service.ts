@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MessageService } from 'primeng/api';
-import { Observable, first, of, catchError, ReplaySubject } from 'rxjs';
+import { catchError, first, Observable, of, ReplaySubject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { DyButton } from '../interface/dy-button';
 import { InfoTable } from '../interface/info-table';
@@ -39,10 +38,7 @@ export class DyTableService {
             body = {
               loading: false,
               data: res['data']['model'] as any[],
-              columns: this.getSchema(allowedKeys, arr, [
-                'HeightImplemented',
-                ...(res['data']['type'] as any[]),
-              ]),
+              columns: this.getSchema(allowedKeys, arr, ['HeightImplemented', ...(res['data']['type'] as any[])]),
             };
             return of(body);
           } else {
@@ -67,10 +63,7 @@ export class DyTableService {
     );
     return instObs$;
   }
-  getInstObsSideArmBranching(
-    instObs$: Observable<any>,
-    NeededColumn: any[]
-  ): Observable<any> {
+  getInstObsSideArmBranching(instObs$: Observable<any>, NeededColumn: any[]): Observable<any> {
     instObs$ = instObs$.pipe(
       switchMap((res) => {
         if (res && res.length > 0) {
@@ -126,9 +119,7 @@ export class DyTableService {
             const arr = [...res['data']['type'], ...additional];
             const columns = this.getSchema(allowedKeys, arr, [
               'HeightImplemented',
-              ...(res['data']['type'] as any[]).filter(
-                (x) => x.dynamic === null
-              ),
+              ...(res['data']['type'] as any[]).filter((x) => x.dynamic === null),
             ]).map((col) => {
               col = ToggleColumn.includes(col.field)
                 ? (col = {
@@ -177,11 +168,7 @@ export class DyTableService {
     );
     return instObs$;
   }
-  getObsList(
-    instObsList$: Observable<any>,
-    notAllowed: string[],
-    ToggleColumn: string[] = []
-  ) {
+  getObsList(instObsList$: Observable<any>, notAllowed: string[], ToggleColumn: string[] = []) {
     instObsList$ = instObsList$.pipe(
       switchMap((res) => {
         if (res['data'] && res['data']['model']) {
@@ -200,9 +187,7 @@ export class DyTableService {
               }, {});
             const columns = this.getSchema(allowedKeys, res['data']['type'], [
               'HeightImplemented',
-              ...(res['data']['type'] as any[]).filter(
-                (x) => x.dynamic === null
-              ),
+              ...(res['data']['type'] as any[]).filter((x) => x.dynamic === null),
             ]).map((col) => {
               col = ToggleColumn.includes(col.field)
                 ? (col = {
@@ -227,10 +212,9 @@ export class DyTableService {
                   .filter((type) => type.dataType === 'DateTime')
                   .forEach(
                     (type) =>
-                      (item[type.dynamic ? type.dynamic : type.attribute] =
-                        new Date(
-                          item[type.dynamic ? type.dynamic : type.attribute]
-                        ))
+                      (item[type.dynamic ? type.dynamic : type.attribute] = new Date(
+                        item[type.dynamic ? type.dynamic : type.attribute]
+                      ))
                   );
                 return item;
               }),
@@ -312,7 +296,7 @@ export class DyTableService {
       Buttons.push({
         permission: deletePer,
         isShow: true,
-        tooltip: 'Delete',
+        tooltip: 'حذف',
         icon: 'pi pi-trash',
         key: 'Delete',
         severity: 'contrast',
@@ -325,7 +309,7 @@ export class DyTableService {
       Buttons.push({
         permission: editPer,
         isShow: true,
-        tooltip: 'Edit',
+        tooltip: 'تعديل',
         icon: 'pi pi-pencil',
         key: 'Edit',
         severity: 'contrast',
@@ -338,7 +322,7 @@ export class DyTableService {
       Buttons.push({
         permission: displayPer,
         isShow: true,
-        tooltip: 'Details',
+        tooltip: 'تفاصيل',
         icon: 'pi pi-eye',
         key: 'Details',
         severity: 'contrast',
@@ -355,7 +339,7 @@ export class DyTableService {
       Buttons.push({
         permission: addPer,
         isShow: true,
-        tooltip: 'Add',
+        tooltip: 'اضافة',
         icon: 'pi pi-plus',
         key: 'Add',
         severity: 'contrast',
@@ -382,20 +366,11 @@ export class DyTableService {
       captionButton: [],
       Buttons: [],
     };
-    info.Buttons = this.getStandardButtons(
-      deleteFunc,
-      editFunc,
-      displayFunc,
-      deletePer,
-      editPer,
-      displayPer
-    );
+    info.Buttons = this.getStandardButtons(deleteFunc, editFunc, displayFunc, deletePer, editPer, displayPer);
     info.captionButton = this.getStandardCaptionButtons(addFunc, addPer);
     return info;
   }
-  repeairHeader(
-    columns: { field: string; header: string; HeaderType: string }[]
-  ) {
+  repeairHeader(columns: { field: string; header: string; HeaderType: string }[]) {
     columns.map((col) => {
       col.header = col.header.replace(/([a-z])([A-Z])/g, '$1 $2');
       if (col.header.toLowerCase().endsWith(' id')) {

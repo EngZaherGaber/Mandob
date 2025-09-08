@@ -4602,7 +4602,7 @@ export const MyPreset = definePreset({
         light: {
           root: {
             background: '{surface.200}',
-            checkedBackground: '{surface.300}',
+            checkedBackground: '{transparent}',
             hoverBackground: '{surface.100}',
             borderColor: '{surface.100}',
             color: '{surface.500}',

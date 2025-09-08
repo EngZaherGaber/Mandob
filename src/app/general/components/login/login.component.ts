@@ -1,9 +1,4 @@
-import {
-  FacebookLoginProvider,
-  GoogleLoginProvider,
-  SocialAuthService,
-  SocialUser,
-} from '@abacritt/angularx-social-login';
+import { SocialUser } from '@abacritt/angularx-social-login';
 import { Component, Signal } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -13,6 +8,7 @@ import { InputDynamic } from '../../../shared/interface/input-dynamic';
 import { PrimeNgSharedModule } from '../../../shared/modules/shared/primeng-shared.module';
 import { MessageToastService } from '../../../shared/service/message-toast.service';
 import { AuthService } from '../../services/auth.service';
+import { UserStateService } from '../../services/user-state.service';
 
 @Component({
   selector: 'login',
@@ -53,25 +49,14 @@ export class LoginComponent {
    */
   constructor(
     private router: Router,
+    private userState: UserStateService,
     private authSrv: AuthService,
-    private socialAuthService: SocialAuthService,
     private msgSrv: MessageToastService
   ) {
     this.isBrowser = authSrv.isBrowser;
   }
-  ngOnInit() {
-    this.socialAuthService.authState.subscribe((user) => {
-      this.user = user;
-    });
-  }
-  // TODO:: login and register for social
-  signInWithGoogle() {
-    this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
-  }
+  ngOnInit() {}
 
-  signInWithFacebook() {
-    this.socialAuthService.signIn(FacebookLoginProvider.PROVIDER_ID);
-  }
   getControl(name: string) {
     return this.loginForm.get(name) as FormControl;
   }
@@ -84,11 +69,12 @@ export class LoginComponent {
         if (res.succeeded) {
           localStorage.setItem('role', data.role);
           localStorage.setItem('name', data.name);
+          this.userState.user = null;
           if (data.isVerified === true) this.router.navigate(['']);
         } else {
           this.loading = false;
           this.msgSrv.showError(res.message);
-          if (data.isVerified === false)
+          if (data?.isVerified === false)
             this.router.navigate(['auth/verfication'], { state: { input: formValue['input'] } });
         }
       },
