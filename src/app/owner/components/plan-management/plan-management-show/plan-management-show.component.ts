@@ -1,20 +1,20 @@
-import { Component } from '@angular/core';
-import { PlanService } from '../../../services/plan.service';
-import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { switchMap, of, catchError } from 'rxjs';
+import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { catchError, of, switchMap } from 'rxjs';
+import { DynamicViewComponent } from '../../../../shared/components/dynamic-view/dynamic-view.component';
 import { InfoTable } from '../../../../shared/interface/info-table';
 import { DyTableService } from '../../../../shared/service/dy-table.service';
 import { MessageToastService } from '../../../../shared/service/message-toast.service';
-import { DynamicViewComponent } from '../../../../shared/components/dynamic-view/dynamic-view.component';
+import { PlanManagementService } from '../../../services/plan-management.service';
 
 @Component({
-  selector: 'app-plan-show',
+  selector: 'app-plan-management-show',
   imports: [DynamicViewComponent, CommonModule],
-  templateUrl: './plan-show.component.html',
-  styleUrl: './plan-show.component.scss',
+  templateUrl: './plan-management-show.component.html',
+  styleUrl: './plan-management-show.component.scss',
 })
-export class PlanShowComponent {
+export class PlanManagementShowComponent {
   tableConfig: InfoTable;
   imageField: string = '';
   type: 'table' | 'list' | string = 'table';
@@ -79,7 +79,7 @@ export class PlanShowComponent {
     private msgSrv: MessageToastService,
     private route: ActivatedRoute,
     private router: Router,
-    private planSrv: PlanService
+    private planSrv: PlanManagementService
   ) {
     this.tableConfig = tableSrv.getStandardInfo(this.deleteFunc, this.editFunc, this.displayFunc, this.addFunc);
   }

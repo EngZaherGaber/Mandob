@@ -9,12 +9,12 @@ import { MessageToastService } from '../../../../shared/service/message-toast.se
 import { OwnerManagementService } from '../../../services/owner-management.service';
 
 @Component({
-  selector: 'owner-show',
+  selector: 'owner-management-show',
   imports: [DynamicViewComponent, CommonModule],
-  templateUrl: './owner-show.component.html',
-  styleUrl: './owner-show.component.scss',
+  templateUrl: './owner-management-show.component.html',
+  styleUrl: './owner-management-show.component.scss',
 })
-export class OwnerShowComponent {
+export class OwnerManagementShowComponent {
   tableConfig: InfoTable;
   type: 'table' | 'list' | string = '';
   columns = [

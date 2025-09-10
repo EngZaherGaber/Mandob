@@ -23,8 +23,8 @@ export class OwnerStrategy extends BaseUserStrategy<Owner> {
       ],
     },
     {
-      label: 'الادارة',
-      icon: 'pi pi-cog', // ⚙ management / settings
+      label: 'ادارة الاعضاء',
+      icon: 'pi pi-users', // ⚙ management / settings
       items: [
         {
           label: ' الشركات',
@@ -33,7 +33,7 @@ export class OwnerStrategy extends BaseUserStrategy<Owner> {
         },
         {
           label: ' المدراء',
-          icon: 'pi pi-users', // 👥 managers
+          icon: 'pi pi-user', // 👥 managers
           routerLink: ['owner/owner-management/show'],
         },
         {
@@ -41,10 +41,21 @@ export class OwnerStrategy extends BaseUserStrategy<Owner> {
           icon: 'pi pi-shopping-bag', // 🛍️ market
           routerLink: ['owner/client-management/show'],
         },
+      ],
+    },
+    {
+      label: 'توزيعات',
+      icon: 'pi pi-cog',
+      items: [
         {
-          label: ' الباقات',
+          label: 'الاشتراك',
           icon: 'pi pi-box', // 📦 packages/plans
           routerLink: ['owner/plan-management/show'],
+        },
+        {
+          label: 'التصنيفات',
+          icon: 'pi pi-list',
+          routerLink: ['owner/category-management/show'],
         },
       ],
     },

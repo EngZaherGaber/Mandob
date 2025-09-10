@@ -1,21 +1,20 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { PlanService } from '../../../services/plan.service';
-import { CommonModule } from '@angular/common';
-import { MenuItem } from 'primeng/api';
 import { DynmaicFormComponent } from '../../../../shared/components/dynmaic-form/dynmaic-form.component';
 import { InputDynamic } from '../../../../shared/interface/input-dynamic';
 import { MessageToastService } from '../../../../shared/service/message-toast.service';
+import { PlanManagementService } from '../../../services/plan-management.service';
 
 @Component({
-  selector: 'app-plan-add',
+  selector: 'app-plan-management-add',
   imports: [DynmaicFormComponent, CommonModule],
-  templateUrl: './plan-add.component.html',
-  styleUrl: './plan-add.component.scss',
+  templateUrl: './plan-management-add.component.html',
+  styleUrl: './plan-management-add.component.scss',
 })
-export class PlanAddComponent {
+export class PlanManagementAddComponent {
   resetObjs: { [key: string]: InputDynamic[] } = {};
-  constructor(private router: Router, private planSrv: PlanService, private msgSrv: MessageToastService) {
+  constructor(private router: Router, private planSrv: PlanManagementService, private msgSrv: MessageToastService) {
     this.resetObjs = {
       general: [
         {

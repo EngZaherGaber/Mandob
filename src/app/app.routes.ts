@@ -18,24 +18,24 @@ export const routes: Routes = [
                 path: 'show',
                 title: 'عرض الشركات',
                 loadComponent: () =>
-                  import('./company/components/comp-management/comp-show/comp-show.component').then(
-                    (m) => m.CompShowComponent
-                  ),
+                  import(
+                    './company/components/comp-management/comp-management-show/comp-management-show.component'
+                  ).then((m) => m.CompManagementShowComponent),
               },
               {
                 path: 'detail/:type/:id',
                 title: 'بيانات الشركة',
                 loadComponent: () =>
-                  import('./company/components/comp-management/comp-detail/comp-detail.component').then(
-                    (m) => m.CompDetailComponent
-                  ),
+                  import(
+                    './company/components/comp-management/comp-management-detail/comp-management-detail.component'
+                  ).then((m) => m.CompManagementDetailComponent),
               },
               {
                 path: 'add',
                 title: 'اضافة شركة',
                 loadComponent: () =>
-                  import('./company/components/comp-management/comp-add/comp-add.component').then(
-                    (m) => m.CompAddComponent
+                  import('./company/components/comp-management/comp-management-add/comp-management-add.component').then(
+                    (m) => m.CompManagementAddComponent
                   ),
               },
             ],
@@ -47,25 +47,25 @@ export const routes: Routes = [
                 path: 'show',
                 title: 'عرض المدراء',
                 loadComponent: () =>
-                  import('./owner/components/owner-management/owner-show/owner-show.component').then(
-                    (m) => m.OwnerShowComponent
-                  ),
+                  import(
+                    './owner/components/owner-management/owner-management-show/owner-management-show.component'
+                  ).then((m) => m.OwnerManagementShowComponent),
               },
               {
                 path: 'add',
                 title: 'اضافة مدير',
                 loadComponent: () =>
-                  import('./owner/components/owner-management/owner-add/owner-add.component').then(
-                    (m) => m.OwnerAddComponent
-                  ),
+                  import(
+                    './owner/components/owner-management/owner-management-add/owner-management-add.component'
+                  ).then((m) => m.OwnerManagementAddComponent),
               },
               {
                 path: 'detail/:type/:id',
                 title: 'بيانات مدير',
                 loadComponent: () =>
-                  import('./owner/components/owner-management/owner-detail/owner-detail.component').then(
-                    (m) => m.OwnerDetailComponent
-                  ),
+                  import(
+                    './owner/components/owner-management/owner-management-detail/owner-management-detail.component'
+                  ).then((m) => m.OwnerManagementDetailComponent),
               },
             ],
           },
@@ -97,25 +97,54 @@ export const routes: Routes = [
                 path: 'show',
                 title: 'عرض الباقات',
                 loadComponent: () =>
-                  import('./company/components/plan-management/plan-show/plan-show.component').then(
-                    (m) => m.PlanShowComponent
+                  import('./owner/components/plan-management/plan-management-show/plan-management-show.component').then(
+                    (m) => m.PlanManagementShowComponent
                   ),
               },
               {
                 path: 'add',
                 title: 'اضافة باقة',
                 loadComponent: () =>
-                  import('./company/components/plan-management/plan-add/plan-add.component').then(
-                    (m) => m.PlanAddComponent
+                  import('./owner/components/plan-management/plan-management-add/plan-management-add.component').then(
+                    (m) => m.PlanManagementAddComponent
                   ),
               },
               {
                 path: 'detail/:type/:id',
                 title: 'بيانات باقة',
                 loadComponent: () =>
-                  import('./company/components/plan-management/plan-detail/plan-detail.component').then(
-                    (m) => m.PlanDetailComponent
-                  ),
+                  import(
+                    './owner/components/plan-management/plan-management-detail/plan-management-detail.component'
+                  ).then((m) => m.PlanManagementDetailComponent),
+              },
+            ],
+          },
+          {
+            path: 'category-management',
+            children: [
+              {
+                path: 'show',
+                title: 'عرض التصنيفات',
+                loadComponent: () =>
+                  import(
+                    './owner/components/category-management/category-management-show/category-management-show.component'
+                  ).then((m) => m.CategoryManagementShowComponent),
+              },
+              {
+                path: 'add',
+                title: 'اضافة تصنيف',
+                loadComponent: () =>
+                  import(
+                    './owner/components/category-management/category-management-add/category-management-add.component'
+                  ).then((m) => m.CategoryManagementAddComponent),
+              },
+              {
+                path: 'detail/:type/:id',
+                title: 'بيانات تصنيف',
+                loadComponent: () =>
+                  import(
+                    './owner/components/category-management/category-management-detail/category-management-detail.component'
+                  ).then((m) => m.CategoryManagementDetailComponent),
               },
             ],
           },

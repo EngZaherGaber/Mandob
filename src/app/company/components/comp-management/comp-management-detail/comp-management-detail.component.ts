@@ -3,20 +3,20 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { forkJoin, switchMap } from 'rxjs';
+import { PlanManagementService } from '../../../../owner/services/plan-management.service';
 import { DynmaicFormComponent } from '../../../../shared/components/dynmaic-form/dynmaic-form.component';
 import { InputDynamic } from '../../../../shared/interface/input-dynamic';
 import { MessageToastService } from '../../../../shared/service/message-toast.service';
 import { Company } from '../../../interfaces/company';
 import { CompanyManagementService } from '../../../services/company-management.service';
-import { PlanService } from '../../../services/plan.service';
 
 @Component({
   selector: 'ad-company-detail',
   imports: [DynmaicFormComponent, CommonModule],
-  templateUrl: './comp-detail.component.html',
-  styleUrl: './comp-detail.component.scss',
+  templateUrl: './comp-management-detail.component.html',
+  styleUrl: './comp-management-detail.component.scss',
 })
-export class CompDetailComponent {
+export class CompManagementDetailComponent {
   resetObjs: { [key: string]: InputDynamic[] } = {};
   stepsList: MenuItem[] = [{ label: 'المعلومات العامة' }];
   finsih: boolean = false;
@@ -28,7 +28,7 @@ export class CompDetailComponent {
     private router: Router,
     private route: ActivatedRoute,
     private msgSrv: MessageToastService,
-    private planSrv: PlanService
+    private planSrv: PlanManagementService
   ) {
     this.planSrv.getAll({}).subscribe((res) => {});
   }

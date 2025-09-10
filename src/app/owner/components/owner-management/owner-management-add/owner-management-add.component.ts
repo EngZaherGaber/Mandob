@@ -1,19 +1,19 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MenuItem } from 'primeng/api';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { MenuItem } from 'primeng/api';
 import { DynmaicFormComponent } from '../../../../shared/components/dynmaic-form/dynmaic-form.component';
 import { InputDynamic } from '../../../../shared/interface/input-dynamic';
 import { MessageToastService } from '../../../../shared/service/message-toast.service';
 import { OwnerManagementService } from '../../../services/owner-management.service';
 
 @Component({
-  selector: 'owner-add',
+  selector: 'owner-management-add',
   imports: [DynmaicFormComponent, CommonModule],
-  templateUrl: './owner-add.component.html',
-  styleUrl: './owner-add.component.scss',
+  templateUrl: './owner-management-add.component.html',
+  styleUrl: './owner-management-add.component.scss',
 })
-export class OwnerAddComponent {
+export class OwnerManagementAddComponent {
   resetObjs: { [key: string]: InputDynamic[] } = {};
   stepsList: MenuItem[] = [{ label: 'المعلومات العامة' }, { label: 'المعلومات الخاصة' }];
   constructor(

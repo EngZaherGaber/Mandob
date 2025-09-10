@@ -14,12 +14,12 @@ import { MessageToastService } from '../../../../shared/service/message-toast.se
 import { CompanyManagementService } from '../../../services/company-management.service';
 
 @Component({
-  selector: 'comp-show',
+  selector: 'comp-management-show',
   imports: [DynamicViewComponent, DynamicInputComponent, PrimeNgSharedModule],
-  templateUrl: './comp-show.component.html',
-  styleUrl: './comp-show.component.scss',
+  templateUrl: './comp-management-show.component.html',
+  styleUrl: './comp-management-show.component.scss',
 })
-export class CompShowComponent {
+export class CompManagementShowComponent {
   tableConfig: InfoTable;
   imageField: string = '';
   type: 'table' | 'list' | string = 'table';

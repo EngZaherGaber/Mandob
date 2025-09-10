@@ -1,20 +1,20 @@
-import { Component } from '@angular/core';
-import { PlanService } from '../../../services/plan.service';
-import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs';
 import { DynmaicFormComponent } from '../../../../shared/components/dynmaic-form/dynmaic-form.component';
 import { InputDynamic } from '../../../../shared/interface/input-dynamic';
 import { MessageToastService } from '../../../../shared/service/message-toast.service';
 import { Plan } from '../../../interfaces/plan';
+import { PlanManagementService } from '../../../services/plan-management.service';
 
 @Component({
-  selector: 'app-plan-detail',
+  selector: 'app-plan-management-detail',
   imports: [DynmaicFormComponent, CommonModule],
-  templateUrl: './plan-detail.component.html',
-  styleUrl: './plan-detail.component.scss',
+  templateUrl: './plan-management-detail.component.html',
+  styleUrl: './plan-management-detail.component.scss',
 })
-export class PlanDetailComponent {
+export class PlanManagementDetailComponent {
   resetObjs: { [key: string]: InputDynamic[] } = {};
   isShow: boolean = false;
   planId: number | undefined;
@@ -22,7 +22,7 @@ export class PlanDetailComponent {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private planSrv: PlanService,
+    private planSrv: PlanManagementService,
     private msgSrv: MessageToastService
   ) {
     this.route.params

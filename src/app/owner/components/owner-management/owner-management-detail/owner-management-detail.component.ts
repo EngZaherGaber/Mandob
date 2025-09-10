@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { DynmaicFormComponent } from '../../../../shared/components/dynmaic-form/dynmaic-form.component';
@@ -9,12 +9,12 @@ import { Owner } from '../../../interfaces/owner';
 import { OwnerManagementService } from '../../../services/owner-management.service';
 
 @Component({
-  selector: 'owner-detail',
+  selector: 'owner-management-detail',
   imports: [DynmaicFormComponent, CommonModule],
-  templateUrl: './owner-detail.component.html',
-  styleUrl: './owner-detail.component.scss',
+  templateUrl: './owner-management-detail.component.html',
+  styleUrl: './owner-management-detail.component.scss',
 })
-export class OwnerDetailComponent {
+export class OwnerManagementDetailComponent {
   resetObjs: { [key: string]: InputDynamic[] } = {};
   isShow: boolean = false;
   ownerId: number | undefined;
