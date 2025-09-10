@@ -20,7 +20,7 @@ export class CompManagementAddComponent {
 
   finsih: boolean = false;
   constructor(
-    private companyManagementSrv: CompanyManagementService,
+    private companyManagement: CompanyManagementService,
     private router: Router,
     private msgSrv: MessageToastService,
     private planSrv: PlanManagementService
@@ -127,7 +127,7 @@ export class CompManagementAddComponent {
         ...event.companyInfo,
         password: event.security.password,
       };
-      this.companyManagementSrv.add(value).subscribe((res) => {
+      this.companyManagement.add(value).subscribe((res) => {
         if (res.succeeded) {
           this.router.navigate(['owner/company-management/show']);
         }

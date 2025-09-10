@@ -9,7 +9,7 @@ import { MessageToastService } from '../../../../shared/service/message-toast.se
 import { PlanManagementService } from '../../../services/plan-management.service';
 
 @Component({
-  selector: 'app-plan-management-show',
+  selector: 'plan-management-show',
   imports: [DynamicViewComponent, CommonModule],
   templateUrl: './plan-management-show.component.html',
   styleUrl: './plan-management-show.component.scss',

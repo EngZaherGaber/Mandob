@@ -9,7 +9,7 @@ import { DyTableService } from '../../../shared/service/dy-table.service';
 import { ProductListComponent } from '../product-list/product-list.component';
 
 @Component({
-  selector: 'app-product-details',
+  selector: 'product-details',
   imports: [ReactiveFormsModule, DynamicInputComponent, FormsModule, PrimeNgSharedModule, ProductListComponent],
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.scss',

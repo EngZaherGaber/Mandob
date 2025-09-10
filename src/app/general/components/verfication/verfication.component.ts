@@ -9,7 +9,7 @@ import { AuthService } from '../../services/auth.service';
 import { UserStateService } from '../../services/user-state.service';
 
 @Component({
-  selector: 'app-verfication',
+  selector: 'verfication',
   imports: [PrimeNgSharedModule, DynamicInputComponent, LoadingComponent],
   templateUrl: './verfication.component.html',
   styleUrl: './verfication.component.scss',

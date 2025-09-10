@@ -8,17 +8,17 @@ import { MessageToastService } from '../../../../shared/service/message-toast.se
 import { DistributorManagementService } from '../../../services/distributor-management.service';
 
 @Component({
-  selector: 'app-distributor-add',
+  selector: 'distributor-management-add',
   imports: [DynmaicFormComponent, CommonModule],
-  templateUrl: './distributor-add.component.html',
-  styleUrl: './distributor-add.component.scss',
+  templateUrl: './distributor-management-add.component.html',
+  styleUrl: './distributor-management-add.component.scss',
 })
-export class DistributorAddComponent {
+export class DistributorManagementAddComponent {
   resetObjs: { [key: string]: InputDynamic[] } = {};
   stepsList: MenuItem[] = [{ label: 'المعلومات العامة' }, { label: 'المعلومات الخاصة' }];
   constructor(
     private router: Router,
-    private distributorManagementSrv: DistributorManagementService,
+    private distributorManagement: DistributorManagementService,
     private msgSrv: MessageToastService
   ) {
     this.resetObjs = {
@@ -82,7 +82,7 @@ export class DistributorAddComponent {
         ...event.generalInfo,
         password: event.security.password,
       };
-      this.distributorManagementSrv.add(value).subscribe((res) => {
+      this.distributorManagement.add(value).subscribe((res) => {
         if (res.succeeded) {
           this.router.navigate(['company/distributor-management/show']);
         }

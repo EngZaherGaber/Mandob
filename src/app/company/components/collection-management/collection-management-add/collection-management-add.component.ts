@@ -8,7 +8,7 @@ import { MessageToastService } from '../../../../shared/service/message-toast.se
 import { CollectionManagementService } from '../../../services/collection-management.service';
 
 @Component({
-  selector: 'app-collection-management-add',
+  selector: 'collection-management-add',
   imports: [DynmaicFormComponent, PrimeNgSharedModule],
   templateUrl: './collection-management-add.component.html',
   styleUrl: './collection-management-add.component.scss',
@@ -19,7 +19,7 @@ export class CollectionManagementAddComponent {
   activeIndex = 0;
   stepsList: MenuItem[] = [{ label: 'المعلومات العامة' }, { label: 'الصورة' }];
   constructor(
-    private collectionManagementSrv: CollectionManagementService,
+    private collectionManagement: CollectionManagementService,
     private router: Router,
     private msgSrv: MessageToastService
   ) {
@@ -55,7 +55,7 @@ export class CollectionManagementAddComponent {
   }
   submit(event: any) {
     const body = event.generalInfo;
-    this.collectionManagementSrv.add(body, this.uploadedFiles).subscribe((res) => {
+    this.collectionManagement.add(body, this.uploadedFiles).subscribe((res) => {
       if (res.succeeded) {
         this.router.navigate(['company/collection-management/show']);
       }

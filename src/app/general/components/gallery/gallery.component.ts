@@ -7,7 +7,7 @@ import { MessageToastService } from '../../../shared/service/message-toast.servi
 import { UploadsService } from '../../services/uploads.service';
 import { UserStateService } from '../../services/user-state.service';
 @Component({
-  selector: 'app-gallery',
+  selector: 'gallery',
   imports: [PrimeNgSharedModule, FormsModule],
   templateUrl: './gallery.component.html',
   styleUrl: './gallery.component.scss',

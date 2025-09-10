@@ -1,15 +1,15 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { switchMap, of, catchError } from 'rxjs';
+import { catchError, of, switchMap } from 'rxjs';
+import { DynamicViewComponent } from '../../../../shared/components/dynamic-view/dynamic-view.component';
 import { InfoTable } from '../../../../shared/interface/info-table';
 import { DyTableService } from '../../../../shared/service/dy-table.service';
 import { MessageToastService } from '../../../../shared/service/message-toast.service';
 import { ClientManagementService } from '../../../services/client-management.service';
-import { DynamicViewComponent } from '../../../../shared/components/dynamic-view/dynamic-view.component';
 
 @Component({
-  selector: 'app-client-show',
+  selector: 'client-show',
   imports: [CommonModule, DynamicViewComponent],
   templateUrl: './client-show.component.html',
   styleUrl: './client-show.component.scss',
@@ -58,7 +58,7 @@ export class ClientShowComponent {
     },
   ];
   changeState(rowData: any) {
-    this.clientManagementSrv.changeStatus(rowData.userId).subscribe((res) => {
+    this.clientManagement.changeStatus(rowData.userId).subscribe((res) => {
       if (res.succeeded) {
         this.msgSrv.showSuccess('تم تغير حالة المستخدم');
         this.tableConfig.getSub$.next({});
@@ -73,7 +73,7 @@ export class ClientShowComponent {
     private msgSrv: MessageToastService,
     private route: ActivatedRoute,
     private router: Router,
-    private clientManagementSrv: ClientManagementService
+    private clientManagement: ClientManagementService
   ) {
     this.tableConfig = tableSrv.getStandardInfo(undefined, undefined, this.displayFunc, undefined);
     this.route.params.subscribe((param) => {
@@ -81,7 +81,7 @@ export class ClientShowComponent {
       this.tableConfig.get$ = this.tableConfig.getSub$.pipe(
         switchMap((body: any) => {
           if (body) {
-            return this.clientManagementSrv.getAll(body).pipe(
+            return this.clientManagement.getAll(body).pipe(
               switchMap((res) =>
                 of({
                   data: res.data,

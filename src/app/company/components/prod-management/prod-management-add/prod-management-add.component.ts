@@ -1,14 +1,18 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { forkJoin } from 'rxjs';
+import { UserStateService } from '../../../../general/services/user-state.service';
+import { CategoryManagementService } from '../../../../owner/services/category-management.service';
 import { DynamicInputComponent } from '../../../../shared/components/dynamic-input/dynamic-input.component';
 import { InputDynamic } from '../../../../shared/interface/input-dynamic';
 import { PrimeNgSharedModule } from '../../../../shared/modules/shared/primeng-shared.module';
 import { OptionItem } from '../../../interfaces/option-item';
 import { VariantItem } from '../../../interfaces/variant-item';
+import { CollectionManagementService } from '../../../services/collection-management.service';
 import { ProductManagementService } from '../../../services/product-management.service';
 
 @Component({
-  selector: 'app-prod-management-add',
+  selector: 'prod-management-add',
   imports: [PrimeNgSharedModule, DynamicInputComponent, FormsModule],
   templateUrl: './prod-management-add.component.html',
   styleUrl: './prod-management-add.component.scss',
@@ -24,47 +28,61 @@ export class ProdManagementAddComponent {
   options: OptionItem[] = [];
   variants: VariantItem[] = [];
   uploadedFiles: File[] = [];
-  constructor(private productManagementSrv: ProductManagementService) {
-    this.productManagementSrv.getAll({}).subscribe((res) => {
-      this.objs = [
-        {
-          key: 'productName',
-          value: null,
-          label: 'الاسم',
-          dataType: 'string',
-          required: true,
-          visible: true,
-          options: [],
-        },
-        {
-          key: 'productDescription',
-          value: null,
-          label: 'الوصف',
-          dataType: 'text',
-          required: true,
-          visible: true,
-          options: [],
-        },
-        {
-          key: 'CollectionIDs',
-          value: null,
-          label: 'المجموعات',
-          dataType: 'MultiSelect',
-          required: true,
-          visible: true,
-          options: [],
-        },
-        {
-          key: 'CategorieIDs',
-          value: null,
-          label: 'التصنيف',
-          dataType: 'MultiSelect',
-          required: true,
-          visible: true,
-          options: [],
-        },
-      ];
-    });
+  showForm: boolean = false;
+  constructor(
+    private productManagement: ProductManagementService,
+    private categoryManagement: CategoryManagementService,
+    private userState: UserStateService,
+    private collectionManagement: CollectionManagementService
+  ) {
+    const user = userState.user();
+    if (user && user.userId) {
+      debugger;
+      forkJoin({
+        collection: collectionManagement.getAll({ first: 0, rows: 1000 }, user.userId),
+        categories: categoryManagement.getAll({ first: 0, rows: 1000 }),
+      }).subscribe((res) => {
+        this.objs = [
+          {
+            key: 'productName',
+            value: null,
+            label: 'الاسم',
+            dataType: 'string',
+            required: true,
+            visible: true,
+            options: [],
+          },
+          {
+            key: 'productDescription',
+            value: null,
+            label: 'الوصف',
+            dataType: 'text',
+            required: true,
+            visible: true,
+            options: [],
+          },
+          {
+            key: 'CollectionIDs',
+            value: null,
+            label: 'المجموعات',
+            dataType: 'MultiSelect',
+            required: true,
+            visible: true,
+            options: res.collection.data.map((item) => ({ id: item.collectionID, name: item.collectionName })),
+          },
+          {
+            key: 'CategorieIDs',
+            value: null,
+            label: 'التصنيف',
+            dataType: 'MultiSelect',
+            required: true,
+            visible: true,
+            options: res.categories.data.map((item) => ({ id: item.categoryID, name: item.categoryName })),
+          },
+        ];
+        this.showForm = true;
+      });
+    }
   }
   getControl(name: string) {
     return this.form.get(name) as FormControl;

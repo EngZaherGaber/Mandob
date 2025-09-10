@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, of, switchMap } from 'rxjs';
+import { UserStateService } from '../../../../general/services/user-state.service';
 import { DynamicViewComponent } from '../../../../shared/components/dynamic-view/dynamic-view.component';
 import { InfoTable } from '../../../../shared/interface/info-table';
 import { DyTableService } from '../../../../shared/service/dy-table.service';
@@ -8,7 +9,7 @@ import { MessageToastService } from '../../../../shared/service/message-toast.se
 import { CollectionManagementService } from '../../../services/collection-management.service';
 
 @Component({
-  selector: 'app-collection-management-show',
+  selector: 'collection-management-show',
   imports: [DynamicViewComponent],
   templateUrl: './collection-management-show.component.html',
   styleUrl: './collection-management-show.component.scss',
@@ -42,7 +43,7 @@ export class CollectionManagementShowComponent {
     },
   ];
   changeState(rowData: any) {
-    this.collectionManagementSrv.changeStatus(rowData.userId).subscribe((res) => {
+    this.collectionManagement.changeStatus(rowData.userId).subscribe((res) => {
       this.msgSrv.showMessage(res.message, res.succeeded);
       if (res.succeeded) {
         this.tableConfig.getSub$.next({});
@@ -59,7 +60,7 @@ export class CollectionManagementShowComponent {
     this.router.navigate(['company/collection-management/detail/display/' + rowData.productID]);
   };
   deleteFunc: (rowData: any) => void = (rowData: any) => {
-    this.collectionManagementSrv.delete(rowData.productID).subscribe((res) => {
+    this.collectionManagement.delete(rowData.productID).subscribe((res) => {
       this.msgSrv.showMessage(res.message, res.succeeded);
       if (res.succeeded) {
         this.tableConfig.getSub$.next({});
@@ -70,16 +71,18 @@ export class CollectionManagementShowComponent {
   constructor(
     tableSrv: DyTableService,
     private msgSrv: MessageToastService,
+    private userState: UserStateService,
     private router: Router,
-    private collectionManagementSrv: CollectionManagementService
+    private collectionManagement: CollectionManagementService
   ) {
     this.tableConfig = tableSrv.getStandardInfo(this.deleteFunc, this.editFunc, this.displayFunc, this.addFunc);
   }
   ngOnInit() {
     this.tableConfig.get$ = this.tableConfig.getSub$.pipe(
       switchMap((body: any) => {
-        if (body) {
-          return this.collectionManagementSrv.getAll(body).pipe(
+        const user = this.userState.user();
+        if (body && user && user.userId) {
+          return this.collectionManagement.getAll(body, user.userId).pipe(
             switchMap((res) =>
               of({
                 data: res.data,

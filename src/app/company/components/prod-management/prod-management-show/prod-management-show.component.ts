@@ -8,7 +8,7 @@ import { MessageToastService } from '../../../../shared/service/message-toast.se
 import { ProductManagementService } from '../../../services/product-management.service';
 
 @Component({
-  selector: 'app-prod-management-show',
+  selector: 'prod-management-show',
   imports: [DynamicViewComponent],
   templateUrl: './prod-management-show.component.html',
   styleUrl: './prod-management-show.component.scss',
@@ -42,7 +42,7 @@ export class ProdManagementShowComponent {
     },
   ];
   changeState(rowData: any) {
-    this.productManagementSrv.changeStatus(rowData.userId).subscribe((res) => {
+    this.productManagement.changeStatus(rowData.userId).subscribe((res) => {
       this.msgSrv.showMessage(res.message, res.succeeded);
       if (res.succeeded) {
         this.tableConfig.getSub$.next({});
@@ -59,7 +59,7 @@ export class ProdManagementShowComponent {
     this.router.navigate(['company/product-management/detail/display/' + rowData.productID]);
   };
   deleteFunc: (rowData: any) => void = (rowData: any) => {
-    this.productManagementSrv.delete(rowData.productID).subscribe((res) => {
+    this.productManagement.delete(rowData.productID).subscribe((res) => {
       this.msgSrv.showMessage(res.message, res.succeeded);
       if (res.succeeded) {
         this.tableConfig.getSub$.next({});
@@ -71,7 +71,7 @@ export class ProdManagementShowComponent {
     tableSrv: DyTableService,
     private msgSrv: MessageToastService,
     private router: Router,
-    private productManagementSrv: ProductManagementService
+    private productManagement: ProductManagementService
   ) {
     this.tableConfig = tableSrv.getStandardInfo(this.deleteFunc, this.editFunc, this.displayFunc, this.addFunc);
   }
@@ -79,7 +79,7 @@ export class ProdManagementShowComponent {
     this.tableConfig.get$ = this.tableConfig.getSub$.pipe(
       switchMap((body: any) => {
         if (body) {
-          return this.productManagementSrv.getAll(body).pipe(
+          return this.productManagement.getAll(body).pipe(
             switchMap((res) =>
               of({
                 data: res.data,

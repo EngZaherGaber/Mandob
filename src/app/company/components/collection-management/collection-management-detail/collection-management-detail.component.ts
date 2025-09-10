@@ -8,7 +8,7 @@ import { MessageToastService } from '../../../../shared/service/message-toast.se
 import { CollectionManagementService } from '../../../services/collection-management.service';
 
 @Component({
-  selector: 'app-collection-management-detail',
+  selector: 'collection-management-detail',
   imports: [DynmaicFormComponent, PrimeNgSharedModule],
   templateUrl: './collection-management-detail.component.html',
   styleUrl: './collection-management-detail.component.scss',
@@ -18,7 +18,7 @@ export class CollectionManagementDetailComponent {
   collectionId: number = 0;
   isShow: boolean = false;
   constructor(
-    private collectionManagementSrv: CollectionManagementService,
+    private collectionManagement: CollectionManagementService,
     private router: Router,
     private route: ActivatedRoute,
     private msgSrv: MessageToastService
@@ -29,7 +29,7 @@ export class CollectionManagementDetailComponent {
         switchMap((param) => {
           this.collectionId = param['id'];
           this.isShow = param['type'] === 'display';
-          return this.collectionManagementSrv.getOne(this.collectionId);
+          return this.collectionManagement.getOne(this.collectionId);
         })
       )
       .subscribe((res) => {
@@ -59,7 +59,7 @@ export class CollectionManagementDetailComponent {
   }
 
   submit(event: any) {
-    this.collectionManagementSrv.edit(this.collectionId, event).subscribe((res) => {
+    this.collectionManagement.edit(this.collectionId, event).subscribe((res) => {
       if (res.succeeded) {
         this.router.navigate(['company/collection-management/show']);
       }

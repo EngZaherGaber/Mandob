@@ -1,8 +1,8 @@
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
-import { UserStateService } from '../services/user-state.service';
 import { inject } from '@angular/core';
 import { catchError, from, switchMap, throwError } from 'rxjs';
 import { MessageToastService } from '../../shared/service/message-toast.service';
+import { UserStateService } from '../services/user-state.service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   let newReq;
@@ -22,6 +22,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
           if (error instanceof HttpErrorResponse) {
             if (error.error) {
               let msg = error.error?.message;
+              debugger;
               switch (error.status) {
                 case 0:
                   msg = msg ?? 'CORS ERROR';

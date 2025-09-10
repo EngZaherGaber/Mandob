@@ -8,7 +8,7 @@ import { HeaderComponent } from '../header/header.component';
 import { SidenavComponent } from '../sidenav/sidenav.component';
 
 @Component({
-  selector: 'app-layout',
+  selector: 'layout',
   imports: [SidenavComponent, RouterOutlet, HeaderComponent, PrimeNgSharedModule],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',

@@ -1,6 +1,6 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CommonModule } from '@angular/common';
 import { switchMap } from 'rxjs';
 import { Owner } from '../../../../owner/interfaces/owner';
 import { DynmaicFormComponent } from '../../../../shared/components/dynmaic-form/dynmaic-form.component';
@@ -8,7 +8,7 @@ import { InputDynamic } from '../../../../shared/interface/input-dynamic';
 import { ClientManagementService } from '../../../services/client-management.service';
 
 @Component({
-  selector: 'app-client-detail',
+  selector: 'client-detail',
   imports: [DynmaicFormComponent, CommonModule],
   templateUrl: './client-detail.component.html',
   styleUrl: './client-detail.component.scss',
@@ -17,12 +17,12 @@ export class ClientDetailComponent {
   resetObjs: { [key: string]: InputDynamic[] } = {};
   ownerId: number | undefined;
   owner: Owner | undefined;
-  constructor(clientManagementSrv: ClientManagementService, private route: ActivatedRoute) {
+  constructor(clientManagement: ClientManagementService, private route: ActivatedRoute) {
     this.route.params
       .pipe(
         switchMap((param) => {
           this.ownerId = +param['id'];
-          return clientManagementSrv.getOne(this.ownerId);
+          return clientManagement.getOne(this.ownerId);
         })
       )
       .subscribe((res) => {

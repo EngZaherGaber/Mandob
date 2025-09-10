@@ -22,7 +22,7 @@ export class OwnerManagementDetailComponent {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private ownerManagementSrv: OwnerManagementService,
+    private ownerManagement: OwnerManagementService,
     private msgSrv: MessageToastService
   ) {
     this.route.params
@@ -30,7 +30,7 @@ export class OwnerManagementDetailComponent {
         switchMap((param) => {
           this.isShow = param['type'] === 'display';
           this.ownerId = +param['id'];
-          return ownerManagementSrv.getOne(this.ownerId);
+          return ownerManagement.getOne(this.ownerId);
         })
       )
       .subscribe((res) => {
@@ -53,7 +53,7 @@ export class OwnerManagementDetailComponent {
   ngOnInit() {}
   submit(event: any) {
     if (this.ownerId) {
-      this.ownerManagementSrv.edit(this.ownerId, event).subscribe((res) => {
+      this.ownerManagement.edit(this.ownerId, event).subscribe((res) => {
         if (res.succeeded) {
           this.msgSrv.showSuccess('تم تعديل المدير');
           this.router.navigate(['owner/owner-management/show']);

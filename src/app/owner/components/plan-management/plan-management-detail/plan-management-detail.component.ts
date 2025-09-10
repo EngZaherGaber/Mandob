@@ -9,7 +9,7 @@ import { Plan } from '../../../interfaces/plan';
 import { PlanManagementService } from '../../../services/plan-management.service';
 
 @Component({
-  selector: 'app-plan-management-detail',
+  selector: 'plan-management-detail',
   imports: [DynmaicFormComponent, CommonModule],
   templateUrl: './plan-management-detail.component.html',
   styleUrl: './plan-management-detail.component.scss',

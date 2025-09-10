@@ -111,7 +111,7 @@ export class CompManagementShowComponent {
     },
   ];
   changeState(rowData: any) {
-    this.companyManagementSrv.changeStatus(rowData.userId).subscribe((res) => {
+    this.companyManagement.changeStatus(rowData.userId).subscribe((res) => {
       this.msgSrv.showMessage(res.message, res.succeeded);
       if (res.succeeded) this.tableConfig.getSub$.next({});
     });
@@ -126,7 +126,7 @@ export class CompManagementShowComponent {
     this.router.navigate(['owner/company-management/detail/display/' + rowData.userId]);
   };
   deleteFunc: (rowData: any) => void = (rowData: any) => {
-    this.companyManagementSrv.delete(rowData.userId).subscribe((res) => {
+    this.companyManagement.delete(rowData.userId).subscribe((res) => {
       this.msgSrv.showMessage(res.message, res.succeeded);
       if (res.succeeded) this.tableConfig.getSub$.next({});
     });
@@ -141,7 +141,7 @@ export class CompManagementShowComponent {
     private route: ActivatedRoute,
     private router: Router,
     private userState: UserStateService,
-    private companyManagementSrv: CompanyManagementService
+    private companyManagement: CompanyManagementService
   ) {
     this.tableConfig = tableSrv.getStandardInfo(this.deleteFunc, this.editFunc, this.displayFunc, this.addFunc);
     this.tableConfig.Buttons.push({
@@ -161,7 +161,7 @@ export class CompManagementShowComponent {
       this.tableConfig.get$ = this.tableConfig.getSub$.pipe(
         switchMap((body: any) => {
           if (body) {
-            return this.companyManagementSrv.getAll(body).pipe(
+            return this.companyManagement.getAll(body).pipe(
               switchMap((res) =>
                 of({
                   data: res.data,

@@ -7,7 +7,7 @@ import { MessageToastService } from '../../../../shared/service/message-toast.se
 import { PlanManagementService } from '../../../services/plan-management.service';
 
 @Component({
-  selector: 'app-plan-management-add',
+  selector: 'plan-management-add',
   imports: [DynmaicFormComponent, CommonModule],
   templateUrl: './plan-management-add.component.html',
   styleUrl: './plan-management-add.component.scss',

@@ -9,7 +9,7 @@ import { MessageToastService } from '../../../../shared/service/message-toast.se
 import { CategoryManagementService } from '../../../services/category-management.service';
 
 @Component({
-  selector: 'app-category-management-show',
+  selector: 'category-management-show',
   imports: [DynamicViewComponent, CommonModule],
   templateUrl: './category-management-show.component.html',
   styleUrl: './category-management-show.component.scss',
@@ -35,7 +35,7 @@ export class CategoryManagementShowComponent {
     this.router.navigate(['owner/category-management/detail/display/' + rowData.categoryID]);
   };
   deleteFunc: (rowData: any) => void = (rowData: any) => {
-    this.categoryManagementSrv.delete(rowData.categoryID).subscribe((res) => {
+    this.categoryManagement.delete(rowData.categoryID).subscribe((res) => {
       if (res.succeeded) {
         this.tableConfig.getSub$.next({});
         this.msgSrv.showSuccess('تم حذف الشركة');
@@ -48,7 +48,7 @@ export class CategoryManagementShowComponent {
     private tableSrv: DyTableService,
     private msgSrv: MessageToastService,
     private router: Router,
-    private categoryManagementSrv: CategoryManagementService
+    private categoryManagement: CategoryManagementService
   ) {
     this.tableConfig = tableSrv.getStandardInfo(this.deleteFunc, this.editFunc, this.displayFunc, this.addFunc);
   }
@@ -56,7 +56,7 @@ export class CategoryManagementShowComponent {
     this.tableConfig.get$ = this.tableConfig.getSub$.pipe(
       switchMap((body: any) => {
         if (body) {
-          return this.categoryManagementSrv.getAll(body).pipe(
+          return this.categoryManagement.getAll(body).pipe(
             switchMap((res) =>
               of({
                 data: res.data,

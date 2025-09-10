@@ -14,12 +14,12 @@ import { MessageToastService } from '../../../../shared/service/message-toast.se
 import { DistributorManagementService } from '../../../services/distributor-management.service';
 
 @Component({
-  selector: 'app-distributor-show',
+  selector: 'distributor-management-show',
   imports: [DynamicViewComponent, PrimeNgSharedModule, DynamicInputComponent],
-  templateUrl: './distributor-show.component.html',
-  styleUrl: './distributor-show.component.scss',
+  templateUrl: './distributor-management-show.component.html',
+  styleUrl: './distributor-management-show.component.scss',
 })
-export class DistributorShowComponent {
+export class DistributorManagementShowComponent {
   tableConfig: InfoTable;
   type: 'table' | 'list' | string = '';
   columns = [
@@ -80,7 +80,7 @@ export class DistributorShowComponent {
     },
   ];
   changeState(rowData: any) {
-    this.distributorManagementSrv.changeStatus(rowData.userId).subscribe((res) => {
+    this.distributorManagement.changeStatus(rowData.userId).subscribe((res) => {
       if (res.succeeded) {
         this.msgSrv.showSuccess('تم تغير حالة المستخدم');
         this.tableConfig.getSub$.next({});
@@ -106,7 +106,7 @@ export class DistributorShowComponent {
     private msgSrv: MessageToastService,
     private route: ActivatedRoute,
     private router: Router,
-    private distributorManagementSrv: DistributorManagementService
+    private distributorManagement: DistributorManagementService
   ) {
     this.tableConfig = tableSrv.getStandardInfo(undefined, this.editFunc, this.displayFunc, this.addFunc);
     this.route.params.subscribe((param) => {
@@ -115,7 +115,7 @@ export class DistributorShowComponent {
         switchMap((body: any) => {
           const user = userState.user();
           if (body && user?.userId) {
-            return this.distributorManagementSrv.getAll(body, user.userId).pipe(
+            return this.distributorManagement.getAll(body, user.userId).pipe(
               switchMap((res) =>
                 of({
                   data: res.data,

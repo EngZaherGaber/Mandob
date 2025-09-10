@@ -24,7 +24,7 @@ export class CompManagementDetailComponent {
   companyId: number | undefined;
   company: Company | undefined;
   constructor(
-    private companyManagementSrv: CompanyManagementService,
+    private companyManagement: CompanyManagementService,
     private router: Router,
     private route: ActivatedRoute,
     private msgSrv: MessageToastService,
@@ -38,7 +38,7 @@ export class CompManagementDetailComponent {
         switchMap((param) => {
           this.isShow = param['type'] === 'display';
           this.companyId = +param['id'];
-          return forkJoin({ company: this.companyManagementSrv.getOne(this.companyId), plan: this.planSrv.getAll({}) });
+          return forkJoin({ company: this.companyManagement.getOne(this.companyId), plan: this.planSrv.getAll({}) });
         })
       )
       .subscribe((res) => {
@@ -99,7 +99,7 @@ export class CompManagementDetailComponent {
   }
   submit(event: any) {
     if (this.companyId) {
-      this.companyManagementSrv.edit(this.companyId, event).subscribe((res) => {
+      this.companyManagement.edit(this.companyId, event).subscribe((res) => {
         if (res.succeeded) {
           this.router.navigate(['owner/company-management/show']);
         }

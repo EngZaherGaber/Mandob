@@ -10,7 +10,7 @@ import { AuthService } from '../../services/auth.service';
 import { UserStateService } from '../../services/user-state.service';
 
 @Component({
-  selector: 'app-forget-password',
+  selector: 'forget-password',
   imports: [PrimeNgSharedModule, DynamicInputComponent, LoadingComponent],
   templateUrl: './forget-password.component.html',
   styleUrl: './forget-password.component.scss',

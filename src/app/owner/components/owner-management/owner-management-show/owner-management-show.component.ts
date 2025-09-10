@@ -48,7 +48,7 @@ export class OwnerManagementShowComponent {
     },
   ];
   changeState(rowData: any) {
-    this.ownerManagementSrv.changeStatus(rowData.userId).subscribe((res) => {
+    this.ownerManagement.changeStatus(rowData.userId).subscribe((res) => {
       if (res.succeeded) {
         this.msgSrv.showSuccess('تم تغير حالة المستخدم');
         this.tableConfig.getSub$.next({});
@@ -71,7 +71,7 @@ export class OwnerManagementShowComponent {
     private msgSrv: MessageToastService,
     private route: ActivatedRoute,
     private router: Router,
-    private ownerManagementSrv: OwnerManagementService
+    private ownerManagement: OwnerManagementService
   ) {
     this.tableConfig = tableSrv.getStandardInfo(undefined, this.editFunc, this.displayFunc, this.addFunc);
     this.route.params.subscribe((param) => {
@@ -79,7 +79,7 @@ export class OwnerManagementShowComponent {
       this.tableConfig.get$ = this.tableConfig.getSub$.pipe(
         switchMap((body: any) => {
           if (body) {
-            return this.ownerManagementSrv.getAll(body).pipe(
+            return this.ownerManagement.getAll(body).pipe(
               switchMap((res) =>
                 of({
                   data: res.data,

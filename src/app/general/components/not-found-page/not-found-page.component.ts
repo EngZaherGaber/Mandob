@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { PrimeNgSharedModule } from '../../../shared/modules/shared/primeng-shared.module';
 
 @Component({
-  selector: 'app-not-found-page',
+  selector: 'not-found-page',
   imports: [PrimeNgSharedModule],
   templateUrl: './not-found-page.component.html',
   styleUrl: './not-found-page.component.scss',

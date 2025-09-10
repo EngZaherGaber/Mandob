@@ -71,7 +71,6 @@ export class DynamicTableComponent {
   first: number = 0;
   rows: number = 5;
   totalRecords: number = 0;
-  screenWidth = window.innerWidth;
   carsoulPage: number = 1;
   columns: string[] = [];
   selectedColumns: string[] = [];

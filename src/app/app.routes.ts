@@ -161,23 +161,23 @@ export const routes: Routes = [
                 title: 'عرض الموزعين',
                 loadComponent: () =>
                   import(
-                    './distributor/components/distributor-management/distributor-show/distributor-show.component'
-                  ).then((m) => m.DistributorShowComponent),
+                    './distributor/components/distributor-management/distributor-management-show/distributor-management-show.component'
+                  ).then((m) => m.DistributorManagementShowComponent),
               },
               {
                 path: 'add',
                 title: 'اضافة موزع',
                 loadComponent: () =>
                   import(
-                    './distributor/components/distributor-management/distributor-add/distributor-add.component'
-                  ).then((m) => m.DistributorAddComponent),
+                    './distributor/components/distributor-management/distributor-management-add/distributor-management-add.component'
+                  ).then((m) => m.DistributorManagementAddComponent),
               },
               {
                 path: 'detail/:type/:id',
                 title: 'بيانات الموزع',
                 loadComponent: () =>
                   import(
-                    './distributor/components/distributor-management/distributor-detail/distributor-detail.component'
+                    './distributor/components/distributor-management/distributor-management-detail/distributor-management-detail.component'
                   ).then((m) => m.DistributorDetailComponent),
               },
             ],

@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-prod-management-detail',
+  selector: 'prod-management-detail',
   imports: [],
   templateUrl: './prod-management-detail.component.html',
-  styleUrl: './prod-management-detail.component.scss'
+  styleUrl: './prod-management-detail.component.scss',
 })
-export class ProdManagementDetailComponent {
-
-}
+export class ProdManagementDetailComponent {}

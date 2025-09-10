@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { environment } from '../../../environments/environment';
@@ -11,8 +11,14 @@ import { Collection } from '../interfaces/collection';
 export class CollectionManagementService {
   url = environment.api + 'Collection/';
   constructor(private http: HttpClient) {}
-  getAll(body: TableLazyLoadEvent) {
-    return this.http.post<APIResponse<Collection[]>>(this.url + 'getall', body);
+  getAll(body: TableLazyLoadEvent, companyId: number) {
+    const params = new HttpParams().append('companyID', companyId.toString());
+
+    return this.http.post<APIResponse<Collection[]>>(
+      this.url + 'getall',
+      body, // request body
+      { params: params } // request options
+    );
   }
   getOne(id: number) {
     return this.http.get<APIResponse<Collection>>(this.url + id);

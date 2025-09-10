@@ -18,7 +18,7 @@ export class OwnerManagementAddComponent {
   stepsList: MenuItem[] = [{ label: 'المعلومات العامة' }, { label: 'المعلومات الخاصة' }];
   constructor(
     private router: Router,
-    private ownerManagementSrv: OwnerManagementService,
+    private ownerManagement: OwnerManagementService,
     private msgSrv: MessageToastService
   ) {
     this.resetObjs = {
@@ -82,7 +82,7 @@ export class OwnerManagementAddComponent {
         ...event.generalInfo,
         password: event.security.password,
       };
-      this.ownerManagementSrv.add(value).subscribe((res) => {
+      this.ownerManagement.add(value).subscribe((res) => {
         if (res.succeeded) {
           this.router.navigate(['owner/owner-management/show']);
         }

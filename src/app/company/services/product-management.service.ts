@@ -10,7 +10,7 @@ import { ProductManagementItem } from '../interfaces/product-management-item';
   providedIn: 'root',
 })
 export class ProductManagementService {
-  url = environment.api + 'Product/';
+  url = environment.api + 'ProductManagement/';
   constructor(private http: HttpClient) {}
   getAll(body: TableLazyLoadEvent) {
     return this.http.post<APIResponse<any[]>>(this.url + 'getall', body);

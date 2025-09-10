@@ -11,7 +11,7 @@ import { MessageToastService } from '../../../shared/service/message-toast.servi
 import { UserStateService } from '../../services/user-state.service';
 
 @Component({
-  selector: 'app-register',
+  selector: 'register',
   imports: [PrimeNgSharedModule, DynmaicFormComponent, LoadingComponent],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
