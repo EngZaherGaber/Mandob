@@ -1,14 +1,13 @@
 <dynamic-view [load]="tableConfig.get$" [buttons]="tableConfig.Buttons" [showHeader]="true"
-    [captionButton]="tableConfig.captionButton"></dynamic-view>
+    [captionButton]="tableConfig.captionButton" />
 <p-dialog header="تغير كلمة السر" [modal]="true" [(visible)]="resetDialogVisible" [style]="{ width: '25rem' }">
     <ng-container [ngSwitch]="step">
         <div *ngSwitchCase="1" class="d-flex flex-column w-100 gap-4 pt-4">
-            <dynamic-input [style]="'width: 100%;'" [FEcontrol]="getControl('email')" [object]="objs[0]" />
-            <dynamic-input [style]="'width: 100%;'" [FEcontrol]="getControl('newPassword')" [object]="objs[2]" />
+            <dynamic-input [style]="'width: 100%;'" [FEcontrol]="getControl('newPassword')" [object]="objs[0]" />
             <div class="d-flex justify-content-end">
 
-                <p-button [disabled]="!(getControl('email').value && getControl('newPassword').value)" label="التالي"
-                    icon="pi pi-angle-left" [style]="{width:'100%'}" (onClick)="step=2" />
+                <p-button [disabled]="!getControl('newPassword').value" label="التالي" icon="pi pi-angle-left"
+                    [style]="{width:'100%'}" (onClick)="step=2" />
             </div>
         </div>
         <div *ngSwitchCase="2" class="d-flex flex-column w-100 gap-4 pt-4">

@@ -86,15 +86,15 @@ export class CompShowComponent {
   step: number = 1;
   resetDialogVisible: boolean = false;
   form: FormGroup = new FormGroup({
-    email: new FormControl(null),
+    userId: new FormControl(null),
     adminPassword: new FormControl(null),
     newPassword: new FormControl(null),
   });
   objs: InputDynamic[] = [
     {
-      key: 'email',
+      key: 'newPassword',
       value: null,
-      label: 'الايميل',
+      label: 'كلمة السر الجديدة',
       dataType: 'string',
       required: true,
       visible: true,
@@ -109,22 +109,11 @@ export class CompShowComponent {
       visible: true,
       options: [],
     },
-    {
-      key: 'newPassword',
-      value: null,
-      label: 'كلمة السر الجديدة',
-      dataType: 'string',
-      required: true,
-      visible: true,
-      options: [],
-    },
   ];
   changeState(rowData: any) {
     this.companyManagementSrv.changeStatus(rowData.userId).subscribe((res) => {
-      if (res.succeeded) {
-        this.msgSrv.showSuccess('تم تغير حالة المستخدم');
-        this.tableConfig.getSub$.next({});
-      }
+      this.msgSrv.showMessage(res.message, res.succeeded);
+      if (res.succeeded) this.tableConfig.getSub$.next({});
     });
   }
   addFunc: () => void = () => {
@@ -138,17 +127,12 @@ export class CompShowComponent {
   };
   deleteFunc: (rowData: any) => void = (rowData: any) => {
     this.companyManagementSrv.delete(rowData.userId).subscribe((res) => {
-      if (res.succeeded) {
-        this.tableConfig.getSub$.next({});
-        this.msgSrv.showSuccess('تم حذف الشركة');
-      } else {
-        this.msgSrv.showError(res.message);
-      }
+      this.msgSrv.showMessage(res.message, res.succeeded);
+      if (res.succeeded) this.tableConfig.getSub$.next({});
     });
   };
   resetFunc: (rowData: any) => void = (rowData: any) => {
-    this.getControl('email').setValue(rowData.email);
-    this.getControl('email').disable();
+    this.getControl('userId').setValue(rowData.userId);
     this.resetDialogVisible = true;
   };
   constructor(
@@ -201,7 +185,10 @@ export class CompShowComponent {
   resetPassword() {
     const strategy = this.userState.strategy();
     if (strategy instanceof OwnerStrategy) {
-      strategy.resetPasswordAdmin(this.form.getRawValue()).subscribe((res) => this.msgSrv.showSuccess(res.message));
+      strategy.resetPasswordAdmin(this.form.getRawValue()).subscribe((res) => {
+        this.msgSrv.showMessage(res.message, res.succeeded);
+        if (res.succeeded) this.resetDialogVisible = false;
+      });
     }
   }
 }

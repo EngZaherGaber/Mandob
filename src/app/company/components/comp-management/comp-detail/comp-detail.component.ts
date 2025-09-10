@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { forkJoin, switchMap } from 'rxjs';
@@ -49,7 +49,7 @@ export class CompDetailComponent {
               {
                 key: 'companyName',
                 label: 'اسم الشركة',
-                value: this.company.companyName,
+                value: this.company.name,
                 dataType: 'string',
                 required: true,
                 visible: true,
@@ -59,24 +59,6 @@ export class CompDetailComponent {
                 key: 'companyDescription',
                 label: 'وصف الشركة',
                 value: this.company.companyDescription,
-                dataType: 'string',
-                required: true,
-                visible: true,
-                options: [],
-              },
-              {
-                key: 'email',
-                label: 'الايميل',
-                value: this.company.email,
-                dataType: 'string',
-                required: true,
-                visible: true,
-                options: [],
-              },
-              {
-                key: 'phoneNumber',
-                label: 'رقم الهاتف',
-                value: this.company.phoneNumber,
                 dataType: 'string',
                 required: true,
                 visible: true,

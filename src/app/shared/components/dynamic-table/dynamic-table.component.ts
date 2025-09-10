@@ -252,6 +252,9 @@ export class DynamicTableComponent {
     //     });
     //   }
   }
+  getImageValue(obj: any, path: string) {
+    return path.split('.').reduce((acc, part) => acc && acc[part], obj);
+  }
   resetPaginator() {
     if (this.table) {
       this.table.first = 0;

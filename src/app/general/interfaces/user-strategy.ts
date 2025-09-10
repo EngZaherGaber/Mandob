@@ -1,6 +1,6 @@
 import { MenuItem } from 'primeng/api';
-import { APIResponse } from '../../shared/interface/response';
 import { Observable } from 'rxjs';
+import { APIResponse } from '../../shared/interface/response';
 import { User } from './user';
 
 export interface UserStrategy<T extends User> {
@@ -12,5 +12,5 @@ export interface UserStrategy<T extends User> {
   verifyCode(body: { code: string }): Observable<APIResponse<any>>;
   changePassword(body: { oldPassword: string; newPassword: string }): Observable<APIResponse<string>>;
 
-  logout(): void;
+  logout(): Observable<boolean>;
 }

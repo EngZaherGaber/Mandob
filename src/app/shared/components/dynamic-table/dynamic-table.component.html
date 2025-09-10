@@ -50,6 +50,7 @@
                         (click)="dt.clear();clearFilter()" severity="secondary" />
                 </div>
             </th>
+            <th *ngIf="imageField"></th>
             <ng-container *ngFor="let col of columns">
                 <th *ngIf="isSelect(col.header)" pResizableColumn [pSortableColumn]="col.field"
                     [style]="col.HeaderType === 'bool' ? {'justify-content':'center'} : ''">
@@ -61,8 +62,8 @@
             </ng-container>
         </tr>
         <tr *ngIf="filterdMode" pFrozenRow>
-            <!-- <th pFrozenColumn style="max-width: 250px !important;">
-            </th> -->
+            <th></th>
+            <th *ngIf="imageField"></th>
             <ng-container *ngFor="let col of columns">
                 <th *ngIf="isSelect(col.header)" pResizableColumn
                     [ngClass]="col.HeaderType === 'bool' ? 'bool-cell' : ''"
@@ -139,9 +140,9 @@
                         (click)="btn.command(rowData,rowData.buttons,dt);hitAction.emit({key:btn.key,rowDataId:rowData.Id})" />
                 </ng-container>
             </td>
-            <td *ngIf="imageField">
-                <img *ngIf="rowData.imageField" [src]="rowData.imageField" width="75" height="75">
-                <p-skeleton *ngIf="!rowData.imageField" width="75px" class="m-2" />
+            <td *ngIf="imageField" class="d-flex justify-content-center">
+                <p-avatar [image]="getImageValue(rowData,imageField)" size="xlarge" shape="circle" />
+                <p-skeleton *ngIf="!getImageValue(rowData,imageField)" shape="circle" size="64px" />
             </td>
             <ng-container *ngFor="let col of columns">
                 <td *ngIf="isSelect(col.header)">

@@ -35,6 +35,10 @@
             <ng-template ngSwitchCase="email">
                 <input [id]="object.key" [formControl]="FEcontrol" type="email" pInputText />
             </ng-template>
+            <ng-template ngSwitchCase="text">
+                <textarea style="max-height: 105px;" [fluid]="true" pSize="small" [autoResize]="false" [id]="object.key"
+                    [rows]="5" [formControl]="FEcontrol" pTextarea></textarea>
+            </ng-template>
             <ng-template ngSwitchCase="string">
                 <input [id]="object.key"
                     [pKeyFilter]="object.lang  ? (object.lang ==='en' ? nonArabicPattern : arabicPattern) : undefined"
@@ -84,7 +88,6 @@
                     (onSelect)="selectYM($event,'yy')" appendTo="body" view="year" dateFormat="yy"></p-datepicker>
             </ng-template>
             <ng-template ngSwitchCase="month">
-
                 <p-datepicker [id]="object.key" [maxDate]="maxDate"
                     [minDate]="object.startValidation && object.startValidation === true ? minDate : null"
                     [disabled]="FEcontrol.disabled" [(ngModel)]="autoCompleteValue" (onSelect)="selectYM($event,'mm')"

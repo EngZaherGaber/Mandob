@@ -29,7 +29,7 @@ export class GalleryComponent {
           return strategy.getById();
         })
       );
-      this.get$.subscribe((res) => {
+      this.get$.subscribe(async (res) => {
         if (res.succeeded) {
           this.images = res.data.images;
         }

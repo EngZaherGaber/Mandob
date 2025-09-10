@@ -86,7 +86,7 @@ export class HeaderComponent {
         }
       });
       effect(() => {
-        this.user = userState.user;
+        this.user = userState.user();
       });
     } else {
       // SSR fallback - show full text immediately
@@ -152,7 +152,13 @@ export class HeaderComponent {
     this.router.navigate(['/gallery']);
   }
   logout() {
-    this.userState.user = null;
-    this.userState.strategy()?.logout();
+    this.userState
+      .strategy()
+      ?.logout()
+      .subscribe((res) => {
+        if (res) {
+          this.userState.user.set(null);
+        }
+      });
   }
 }

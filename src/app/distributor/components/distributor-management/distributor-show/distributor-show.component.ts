@@ -1,17 +1,21 @@
 import { Component } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DistributorManagementService } from '../../../services/distributor-management.service';
-import { switchMap, of, catchError } from 'rxjs';
+import { catchError, of, switchMap } from 'rxjs';
+import { CompanyStrategy } from '../../../../company/classes/company-strategy';
+import { UserStateService } from '../../../../general/services/user-state.service';
+import { DynamicInputComponent } from '../../../../shared/components/dynamic-input/dynamic-input.component';
+import { DynamicViewComponent } from '../../../../shared/components/dynamic-view/dynamic-view.component';
 import { InfoTable } from '../../../../shared/interface/info-table';
+import { InputDynamic } from '../../../../shared/interface/input-dynamic';
+import { PrimeNgSharedModule } from '../../../../shared/modules/shared/primeng-shared.module';
 import { DyTableService } from '../../../../shared/service/dy-table.service';
 import { MessageToastService } from '../../../../shared/service/message-toast.service';
-import { CommonModule } from '@angular/common';
-import { DynamicViewComponent } from '../../../../shared/components/dynamic-view/dynamic-view.component';
-import { UserStateService } from '../../../../general/services/user-state.service';
+import { DistributorManagementService } from '../../../services/distributor-management.service';
 
 @Component({
   selector: 'app-distributor-show',
-  imports: [DynamicViewComponent, CommonModule],
+  imports: [DynamicViewComponent, PrimeNgSharedModule, DynamicInputComponent],
   templateUrl: './distributor-show.component.html',
   styleUrl: './distributor-show.component.scss',
 })
@@ -48,6 +52,33 @@ export class DistributorShowComponent {
       },
     },
   ];
+  step: number = 1;
+  resetDialogVisible: boolean = false;
+  form: FormGroup = new FormGroup({
+    userId: new FormControl(null),
+    adminPassword: new FormControl(null),
+    newPassword: new FormControl(null),
+  });
+  objs: InputDynamic[] = [
+    {
+      key: 'newPassword',
+      value: null,
+      label: 'كلمة السر الجديدة',
+      dataType: 'string',
+      required: true,
+      visible: true,
+      options: [],
+    },
+    {
+      key: 'adminPassword',
+      value: null,
+      label: 'كلمة سر المدير',
+      dataType: 'string',
+      required: true,
+      visible: true,
+      options: [],
+    },
+  ];
   changeState(rowData: any) {
     this.distributorManagementSrv.changeStatus(rowData.userId).subscribe((res) => {
       if (res.succeeded) {
@@ -65,6 +96,10 @@ export class DistributorShowComponent {
   displayFunc: (rowData: any) => void = (rowData: any) => {
     this.router.navigate(['company/distributor-management/detail/display/' + rowData.userId]);
   };
+  resetFunc: (rowData: any) => void = (rowData: any) => {
+    this.getControl('userId').setValue(rowData.userId);
+    this.resetDialogVisible = true;
+  };
   constructor(
     private tableSrv: DyTableService,
     private userState: UserStateService,
@@ -78,8 +113,9 @@ export class DistributorShowComponent {
       this.type = param['type'];
       this.tableConfig.get$ = this.tableConfig.getSub$.pipe(
         switchMap((body: any) => {
-          if (body && userState.user?.userId) {
-            return this.distributorManagementSrv.getAll(body, userState.user.userId).pipe(
+          const user = userState.user();
+          if (body && user?.userId) {
+            return this.distributorManagementSrv.getAll(body, user.userId).pipe(
               switchMap((res) =>
                 of({
                   data: res.data,
@@ -97,5 +133,16 @@ export class DistributorShowComponent {
       this.tableConfig.getSub$.next({});
     });
   }
-  ngOnInit() {}
+  getControl(name: string) {
+    return this.form.get(name) as FormControl;
+  }
+  resetPassword() {
+    const strategy = this.userState.strategy();
+    if (strategy instanceof CompanyStrategy) {
+      strategy.resetPasswordAdmin(this.form.getRawValue()).subscribe((res) => {
+        this.msgSrv.showSuccess(res.message);
+        if (res.succeeded) this.resetDialogVisible = false;
+      });
+    }
+  }
 }

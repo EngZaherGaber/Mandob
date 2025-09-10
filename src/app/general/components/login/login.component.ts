@@ -69,7 +69,7 @@ export class LoginComponent {
         if (res.succeeded) {
           localStorage.setItem('role', data.role);
           localStorage.setItem('name', data.name);
-          this.userState.user = null;
+          this.userState.user.set(null);
           if (data.isVerified === true) this.router.navigate(['']);
         } else {
           this.loading = false;

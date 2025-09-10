@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
-import { switchMap, of, catchError } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { catchError, of, switchMap } from 'rxjs';
+import { DynamicViewComponent } from '../../../../shared/components/dynamic-view/dynamic-view.component';
 import { InfoTable } from '../../../../shared/interface/info-table';
 import { DyTableService } from '../../../../shared/service/dy-table.service';
 import { MessageToastService } from '../../../../shared/service/message-toast.service';
 import { OwnerManagementService } from '../../../services/owner-management.service';
-import { DynamicViewComponent } from '../../../../shared/components/dynamic-view/dynamic-view.component';
 
 @Component({
   selector: 'owner-show',
@@ -59,6 +59,8 @@ export class OwnerShowComponent {
     this.router.navigate(['owner/owner-management/add']);
   };
   editFunc: (rowData: any) => void = (rowData: any) => {
+    rowData['image.imageUrl'];
+    debugger;
     this.router.navigate(['owner/owner-management/detail/edit/' + rowData.userId]);
   };
   displayFunc: (rowData: any) => void = (rowData: any) => {

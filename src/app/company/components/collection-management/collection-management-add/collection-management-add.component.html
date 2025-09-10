@@ -1,0 +1,8 @@
+<dynmaic-form class="dyn-frm" (submit)="submit($event)" [showSteps]="true" [display]="'flex'" [withBackBtn]="true"
+    [preRoute]="'company/collection-management/show'" (onActiveIndexChange)="activeIndex = $event" [objs]="resetObjs"
+    style="width: 100%;" [scrollHeight]="'100%'" [stepsList]="stepsList">
+    <ng-container *ngIf="activeIndex===1">
+        <p-fileupload #fu mode="basic" chooseLabel="Choose" chooseIcon="pi pi-upload" name="demo[]" accept="image/*"
+            maxFileSize="1000000" (onSelect)="onSelect($event)" />
+    </ng-container>
+</dynmaic-form>

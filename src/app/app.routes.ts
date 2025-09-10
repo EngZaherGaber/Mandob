@@ -129,7 +129,7 @@ export const routes: Routes = [
             children: [
               {
                 path: 'show',
-                title: 'عرض الباقات',
+                title: 'عرض الموزعين',
                 loadComponent: () =>
                   import(
                     './distributor/components/distributor-management/distributor-show/distributor-show.component'
@@ -137,7 +137,7 @@ export const routes: Routes = [
               },
               {
                 path: 'add',
-                title: 'اضافة باقة',
+                title: 'اضافة موزع',
                 loadComponent: () =>
                   import(
                     './distributor/components/distributor-management/distributor-add/distributor-add.component'
@@ -145,7 +145,7 @@ export const routes: Routes = [
               },
               {
                 path: 'detail/:type/:id',
-                title: 'بيانات باقة',
+                title: 'بيانات الموزع',
                 loadComponent: () =>
                   import(
                     './distributor/components/distributor-management/distributor-detail/distributor-detail.component'
@@ -154,11 +154,62 @@ export const routes: Routes = [
             ],
           },
           {
-            path: 'product',
-            loadComponent: () =>
-              import('./general/components/product-details/product-details.component').then(
-                (m) => m.ProductDetailsComponent
-              ),
+            path: 'product-management',
+            children: [
+              {
+                path: 'show',
+                title: 'عرض المنتجات',
+                loadComponent: () =>
+                  import(
+                    './company/components/prod-management/prod-management-show/prod-management-show.component'
+                  ).then((m) => m.ProdManagementShowComponent),
+              },
+              {
+                path: 'detail/:type/:id',
+                title: 'بيانات المنتج',
+                loadComponent: () =>
+                  import(
+                    './company/components/prod-management/prod-management-detail/prod-management-detail.component'
+                  ).then((m) => m.ProdManagementDetailComponent),
+              },
+              {
+                path: 'add',
+                title: 'اضافة منتج',
+                loadComponent: () =>
+                  import('./company/components/prod-management/prod-management-add/prod-management-add.component').then(
+                    (m) => m.ProdManagementAddComponent
+                  ),
+              },
+            ],
+          },
+          {
+            path: 'collection-management',
+            children: [
+              {
+                path: 'show',
+                title: 'عرض المجموعات',
+                loadComponent: () =>
+                  import(
+                    './company/components/collection-management/collection-management-show/collection-management-show.component'
+                  ).then((m) => m.CollectionManagementShowComponent),
+              },
+              {
+                path: 'detail/:type/:id',
+                title: 'بيانات المجموعة',
+                loadComponent: () =>
+                  import(
+                    './company/components/collection-management/collection-management-detail/collection-management-detail.component'
+                  ).then((m) => m.CollectionManagementDetailComponent),
+              },
+              {
+                path: 'add',
+                title: 'اضافة مجموعة',
+                loadComponent: () =>
+                  import(
+                    './company/components/collection-management/collection-management-add/collection-management-add.component'
+                  ).then((m) => m.CollectionManagementAddComponent),
+              },
+            ],
           },
         ],
       },

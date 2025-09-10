@@ -1,5 +1,7 @@
-import { computed, Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { computed, Inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
+import { catchError, Observable, of, switchMap } from 'rxjs';
 import { ClientStrategy } from '../../client/classes/client-strategy';
 import { Client } from '../../client/interfaces/client';
 import { CompanyStrategy } from '../../company/classes/company-strategy';
@@ -8,10 +10,8 @@ import { DistributorStrategy } from '../../distributor/classes/distributor-strat
 import { Distributor } from '../../distributor/interfaces/distributor';
 import { OwnerStrategy } from '../../owner/classes/owner-strategy';
 import { Owner } from '../../owner/interfaces/owner';
-import { UserStrategy } from '../interfaces/user-strategy';
-import { isPlatformBrowser } from '@angular/common';
 import { User } from '../interfaces/user';
-import { Observable, of, catchError, switchMap } from 'rxjs';
+import { UserStrategy } from '../interfaces/user-strategy';
 import { AuthService } from './auth.service';
 
 interface StrategyRegistry {
@@ -26,11 +26,12 @@ interface StrategyRegistry {
 export class UserStateService {
   private strategies: { [K in keyof StrategyRegistry]: UserStrategy<StrategyRegistry[K]> };
   isBrowser = computed(() => isPlatformBrowser(this.platformId));
-  role = computed(() => (this.user ? this.user.role : null));
+  role = computed(() => (this.user() ? this.user()?.role : null));
   fingerPrint = computed(() => this.getFingerPrint());
-  user: User | null = null;
+  user = signal<User | null>(null);
   strategy = computed(() => {
     const role = this.role();
+    console.log(role);
     if (this.isBrowser() && role && this.isValidRole(role)) {
       return this.getStrategy(role);
     }
@@ -66,13 +67,13 @@ export class UserStateService {
     return '';
   }
   checkUser(): Observable<boolean> {
-    if (this.user) {
+    if (this.user()) {
       return of(true); // user already exists locally
     }
     return this.authSrv.myInfo().pipe(
       switchMap((res) => {
         if (res.succeeded) {
-          this.user = res.data;
+          this.user.set(res.data);
           return of(true);
         } else {
           return of(false);

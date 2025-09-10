@@ -1,11 +1,11 @@
-import { MenuItem } from 'primeng/api';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { MenuItem } from 'primeng/api';
+import { environment } from '../../../environments/environment';
+import { BaseUserStrategy } from '../../general/classes/base-user-strategy';
 import { AuthService } from '../../general/services/auth.service';
 import { Company } from '../interfaces/company';
-import { BaseUserStrategy } from '../../general/classes/base-user-strategy';
-import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root', // or inside providers: [] of a module
@@ -41,7 +41,12 @@ export class CompanyStrategy extends BaseUserStrategy<Company> {
         {
           label: 'قائمة المنتجات',
           icon: 'pi pi-box', // 📦 منتج
-          routerLink: ['company/product'],
+          routerLink: ['company/product-management/show'],
+        },
+        {
+          label: 'قائمة المجموعات',
+          icon: 'pi pi-folder', // 📦 منتج
+          routerLink: ['company/collection-management/show'],
         },
         {
           label: 'العروض',
@@ -75,5 +80,8 @@ export class CompanyStrategy extends BaseUserStrategy<Company> {
   ];
   constructor(http: HttpClient, authSrv: AuthService, router: Router) {
     super(http, authSrv, router);
+  }
+  resetPasswordAdmin(body: { newPassword: string; email: string; adminPassword: string }) {
+    return this.authSrv.resetPasswordAdmin(body);
   }
 }

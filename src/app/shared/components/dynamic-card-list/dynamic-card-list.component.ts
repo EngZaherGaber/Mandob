@@ -187,6 +187,9 @@ export class DynamicCardListComponent {
       actionEl.command(e, field, rowData);
     }
   }
+  getImageValue(obj: any, path: string) {
+    return path.split('.').reduce((acc, part) => acc && acc[part], obj);
+  }
   downloadJSON(jsonData: string) {
     this.tableSrv.downloadJSON(jsonData);
   }

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
-import { Observable } from 'rxjs';
+import { Observable, of, switchMap } from 'rxjs';
 import { APIResponse } from '../../shared/interface/response';
 import { User } from '../interfaces/user';
 import { UserStrategy } from '../interfaces/user-strategy';
@@ -29,11 +29,14 @@ export abstract class BaseUserStrategy<T extends User> implements UserStrategy<T
   }
 
   logout() {
-    this.authSrv.logout().subscribe((res) => {
-      if (res.succeeded) {
-        this.router.navigate(['auth/login']);
-        localStorage.clear();
-      }
-    });
+    return this.authSrv.logout().pipe(
+      switchMap((res) => {
+        if (res.succeeded) {
+          this.router.navigate(['auth/login']);
+          return of(true);
+        }
+        return of(false);
+      })
+    );
   }
 }

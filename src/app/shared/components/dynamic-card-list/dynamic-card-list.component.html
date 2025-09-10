@@ -43,9 +43,9 @@
           class="full-con max-vh-70 overflow-y-auto d-flex jsutify-content-start flex-row flex-wrap align-items-start gap-2 px-3 py-2">
           <div class="item-con item-con-list w-100 rounded-3 d-flex flex-column flex-md-row" *ngFor="let item of items">
             <div class="col-12 col-md-4 d-flex justify-content-center align-items-center img py-2">
-              <ng-container *ngIf="item.imgSrv; then img; else icon"></ng-container>
+              <ng-container *ngIf="getImageValue(item,imageField); then img; else icon"></ng-container>
               <ng-template #img>
-                <img style="width: 75px" [src]="item.imageField ? item.imageField : 'delivery-man.svg'" />
+                <img style="width: 75px" [src]="getImageValue(item,imageField)" />
               </ng-template>
               <ng-template #icon>
                 <i class="pi pi-user" style="font-size: 75px !important"></i>
@@ -84,9 +84,9 @@
               class="item-con col-12 col-sm-6 col-md-4 col-lg-3 gap-2 d-flex flex-column justify-content-start p-0 rounded-3"
               *ngFor="let item of items">
               <div class="w-100 py-2 img d-flex justify-content-center">
-                <ng-container *ngIf="item.imgSrv; then img; else icon"></ng-container>
+                <ng-container *ngIf="getImageValue(item,imageField); then img; else icon"></ng-container>
                 <ng-template #img>
-                  <img style="height: 75px" [src]="item.imgSrv ? item.imgSrv : 'delivery-man.svg'" alt="" />
+                  <img style="height: 75px" [src]="getImageValue(item,imageField)" alt="" />
                 </ng-template>
                 <ng-template #icon>
                   <i class="pi pi-user" style="font-size: 75px !important"></i>

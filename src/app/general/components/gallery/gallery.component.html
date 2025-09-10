@@ -28,7 +28,7 @@
         <div class="d-flex flex-wrap border border-2 rounded-4 gap-2 p-2">
             <div class="position-relative border border-1 rounded-4" style="width: calc(20% - 0.5rem);height: 200px;"
                 *ngFor="let img of images">
-                <img [src]="img.imageUrl" class="w-100 h-100 rounded-4" [alt]="'image-of-'+userState.user?.name">
+                <img [src]="img.imageUrl" class="w-100 h-100 rounded-4" [alt]="'image-of-'+userState.user()?.name">
                 <div class="position-absolute end-0 bottom-0 w-100 d-flex gap-2 px-2 rounded-4 py-1">
 
                     <p-button size="small" pTooltip="الرئيسية" (onClick)="setMain(img.imageId)"

@@ -14,6 +14,9 @@ export class MessageToastService {
       detail: detail,
     });
   }
+  showMessage(message: string, succeeded: boolean) {
+    this.customMessage(succeeded ? 'success' : 'error', 'تمت العملية بنجاح', message);
+  }
   showSuccess(message: string) {
     this.customMessage('success', 'تمت العملية بنجاح', message);
   }

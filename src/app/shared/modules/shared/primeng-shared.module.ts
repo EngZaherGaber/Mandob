@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { AccordionModule } from 'primeng/accordion';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
@@ -24,6 +25,7 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { StepsModule } from 'primeng/steps';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
+import { TextareaModule } from 'primeng/textarea';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TooltipModule } from 'primeng/tooltip';
@@ -31,11 +33,13 @@ import { TooltipModule } from 'primeng/tooltip';
 @NgModule({
   declarations: [],
   exports: [
+    AccordionModule,
     GalleriaModule,
     CommonModule,
     InputNumberModule,
     DialogModule,
     CheckboxModule,
+    TextareaModule,
     DataViewModule,
     MenuModule,
     AutoCompleteModule,

@@ -468,7 +468,7 @@ export const MyPreset = definePreset({
         content: {
           background: '{surface.100}',
           hoverBackground: '{primary.500}',
-          borderColor: '{surface.100}',
+          borderColor: '{surface.300}',
           color: '{text.color}',
           hoverColor: '{text.hover.color}',
         },
@@ -671,7 +671,7 @@ export const MyPreset = definePreset({
       header: {
         color: '{text.muted.color}',
         hoverColor: '{text.color}',
-        activeColor: '{text.color}',
+        activeColor: '{text.hover.color}',
         padding: '1.125rem',
         fontWeight: '600',
         borderRadius: '0',
@@ -679,8 +679,8 @@ export const MyPreset = definePreset({
         borderColor: '{content.border.color}',
         background: '{content.background}',
         hoverBackground: '{content.background}',
-        activeBackground: '{content.background}',
-        activeHoverBackground: '{content.background}',
+        activeBackground: '{primary.500}',
+        activeHoverBackground: '{primary.500}',
         focusRing: {
           width: '{focus.ring.width}',
           style: '{focus.ring.style}',
@@ -2374,7 +2374,7 @@ export const MyPreset = definePreset({
         gap: '1rem',
       },
       file: {
-        padding: '1rem',
+        padding: '0rem',
         gap: '1rem',
         borderColor: '{content.border.color}',
         info: {
