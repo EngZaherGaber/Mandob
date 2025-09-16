@@ -1,2 +1,2 @@
-<dynamic-view [load]="tableConfig.get$" [buttons]="tableConfig.Buttons" [showHeader]="true"
-    [captionButton]="tableConfig.captionButton"></dynamic-view>
+<dynamic-view (onLazy)="tableConfig.getSub$.next($event)" [lazyLoading]="true" [load]="tableConfig.get$"
+    [buttons]="tableConfig.Buttons" [showHeader]="true" [captionButton]="tableConfig.captionButton"></dynamic-view>

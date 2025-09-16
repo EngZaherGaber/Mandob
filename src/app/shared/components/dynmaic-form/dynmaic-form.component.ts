@@ -35,6 +35,7 @@ export class DynmaicFormComponent {
   @Input() justOneStep: boolean = false;
   @Input() showSteps: boolean = false;
   @Input() stepsList: MenuItem[] = [];
+  @Input() activeIndex: number = 0;
   @Input() triggers: {
     [key: string]: {
       key: string;
@@ -45,7 +46,6 @@ export class DynmaicFormComponent {
   @Output() onActiveIndexChange: EventEmitter<any> = new EventEmitter<any>();
   public form: FormGroup = new FormGroup({});
   keys: string[] = [];
-  activeIndex: number = 0;
   finsih: boolean = false;
   constructor(private route: Router, private DySrv: DynamicAttributeService, private cd: ChangeDetectorRef) {}
 
@@ -153,7 +153,7 @@ export class DynmaicFormComponent {
       // If Next button is available and not disabled, trigger it
       if (!this.form.controls[this.keys[this.activeIndex]].invalid) {
         this.activeIndex = this.activeIndex + 1;
-        this.onActiveIndexChange.emit(this.activeIndex);
+        this.onActiveIndexChange.emit({ index: this.activeIndex, form: this.form });
       }
     } else if (this.activeIndex === this.stepsList.length - 1 && this.isShow) {
       this.exit();

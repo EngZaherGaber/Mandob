@@ -1,7 +1,7 @@
 <ng-container [ngSwitch]="object.dataType">
     <div style="position: relative;">
         <p-floatlabel class="w-full md:w-56" variant="over">
-            <ng-container *ngIf="object.dataType !== 'bool'">
+            <ng-container *ngIf="object.dataType !== 'bool' && object.dataType !== 'editor'">
                 <label [ngClass]="{ required: object.required }" [for]="object.key">{{
                     object.label
                     }}</label>
@@ -20,6 +20,7 @@
                     [formControl]="FEcontrol" [filter]="object.options ? object.options.length > 4 : false"
                     optionLabel="name" optionValue="id" [showClear]="true" [checkmark]="true"></p-select>
             </ng-template>
+
             <ng-template ngSwitchCase="int">
                 <p-inputNumber [id]="object.key" [step]="1" [formControl]="FEcontrol" [min]="object.required ? 1 : null"
                     [showButtons]="true" (keydown)="preventSpace($event, FEcontrol.value)"></p-inputNumber>
@@ -77,8 +78,8 @@
             </ng-template>
             <ng-template ngSwitchCase="MultiSelect">
                 <p-multiSelect [id]="object.key" [appendTo]="'body'" [options]="object.options"
-                    [formControl]="FEcontrol" [selectionLimit]="object.Max" optionLabel="name" optionValue="id"
-                    [showClear]="object.required ? false : true"></p-multiSelect>
+                    [formControl]="FEcontrol" [selectionLimit]="object.Max" size="small" optionLabel="name"
+                    optionValue="id" [showClear]="object.required ? false : true"></p-multiSelect>
             </ng-template>
             <ng-template ngSwitchCase="year">
 
@@ -97,7 +98,10 @@
         <small *ngIf="object.dataType === 'autoComplete'" [id]="object.label + 'help'"
             class="helper">AutoComplete</small>
         <small [id]="object.label + 'help'" class="helper" *ngIf="object.dataType !== 'bool'">{{ object.desc }}</small>
-
+        <ng-template ngSwitchCase="editor">
+            <p-editor [id]="object.key" [style]="{ height: '320px' }" [formControl]="FEcontrol"
+                [placeholder]="object.label"></p-editor>
+        </ng-template>
         <ng-template ngSwitchCase="bool">
             <div style="display: flex;gap: 15px;">
                 <label [ngClass]="{ required: object.required }" [for]="object.key">{{

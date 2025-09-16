@@ -4,8 +4,9 @@ import { VariantItem } from './variant-item';
 export interface ProductManagementAdd {
   productName: string;
   productDescription: string;
-  CollectionIDs: number[];
-  CategorieIDs: number[];
+  collectionIDs: number[];
+  categorieIDs: number[];
   options: OptionItem[];
   variants: VariantItem[];
+  productImages?: any[];
 }

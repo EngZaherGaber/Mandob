@@ -6,9 +6,11 @@ import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { CheckboxModule } from 'primeng/checkbox';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DataViewModule } from 'primeng/dataview';
 import { DatePickerModule } from 'primeng/datepicker';
 import { DialogModule } from 'primeng/dialog';
+import { EditorModule } from 'primeng/editor';
 import { FileUploadModule } from 'primeng/fileupload';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { GalleriaModule } from 'primeng/galleria';
@@ -34,6 +36,7 @@ import { TooltipModule } from 'primeng/tooltip';
   declarations: [],
   exports: [
     AccordionModule,
+    ConfirmDialogModule,
     GalleriaModule,
     CommonModule,
     InputNumberModule,
@@ -47,6 +50,7 @@ import { TooltipModule } from 'primeng/tooltip';
     CardModule,
     AvatarModule,
     StepsModule,
+    EditorModule,
     ScrollPanelModule,
     MultiSelectModule,
     FloatLabelModule,

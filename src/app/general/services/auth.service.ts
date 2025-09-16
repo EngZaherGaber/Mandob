@@ -48,6 +48,15 @@ export class AuthService {
   logout() {
     return this.http.post<APIResponse<any>>(this.url + '/logout', {});
   }
+  changePhoneNumberForAdmin(body: { adminPassword: string; newPhoneNumber: string; userId: number }) {
+    return this.http.post<APIResponse<any>>(this.url + '/change-phone-number-for-admin', body);
+  }
+  changePhoneNumber(body: { password: string; newPhoneNumber: string }) {
+    return this.http.post<APIResponse<any>>(this.url + '/change-phone-number', body);
+  }
+  VerifyChangePhoneNumber(body: { code: string; newPhoneNumber: string }) {
+    return this.http.post<APIResponse<any>>(this.url + '/verify-code-for-change-phone-number', body);
+  }
   changePassword(body: { oldPassword: string; newPassword: string }) {
     return this.http.put<APIResponse<any>>(this.url + '/change-password', body);
   }

@@ -1,14 +1,17 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
+import { CollectionManagementService } from '../../../../company/services/collection-management.service';
 import { UserStateService } from '../../../../general/services/user-state.service';
 import { CategoryManagementService } from '../../../../owner/services/category-management.service';
 import { DynamicInputComponent } from '../../../../shared/components/dynamic-input/dynamic-input.component';
 import { InputDynamic } from '../../../../shared/interface/input-dynamic';
 import { PrimeNgSharedModule } from '../../../../shared/modules/shared/primeng-shared.module';
+import { MessageToastService } from '../../../../shared/service/message-toast.service';
 import { OptionItem } from '../../../interfaces/option-item';
+import { ProductManagementAdd } from '../../../interfaces/product-management-add';
 import { VariantItem } from '../../../interfaces/variant-item';
-import { CollectionManagementService } from '../../../services/collection-management.service';
 import { ProductManagementService } from '../../../services/product-management.service';
 
 @Component({
@@ -31,13 +34,14 @@ export class ProdManagementAddComponent {
   showForm: boolean = false;
   constructor(
     private productManagement: ProductManagementService,
-    private categoryManagement: CategoryManagementService,
-    private userState: UserStateService,
-    private collectionManagement: CollectionManagementService
+    private msgSrv: MessageToastService,
+    public router: Router,
+    categoryManagement: CategoryManagementService,
+    userState: UserStateService,
+    collectionManagement: CollectionManagementService
   ) {
     const user = userState.user();
     if (user && user.userId) {
-      debugger;
       forkJoin({
         collection: collectionManagement.getAll({ first: 0, rows: 1000 }, user.userId),
         categories: categoryManagement.getAll({ first: 0, rows: 1000 }),
@@ -56,7 +60,7 @@ export class ProdManagementAddComponent {
             key: 'productDescription',
             value: null,
             label: 'الوصف',
-            dataType: 'text',
+            dataType: 'editor',
             required: true,
             visible: true,
             options: [],
@@ -68,7 +72,10 @@ export class ProdManagementAddComponent {
             dataType: 'MultiSelect',
             required: true,
             visible: true,
-            options: res.collection.data.map((item) => ({ id: item.collectionID, name: item.collectionName })),
+            options: res.collection.data.map((item) => ({
+              id: item.collectionID.toString(),
+              name: item.collectionName,
+            })),
           },
           {
             key: 'CategorieIDs',
@@ -77,7 +84,7 @@ export class ProdManagementAddComponent {
             dataType: 'MultiSelect',
             required: true,
             visible: true,
-            options: res.categories.data.map((item) => ({ id: item.categoryID, name: item.categoryName })),
+            options: res.categories.data.map((item) => ({ id: item.categoryID.toString(), name: item.categoryName })),
           },
         ];
         this.showForm = true;
@@ -154,12 +161,13 @@ export class ProdManagementAddComponent {
       return {
         variantName,
         sku: `SKU-${index + 1}`,
-        stockQuantity: 0,
+        quantity: 0,
         optionAssignments: combo,
+        VariantImages: [],
         price: 0,
       };
     });
-
+    console.log(this.uploadedFiles);
     return newVariants;
   }
 
@@ -169,16 +177,28 @@ export class ProdManagementAddComponent {
     }
   }
   checkVariantPanel() {
-    return (
-      this.form.invalid || this.options.length === 0 || this.options.filter((opt) => opt.values.length === 0).length > 0
-    );
+    return this.form.invalid || this.options.filter((opt) => opt.values.length === 0).length > 0;
   }
+
   saveProduct() {
-    // const product: ProductManagementAdd = {
-    //   productName: this.form.value.productName,
-    //   productDescription: this.form.value.productDescription,
-    //   options: this.options,
-    //   variants: this.variants,
-    // };
+    const product: ProductManagementAdd = {
+      productName: this.form.value.productName,
+      productDescription: this.form.value.productDescription,
+      collectionIDs: this.form.value.CollectionIDs,
+      categorieIDs: this.form.value.CategorieIDs,
+      options: this.options,
+      variants: this.variants,
+    };
+    const variantImage = product.variants.flatMap((x) => x.variantImages);
+    const everyVariantHaveImage = variantImage.length > 0 && variantImage.every((x) => (x ? x.length > 0 : false));
+
+    if (everyVariantHaveImage) {
+      this.productManagement.add(product, this.uploadedFiles).subscribe((res) => {
+        this.msgSrv.showMessage(res.message, res.succeeded);
+        if (res.succeeded) this.router.navigate(['company/product-management/show']);
+      });
+    } else {
+      this.msgSrv.showError('يجب ان ينتمي لكل تشكيل صور خاصة به من ضمن صور المنتج');
+    }
   }
 }

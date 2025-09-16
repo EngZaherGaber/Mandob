@@ -22,7 +22,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
           if (error instanceof HttpErrorResponse) {
             if (error.error) {
               let msg = error.error?.message;
-              debugger;
               switch (error.status) {
                 case 0:
                   msg = msg ?? 'CORS ERROR';

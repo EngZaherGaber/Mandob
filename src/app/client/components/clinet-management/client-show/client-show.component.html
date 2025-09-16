@@ -1,6 +1,9 @@
 <dynamic-view [columnsEvent]="columnsEvent" [lazyLoading]="true" (onLazy)="tableConfig.getSub$.next($event)"
     [load]="tableConfig.get$" [buttons]="tableConfig.Buttons" [showHeader]="true"
     [captionButton]="tableConfig.captionButton"></dynamic-view>
-<!-- <dynamic-card-list *ngIf="type === 'list'" [load]="tableConfig.get$" [columnsEvent]="columnsEvent"
-    [buttons]="tableConfig.Buttons" [lazyLoading]="true" (onLazy)="tableConfig.getSub$.next($event)"
-    [captionButton]="tableConfig.captionButton"></dynamic-card-list> -->
+<p-dialog header="تغيير رقم الهاتف" [modal]="true" *ngIf="changePhoneNumbervisible"
+    (visibleChange)="closeDialog($event,changePhoneNumberForm)" [(visible)]="changePhoneNumbervisible"
+    [style]="{ width: '25rem' }">
+    <dynmaic-form class="dyn-frm" [scrollHeight]="'25vh'" (submit)="changePhoneNumber($event)" [display]="'flex'"
+        [withBackBtn]="false" [objs]="changePhoneNumberForm" style="width: 100%;" [justOneStep]="true"></dynmaic-form>
+</p-dialog>

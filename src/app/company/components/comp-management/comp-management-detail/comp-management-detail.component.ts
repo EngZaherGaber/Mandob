@@ -91,6 +91,24 @@ export class CompManagementDetailComponent {
                 visible: true,
                 options: res.plan.data.map((plan) => ({ name: plan.planName, id: plan.planID })),
               },
+              {
+                key: 'planStartDate',
+                label: 'خطة الاشتراك',
+                value: this.company.planStartDate,
+                dataType: 'DateTime',
+                required: true,
+                visible: true,
+                options: [],
+              },
+              {
+                key: 'planEndDate',
+                label: 'خطة الاشتراك',
+                value: this.company.planEndDate,
+                dataType: 'DateTime',
+                required: true,
+                visible: true,
+                options: [],
+              },
             ],
           };
           this.finsih = res.company.succeeded && res.plan.succeeded;

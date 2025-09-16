@@ -42,7 +42,7 @@ export class UserStateService {
     private client: ClientStrategy,
     private distributor: DistributorStrategy,
     private owner: OwnerStrategy,
-    private authSrv: AuthService,
+    public authSrv: AuthService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.strategies = {

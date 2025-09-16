@@ -1,0 +1,80 @@
+<!-- <p-card> -->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-md-6 position-relative">
+            <div class="row">
+                <div class="w-100 col-12 d-flex justify-content-between border-bottom border-4 pb-2"
+                    style="color: var(--p-primary-500);border-color: var(--p-primary-500) !important;">
+                    <h1 class="fw-bold" style="color: var(--p-primary-500);">{{product?.productName}}
+                    </h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <div class=" row py-2 pb-2">
+                        <p class="mb-2">الخيارات</p>
+                        <div class="d-flex flex-column gap-4 py-3">
+                            <p-floatlabel variant="over" *ngFor="let opt of options;let optionIndex=index"
+                                [style]="{'width':'100%'}">
+                                <label [for]="opt.optionName">{{opt.optionName}}</label>
+                                <p-select [formControl]="getControl(optionIndex)" [style]="{'width':'100%'}"
+                                    appendTo="body" [options]="opt.values" (onChange)="getPrice()"
+                                    optionLabel="valueName" display="chip" optionValue="valueName">
+                                </p-select>
+                            </p-floatlabel>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="row d-flex flex-column gap-4 justify-content-between h-100"
+                        style="transform: rotate(-0deg);">
+                        <div class="d-flex-flex-column gap-2">
+                            <h4 class="fw-bold p-1 text-center w-100" style="color: var(--p-primary-500);">
+                                {{price |
+                                currency}}</h4>
+                            <!-- <h4 class=" fw-bold p-1 text-center w-100" style="color: var(--p-amber-500);">
+                                {{4900 |
+                                currency}}</h4> -->
+                            <p class=" fw-bold p-1 text-center w-100">المجموع
+                                {{countControl.value * price |
+                                currency}}</p>
+                        </div>
+                        <div class="button-div d-flex flex-column gap-2">
+                            <dynamic-input [style]="'width: 100%;'" [FEcontrol]="countControl"
+                                [object]="countObj"></dynamic-input>
+                            <p-button [ngClass]="'w-100 d-block'" [raised]="true" [style]="{'width':'100%'}"
+                                label="طلب شحن" icon="pi pi-truck" />
+                            <p-button [ngClass]="'w-100 d-block'" severity="secondary" [style]="{'width':'100%'}"
+                                label="وضع في السلة" icon="pi pi-cart-plus" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row my-2">
+                <p class="p-0">الوصف:</p>
+                <div style="white-space: normal;word-break: keep-all;overflow-wrap: break-word;"
+                    [innerHTML]="product?.productDescription"></div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 py-4 px-2 position-relative">
+            <p-galleria [ngClass]="'position-sticky top-0'" [value]="images()" [responsiveOptions]="responsiveOptions"
+                [showThumbnailNavigators]="false" [showItemNavigatorsOnHover]="true" [showItemNavigators]="true"
+                [showTransitionOptions]="'250ms cubic-bezier(0, 0, 0.2, 1)'" [containerStyle]="{ 'max-width': '640px' }"
+                [numVisible]="5" [activeIndex]="activeIndex">
+                <ng-template #item let-item>
+                    <img [src]="item" style="width:100%;height: 50vh;" />
+                </ng-template>
+                <ng-template #thumbnail let-item>
+                    <img [src]="item" width="50px" height="50px" />
+                </ng-template>
+            </p-galleria>
+        </div>
+    </div>
+    <div class="row w-100 rounded-2 py-0" style="height: 4px;background-color: var(--p-primary-500);"></div>
+    <div class="row ">
+        <product-list [header]="'منتجات اخرى لنفس المصدر'"></product-list>
+    </div>
+    <div class="row mt-5">
+        <product-list [header]="'منتجات اخرى ذات صلة'"></product-list>
+    </div>
+</div>

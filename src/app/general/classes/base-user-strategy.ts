@@ -11,6 +11,12 @@ export abstract class BaseUserStrategy<T extends User> implements UserStrategy<T
   abstract url: string;
   abstract navMenu: MenuItem[];
   constructor(protected http: HttpClient, protected authSrv: AuthService, private router: Router) {}
+  changePhoneNumber(body: { password: string; newPhoneNumber: string }): Observable<APIResponse<string>> {
+    return this.authSrv.changePhoneNumber(body);
+  }
+  VerifyChangePhoneNumber(body: { code: string; newPhoneNumber: string }): Observable<APIResponse<string>> {
+    return this.authSrv.VerifyChangePhoneNumber(body);
+  }
 
   getById(): Observable<APIResponse<T>> {
     return this.http.get<APIResponse<T>>(`${this.url}`);

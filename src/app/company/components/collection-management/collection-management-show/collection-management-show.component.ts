@@ -54,13 +54,13 @@ export class CollectionManagementShowComponent {
     this.router.navigate(['company/collection-management/add']);
   };
   editFunc: (rowData: any) => void = (rowData: any) => {
-    this.router.navigate(['company/collection-management/detail/edit/' + rowData.productID]);
+    this.router.navigate(['company/collection-management/detail/edit/' + rowData.collectionID]);
   };
   displayFunc: (rowData: any) => void = (rowData: any) => {
-    this.router.navigate(['company/collection-management/detail/display/' + rowData.productID]);
+    this.router.navigate(['company/collection-management/detail/display/' + rowData.collectionID]);
   };
   deleteFunc: (rowData: any) => void = (rowData: any) => {
-    this.collectionManagement.delete(rowData.productID).subscribe((res) => {
+    this.collectionManagement.delete(rowData.collectionID).subscribe((res) => {
       this.msgSrv.showMessage(res.message, res.succeeded);
       if (res.succeeded) {
         this.tableConfig.getSub$.next({});
@@ -88,15 +88,14 @@ export class CollectionManagementShowComponent {
                 data: res.data,
                 columns: this.columns,
                 loading: false,
-                count: res.data.length,
+                count: res.count,
               })
             ),
-            catchError(() => of({ loading: false, data: [], columns: [] }))
+            catchError(() => of({ loading: false, data: [], columns: this.columns }))
           );
         }
-        return of({ loading: false, data: [], columns: [] });
+        return of({ loading: false, data: [], columns: this.columns });
       })
     );
-    this.tableConfig.getSub$.next({});
   }
 }

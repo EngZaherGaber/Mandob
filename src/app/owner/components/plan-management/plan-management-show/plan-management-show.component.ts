@@ -95,16 +95,15 @@ export class PlanManagementShowComponent {
                   data: res.data,
                   columns: this.columns,
                   loading: false,
-                  count: res.data.length,
+                  count: res.count,
                 })
               ),
-              catchError(() => of({ loading: false, data: [], columns: [] }))
+              catchError(() => of({ loading: false, data: [], columns: this.columns }))
             );
           }
-          return of({ loading: false, data: [], columns: [] });
+          return of({ loading: false, data: [], columns: this.columns });
         })
       );
-      this.tableConfig.getSub$.next({});
     });
   }
 }

@@ -8,4 +8,6 @@ export interface Company extends User {
   address: string;
   planName: string;
   planId: number;
+  planStartDate: Date;
+  planEndDate: Date;
 }

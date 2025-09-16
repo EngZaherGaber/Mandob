@@ -1,21 +1,20 @@
 import { ApplicationConfig, provideAppInitializer, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter, withViewTransitions } from '@angular/router';
 
-import { routes } from './app.routes';
+import { FacebookLoginProvider, GoogleLoginProvider, SocialAuthServiceConfig } from '@abacritt/angularx-social-login';
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { providePrimeNG } from 'primeng/config';
 import { MyPreset } from '../../public/theme';
-import { HTTP_INTERCEPTORS, provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { MessageService } from 'primeng/api';
-import { UserStateService } from './general/services/user-state.service';
-import { CompanyStrategy } from './company/classes/company-strategy';
+import { routes } from './app.routes';
 import { ClientStrategy } from './client/classes/client-strategy';
+import { CompanyStrategy } from './company/classes/company-strategy';
 import { DistributorStrategy } from './distributor/classes/distributor-strategy';
-import { OwnerStrategy } from './owner/classes/owner-strategy';
-import { SocialLoginModule, SocialAuthServiceConfig } from '@abacritt/angularx-social-login';
-import { GoogleLoginProvider, FacebookLoginProvider } from '@abacritt/angularx-social-login';
 import { authInterceptor } from './general/interceptor/auth.interceptor';
+import { UserStateService } from './general/services/user-state.service';
+import { OwnerStrategy } from './owner/classes/owner-strategy';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -47,6 +46,7 @@ export const appConfig: ApplicationConfig = {
     ClientStrategy,
     DistributorStrategy,
     OwnerStrategy,
+    ConfirmationService,
     provideAppInitializer(() => {}),
     providePrimeNG({
       theme: {

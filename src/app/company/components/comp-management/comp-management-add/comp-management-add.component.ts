@@ -92,6 +92,24 @@ export class CompManagementAddComponent {
               visible: true,
               options: res.data.map((plan) => ({ name: plan.planName, id: plan.planID })),
             },
+            {
+              key: 'planStartDate',
+              label: 'خطة الاشتراك',
+              value: null,
+              dataType: 'DateTime',
+              required: true,
+              visible: true,
+              options: [],
+            },
+            {
+              key: 'planEndDate',
+              label: 'خطة الاشتراك',
+              value: null,
+              dataType: 'DateTime',
+              required: true,
+              visible: true,
+              options: [],
+            },
           ],
           security: [
             {

@@ -1,6 +1,7 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { isPlatformBrowser } from '@angular/common';
 import { Component, effect, inject, PLATFORM_ID, signal } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { User } from '../../../general/interfaces/user';
@@ -8,6 +9,7 @@ import { AuthService } from '../../../general/services/auth.service';
 import { UserStateService } from '../../../general/services/user-state.service';
 import { InputDynamic } from '../../interface/input-dynamic';
 import { PrimeNgSharedModule } from '../../modules/shared/primeng-shared.module';
+import { MessageToastService } from '../../service/message-toast.service';
 import { StateService } from '../../service/state.service';
 import { DynmaicFormComponent } from '../dynmaic-form/dynmaic-form.component';
 
@@ -39,12 +41,17 @@ export class HeaderComponent {
   isBrowser = isPlatformBrowser(this.platformId);
   items: MenuItem[] = [];
   changePasswordForm: { [key: string]: InputDynamic[] } = {};
-  visible: boolean = false;
+  changePasswordvisible: boolean = false;
+  changePhoneNumberForm: { [key: string]: InputDynamic[] } = {};
+  changePhoneNumbervisible: boolean = false;
+  stepsPhoneNumberList: MenuItem[] = [{ label: 'رقم الهاتف الجديد' }, { label: 'التحقق' }];
+  activeIndexPhoneNumber: number = 0;
   constructor(
     public stateSrv: StateService,
     private userState: UserStateService,
     private router: Router,
-    private authSrv: AuthService
+    private authSrv: AuthService,
+    private msgSrv: MessageToastService
   ) {
     this.user = null;
     this.items = [
@@ -68,6 +75,16 @@ export class HeaderComponent {
       {
         label: 'تغيير كلمة السر',
         icon: 'pi pi-lock',
+        command: () => {
+          this.changePasswordvisible = true;
+        },
+      },
+      {
+        label: 'تغيير رقم الهاتف',
+        icon: 'pi pi-address-book',
+        command: () => {
+          this.changePhoneNumbervisible = true;
+        },
       },
       {
         label: 'تسجيل الخروج',
@@ -109,6 +126,39 @@ export class HeaderComponent {
         {
           key: 'newPassword',
           label: 'كلمة السر الجديدة',
+          value: null,
+          dataType: 'string',
+          required: true,
+          visible: true,
+          options: [],
+        },
+      ],
+    };
+    this.changePhoneNumberForm = {
+      newPhoneNumber: [
+        {
+          key: 'password',
+          label: 'كلمة السر',
+          value: null,
+          dataType: 'string',
+          required: true,
+          visible: true,
+          options: [],
+        },
+        {
+          key: 'newPhoneNumber',
+          label: 'رقم الهاتف الجديد',
+          value: null,
+          dataType: 'string',
+          required: true,
+          visible: true,
+          options: [],
+        },
+      ],
+      code: [
+        {
+          key: 'code',
+          label: 'الكود',
           value: null,
           dataType: 'string',
           required: true,
@@ -160,5 +210,36 @@ export class HeaderComponent {
           this.userState.user.set(null);
         }
       });
+  }
+  closeDialog(event: any, objs: { [key: string]: InputDynamic[] }) {
+    Object.keys(objs).forEach((x) => {
+      objs[x].map((z) => {
+        z.value = null;
+        return z;
+      });
+    });
+  }
+  changePhoneNumber(event: { index: number; form: FormGroup }) {
+    const strategy = this.userState.strategy();
+    if (event.index === 1 && strategy) {
+      strategy.changePhoneNumber(event.form.value['newPhoneNumber']).subscribe((res) => {
+        this.msgSrv.showMessage(res.message, res.succeeded);
+        this.activeIndexPhoneNumber = res.succeeded ? 1 : 0;
+      });
+    }
+  }
+  verifyChangePhoneNumber(event: any) {
+    const strategy = this.userState.strategy();
+    if (strategy) {
+      strategy
+        .VerifyChangePhoneNumber({
+          code: event['code']['code'],
+          newPhoneNumber: event['newPhoneNumber']['newPhoneNumber'],
+        })
+        .subscribe((res) => {
+          this.msgSrv.showMessage(res.message, res.succeeded);
+          this.changePhoneNumbervisible = !res.succeeded;
+        });
+    }
   }
 }

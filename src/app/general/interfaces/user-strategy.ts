@@ -11,6 +11,8 @@ export interface UserStrategy<T extends User> {
 
   verifyCode(body: { code: string }): Observable<APIResponse<any>>;
   changePassword(body: { oldPassword: string; newPassword: string }): Observable<APIResponse<string>>;
+  changePhoneNumber(body: { password: string; newPhoneNumber: string }): Observable<APIResponse<string>>;
+  VerifyChangePhoneNumber(body: { code: string; newPhoneNumber: string }): Observable<APIResponse<string>>;
 
   logout(): Observable<boolean>;
 }

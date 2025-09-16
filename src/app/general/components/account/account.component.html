@@ -1,2 +1,2 @@
-<dynmaic-form class="dyn-frm" (submit)="submit($event)" [display]="'flex'" [preRoute]="''" [objs]="resetObjs"
-    style="width: 100%;" [scrollHeight]="'100%'" [justOneStep]="true" />
+<dynmaic-form *ngIf="final" class="dyn-frm" (submit)="submit($event)" [display]="'flex'" [preRoute]="''"
+    [objs]="resetObjs" style="width: 100%;" [scrollHeight]="'100%'" [justOneStep]="true" [disableAtt]="disableAtt" />

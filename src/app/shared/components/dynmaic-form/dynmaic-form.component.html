@@ -44,14 +44,15 @@
             <div class="button-container">
                 <div class="left-buttons">
                     <button pButton label="رجوع" icon="pi pi-angle-right"
-                        (click)="back();onActiveIndexChange.emit(activeIndex);" *ngIf="activeIndex !== 0"></button>
+                        (click)="back();onActiveIndexChange.emit({index:activeIndex,form:form});"
+                        *ngIf="activeIndex !== 0"></button>
                 </div>
                 <div class="right-buttons">
                     <button iconPos="right" #nextBtn
                         *ngIf="activeIndex < stepsList.length - 1 || (activeIndex === 0 && stepsList.length > 1)"
                         pButton label="التالي" icon="pi pi-angle-left"
                         [disabled]="form.controls[keys[activeIndex]].invalid"
-                        (click)="activeIndex = activeIndex + 1;onActiveIndexChange.emit(activeIndex);"></button>
+                        (click)="activeIndex = activeIndex + 1;onActiveIndexChange.emit({index:activeIndex,form:form});"></button>
                     <button iconPos="right" *ngIf="activeIndex === stepsList.length - 1 && isShow" pButton label="خروج"
                         icon="pi pi-angle-left" (click)="exit()"></button>
                     <button iconPos="right" id="saveBtn" #saveBtn

@@ -59,7 +59,15 @@
 
     </div>
 </div>
-<p-dialog header="تغيير كلمة السر" [modal]="true" *ngIf="visible" [(visible)]="visible" [style]="{ width: '25rem' }">
+<p-dialog (visibleChange)="closeDialog($event,changePasswordForm)" header="تغيير كلمة السر" [modal]="true"
+    *ngIf="changePasswordvisible" [(visible)]="changePasswordvisible" [style]="{ width: '25rem' }">
     <dynmaic-form class="dyn-frm" [scrollHeight]="'25vh'" (submit)="changePassword($event)" [display]="'flex'"
         [withBackBtn]="false" [objs]="changePasswordForm" style="width: 100%;" [justOneStep]="true"></dynmaic-form>
+</p-dialog>
+<p-dialog header="تغيير رقم الهاتف" [modal]="true" *ngIf="changePhoneNumbervisible"
+    (visibleChange)="closeDialog($event,changePhoneNumberForm)" [(visible)]="changePhoneNumbervisible"
+    [style]="{ width: '25rem' }">
+    <dynmaic-form class="dyn-frm" [scrollHeight]="'25vh'" (submit)="verifyChangePhoneNumber($event)" [display]="'flex'"
+        [withBackBtn]="false" [stepsList]="stepsPhoneNumberList" [objs]="changePhoneNumberForm" style="width: 100%;"
+        [showSteps]="true" (onActiveIndexChange)="changePhoneNumber($event)"></dynmaic-form>
 </p-dialog>

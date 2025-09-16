@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Observable, of, Subject } from 'rxjs';
+import { ConfirmationService } from 'primeng/api';
+import { EMPTY, Observable, of, Subject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { PrimeNgSharedModule } from '../../../shared/modules/shared/primeng-shared.module';
 import { MessageToastService } from '../../../shared/service/message-toast.service';
@@ -20,6 +21,7 @@ export class GalleryComponent {
   constructor(
     public userState: UserStateService,
     private msgSrv: MessageToastService,
+    private confirmationService: ConfirmationService,
     private uploadSrv: UploadsService
   ) {
     const strategy = userState.strategy();
@@ -58,20 +60,69 @@ export class GalleryComponent {
       }
     });
   }
-  deleteImage(id: number) {
-    this.uploadSrv.delete(id).subscribe((res) => {
-      if (res.succeeded) {
-        this.msgSrv.showSuccess('تم حذف الصورة');
-        this.getSub$.next(null);
-      }
+  deleteImage(event: Event, id: number) {
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'هل تريد حذف هذه الصورة؟',
+      header: 'حذف الصورة',
+      icon: 'pi pi-info-circle',
+      rejectLabel: 'الغاء',
+      rejectButtonProps: {
+        label: 'الغاء',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'حذف',
+        severity: 'danger',
+      },
+
+      accept: () => {
+        this.uploadSrv.delete(id).subscribe((res) => {
+          if (res.succeeded) {
+            this.msgSrv.showSuccess('تم حذف الصورة');
+            this.getSub$.next(null);
+          }
+        });
+      },
     });
   }
-  setMain(id: number) {
-    this.uploadSrv.setMain(id).subscribe((res) => {
-      if (res.succeeded) {
-        this.msgSrv.showSuccess(' تم اختيار الصورة الرئيسية');
-        this.getSub$.next(null);
-      }
+  setMain(event: Event, id: number) {
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'هل تريد جعل هذه الصورة رئيسية؟',
+      header: 'جعل الصورة رئيسية',
+      icon: 'pi pi-info-circle',
+      rejectLabel: 'الغاء',
+      rejectButtonProps: {
+        label: 'الغاء',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'حفظ',
+        severity: 'success',
+      },
+
+      accept: () => {
+        this.uploadSrv
+          .setMain(id)
+          .pipe(
+            switchMap((res) => {
+              if (res.succeeded) {
+                this.msgSrv.showSuccess(' تم اختيار الصورة الرئيسية');
+                this.getSub$.next(null);
+                return this.userState.authSrv.myInfo();
+              }
+              return EMPTY;
+            })
+          )
+          .subscribe((res) => {
+            if (res.succeeded) {
+              this.userState.user.set(res.data);
+            }
+          });
+      },
     });
   }
 }

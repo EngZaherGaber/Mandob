@@ -1,5 +1,5 @@
-<dynamic-view [load]="tableConfig.get$" [buttons]="tableConfig.Buttons" [showHeader]="true"
-    [captionButton]="tableConfig.captionButton" />
+<dynamic-view (onLazy)="tableConfig.getSub$.next($event)" [lazyLoading]="true" [load]="tableConfig.get$"
+    [buttons]="tableConfig.Buttons" [showHeader]="true" [captionButton]="tableConfig.captionButton" />
 <p-dialog header="تغير كلمة السر" [modal]="true" [(visible)]="resetDialogVisible" [style]="{ width: '25rem' }">
     <ng-container [ngSwitch]="step">
         <div *ngSwitchCase="1" class="d-flex flex-column w-100 gap-4 pt-4">
@@ -19,4 +19,10 @@
             </div>
         </div>
     </ng-container>
+</p-dialog>
+<p-dialog header="تغيير رقم الهاتف" [modal]="true" *ngIf="changePhoneNumbervisible"
+    (visibleChange)="closeDialog($event,changePhoneNumberForm)" [(visible)]="changePhoneNumbervisible"
+    [style]="{ width: '25rem' }">
+    <dynmaic-form class="dyn-frm" [scrollHeight]="'25vh'" (submit)="changePhoneNumber($event)" [display]="'flex'"
+        [withBackBtn]="false" [objs]="changePhoneNumberForm" style="width: 100%;" [justOneStep]="true"></dynmaic-form>
 </p-dialog>

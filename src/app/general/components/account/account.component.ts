@@ -1,12 +1,11 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
-import { UserStateService } from '../../services/user-state.service';
 import { DynmaicFormComponent } from '../../../shared/components/dynmaic-form/dynmaic-form.component';
 import { InputDynamic } from '../../../shared/interface/input-dynamic';
-import { Company } from '../../../company/interfaces/company';
-import { Router } from '@angular/router';
 import { MessageToastService } from '../../../shared/service/message-toast.service';
+import { UserStateService } from '../../services/user-state.service';
 
 @Component({
   selector: 'account',
@@ -17,6 +16,10 @@ import { MessageToastService } from '../../../shared/service/message-toast.servi
 export class AccountComponent {
   resetObjs: { [key: string]: InputDynamic[] } = {};
   stepsList: MenuItem[] = [{ label: 'المعلومات العامة' }, { label: 'المعلومات الخاصة' }];
+  disableAtt: { [key: string]: string[] } = {
+    general: ['phoneNumber'],
+  };
+  final: boolean = false;
   constructor(private userState: UserStateService, private router: Router, private msgSrv: MessageToastService) {
     this.userState
       .strategy()
@@ -35,16 +38,6 @@ export class AccountComponent {
                 visible: true,
                 options: [],
               },
-
-              {
-                key: 'email',
-                label: 'الايميل',
-                value: res.data.email,
-                dataType: 'string',
-                required: true,
-                visible: true,
-                options: [],
-              },
               {
                 key: 'phoneNumber',
                 label: 'الرقم',
@@ -58,7 +51,7 @@ export class AccountComponent {
           };
           if ('commercialRegistrationNumber' in res.data) {
             // TypeScript now treats res.data as Company
-            this.resetObjs[0].push(
+            this.resetObjs['general'].push(
               {
                 key: 'commercialRegistrationNumber',
                 label: 'السجل التجاري',
@@ -79,6 +72,7 @@ export class AccountComponent {
               }
             );
           }
+          this.final = true;
         }
       });
   }

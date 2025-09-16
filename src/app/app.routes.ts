@@ -190,22 +190,30 @@ export const routes: Routes = [
                 title: 'عرض المنتجات',
                 loadComponent: () =>
                   import(
-                    './company/components/prod-management/prod-management-show/prod-management-show.component'
+                    './product/components/prod-management/prod-management-show/prod-management-show.component'
                   ).then((m) => m.ProdManagementShowComponent),
               },
               {
-                path: 'detail/:type/:id',
+                path: 'detail/edit/:id',
                 title: 'بيانات المنتج',
                 loadComponent: () =>
                   import(
-                    './company/components/prod-management/prod-management-detail/prod-management-detail.component'
+                    './product/components/prod-management/prod-management-detail/prod-management-detail.component'
                   ).then((m) => m.ProdManagementDetailComponent),
+              },
+              {
+                path: 'detail/display/:id',
+                title: 'بيانات المنتج',
+                loadComponent: () =>
+                  import('./product/components/product-general/prod-general-item/prod-general-item.component').then(
+                    (m) => m.ProdGeneralItemComponent
+                  ),
               },
               {
                 path: 'add',
                 title: 'اضافة منتج',
                 loadComponent: () =>
-                  import('./company/components/prod-management/prod-management-add/prod-management-add.component').then(
+                  import('./product/components/prod-management/prod-management-add/prod-management-add.component').then(
                     (m) => m.ProdManagementAddComponent
                   ),
               },
