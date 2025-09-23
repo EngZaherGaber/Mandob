@@ -1,0 +1,6 @@
+@for (item of listToShow;let index=$index; track $index) {
+@if (index === 1) {
+<comp-general-list [data]="companies" [header]="'اهم الشركات'"></comp-general-list>
+}
+<prod-general-list [id]="item.category.categoryID" [data]="item.products" [header]="item.category.categoryName" />
+}|

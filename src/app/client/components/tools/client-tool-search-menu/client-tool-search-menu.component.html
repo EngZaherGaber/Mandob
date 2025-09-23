@@ -1,0 +1,68 @@
+<div class="w-100  d-flex flex-column align-items-start" *ngIf="result()">
+    <div class="col-12 col-md-4" style="border-left: 1px solid var(--p-surface-50);" *ngIf="getProducts().length > 0">
+        <div class="w-100 d-flex justify-content-between align-items-center">
+            <p style="color: var(--p-surface-50);">المنتجات</p>
+            <p-button severity="contrast" size="large" [text]="true" [outlined]="true" ngClass="w-auto"
+                label="رؤية المزيد .."></p-button>
+        </div>
+        <div class="w-100 d-flex flex-column justify-content-between align-items-center">
+            @for (product of result()?.products; track $index) {
+            <div class="w-100 d-flex justify-content-between p-1 product-div">
+                <img [src]="product.image" [alt]="product.productName" height="50" width="50" />
+                <span>{{product.productName}}</span>
+            </div>
+            }
+        </div>
+    </div>
+    <div class="col-12 col-md-4" style="border-left: 1px solid var(--p-surface-50);"
+        *ngIf="getCollections().length > 0">
+        <div class="w-100 d-flex justify-content-between align-items-center">
+            <p style="color: var(--p-surface-50);">المجموعات</p>
+            <p-button severity="contrast" size="large" [text]="true" [outlined]="true" ngClass="w-auto"
+                label="رؤية المزيد .."></p-button>
+        </div>
+        <div class="w-100 d-flex flex-column justify-content-between align-items-center">
+            @for (collection of result()?.collections; track $index) {
+            <div class="w-100 d-flex justify-content-between p-1 product-div">
+                <span>{{collection.collectionName}} لشركة {{collection.companyName}}</span>
+            </div>
+            }
+        </div>
+    </div>
+    <div class="col-12 col-md-4" style="border-left: 1px solid var(--p-surface-50);" *ngIf="getCategories().length > 0">
+        <div class="w-100 d-flex justify-content-between align-items-center">
+            <p style="color: var(--p-surface-50);">الفئات</p>
+            <p-button severity="contrast" size="large" [text]="true" [outlined]="true" ngClass="w-auto"
+                label="رؤية المزيد .."></p-button>
+        </div>
+        <div class="w-100 d-flex flex-column justify-content-between align-items-center">
+            @for (category of result()?.categories; track $index) {
+            <div class="w-100 d-flex justify-content-between p-1 product-div">
+                <span>{{category.categoryName}}</span>
+            </div>
+            }
+        </div>
+    </div>
+    <div class="col-12 col-md-4" style="border-left: 1px solid var(--p-surface-50);" *ngIf="getCompanies().length > 0">
+        <div class="w-100 d-flex justify-content-between align-items-center">
+            <p style="color: var(--p-surface-50);">الشركات</p>
+            <p-button severity="contrast" size="large" [text]="true" [outlined]="true" ngClass="w-auto"
+                label="رؤية المزيد .."></p-button>
+        </div>
+        <div class="w-100 d-flex flex-column justify-content-between align-items-center">
+            @for (company of result()?.companies; track $index) {
+            <div class="w-100 d-flex justify-content-between p-1 product-div">
+                <span>{{company.companyName}}</span>
+            </div>
+            }
+        </div>
+    </div>
+    <!-- <div class="row w-100"> -->
+    <!-- </div> -->
+    <!-- <div class="row w-100 d-flex justify-content-between align-items-center">
+        <h6 class="my-3 fw-bold text-end w-auto" style="color: var(--p-surface-50);">نتائج بحث "{{header() ?? ''}}"
+        </h6>
+    </div>
+    <div class="row w-100 d-flex flex-wrap align-items-center justify-content-start product-list">
+    </div> -->
+</div>

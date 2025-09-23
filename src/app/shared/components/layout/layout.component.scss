@@ -1,5 +1,6 @@
 /* Add to your component's styles */
 @use "../../../../../public/mixin" as *;
+
 .main-container {
   position: relative;
   @include forTablet() {

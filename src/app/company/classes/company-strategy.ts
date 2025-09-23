@@ -19,7 +19,7 @@ export class CompanyStrategy extends BaseUserStrategy<Company> {
         {
           label: 'المتابعات',
           icon: 'pi pi-eye',
-          routerLink: ['ss'],
+          routerLink: [''],
         },
       ],
     },

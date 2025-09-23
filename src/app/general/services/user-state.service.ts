@@ -31,7 +31,6 @@ export class UserStateService {
   user = signal<User | null>(null);
   strategy = computed(() => {
     const role = this.role();
-    console.log(role);
     if (this.isBrowser() && role && this.isValidRole(role)) {
       return this.getStrategy(role);
     }

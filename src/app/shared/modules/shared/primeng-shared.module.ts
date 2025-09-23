@@ -5,6 +5,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
+import { CarouselModule } from 'primeng/carousel';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DataViewModule } from 'primeng/dataview';
@@ -14,6 +15,8 @@ import { EditorModule } from 'primeng/editor';
 import { FileUploadModule } from 'primeng/fileupload';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { GalleriaModule } from 'primeng/galleria';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { KeyFilterModule } from 'primeng/keyfilter';
@@ -24,6 +27,7 @@ import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { SelectModule } from 'primeng/select';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { SkeletonModule } from 'primeng/skeleton';
+import { SliderModule } from 'primeng/slider';
 import { StepsModule } from 'primeng/steps';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
@@ -35,6 +39,9 @@ import { TooltipModule } from 'primeng/tooltip';
 @NgModule({
   declarations: [],
   exports: [
+    InputIconModule,
+    IconFieldModule,
+    SliderModule,
     AccordionModule,
     ConfirmDialogModule,
     GalleriaModule,
@@ -68,6 +75,7 @@ import { TooltipModule } from 'primeng/tooltip';
     ToolbarModule,
     FileUploadModule,
     TooltipModule,
+    CarouselModule,
   ],
 })
 export class PrimeNgSharedModule {}

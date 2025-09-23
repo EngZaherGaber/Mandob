@@ -1,11 +1,11 @@
-import { MenuItem } from 'primeng/api';
-import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { MenuItem } from 'primeng/api';
+import { environment } from '../../../environments/environment';
+import { BaseUserStrategy } from '../../general/classes/base-user-strategy';
 import { AuthService } from '../../general/services/auth.service';
 import { Client } from '../interfaces/client';
-import { BaseUserStrategy } from '../../general/classes/base-user-strategy';
-import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root', // or inside providers: [] of a module
 })
@@ -16,9 +16,9 @@ export class ClientStrategy extends BaseUserStrategy<Client> {
       label: 'المتابعات',
       items: [
         {
-          label: 'المتابعات',
+          label: 'الصفحة الرئيسية',
           icon: 'pi pi-eye',
-          routerLink: [''],
+          routerLink: ['client/home'],
         },
       ],
     },

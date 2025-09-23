@@ -1,0 +1,18 @@
+@use "../../../../../../public/mixin" as *;
+.filter-div {
+  position: sticky;
+  top: 0;
+  height: 80vh;
+  overflow-y: auto;
+}
+@include forTablet {
+  .filter-div {
+    height: auto !important;
+  }
+}
+.product-div {
+  box-shadow: inset 1px 0px 3px 0px;
+}
+::ng-deep .p-paginator-rpp-dropdown {
+  max-width: 100px;
+}

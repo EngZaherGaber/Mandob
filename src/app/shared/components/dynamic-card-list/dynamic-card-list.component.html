@@ -40,7 +40,7 @@
       </ng-template>
       <ng-template *ngIf="layout==='list'" #list let-items>
         <div
-          class="full-con max-vh-70 overflow-y-auto d-flex jsutify-content-start flex-row flex-wrap align-items-start gap-2 px-3 py-2">
+          class="full-con max-vh-70  d-flex jsutify-content-start flex-row flex-wrap align-items-start gap-2 px-3 py-2">
           <div class="item-con item-con-list w-100 rounded-3 d-flex flex-column flex-md-row" *ngFor="let item of items">
             <div class="col-12 col-md-4 d-flex justify-content-center align-items-center img py-2">
               <ng-container *ngIf="getImageValue(item,imageField); then img; else icon"></ng-container>
@@ -78,8 +78,7 @@
       </ng-template>
       <ng-template *ngIf="layout==='grid'" #grid let-items>
         <div class="full-con w-100 py-2">
-          <div
-            class="d-flex max-vh-70 overflow-auto flex-lg-wrap justify-content-start align-items-start px-3 py-2 gap-1">
+          <div class="d-flex max-vh-70  flex-wrap justify-content-start align-items-start px-3 py-2 gap-1">
             <div
               class="item-con col-12 col-sm-6 col-md-4 col-lg-3 gap-2 d-flex flex-column justify-content-start p-0 rounded-3"
               *ngFor="let item of items">

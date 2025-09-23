@@ -1,4 +1,6 @@
-<p-toast life="3000" [showTransitionOptions]="'250ms'" [showTransformOptions]="'translateX(100%)'"
-    [hideTransitionOptions]="'150ms'" [hideTransformOptions]="'translateX(100)'" [preventOpenDuplicates]="true" />
-<p-confirmdialog [dismissableMask]="true" />
-<router-outlet></router-outlet>
+<ng-container *ngIf="authSrv.isBrowser()">
+    <p-toast life="3000" [showTransitionOptions]="'250ms'" [showTransformOptions]="'translateX(100%)'"
+        [hideTransitionOptions]="'150ms'" [hideTransformOptions]="'translateX(100)'" [preventOpenDuplicates]="true" />
+    <p-confirmdialog [dismissableMask]="true" />
+    <router-outlet></router-outlet>
+</ng-container>

@@ -2,6 +2,7 @@ import { ApplicationConfig, provideAppInitializer, provideZoneChangeDetection } 
 import { provideRouter, withViewTransitions } from '@angular/router';
 
 import { FacebookLoginProvider, GoogleLoginProvider, SocialAuthServiceConfig } from '@abacritt/angularx-social-login';
+import { FullscreenOverlayContainer, OverlayContainer } from '@angular/cdk/overlay';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -18,6 +19,7 @@ import { OwnerStrategy } from './owner/classes/owner-strategy';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    { provide: OverlayContainer, useClass: FullscreenOverlayContainer },
     {
       provide: 'SocialAuthServiceConfig',
       useValue: {

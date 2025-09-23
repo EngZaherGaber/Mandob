@@ -1,0 +1,55 @@
+::ng-deep .company-list {
+  .p-carousel-item {
+    max-width: 33%;
+    .item-div {
+      height: 400px;
+      position: relative;
+      direction: rtl;
+      &:hover {
+        .detail-div {
+          opacity: 1;
+        }
+        .secondary-img {
+          opacity: 1 !important;
+        }
+        .primary-img {
+          opacity: 0 !important;
+        }
+      }
+      .secondary-img,
+      .primary-img {
+        transition: 0.75s ease-in-out opacity;
+      }
+      .detail-div {
+        opacity: 0.75;
+        height: 200px;
+        width: 90%;
+        left: 10%;
+        .ellipsis-multiline {
+          display: -webkit-box;
+          -webkit-line-clamp: 2; /* Number of lines */
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        .ellipsis-oneline {
+          display: -webkit-box;
+          -webkit-line-clamp: 1; /* Number of lines */
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+      }
+    }
+    .item-div::after {
+      position: absolute;
+      //   width: 50%;
+      content: "";
+      //   height: 25px;
+      top: 0;
+      z-index: 2;
+      border-left: 50px solid transparent;
+      border-right: 50px solid var(--p-primary-500);
+      border-top: 50px solid var(--p-primary-500);
+      border-bottom: 50px solid transparent;
+    }
+  }
+}

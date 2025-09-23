@@ -1,0 +1,23 @@
+@use "../../../../../../public/mixin" as *;
+::ng-deep .full-list {
+  @include forLargeScreen() {
+    .p-carousel-item {
+      max-width: 20%;
+    }
+  }
+  @include forTablet() {
+    .p-carousel-item {
+      max-width: 33.33%;
+    }
+  }
+  @include forMobile() {
+    .p-carousel-item {
+      max-width: 50%;
+    }
+  }
+  @include forSmallMobile() {
+    .p-carousel-item {
+      max-width: 100%;
+    }
+  }
+}

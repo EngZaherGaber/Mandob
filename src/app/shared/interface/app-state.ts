@@ -4,4 +4,5 @@ export interface AppState {
   isDark: boolean;
   isOpenedSideNav: boolean;
   isOpenedCart: boolean;
+  overlayOpen: boolean;
 }

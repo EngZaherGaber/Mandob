@@ -1,0 +1,57 @@
+<a [routerLink]="['/client/product/item/'+product().productID]">
+    <div *ngIf="product()" class="item-div mx-2 position-relative overflow-visible">
+        <div class="mb-2">
+            <div class="position-relative mx-auto" style="background-color: var(--p-primary-300);height: 300px;">
+                <img class="w-100 position-relative  top-0 z-0" height="300"
+                    [ngClass]="{'primary-img': product().productImages[1]}" *ngIf="product().productImages[0]"
+                    [src]="product().productImages[0].imageURL" [alt]="product().productName" style="width: 100%;"
+                    (error)="onImgError($event)" />
+                <img class="w-100 position-absolute opacity-0 secondary-img start-0 top-0 z-1" height="300"
+                    *ngIf="product().productImages[1] && product().productImages[0]" style="width: 100%;"
+                    [src]="product().productImages[1].imageURL ? product().productImages[1].imageURL : product().productImages[0].imageURL"
+                    [alt]="product().productName" (error)="onImgError($event)" />
+                <!-- <p-tag [value]="product().inventoryStatus" [severity]="getSeverity(product().inventoryStatus)"
+                                    class="position-absolute" [ngStyle]="{ 'left.px': 5, 'top.px': 5 }" /> -->
+            </div>
+        </div>
+        <div class="row py-2 position-absolute rounded-2 detail-div z-2"
+            style="bottom: 0px;background-color: var(--p-primary-500);color: var(--p-primary-50);">
+            <div class="w-100 mb-2  d-flex flex-column justify-content-between">
+                <div class="fw-bold ellipsis-oneline">{{ product().productName }}</div>
+                <!-- <span> <i class="pi pi-megaphone"></i> باقي {{ 10 }}</span> -->
+            </div>
+            <div class="w-100">
+                <div class="ellipsis-multiline mb-4" [innerHTML]="product().productDescription">
+                </div>
+            </div>
+            <!-- <div class="d-flex flex-column justify-content-between mb-2">
+                                <div class="d-flex flex-column" *ngFor="let option of product().options">
+                                    <small>{{option.key}} : </small>
+                                    <div class="d-flex gap-2">
+                                        <p-tag *ngFor="let choice of option.choices" [value]="choice.value" />
+    
+                                    </div>
+                                </div>
+                            </div> -->
+            <div class="d-flex flex-column px-2">
+                <span style="font-size: smaller !important;" class="ellipsis-oneline text-start mt-0 mb-2 fw-bold"
+                    *ngIf="product().maxPrice !== product().minPrice">{{
+                    product().maxPrice |
+                    currency }} - {{product().minPrice | currency}}
+                </span>
+                <span style="font-size: smaller !important;" class="ellipsis-oneline text-start mt-0 mb-2 fw-bold"
+                    *ngIf="product().maxPrice === product().minPrice">{{
+                    product().maxPrice |
+                    currency }}
+                </span>
+                <span
+                    class="d-flex flex-wrap flex-md-nowrap align-items-start align-items-md-center justify-content-end justify-content-md-center gap-2 align-self-end">
+                    <!-- <span>{{(product().likes / 1000) | number:'1.1-1'}}K</span> -->
+                    <p-button size="small" icon="pi pi-heart" severity="secondary" />
+                    <p-button size="small" icon="pi pi-eye" styleClass="ml-2" [severity]="'secondary'" />
+                    <p-button size="small" icon="pi pi-shopping-cart" styleClass="ml-2" [severity]="'contrast'" />
+                </span>
+            </div>
+        </div>
+    </div>
+</a>

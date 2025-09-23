@@ -1,21 +1,34 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { isPlatformBrowser } from '@angular/common';
 import { Component, effect, inject, PLATFORM_ID, signal } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
+import { catchError, debounceTime, distinctUntilChanged, EMPTY, switchMap } from 'rxjs';
+import { ClientToolSearchMenuComponent } from '../../../client/components/tools/client-tool-search-menu/client-tool-search-menu.component';
+import { GlobalSearchResponse } from '../../../client/interfaces/global-search-response';
 import { User } from '../../../general/interfaces/user';
 import { AuthService } from '../../../general/services/auth.service';
 import { UserStateService } from '../../../general/services/user-state.service';
+import { ProdGeneralCardComponent } from '../../../product/components/product-general/prod-general-card/prod-general-card.component';
+import { ProductStoreService } from '../../../product/services/product-store.service';
+import { ClickOutsideDirective } from '../../directives/click-outside.directive';
 import { InputDynamic } from '../../interface/input-dynamic';
 import { PrimeNgSharedModule } from '../../modules/shared/primeng-shared.module';
 import { MessageToastService } from '../../service/message-toast.service';
 import { StateService } from '../../service/state.service';
 import { DynmaicFormComponent } from '../dynmaic-form/dynmaic-form.component';
-
 @Component({
   selector: 'header',
-  imports: [PrimeNgSharedModule, DynmaicFormComponent],
+  imports: [
+    PrimeNgSharedModule,
+    DynmaicFormComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    ProdGeneralCardComponent,
+    ClickOutsideDirective,
+    ClientToolSearchMenuComponent,
+  ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
   animations: [
@@ -46,12 +59,25 @@ export class HeaderComponent {
   changePhoneNumbervisible: boolean = false;
   stepsPhoneNumberList: MenuItem[] = [{ label: 'رقم الهاتف الجديد' }, { label: 'التحقق' }];
   activeIndexPhoneNumber: number = 0;
+  searchInput: FormControl = new FormControl(null);
+  searchLoading: boolean = false;
+  showMenu: boolean = false;
+  searchResult: GlobalSearchResponse | null = null;
+  onClickOutside(event: MouseEvent) {
+    if (this.showMenu) {
+      this.showMenu = false;
+      this.searchResult = null;
+      this.searchLoading = false;
+      this.searchInput.setValue(null);
+    }
+  }
   constructor(
     public stateSrv: StateService,
     private userState: UserStateService,
     private router: Router,
     private authSrv: AuthService,
-    private msgSrv: MessageToastService
+    private msgSrv: MessageToastService,
+    private productStore: ProductStoreService
   ) {
     this.user = null;
     this.items = [
@@ -94,6 +120,27 @@ export class HeaderComponent {
         },
       },
     ];
+    this.searchInput.valueChanges
+      .pipe(
+        debounceTime(2000),
+        distinctUntilChanged(),
+        switchMap((value) => {
+          if (value) {
+            this.searchLoading = true;
+            return productStore.globalSearch(value);
+          } else {
+            return EMPTY;
+          }
+        }),
+        catchError((err) => EMPTY)
+      )
+      .subscribe((res) => {
+        if (res) {
+          this.showMenu = true;
+          this.searchLoading = false;
+          this.searchResult = res.data;
+        }
+      });
     // Only run effects on browser
     if (this.isBrowser) {
       effect(() => {
@@ -168,7 +215,9 @@ export class HeaderComponent {
       ],
     };
   }
-
+  seeMoreNavigation() {
+    this.router.navigate(['client/product/group/search/' + this.searchInput.value + '/0']);
+  }
   private async changeStateWithAnimation(newValue: string) {
     this.isChanging.set(true);
 

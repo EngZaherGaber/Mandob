@@ -250,7 +250,7 @@ export class DynamicTableComponent {
       // Write to a buffer and trigger download (browser)
       workbook.xlsx.writeBuffer().then((buffer) => {
         const blob = new Blob([buffer], { type: 'application/octet-stream' });
-        saveAs(blob, `${this.tableName}.xlsx`);
+        saveAs(blob, `${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDay()}.xlsx`);
       });
     }
   }

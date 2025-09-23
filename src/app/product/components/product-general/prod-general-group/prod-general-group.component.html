@@ -1,0 +1,43 @@
+<div class="container-fluid p-0">
+    <div class="row">
+        <h6 class="my-3 fw-bold text-end w-auto" style="color: var(--p-primary-500);">
+            {{header}}
+        </h6>
+    </div>
+    <div class="row d-flex flex-column-reverse flex-md-row ">
+
+        <p-dataview class="p-0 col-12 col-md-9" #dv [rowsPerPageOptions]="[4, 8, 12]" [lazy]="true"
+            [value]="result ? result.products : []" [totalRecords]="result ?result.totalCount : 0" [rows]="rows"
+            [paginator]="true" (onLazyLoad)="load($event)" [layout]="'list'">
+
+            <ng-template #list let-items>
+                <div class="row d-flex flex-wrap product-div">
+                    @for (item of items; track $index) {
+                    <div class="col-12 col-md-3 p-2" style="max-width: 300px;">
+                        <prod-general-card [product]="item" />
+                    </div>
+                    }
+                </div>
+            </ng-template>
+
+        </p-dataview>
+        <div class="col-12 col-md-3">
+            <div class="d-flex flex-row flex-md-column gap-2 filter-div px-2">
+                @for (obj of objs;let index = $index; track $index) {
+                <div class="d-flex flex-column gap-3">
+                    <span class="my-3 fw-bold text-end w-auto" style="color: var(--p-primary-500);">
+                        {{obj.label}}
+                    </span>
+                    <dynamic-input [object]="obj" [FEcontrol]="getControl(index)"></dynamic-input>
+                </div>
+                }
+                <div class="px-2 d-flex flex-column">
+                    <label class="my-3 fw-bold text-end w-auto" style="color: var(--p-primary-500);">نطاق السعر
+                        ({{priceRange[0]}} - {{priceRange[1]}})</label>
+                    <p-slider [min]="result?.minPrice" [max]="result?.maxPrice" [(ngModel)]="priceRange" [range]="true"
+                        (onChange)="priceRangeChange()"></p-slider>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,9 +1,9 @@
-import { computed, Inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
-import { AppState } from '../interface/app-state';
-import { NavigationEnd, Router } from '@angular/router';
-import { filter, map } from 'rxjs';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { isPlatformBrowser } from '@angular/common';
+import { computed, Inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs';
+import { AppState } from '../interface/app-state';
 
 @Injectable({
   providedIn: 'root',
@@ -15,8 +15,9 @@ export class StateService {
     isDark: false,
     isOpenedSideNav: true,
     isOpenedCart: false,
+    overlayOpen: false,
   });
-
+  isOpenOverlay = computed(() => this.state().overlayOpen);
   page = computed(() => this.state().page);
   isBrowser = computed(() => isPlatformBrowser(this.platformId));
   isOpenedSideNav = computed(() => this.state().isOpenedSideNav);
@@ -111,6 +112,12 @@ export class StateService {
     this.state.update((prev) => ({
       ...prev,
       isOpenedCart: !this.isOpenedCart(),
+    }));
+  }
+  changeOverlay() {
+    this.state.update((prev) => ({
+      ...prev,
+      overlayOpen: !this.isOpenOverlay(),
     }));
   }
 }

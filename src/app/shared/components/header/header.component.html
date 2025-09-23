@@ -26,7 +26,13 @@
             </div>
         </div>
     </div>
-    <div class="col d-flex justify-content-end align-items-center gap-2">
+    <div class="col" style="position: relative;z-index: 999;">
+        <p-iconfield>
+            <p-inputicon class="pi" [ngClass]="!searchLoading ? ['pi-search'] : ['pi-spinner','pi-spin']" />
+            <input type="text" pInputText [formControl]="searchInput" placeholder="Search" />
+        </p-iconfield>
+    </div>
+    <div class="col d-flex position-relative justify-content-end align-items-center gap-2" style="z-index: 1;">
         <p-button (onClick)="stateSrv.setIsDark(!stateSrv.isDark())"
             [icon]="stateSrv.isDark() ? 'pi pi-sun' : 'pi pi-moon'" [rounded]="true" [text]="true" severity="primary"
             [pTooltip]="stateSrv.isDark() ? 'الوضع النهاري' : 'الوضع الليلي'" />
@@ -59,6 +65,11 @@
 
     </div>
 </div>
+<div *ngIf="showMenu" (ClickOutside)="onClickOutside($event)" class="position-absolute search-menu ">
+    <client-tool-search-menu [result]="searchResult" [header]="searchInput.value" />
+
+</div>
+
 <p-dialog (visibleChange)="closeDialog($event,changePasswordForm)" header="تغيير كلمة السر" [modal]="true"
     *ngIf="changePasswordvisible" [(visible)]="changePasswordvisible" [style]="{ width: '25rem' }">
     <dynmaic-form class="dyn-frm" [scrollHeight]="'25vh'" (submit)="changePassword($event)" [display]="'flex'"

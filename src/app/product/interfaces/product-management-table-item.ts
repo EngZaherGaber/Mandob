@@ -7,4 +7,7 @@ export interface ProdManagementTableItem {
     imageURL: string;
     isPrimary: boolean;
   }[];
+  companyID: number;
+  maxPrice: number;
+  minPrice: number;
 }

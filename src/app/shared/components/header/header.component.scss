@@ -6,6 +6,37 @@
     @include responsive-font-sizes(16px, 22px, 22px, 22px);
   }
 }
+
+.search-menu {
+  z-index: 900;
+  top: 50px;
+  left: 2%;
+  max-height: 80vh;
+  width: 96%;
+  padding: 1rem;
+  box-shadow: 0px 0px 5px 0px;
+  background-color: var(--p-primary-300);
+  overflow-y: auto;
+  transition: height 1s ease;
+  .product-div {
+    border: 1px solid var(--p-primary-500);
+    max-width: 300px;
+  }
+}
+@include forTablet {
+  .search-menu {
+    top: 80px;
+    left: 2%;
+    max-height: calc(100vh - 100px);
+    width: 96%;
+    padding: 1rem;
+    box-shadow: 0px 0px 5px 0px;
+    .product-list {
+      gap: 10px;
+    }
+  }
+}
+
 .header-container {
   height: 40px;
   .typewriter-container {
