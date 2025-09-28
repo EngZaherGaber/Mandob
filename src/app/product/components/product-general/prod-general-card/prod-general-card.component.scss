@@ -1,6 +1,7 @@
+@use "../../../../../../public/mixin" as *;
 @use "../../../../../../public/font" as *;
 .item-div {
-  height: 400px;
+  height: 275px;
   position: relative;
   direction: rtl;
   &:hover {
@@ -13,16 +14,32 @@
     .primary-img {
       opacity: 0 !important;
     }
+    .auto-height {
+      height: 80px !important;
+      padding-block: 0.5rem;
+    }
   }
   .secondary-img,
   .primary-img {
     transition: 0.75s ease-in-out opacity;
+    padding-inline: 7.5%;
+  }
+  .detail-div,
+  .auto-height {
+    transition: 0.75s ease-in-out height, 0.75s ease-in-out padding;
   }
   .detail-div {
-    opacity: 0.75;
-    height: 200px;
-    width: 90%;
-    left: 10%;
+    opacity: 1;
+    right: 7.5%;
+    left: 7.5%;
+    bottom: 0px;
+    background-color: var(--p-primary-400);
+    color: var(--p-primary-50);
+    .auto-height {
+      height: 0;
+      overflow-y: hidden;
+      position: relative;
+    }
     .ellipsis-multiline {
       display: -webkit-box;
       -webkit-line-clamp: 2; /* Number of lines */
@@ -40,19 +57,19 @@
       overflow: hidden;
     }
   }
+  @include forTablet {
+    & {
+      height: 300px;
+      .detail-div {
+        height: auto !important;
+        .auto-height {
+          height: auto !important;
+        }
+      }
+    }
+  }
 }
-.item-div::after {
-  position: absolute;
-  //   width: 50%;
-  content: "";
-  //   height: 25px;
-  top: 0;
-  z-index: 2;
-  border-left: 50px solid transparent;
-  border-right: 50px solid var(--p-primary-500);
-  border-top: 50px solid var(--p-primary-500);
-  border-bottom: 50px solid transparent;
-}
+
 ::ng-deep .ellipsis-multiline {
   @include responsive-font-sizes(0.625rem, 0.7rem, 0.756rem, 0.8125rem);
   > * {

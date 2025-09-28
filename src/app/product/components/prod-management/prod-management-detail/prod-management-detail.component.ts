@@ -3,8 +3,8 @@ import { Component, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FileUpload } from 'primeng/fileupload';
-import { EMPTY, forkJoin, Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { forkJoin, Observable, of } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { CollectionManagementService } from '../../../../company/services/collection-management.service';
 import { UserStateService } from '../../../../general/services/user-state.service';
 import { CategoryManagementService } from '../../../../owner/services/category-management.service';
@@ -61,7 +61,7 @@ export class ProdManagementDetailComponent {
               product: productManagement.getOne(this.productId),
             });
           } else {
-            return EMPTY;
+            return of(null);
           }
         }),
         switchMap((res) => {
@@ -120,12 +120,12 @@ export class ProdManagementDetailComponent {
             this.variants = res.product.data.variants;
             return this.getImages(res.product.data.productImages ?? []);
           } else {
-            return EMPTY;
+            return of(null);
           }
         })
       )
       .subscribe((res) => {
-        if (typeof res !== 'boolean') {
+        if (res && typeof res !== 'boolean') {
           this.uploadedFiles = res; // assign to <p-fileupload> if needed
         }
         this.showForm = true;
@@ -134,7 +134,10 @@ export class ProdManagementDetailComponent {
   getControl(name: string) {
     return this.form.get(name) as FormControl;
   }
-
+  onImgError(event: Event) {
+    const img = event.target as HTMLImageElement;
+    img.src = 'productIcon.svg'; // 👈 your fallback image
+  }
   onSelect(event: any) {
     for (let file of event.files) {
       this.uploadedFiles.push(file);
@@ -166,10 +169,15 @@ export class ProdManagementDetailComponent {
         map((blob) => {
           const filename = url.split('/').pop() || 'image.jpg';
           return new File([blob], filename, { type: blob.type });
-        })
+        }),
+        catchError((err) => of(null))
       )
     );
-    if (observables.length > 0) return forkJoin(observables); // emits File[] when all fetches complete
+    if (observables.length > 0) {
+      return forkJoin(observables).pipe(
+        map((files) => files.filter((f): f is File => f !== null)) // filter out failed ones
+      );
+    }
     return of(true);
   }
 

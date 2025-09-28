@@ -1,68 +1,73 @@
 <div class="w-100  d-flex flex-column align-items-start" *ngIf="result()">
-    <div class="col-12 col-md-4" style="border-left: 1px solid var(--p-surface-50);" *ngIf="getProducts().length > 0">
+    <div class="col-12 col-md-6" style="border-bottom: 2px solid var(--p-surface-50);" *ngIf="getProducts().length > 0">
         <div class="w-100 d-flex justify-content-between align-items-center">
-            <p style="color: var(--p-surface-50);">المنتجات</p>
+            <p style="color: var(--p-surface-50);font-weight: bold;">المنتجات</p>
             <p-button severity="contrast" size="large" [text]="true" [outlined]="true" ngClass="w-auto"
                 label="رؤية المزيد .."></p-button>
         </div>
         <div class="w-100 d-flex flex-column justify-content-between align-items-center">
             @for (product of result()?.products; track $index) {
-            <div class="w-100 d-flex justify-content-between p-1 product-div">
-                <img [src]="product.image" [alt]="product.productName" height="50" width="50" />
-                <span>{{product.productName}}</span>
-            </div>
+            <a (click)="onCloseMenu.emit(true)" [routerLink]="'/client/product/item/'+product.productId">
+                <div class="w-100 d-flex gap-4 align-items-center p-1 product-div">
+                    <img (error)="onImgError($event)" [src]="product.image" [alt]="product.productName" height="50"
+                        width="50" />
+                    <span>{{product.productName}}</span>
+                </div>
+            </a>
             }
         </div>
     </div>
-    <div class="col-12 col-md-4" style="border-left: 1px solid var(--p-surface-50);"
+    <div class="col-12 col-md-6 mt-2" style="border-bottom: 2px solid var(--p-surface-50);"
         *ngIf="getCollections().length > 0">
         <div class="w-100 d-flex justify-content-between align-items-center">
-            <p style="color: var(--p-surface-50);">المجموعات</p>
-            <p-button severity="contrast" size="large" [text]="true" [outlined]="true" ngClass="w-auto"
-                label="رؤية المزيد .."></p-button>
+            <p style="color: var(--p-surface-50);font-weight: bold;">المجموعات</p>
+
         </div>
         <div class="w-100 d-flex flex-column justify-content-between align-items-center">
             @for (collection of result()?.collections; track $index) {
-            <div class="w-100 d-flex justify-content-between p-1 product-div">
-                <span>{{collection.collectionName}} لشركة {{collection.companyName}}</span>
-            </div>
+            <a (click)="onCloseMenu.emit(true)"
+                [routerLink]="'/client/product/group/collection/'+collection.collectionName+'/'+collection.collectionId">
+                <div class="w-100 d-flex gap-4 align-items-center p-1 product-div">
+                    <div style="width: 50px;height: 50px;"></div>
+                    <span>{{collection.collectionName}} لشركة {{collection.companyName}}</span>
+                </div>
+            </a>
             }
         </div>
     </div>
-    <div class="col-12 col-md-4" style="border-left: 1px solid var(--p-surface-50);" *ngIf="getCategories().length > 0">
+    <div class="col-12 col-md-6 mt-2" style="border-bottom: 2px solid var(--p-surface-50);"
+        *ngIf="getCategories().length > 0">
         <div class="w-100 d-flex justify-content-between align-items-center">
-            <p style="color: var(--p-surface-50);">الفئات</p>
-            <p-button severity="contrast" size="large" [text]="true" [outlined]="true" ngClass="w-auto"
-                label="رؤية المزيد .."></p-button>
+            <p style="color: var(--p-surface-50);font-weight: bold;">الفئات</p>
+
         </div>
         <div class="w-100 d-flex flex-column justify-content-between align-items-center">
             @for (category of result()?.categories; track $index) {
-            <div class="w-100 d-flex justify-content-between p-1 product-div">
-                <span>{{category.categoryName}}</span>
-            </div>
+            <a (click)="onCloseMenu.emit(true)"
+                [routerLink]="'/client/product/group/category/'+category.categoryName+'/'+category.categoryId">
+                <div class="w-100 d-flex gap-4 align-items-center p-1 product-div">
+                    <div style="width: 50px;height: 50px;"></div>
+                    <span>{{category.categoryName}}</span>
+                </div>
+            </a>
             }
         </div>
     </div>
-    <div class="col-12 col-md-4" style="border-left: 1px solid var(--p-surface-50);" *ngIf="getCompanies().length > 0">
+    <div class="col-12 col-md-6 mt-2" style="border-bottom: 2px solid var(--p-surface-50);"
+        *ngIf="getCompanies().length > 0">
         <div class="w-100 d-flex justify-content-between align-items-center">
-            <p style="color: var(--p-surface-50);">الشركات</p>
-            <p-button severity="contrast" size="large" [text]="true" [outlined]="true" ngClass="w-auto"
-                label="رؤية المزيد .."></p-button>
+            <p style="color: var(--p-surface-50);font-weight: bold;">الشركات</p>
         </div>
         <div class="w-100 d-flex flex-column justify-content-between align-items-center">
             @for (company of result()?.companies; track $index) {
-            <div class="w-100 d-flex justify-content-between p-1 product-div">
-                <span>{{company.companyName}}</span>
-            </div>
+            <a (click)="onCloseMenu.emit(true)"
+                [routerLink]="'/client/product/group/company/'+company.companyName+'/'+company.companyId">
+                <div class="w-100 d-flex gap-4 align-items-center p-1 product-div">
+                    <div style="width: 50px;height: 50px;"></div>
+                    <span>{{company.companyName}}</span>
+                </div>
+            </a>
             }
         </div>
     </div>
-    <!-- <div class="row w-100"> -->
-    <!-- </div> -->
-    <!-- <div class="row w-100 d-flex justify-content-between align-items-center">
-        <h6 class="my-3 fw-bold text-end w-auto" style="color: var(--p-surface-50);">نتائج بحث "{{header() ?? ''}}"
-        </h6>
-    </div>
-    <div class="row w-100 d-flex flex-wrap align-items-center justify-content-start product-list">
-    </div> -->
 </div>

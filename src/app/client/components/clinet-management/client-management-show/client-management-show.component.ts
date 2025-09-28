@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ConfirmationService } from 'primeng/api';
 import { catchError, of, switchMap } from 'rxjs';
 import { UserStateService } from '../../../../general/services/user-state.service';
 import { DynamicViewComponent } from '../../../../shared/components/dynamic-view/dynamic-view.component';
@@ -14,10 +15,10 @@ import { ClientManagementService } from '../../../services/client-management.ser
 @Component({
   selector: 'client-show',
   imports: [DynamicViewComponent, PrimeNgSharedModule, DynmaicFormComponent],
-  templateUrl: './client-show.component.html',
-  styleUrl: './client-show.component.scss',
+  templateUrl: './client-management-show.component.html',
+  styleUrl: './client-management-show.component.scss',
 })
-export class ClientShowComponent {
+export class ClientManagementShowComponent {
   tableConfig: InfoTable;
   type: 'table' | 'list' | string = '';
   columns = [
@@ -60,14 +61,32 @@ export class ClientShowComponent {
       },
     },
   ];
-  changeState(rowData: any) {
-    this.clientManagement.changeStatus(rowData.userId).subscribe((res) => {
-      if (res.succeeded) {
-        this.msgSrv.showSuccess('تم تغير حالة المستخدم');
-        this.tableConfig.getSub$.next({});
-      }
+  changeState: (rowData: any) => void = (rowData: any) => {
+    this.confirmationService.confirm({
+      message: 'هل تريد تغيير حالة هذا المستخدم؟',
+      header: 'تغيير حالة المستخدم',
+      icon: 'pi pi-info-circle',
+      rejectLabel: 'الغاء',
+      rejectButtonProps: {
+        label: 'الغاء',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'حذف',
+        severity: 'danger',
+      },
+
+      accept: () => {
+        this.clientManagement.changeStatus(rowData.userId).subscribe((res) => {
+          this.msgSrv.showMessage(res.message, res.succeeded);
+          if (res.succeeded) {
+            this.tableConfig.getSub$.next({});
+          }
+        });
+      },
     });
-  }
+  };
   displayFunc: (rowData: any) => void = (rowData: any) => {
     this.router.navigate(['owner/client-management/detail/display/' + rowData.userId]);
   };
@@ -84,6 +103,7 @@ export class ClientShowComponent {
     private tableSrv: DyTableService,
     private msgSrv: MessageToastService,
     private userState: UserStateService,
+    private confirmationService: ConfirmationService,
     private route: ActivatedRoute,
     private router: Router,
     private clientManagement: ClientManagementService
@@ -164,6 +184,8 @@ export class ClientShowComponent {
     this.userState.authSrv.changePhoneNumberForAdmin(event).subscribe((res) => {
       this.msgSrv.showMessage(res.message, res.succeeded);
       this.changePhoneNumbervisible = !res.succeeded;
+      this.closeDialog(null, this.changePhoneNumberForm);
+      this.tableConfig.getSub$.next({});
     });
   }
 }

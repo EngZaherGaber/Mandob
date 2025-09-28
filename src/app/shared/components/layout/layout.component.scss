@@ -20,7 +20,7 @@
   @include forMobile() {
     .main-content {
       .head-content {
-        height: 80px !important;
+        height: 110px !important;
       }
       .rout-conent {
         min-height: calc(100vh - 90px) !important;
@@ -62,9 +62,9 @@
       position: relative;
       min-height: calc(100vh - 50px);
       max-height: calc(100vh - 50px);
-      box-shadow: inset 0px 0px 10px -7.5px var(--p-focus-ring-shadow);
+      box-shadow: inset 0px 0px 10px -5px var(--p-focus-ring-shadow);
       > * {
-        padding-inline: 0;
+        padding-inline: 0 !important;
       }
       .rout-div {
         position: relative;

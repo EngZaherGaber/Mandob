@@ -26,10 +26,11 @@
             </div>
         </div>
     </div>
-    <div class="col" style="position: relative;z-index: 999;">
+    <div class="col" style="position: relative;z-index: 999;" *ngIf="user?.role === 'client'">
         <p-iconfield>
             <p-inputicon class="pi" [ngClass]="!searchLoading ? ['pi-search'] : ['pi-spinner','pi-spin']" />
-            <input type="text" pInputText [formControl]="searchInput" placeholder="Search" />
+            <input type="text" #search (input)="changeSearchInput(search.value)" [value]="stateSrv.searchInput()"
+                pInputText placeholder="Search" />
         </p-iconfield>
     </div>
     <div class="col d-flex position-relative justify-content-end align-items-center gap-2" style="z-index: 1;">
@@ -65,8 +66,9 @@
 
     </div>
 </div>
-<div *ngIf="showMenu" (ClickOutside)="onClickOutside($event)" class="position-absolute search-menu ">
-    <client-tool-search-menu [result]="searchResult" [header]="searchInput.value" />
+<div *ngIf="stateSrv.isOpenSearchMenu()" (ClickOutside)="onClickOutside($event)" class="position-absolute search-menu ">
+    <client-tool-search-menu [result]="searchResult" [header]="stateSrv.searchInput()"
+        (closeMenu)="onClickOutside($event)" />
 
 </div>
 

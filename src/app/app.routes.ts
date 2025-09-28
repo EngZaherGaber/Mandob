@@ -71,6 +71,35 @@ const companyRoutes = {
       ],
     },
     {
+      path: 'offer-management',
+      children: [
+        {
+          path: 'show',
+          title: 'عرض العروض',
+          loadComponent: () =>
+            import('./offer/components/offer-management/offer-management-show/offer-management-show.component').then(
+              (m) => m.OfferManagementShowComponent
+            ),
+        },
+        {
+          path: 'detail/:type/:id',
+          title: 'بيانات العرض',
+          loadComponent: () =>
+            import(
+              './offer/components/offer-management/offer-management-detail/offer-management-detail.component'
+            ).then((m) => m.OfferManagementDetailComponent),
+        },
+        {
+          path: 'add',
+          title: 'اضافة عرض',
+          loadComponent: () =>
+            import('./offer/components/offer-management/offer-management-add/offer-management-add.component').then(
+              (m) => m.OfferManagementAddComponent
+            ),
+        },
+      ],
+    },
+    {
       path: 'collection-management',
       children: [
         {
@@ -169,17 +198,17 @@ const ownerRoutes = {
           path: 'show',
           title: 'عرض الماركت',
           loadComponent: () =>
-            import('./client/components/clinet-management/client-show/client-show.component').then(
-              (m) => m.ClientShowComponent
-            ),
+            import(
+              './client/components/clinet-management/client-management-show/client-management-show.component'
+            ).then((m) => m.ClientManagementShowComponent),
         },
         {
           path: 'detail/display/:id',
           title: 'بيانات ماركت',
           loadComponent: () =>
-            import('./client/components/clinet-management/client-detail/client-detail.component').then(
-              (m) => m.ClientDetailComponent
-            ),
+            import(
+              './client/components/clinet-management/client-management-detail/client-management-detail.component'
+            ).then((m) => m.ClientManagementDetailComponent),
         },
       ],
     },
@@ -254,6 +283,19 @@ const clientRoutes = {
         import('./client/components/client-home-land/client-home-land.component').then(
           (m) => m.ClientHomeLandComponent
         ),
+    }, //TODO: create its company
+    {
+      path: 'company',
+      children: [
+        {
+          path: 'profile/:id',
+          title: 'صفحة الشركة',
+          loadComponent: () =>
+            import('./company/components/comp-general/comp-general-profile/comp-general-profile.component').then(
+              (m) => m.CompGeneralProfileComponent
+            ),
+        },
+      ],
     },
     {
       path: 'product',

@@ -49,7 +49,7 @@ export class GalleryComponent {
   }
   onSelect(event: any) {
     for (let file of event.files) {
-      this.uploadedFiles.push(file);
+      this.uploadedFiles = [file];
     }
   }
   handleFileUpload() {

@@ -1,27 +1,30 @@
 <a [routerLink]="['/client/product/item/'+product().productID]">
     <div *ngIf="product()" class="item-div mx-2 position-relative overflow-visible">
+
         <div class="mb-2">
-            <div class="position-relative mx-auto" style="background-color: var(--p-primary-300);height: 300px;">
-                <img class="w-100 position-relative  top-0 z-0" height="300"
-                    [ngClass]="{'primary-img': product().productImages[1]}" *ngIf="product().productImages[0]"
-                    [src]="product().productImages[0].imageURL" [alt]="product().productName" style="width: 100%;"
-                    (error)="onImgError($event)" />
-                <img class="w-100 position-absolute opacity-0 secondary-img start-0 top-0 z-1" height="300"
-                    *ngIf="product().productImages[1] && product().productImages[0]" style="width: 100%;"
+            @defer (on viewport){
+            <div class="position-relative mx-auto">
+                <img class="position-relative w-100  top-0 z-0" [ngClass]="{'primary-img': product().productImages[1]}"
+                    *ngIf="product().productImages[0]" [src]="product().productImages[0].imageURL"
+                    [alt]="product().productName" style="aspect-ratio: 1/1;" (error)="onImgError($event)" />
+                <img class="position-absolute w-100 opacity-0 secondary-img start-0 top-0 z-1"
+                    *ngIf="product().productImages[1] && product().productImages[0]" style="aspect-ratio: 1/1;"
                     [src]="product().productImages[1].imageURL ? product().productImages[1].imageURL : product().productImages[0].imageURL"
                     [alt]="product().productName" (error)="onImgError($event)" />
-                <!-- <p-tag [value]="product().inventoryStatus" [severity]="getSeverity(product().inventoryStatus)"
-                                    class="position-absolute" [ngStyle]="{ 'left.px': 5, 'top.px': 5 }" /> -->
+
             </div>
+            }
+            @placeholder(minimum 1000) {
+            <div></div>
+            }
         </div>
-        <div class="row py-2 position-absolute rounded-2 detail-div z-2"
-            style="bottom: 0px;background-color: var(--p-primary-500);color: var(--p-primary-50);">
-            <div class="w-100 mb-2  d-flex flex-column justify-content-between">
+        <div class="row py-2 position-absolute rounded-2 detail-div z-2">
+            <div class="w-100 mb-1  d-flex flex-column justify-content-between">
                 <div class="fw-bold ellipsis-oneline">{{ product().productName }}</div>
                 <!-- <span> <i class="pi pi-megaphone"></i> باقي {{ 10 }}</span> -->
             </div>
             <div class="w-100">
-                <div class="ellipsis-multiline mb-4" [innerHTML]="product().productDescription">
+                <div class="ellipsis-multiline mb-0" [innerHTML]="product().productDescription">
                 </div>
             </div>
             <!-- <div class="d-flex flex-column justify-content-between mb-2">
@@ -33,13 +36,13 @@
                                     </div>
                                 </div>
                             </div> -->
-            <div class="d-flex flex-column px-2">
-                <span style="font-size: smaller !important;" class="ellipsis-oneline text-start mt-0 mb-2 fw-bold"
+            <div class="auto-height d-flex  flex-column  align-items-end justify-content-between px-2">
+                <span class="ellipsis-oneline text-start mt-0 mb-2 fw-bold"
                     *ngIf="product().maxPrice !== product().minPrice">{{
                     product().maxPrice |
                     currency }} - {{product().minPrice | currency}}
                 </span>
-                <span style="font-size: smaller !important;" class="ellipsis-oneline text-start mt-0 mb-2 fw-bold"
+                <span class="ellipsis-oneline text-start mt-0 mb-2 fw-bold"
                     *ngIf="product().maxPrice === product().minPrice">{{
                     product().maxPrice |
                     currency }}

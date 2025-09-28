@@ -11,8 +11,8 @@ import { Category } from '../interfaces/category';
 export class CategoryManagementService {
   url = environment.api + 'Category/';
   constructor(private http: HttpClient) {}
-  getAll(body: TableLazyLoadEvent) {
-    return this.http.post<APIResponse<Category[]>>(this.url + 'getall', body);
+  getAll(body: TableLazyLoadEvent, topFiveByProductCount: boolean = false) {
+    return this.http.post<APIResponse<Category[]>>(this.url + 'GetAll/' + topFiveByProductCount, body);
   }
   getOne(id: number) {
     return this.http.get<APIResponse<Category>>(this.url + id);

@@ -12,7 +12,7 @@ import { ProductStoreService } from '../../../services/product-store.service';
 import { ProdGeneralCardComponent } from '../prod-general-card/prod-general-card.component';
 
 @Component({
-  selector: 'app-prod-general-group',
+  selector: 'prod-general-group',
   imports: [PrimeNgSharedModule, ProdGeneralCardComponent, DynamicInputComponent, FormsModule],
   templateUrl: './prod-general-group.component.html',
   styleUrl: './prod-general-group.component.scss',
@@ -77,6 +77,9 @@ export class ProdGeneralGroupComponent {
           break;
         case 'collection':
           this.body.collectionId = +this.id;
+          break;
+        case 'company':
+          this.body.companyId = +this.id;
           break;
         case 'search':
           this.body.globalFilter = this.header;

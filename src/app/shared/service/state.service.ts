@@ -2,7 +2,7 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { isPlatformBrowser } from '@angular/common';
 import { computed, Inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs';
+import { filter, Subject } from 'rxjs';
 import { AppState } from '../interface/app-state';
 
 @Injectable({
@@ -15,9 +15,12 @@ export class StateService {
     isDark: false,
     isOpenedSideNav: true,
     isOpenedCart: false,
-    overlayOpen: false,
+    searchInput: '',
+    openSearchMenu: false,
   });
-  isOpenOverlay = computed(() => this.state().overlayOpen);
+  searchInput$: Subject<string> = new Subject<string>();
+  searchInput = computed(() => this.state().searchInput);
+  isOpenSearchMenu = computed(() => this.state().openSearchMenu);
   page = computed(() => this.state().page);
   isBrowser = computed(() => isPlatformBrowser(this.platformId));
   isOpenedSideNav = computed(() => this.state().isOpenedSideNav);
@@ -36,6 +39,8 @@ export class StateService {
   ) {
     this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((event: any) => {
       this.updateTitleFromRoute();
+      this.changeSearchInput('');
+      this.changeOpenSearchMenu(false);
     });
     this.breakpointObserver
       .observe([
@@ -114,10 +119,18 @@ export class StateService {
       isOpenedCart: !this.isOpenedCart(),
     }));
   }
-  changeOverlay() {
+  changeSearchInput(searchInput: string) {
     this.state.update((prev) => ({
       ...prev,
-      overlayOpen: !this.isOpenOverlay(),
+      searchInput: searchInput,
     }));
+    this.searchInput$.next(this.searchInput());
+  }
+  changeOpenSearchMenu(openSearchMenu: boolean) {
+    this.state.update((prev) => ({
+      ...prev,
+      openSearchMenu: openSearchMenu,
+    }));
+    console.log(this.isOpenSearchMenu());
   }
 }

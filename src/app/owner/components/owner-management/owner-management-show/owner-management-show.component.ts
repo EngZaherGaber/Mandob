@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ConfirmationService } from 'primeng/api';
 import { catchError, of, switchMap } from 'rxjs';
 import { UserStateService } from '../../../../general/services/user-state.service';
 import { DynamicViewComponent } from '../../../../shared/components/dynamic-view/dynamic-view.component';
@@ -50,14 +51,32 @@ export class OwnerManagementShowComponent {
       },
     },
   ];
-  changeState(rowData: any) {
-    this.ownerManagement.changeStatus(rowData.userId).subscribe((res) => {
-      if (res.succeeded) {
-        this.msgSrv.showSuccess('تم تغير حالة المستخدم');
-        this.tableConfig.getSub$.next({});
-      }
+  changeState: (rowData: any) => void = (rowData: any) => {
+    this.confirmationService.confirm({
+      message: 'هل تريد تغيير حالة هذا المستخدم؟',
+      header: 'تغيير حالة المستخدم',
+      icon: 'pi pi-info-circle',
+      rejectLabel: 'الغاء',
+      rejectButtonProps: {
+        label: 'الغاء',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'تأكييد',
+        severity: 'danger',
+      },
+
+      accept: () => {
+        this.ownerManagement.changeStatus(rowData.userId).subscribe((res) => {
+          this.msgSrv.showMessage(res.message, res.succeeded);
+          if (res.succeeded) {
+            this.tableConfig.getSub$.next({});
+          }
+        });
+      },
     });
-  }
+  };
   addFunc: () => void = () => {
     this.router.navigate(['owner/owner-management/add']);
   };
@@ -81,6 +100,7 @@ export class OwnerManagementShowComponent {
   constructor(
     private tableSrv: DyTableService,
     private userState: UserStateService,
+    private confirmationService: ConfirmationService,
     private msgSrv: MessageToastService,
     private route: ActivatedRoute,
     private router: Router,
@@ -162,6 +182,8 @@ export class OwnerManagementShowComponent {
     this.userState.authSrv.changePhoneNumberForAdmin(event).subscribe((res) => {
       this.msgSrv.showMessage(res.message, res.succeeded);
       this.changePhoneNumbervisible = !res.succeeded;
+      this.closeDialog(null, this.changePhoneNumberForm);
+      this.tableConfig.getSub$.next({});
     });
   }
 }

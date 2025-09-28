@@ -20,10 +20,10 @@ export class ProductManagementService {
   }
   edit(id: number, body: ProductManagementAdd, files: File[]) {
     const formData = new FormData();
-
+    //TODO:
     // Append files
-    files.forEach((file) => {
-      formData.append('ProductImages', file, file.name);
+    files.forEach((file, i) => {
+      formData.append(`ProductImages`, file, file.name);
     });
 
     // ProductName, ProductDescription

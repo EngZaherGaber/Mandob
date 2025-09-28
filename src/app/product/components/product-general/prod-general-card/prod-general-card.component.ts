@@ -13,6 +13,6 @@ export class ProdGeneralCardComponent {
   product = input.required<ProdManagementTableItem>();
   onImgError(event: Event) {
     const img = event.target as HTMLImageElement;
-    img.src = 'boxes.svg'; // 👈 your fallback image
+    img.src = 'productIcon.svg'; // 👈 your fallback image
   }
 }

@@ -1,47 +1,69 @@
-<div class="container-fluid full-list company-list">
+<svg id="svg" xmlns="http://www.w3.org/2000/svg" class="transition duration-300 ease-in-out delay-150"
+    viewBox="0 72.53 1440 327.47">
+    <path
+        d="M 0,400 L 0,100 C 131.17857142857142,84.82142857142857 262.35714285714283,69.64285714285714 367,73 C 471.64285714285717,76.35714285714286 549.7500000000001,98.25 676,117 C 802.2499999999999,135.75 976.6428571428571,151.35714285714286 1112,148 C 1247.357142857143,144.64285714285714 1343.6785714285716,122.32142857142857 1440,100 L 1440,400 L 0,400 Z"
+        stroke="none" stroke-width="0" fill="#00aaa5" fill-opacity="0.53"
+        class="transition-all duration-300 ease-in-out delay-150 path-0"></path>
+    <path
+        d="M 0,400 L 0,233 C 94.82142857142858,207.46428571428572 189.64285714285717,181.92857142857142 322,188 C 454.35714285714283,194.07142857142858 624.2499999999999,231.75 737,233 C 849.7500000000001,234.25 905.3571428571429,199.07142857142858 1013,193 C 1120.642857142857,186.92857142857142 1280.3214285714284,209.96428571428572 1440,233 L 1440,400 L 0,400 Z"
+        stroke="none" stroke-width="0" fill="#00aaa5" fill-opacity="1"
+        class="transition-all duration-300 ease-in-out delay-150 path-1"></path>
+</svg>
+<div class="container-fluid full-list company-list" style="">
     <div class="row">
-        <h6 class="my-3 fw-bold text-end w-100" style="color: var(--p-primary-500);">
+        <h6 class="my-3 fw-bold text-end w-100" style="color: var(--p-text-hover-color);">
             {{header}}
         </h6>
-        <p-carousel [value]="data" [numVisible]="5" [numScroll]="3" [circular]="false"
+        <p-carousel [value]="data" [numVisible]="5" [numScroll]="1" [circular]="true"
             [responsiveOptions]="responsiveOptions">
             <ng-template let-item #item>
-                <div class="item-div mx-2 position-relative overflow-visible">
-                    <div class="mb-2">
-                        <div class="position-relative mx-auto"
-                            style="background-color: var(--p-primary-300);height: 300px;">
-                            <img class="w-100 position-relative primary-img top-0 z-0" height="300"
-                                [src]="item.image[0]?.imageURL" [alt]="item.name" *ngIf="item.image && item.image[0]" />
+                <a [routerLink]="'/client/company/profile/'+item.userId" style="text-decoration: none;cursor: pointer;">
+                    <div class="item-div mx-2 position-relative overflow-visible">
+                        <div class="mb-2">
+                            <div class="d-flex justify-content-center position-relative mx-auto">
+
+                                <img class="w-100 primary-img p-1" style="aspect-ratio: 1/1;"
+                                    [src]="item.image ? item.image.imageUrl : 'CompanyIcon.svg'" [alt]="item.name"
+                                    (error)="onImgError($event)" />
+
+
+
+                            </div>
                         </div>
+                        <div class="row py-2 position-absolute rounded-2 detail-div  z-2"
+                            style="bottom: 0px;background-color: var(--p-amber-500);color: var(--p-primary-50);">
+                            <div class="d-flex flex-column align-items-center">
+
+                                <div class="d-flex flex-column px-2 detail-1">
+                                    <div class="fw-bold ellipsis-oneline text-center">{{ item.name }}</div>
+                                    <span class="ellipsis-oneline text-center">{{
+                                        item.companyDescription}}
+                                    </span>
+                                </div>
+                                <div class="d-flex flex-column detail-2 py-2">
+                                    <span class="ellipsis-oneline text-center">{{
+                                        item.phoneNumber}}
+                                    </span>
+                                    <span class="ellipsis-oneline text-center">{{item.address}}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
-                    <div class="row py-2 position-absolute rounded-2 detail-div z-2"
-                        style="bottom: 0px;background-color: var(--p-primary-500);color: var(--p-primary-50);">
-                        <div class="w-100 mb-2  d-flex flex-column justify-content-between">
-                            <div class="fw-bold ellipsis-oneline">{{ item.name }}</div>
-                        </div>
-                        <div class="w-100">
-                            <span class="ellipsis-multiline mb-4">{{item.companyDescription}}
-                            </span>
-                        </div>
-                        <div class="d-flex flex-column px-2">
-                            <span style="font-size: smaller !important;"
-                                class="ellipsis-oneline text-start mt-0 mb-2 fw-bold">{{
-                                item.phoneNumber}}
-                            </span>
-                            <span style="font-size: smaller !important;"
-                                class="ellipsis-oneline text-start mt-0 mb-2 fw-bold">{{item.address}}
-                            </span>
-                            <span
-                                class="d-flex flex-wrap flex-md-nowrap align-items-start align-items-md-center justify-content-end justify-content-md-center gap-2 align-self-end">
-                                <p-button size="small" icon="pi pi-heart" severity="secondary" />
-                                <p-button size="small" icon="pi pi-eye" styleClass="ml-2" [severity]="'secondary'" />
-                                <p-button size="small" icon="pi pi-shopping-cart" styleClass="ml-2"
-                                    [severity]="'contrast'" />
-                            </span>
-                        </div>
-                    </div>
-                </div>
+                </a>
             </ng-template>
         </p-carousel>
     </div>
 </div>
+<svg id="svg" xmlns="http://www.w3.org/2000/svg" class="transition duration-300 ease-in-out delay-150"
+    viewBox="0 0 1440 343.7">
+    <path
+        d="M 0,400 L 0,100 C 89.25,73.14285714285714 178.5,46.28571428571429 295,60 C 411.5,73.71428571428571 555.25,127.99999999999997 704,142 C 852.75,156.00000000000003 1006.5,129.71428571428572 1130,116 C 1253.5,102.28571428571428 1346.75,101.14285714285714 1440,100 L 1440,400 L 0,400 Z"
+        stroke="none" stroke-width="0" fill="#00aaa5" fill-opacity="0.53"
+        class="transition-all duration-300 ease-in-out delay-150 path-0" transform="rotate(-180 720 200)"></path>
+    <path
+        d="M 0,400 L 0,233 C 133.60714285714286,222.03571428571428 267.2142857142857,211.07142857142858 378,220 C 488.7857142857143,228.92857142857142 576.75,257.75 708,253 C 839.25,248.25 1013.7857142857142,209.92857142857142 1143,201 C 1272.2142857142858,192.07142857142858 1356.107142857143,212.53571428571428 1440,233 L 1440,400 L 0,400 Z"
+        stroke="none" stroke-width="0" fill="#00aaa5" fill-opacity="1"
+        class="transition-all duration-300 ease-in-out delay-150 path-1" transform="rotate(-180 720 200)"></path>
+</svg>

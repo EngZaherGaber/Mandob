@@ -15,7 +15,7 @@ $small-mobile: 576px;
   // Styles for smaller mobile devices
 }
 @mixin forLargeScreen {
-  @media screen and (min-width: $big) {
+  @media screen and (max-width: $big) {
     @content;
   }
 }

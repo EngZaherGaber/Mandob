@@ -1,6 +1,7 @@
 export interface ProductListFilter {
   userId?: number;
   categoryId?: number;
+  companyId?: number;
   collectionId?: number;
   globalFilter?: string;
   optionFilters?: { [key: string]: string[] };

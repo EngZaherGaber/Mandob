@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ConfirmationService } from 'primeng/api';
 import { catchError, of, switchMap } from 'rxjs';
 import { UserStateService } from '../../../../general/services/user-state.service';
 import { DynamicViewComponent } from '../../../../shared/components/dynamic-view/dynamic-view.component';
@@ -42,14 +43,7 @@ export class CollectionManagementShowComponent {
       },
     },
   ];
-  changeState(rowData: any) {
-    this.collectionManagement.changeStatus(rowData.userId).subscribe((res) => {
-      this.msgSrv.showMessage(res.message, res.succeeded);
-      if (res.succeeded) {
-        this.tableConfig.getSub$.next({});
-      }
-    });
-  }
+
   addFunc: () => void = () => {
     this.router.navigate(['company/collection-management/add']);
   };
@@ -59,12 +53,52 @@ export class CollectionManagementShowComponent {
   displayFunc: (rowData: any) => void = (rowData: any) => {
     this.router.navigate(['company/collection-management/detail/display/' + rowData.collectionID]);
   };
+  changeState: (rowData: any) => void = (rowData: any) => {
+    this.confirmationService.confirm({
+      message: 'هل تريد تغيير حالة هذا المستخدم؟',
+      header: 'تغيير حالة المستخدم',
+      icon: 'pi pi-info-circle',
+      rejectLabel: 'الغاء',
+      rejectButtonProps: {
+        label: 'الغاء',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'تاكيد',
+        severity: 'danger',
+      },
+
+      accept: () => {
+        this.collectionManagement.changeStatus(rowData.userId).subscribe((res) => {
+          this.msgSrv.showMessage(res.message, res.succeeded);
+          if (res.succeeded) this.tableConfig.getSub$.next({});
+        });
+      },
+    });
+  };
   deleteFunc: (rowData: any) => void = (rowData: any) => {
-    this.collectionManagement.delete(rowData.collectionID).subscribe((res) => {
-      this.msgSrv.showMessage(res.message, res.succeeded);
-      if (res.succeeded) {
-        this.tableConfig.getSub$.next({});
-      }
+    this.confirmationService.confirm({
+      message: 'هل تريد حذف هذه الحساب؟',
+      header: 'حذف الحساب',
+      icon: 'pi pi-info-circle',
+      rejectLabel: 'الغاء',
+      rejectButtonProps: {
+        label: 'الغاء',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'تأكييد',
+        severity: 'danger',
+      },
+
+      accept: () => {
+        this.collectionManagement.delete(rowData.userId).subscribe((res) => {
+          this.msgSrv.showMessage(res.message, res.succeeded);
+          if (res.succeeded) this.tableConfig.getSub$.next({});
+        });
+      },
     });
   };
 
@@ -73,6 +107,7 @@ export class CollectionManagementShowComponent {
     private msgSrv: MessageToastService,
     private userState: UserStateService,
     private router: Router,
+    private confirmationService: ConfirmationService,
     private collectionManagement: CollectionManagementService
   ) {
     this.tableConfig = tableSrv.getStandardInfo(this.deleteFunc, this.editFunc, this.displayFunc, this.addFunc);

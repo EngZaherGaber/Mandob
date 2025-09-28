@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ConfirmationService } from 'primeng/api';
 import { catchError, of, switchMap } from 'rxjs';
 import { UserStateService } from '../../../../general/services/user-state.service';
 import { OwnerStrategy } from '../../../../owner/classes/owner-strategy';
@@ -81,9 +82,9 @@ export class CompManagementShowComponent {
       HeaderType: 'DateTime',
     },
     {
-      field: 'createdAt',
-      header: 'تاريخ الانشاء',
-      HeaderType: 'DateTime',
+      field: 'createdBy',
+      header: 'المسؤول',
+      HeaderType: 'string',
     },
     {
       field: 'isActive',
@@ -126,12 +127,54 @@ export class CompManagementShowComponent {
       options: [],
     },
   ];
-  changeState(rowData: any) {
-    this.companyManagement.changeStatus(rowData.userId).subscribe((res) => {
-      this.msgSrv.showMessage(res.message, res.succeeded);
-      if (res.succeeded) this.tableConfig.getSub$.next({});
+  changeState: (rowData: any) => void = (rowData: any) => {
+    this.confirmationService.confirm({
+      message: 'هل تريد تغيير حالة هذا المستخدم؟',
+      header: 'تغيير حالة المستخدم',
+      icon: 'pi pi-info-circle',
+      rejectLabel: 'الغاء',
+      rejectButtonProps: {
+        label: 'الغاء',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'تاكيد',
+        severity: 'danger',
+      },
+
+      accept: () => {
+        this.companyManagement.changeStatus(rowData.userId).subscribe((res) => {
+          this.msgSrv.showMessage(res.message, res.succeeded);
+          if (res.succeeded) this.tableConfig.getSub$.next({});
+        });
+      },
     });
-  }
+  };
+  deleteFunc: (rowData: any) => void = (rowData: any) => {
+    this.confirmationService.confirm({
+      message: 'هل تريد حذف هذه الحساب؟',
+      header: 'حذف الحساب',
+      icon: 'pi pi-info-circle',
+      rejectLabel: 'الغاء',
+      rejectButtonProps: {
+        label: 'الغاء',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'تأكييد',
+        severity: 'danger',
+      },
+
+      accept: () => {
+        this.companyManagement.delete(rowData.userId).subscribe((res) => {
+          this.msgSrv.showMessage(res.message, res.succeeded);
+          if (res.succeeded) this.tableConfig.getSub$.next({});
+        });
+      },
+    });
+  };
   addFunc: () => void = () => {
     this.router.navigate(['owner/company-management/add']);
   };
@@ -141,12 +184,7 @@ export class CompManagementShowComponent {
   displayFunc: (rowData: any) => void = (rowData: any) => {
     this.router.navigate(['owner/company-management/detail/display/' + rowData.userId]);
   };
-  deleteFunc: (rowData: any) => void = (rowData: any) => {
-    this.companyManagement.delete(rowData.userId).subscribe((res) => {
-      this.msgSrv.showMessage(res.message, res.succeeded);
-      if (res.succeeded) this.tableConfig.getSub$.next({});
-    });
-  };
+
   resetFunc: (rowData: any) => void = (rowData: any) => {
     this.getControl('userId').setValue(rowData.userId);
     this.resetDialogVisible = true;
@@ -165,6 +203,7 @@ export class CompManagementShowComponent {
     private msgSrv: MessageToastService,
     private route: ActivatedRoute,
     private router: Router,
+    private confirmationService: ConfirmationService,
     private userState: UserStateService,
     private companyManagement: CompanyManagementService
   ) {
@@ -268,6 +307,8 @@ export class CompManagementShowComponent {
     this.userState.authSrv.changePhoneNumberForAdmin(event).subscribe((res) => {
       this.msgSrv.showMessage(res.message, res.succeeded);
       this.changePhoneNumbervisible = !res.succeeded;
+      this.closeDialog(null, this.changePhoneNumberForm);
+      this.tableConfig.getSub$.next({});
     });
   }
 }

@@ -1,1 +1,6 @@
 @use "../../../../../../public/mixin" as *;
+a {
+  text-decoration: none;
+  width: 100%;
+  color: var(--p-surface-50);
+}

@@ -2,37 +2,37 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs';
-import { Owner } from '../../../../owner/interfaces/owner';
 import { DynmaicFormComponent } from '../../../../shared/components/dynmaic-form/dynmaic-form.component';
 import { InputDynamic } from '../../../../shared/interface/input-dynamic';
+import { Client } from '../../../interfaces/client';
 import { ClientManagementService } from '../../../services/client-management.service';
 
 @Component({
   selector: 'client-detail',
   imports: [DynmaicFormComponent, CommonModule],
-  templateUrl: './client-detail.component.html',
-  styleUrl: './client-detail.component.scss',
+  templateUrl: './client-management-detail.component.html',
+  styleUrl: './client-management-detail.component.scss',
 })
-export class ClientDetailComponent {
+export class ClientManagementDetailComponent {
   resetObjs: { [key: string]: InputDynamic[] } = {};
-  ownerId: number | undefined;
-  owner: Owner | undefined;
+  clientId: number | undefined;
+  client: Client | undefined;
   constructor(clientManagement: ClientManagementService, private route: ActivatedRoute) {
     this.route.params
       .pipe(
         switchMap((param) => {
-          this.ownerId = +param['id'];
-          return clientManagement.getOne(this.ownerId);
+          this.clientId = +param['id'];
+          return clientManagement.getOne(this.clientId);
         })
       )
       .subscribe((res) => {
-        this.owner = res.data;
+        this.client = res.data;
         this.resetObjs = {
           general: [
             {
               key: 'name',
               label: 'الاسم',
-              value: this.owner?.name,
+              value: this.client?.name,
               dataType: 'string',
               required: true,
               visible: true,
@@ -41,7 +41,7 @@ export class ClientDetailComponent {
             {
               key: 'email',
               label: 'الايميل',
-              value: this.owner?.name,
+              value: this.client?.email,
               dataType: 'string',
               required: true,
               visible: true,
@@ -50,7 +50,7 @@ export class ClientDetailComponent {
             {
               key: 'phoneNumber',
               label: 'رقم الهاتف',
-              value: this.owner?.name,
+              value: this.client?.phoneNumber,
               dataType: 'string',
               required: true,
               visible: true,
@@ -59,7 +59,7 @@ export class ClientDetailComponent {
             {
               key: 'address',
               label: 'العنوان',
-              value: this.owner?.name,
+              value: this.client?.address,
               dataType: 'string',
               required: true,
               visible: true,
@@ -68,7 +68,7 @@ export class ClientDetailComponent {
             {
               key: 'commercialRegistrationNumber',
               label: 'السجل التجاري',
-              value: this.owner?.name,
+              value: this.client?.commercialRegistrationNumber,
               dataType: 'string',
               required: true,
               visible: true,

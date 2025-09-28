@@ -7,7 +7,7 @@
             (onClick)="seeMoreNavigation()"></p-button>
     </div>
     <div class="row">
-        <p-carousel [value]="data" [numVisible]="5" [numScroll]="3" [circular]="false"
+        <p-carousel [value]="data" [circular]="true" [numVisible]="5" [numScroll]="1"
             [responsiveOptions]="responsiveOptions">
             <ng-template let-item #item>
                 <prod-general-card [product]="item"></prod-general-card>

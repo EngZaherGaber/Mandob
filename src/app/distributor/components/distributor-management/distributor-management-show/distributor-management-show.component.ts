@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ConfirmationService } from 'primeng/api';
 import { catchError, of, switchMap } from 'rxjs';
 import { CompanyStrategy } from '../../../../company/classes/company-strategy';
 import { UserStateService } from '../../../../general/services/user-state.service';
@@ -79,14 +80,32 @@ export class DistributorManagementShowComponent {
       options: [],
     },
   ];
-  changeState(rowData: any) {
-    this.distributorManagement.changeStatus(rowData.userId).subscribe((res) => {
-      if (res.succeeded) {
-        this.msgSrv.showSuccess('تم تغير حالة المستخدم');
-        this.tableConfig.getSub$.next({});
-      }
+  changeState: (rowData: any) => void = (rowData: any) => {
+    this.confirmationService.confirm({
+      message: 'هل تريد تغيير حالة هذا المستخدم؟',
+      header: 'تغيير حالة المستخدم',
+      icon: 'pi pi-info-circle',
+      rejectLabel: 'الغاء',
+      rejectButtonProps: {
+        label: 'الغاء',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'تأكييد',
+        severity: 'danger',
+      },
+
+      accept: () => {
+        this.distributorManagement.changeStatus(rowData.userId).subscribe((res) => {
+          this.msgSrv.showMessage(res.message, res.succeeded);
+          if (res.succeeded) {
+            this.tableConfig.getSub$.next({});
+          }
+        });
+      },
     });
-  }
+  };
   addFunc: () => void = () => {
     this.router.navigate(['company/distributor-management/add']);
   };
@@ -106,6 +125,7 @@ export class DistributorManagementShowComponent {
     private msgSrv: MessageToastService,
     private route: ActivatedRoute,
     private router: Router,
+    private confirmationService: ConfirmationService,
     private distributorManagement: DistributorManagementService
   ) {
     this.tableConfig = tableSrv.getStandardInfo(undefined, this.editFunc, this.displayFunc, this.addFunc);

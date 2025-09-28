@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ConfirmationService } from 'primeng/api';
 import { catchError, of, switchMap } from 'rxjs';
 import { DynamicViewComponent } from '../../../../shared/components/dynamic-view/dynamic-view.component';
 import { InfoTable } from '../../../../shared/interface/info-table';
@@ -41,14 +42,6 @@ export class ProdManagementShowComponent {
       },
     },
   ];
-  changeState(rowData: any) {
-    this.productManagement.changeStatus(rowData.userId).subscribe((res) => {
-      this.msgSrv.showMessage(res.message, res.succeeded);
-      if (res.succeeded) {
-        this.tableConfig.getSub$.next({});
-      }
-    });
-  }
   addFunc: () => void = () => {
     this.router.navigate(['company/product-management/add']);
   };
@@ -58,12 +51,52 @@ export class ProdManagementShowComponent {
   displayFunc: (rowData: any) => void = (rowData: any) => {
     this.router.navigate(['company/product-management/detail/display/' + rowData.productID]);
   };
+  changeState: (rowData: any) => void = (rowData: any) => {
+    this.confirmationService.confirm({
+      message: 'هل تريد تغيير حالة هذا المستخدم؟',
+      header: 'تغيير حالة المستخدم',
+      icon: 'pi pi-info-circle',
+      rejectLabel: 'الغاء',
+      rejectButtonProps: {
+        label: 'الغاء',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'تاكيد',
+        severity: 'danger',
+      },
+
+      accept: () => {
+        this.productManagement.changeStatus(rowData.userId).subscribe((res) => {
+          this.msgSrv.showMessage(res.message, res.succeeded);
+          if (res.succeeded) this.tableConfig.getSub$.next({});
+        });
+      },
+    });
+  };
   deleteFunc: (rowData: any) => void = (rowData: any) => {
-    this.productManagement.delete(rowData.productID).subscribe((res) => {
-      this.msgSrv.showMessage(res.message, res.succeeded);
-      if (res.succeeded) {
-        this.tableConfig.getSub$.next({});
-      }
+    this.confirmationService.confirm({
+      message: 'هل تريد حذف هذه الحساب؟',
+      header: 'حذف الحساب',
+      icon: 'pi pi-info-circle',
+      rejectLabel: 'الغاء',
+      rejectButtonProps: {
+        label: 'الغاء',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'تأكييد',
+        severity: 'danger',
+      },
+
+      accept: () => {
+        this.productManagement.delete(rowData.userId).subscribe((res) => {
+          this.msgSrv.showMessage(res.message, res.succeeded);
+          if (res.succeeded) this.tableConfig.getSub$.next({});
+        });
+      },
     });
   };
 
@@ -71,6 +104,7 @@ export class ProdManagementShowComponent {
     tableSrv: DyTableService,
     private msgSrv: MessageToastService,
     private router: Router,
+    private confirmationService: ConfirmationService,
     private productManagement: ProductManagementService
   ) {
     this.tableConfig = tableSrv.getStandardInfo(this.deleteFunc, this.editFunc, this.displayFunc, this.addFunc);

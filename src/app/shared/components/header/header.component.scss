@@ -14,8 +14,8 @@
   max-height: 80vh;
   width: 96%;
   padding: 1rem;
-  box-shadow: 0px 0px 5px 0px;
-  background-color: var(--p-primary-300);
+  box-shadow: 0px 0px 5px 0px var(--p-focus-ring-shadow);
+  background-color: var(--p-primary-500);
   overflow-y: auto;
   transition: height 1s ease;
   .product-div {
@@ -64,6 +64,7 @@
 @include forMobile() {
   .header-container {
     height: auto;
+    gap: 5px;
     flex-direction: column-reverse;
   }
 }

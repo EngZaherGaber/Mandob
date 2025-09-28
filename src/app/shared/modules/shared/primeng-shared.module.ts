@@ -30,6 +30,7 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { SliderModule } from 'primeng/slider';
 import { StepsModule } from 'primeng/steps';
 import { TableModule } from 'primeng/table';
+import { TabsModule } from 'primeng/tabs';
 import { TagModule } from 'primeng/tag';
 import { TextareaModule } from 'primeng/textarea';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
@@ -40,6 +41,7 @@ import { TooltipModule } from 'primeng/tooltip';
   declarations: [],
   exports: [
     InputIconModule,
+    TabsModule,
     IconFieldModule,
     SliderModule,
     AccordionModule,

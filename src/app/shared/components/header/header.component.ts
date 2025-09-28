@@ -1,16 +1,15 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { isPlatformBrowser } from '@angular/common';
 import { Component, effect, inject, PLATFORM_ID, signal } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
-import { catchError, debounceTime, distinctUntilChanged, EMPTY, switchMap } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, of, switchMap } from 'rxjs';
 import { ClientToolSearchMenuComponent } from '../../../client/components/tools/client-tool-search-menu/client-tool-search-menu.component';
 import { GlobalSearchResponse } from '../../../client/interfaces/global-search-response';
 import { User } from '../../../general/interfaces/user';
 import { AuthService } from '../../../general/services/auth.service';
 import { UserStateService } from '../../../general/services/user-state.service';
-import { ProdGeneralCardComponent } from '../../../product/components/product-general/prod-general-card/prod-general-card.component';
 import { ProductStoreService } from '../../../product/services/product-store.service';
 import { ClickOutsideDirective } from '../../directives/click-outside.directive';
 import { InputDynamic } from '../../interface/input-dynamic';
@@ -25,7 +24,6 @@ import { DynmaicFormComponent } from '../dynmaic-form/dynmaic-form.component';
     DynmaicFormComponent,
     FormsModule,
     ReactiveFormsModule,
-    ProdGeneralCardComponent,
     ClickOutsideDirective,
     ClientToolSearchMenuComponent,
   ],
@@ -53,24 +51,67 @@ export class HeaderComponent {
   private platformId = inject(PLATFORM_ID);
   isBrowser = isPlatformBrowser(this.platformId);
   items: MenuItem[] = [];
-  changePasswordForm: { [key: string]: InputDynamic[] } = {};
+  changePasswordForm: { [key: string]: InputDynamic[] } = {
+    general: [
+      {
+        key: 'oldPassword',
+        label: 'كلمة السر القديمة',
+        value: null,
+        dataType: 'string',
+        required: true,
+        visible: true,
+        options: [],
+      },
+      {
+        key: 'newPassword',
+        label: 'كلمة السر الجديدة',
+        value: null,
+        dataType: 'string',
+        required: true,
+        visible: true,
+        options: [],
+      },
+    ],
+  };
   changePasswordvisible: boolean = false;
-  changePhoneNumberForm: { [key: string]: InputDynamic[] } = {};
+  changePhoneNumberForm: { [key: string]: InputDynamic[] } = {
+    newPhoneNumber: [
+      {
+        key: 'password',
+        label: 'كلمة السر',
+        value: null,
+        dataType: 'string',
+        required: true,
+        visible: true,
+        options: [],
+      },
+      {
+        key: 'newPhoneNumber',
+        label: 'رقم الهاتف الجديد',
+        value: null,
+        dataType: 'string',
+        required: true,
+        visible: true,
+        options: [],
+      },
+    ],
+    code: [
+      {
+        key: 'code',
+        label: 'الكود',
+        value: null,
+        dataType: 'string',
+        required: true,
+        visible: true,
+        options: [],
+      },
+    ],
+  };
   changePhoneNumbervisible: boolean = false;
   stepsPhoneNumberList: MenuItem[] = [{ label: 'رقم الهاتف الجديد' }, { label: 'التحقق' }];
   activeIndexPhoneNumber: number = 0;
-  searchInput: FormControl = new FormControl(null);
   searchLoading: boolean = false;
-  showMenu: boolean = false;
   searchResult: GlobalSearchResponse | null = null;
-  onClickOutside(event: MouseEvent) {
-    if (this.showMenu) {
-      this.showMenu = false;
-      this.searchResult = null;
-      this.searchLoading = false;
-      this.searchInput.setValue(null);
-    }
-  }
   constructor(
     public stateSrv: StateService,
     private userState: UserStateService,
@@ -120,7 +161,7 @@ export class HeaderComponent {
         },
       },
     ];
-    this.searchInput.valueChanges
+    this.stateSrv.searchInput$
       .pipe(
         debounceTime(2000),
         distinctUntilChanged(),
@@ -129,14 +170,19 @@ export class HeaderComponent {
             this.searchLoading = true;
             return productStore.globalSearch(value);
           } else {
-            return EMPTY;
+            return of(null);
           }
-        }),
-        catchError((err) => EMPTY)
+        })
+      )
+      .pipe(
+        catchError((err) => {
+          this.searchLoading = false;
+          return of(null);
+        })
       )
       .subscribe((res) => {
         if (res) {
-          this.showMenu = true;
+          this.stateSrv.changeOpenSearchMenu(true);
           this.searchLoading = false;
           this.searchResult = res.data;
         }
@@ -159,64 +205,21 @@ export class HeaderComponent {
         this.displayText.set(this.stateSrv.page());
       });
     }
-    this.changePasswordForm = {
-      general: [
-        {
-          key: 'oldPassword',
-          label: 'كلمة السر القديمة',
-          value: null,
-          dataType: 'string',
-          required: true,
-          visible: true,
-          options: [],
-        },
-        {
-          key: 'newPassword',
-          label: 'كلمة السر الجديدة',
-          value: null,
-          dataType: 'string',
-          required: true,
-          visible: true,
-          options: [],
-        },
-      ],
-    };
-    this.changePhoneNumberForm = {
-      newPhoneNumber: [
-        {
-          key: 'password',
-          label: 'كلمة السر',
-          value: null,
-          dataType: 'string',
-          required: true,
-          visible: true,
-          options: [],
-        },
-        {
-          key: 'newPhoneNumber',
-          label: 'رقم الهاتف الجديد',
-          value: null,
-          dataType: 'string',
-          required: true,
-          visible: true,
-          options: [],
-        },
-      ],
-      code: [
-        {
-          key: 'code',
-          label: 'الكود',
-          value: null,
-          dataType: 'string',
-          required: true,
-          visible: true,
-          options: [],
-        },
-      ],
-    };
   }
+  changeSearchInput(event: string) {
+    console.log(event);
+    this.stateSrv.changeSearchInput(event);
+  }
+  onClickOutside(event: any) {
+    if (this.stateSrv.isOpenSearchMenu()) {
+      this.stateSrv.changeOpenSearchMenu(false);
+      this.searchResult = null;
+      this.searchLoading = false;
+    }
+  }
+
   seeMoreNavigation() {
-    this.router.navigate(['client/product/group/search/' + this.searchInput.value + '/0']);
+    this.router.navigate(['client/product/group/search/' + this.stateSrv.searchInput() + '/0']);
   }
   private async changeStateWithAnimation(newValue: string) {
     this.isChanging.set(true);

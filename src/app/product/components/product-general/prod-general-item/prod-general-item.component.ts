@@ -2,7 +2,6 @@ import { Component, model } from '@angular/core';
 import { FormArray, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs';
-import { ProductListComponent } from '../../../../general/components/product-list/product-list.component';
 import { DynamicInputComponent } from '../../../../shared/components/dynamic-input/dynamic-input.component';
 import { InputDynamic } from '../../../../shared/interface/input-dynamic';
 import { PrimeNgSharedModule } from '../../../../shared/modules/shared/primeng-shared.module';
@@ -14,7 +13,7 @@ import { ProductManagementService } from '../../../services/product-management.s
 
 @Component({
   selector: 'app-prod-general-item',
-  imports: [ReactiveFormsModule, DynamicInputComponent, FormsModule, PrimeNgSharedModule, ProductListComponent],
+  imports: [ReactiveFormsModule, DynamicInputComponent, FormsModule, PrimeNgSharedModule],
   templateUrl: './prod-general-item.component.html',
   styleUrl: './prod-general-item.component.scss',
 })

@@ -51,7 +51,7 @@ export class CompanyStrategy extends BaseUserStrategy<Company> {
         {
           label: 'العروض',
           icon: 'pi pi-tag', // 🏷️ عرض/تخفيض
-          routerLink: ['item'],
+          routerLink: ['company/offer-management/show'],
         },
       ],
     },

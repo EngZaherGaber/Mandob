@@ -13,6 +13,7 @@ import { ProdGeneralCardComponent } from '../prod-general-card/prod-general-card
 export class ProdGeneralListComponent {
   @Input() header: string = '';
   @Input() data: ProdManagementTableItem[] = [];
+  @Input() type: string = 'category';
   @Input() id = 0;
   @Input() getSeverity: (item: any) => any = () => {
     return;
@@ -21,17 +22,17 @@ export class ProdGeneralListComponent {
     {
       breakpoint: '1400px',
       numVisible: 4,
-      numScroll: 2,
+      numScroll: 1,
     },
     {
       breakpoint: '1199px',
       numVisible: 3,
-      numScroll: 2,
+      numScroll: 1,
     },
     {
       breakpoint: '767px',
       numVisible: 2,
-      numScroll: 2,
+      numScroll: 1,
     },
     {
       breakpoint: '575px',
@@ -39,9 +40,10 @@ export class ProdGeneralListComponent {
       numScroll: 1,
     },
   ];
+
   constructor(private router: Router) {}
   ngOnInit() {}
   seeMoreNavigation() {
-    this.router.navigate(['client/product/group/category/' + this.header + '/' + this.id]);
+    this.router.navigate(['client/product/group/' + this.type + '/' + this.header + '/' + this.id]);
   }
 }

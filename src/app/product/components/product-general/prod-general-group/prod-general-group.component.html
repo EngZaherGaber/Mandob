@@ -14,7 +14,15 @@
                 <div class="row d-flex flex-wrap product-div">
                     @for (item of items; track $index) {
                     <div class="col-12 col-md-3 p-2" style="max-width: 300px;">
+                        @defer (on viewport){
                         <prod-general-card [product]="item" />
+                        }
+                        @loading (after 100ms; minimum 1s) {
+                        <div></div>
+                        }
+                        @placeholder(minimum 1000) {
+                        <div></div>
+                        }
                     </div>
                     }
                 </div>

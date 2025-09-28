@@ -27,7 +27,7 @@ export class ClientHomeLandComponent {
   ) {}
   ngOnInit() {
     const productObs$ = this.categoryManagement
-      .getAll({ first: 0, rows: 100, multiSortMeta: [{ field: 'categoryName', order: 1 }] })
+      .getAll({ first: 0, rows: 5, multiSortMeta: [{ field: 'categoryName', order: 1 }] }, true)
       .pipe(
         switchMap((res) => {
           if (res.succeeded) {
@@ -38,7 +38,7 @@ export class ClientHomeLandComponent {
               timer(0).pipe(
                 // wait 3 seconds before request
                 switchMap(() =>
-                  this.productStore.getAll({ categoryId: category.categoryID, pageNumber: 0, pageSize: 5 }).pipe(
+                  this.productStore.getAll({ categoryId: category.categoryID, pageNumber: 1, pageSize: 8 }).pipe(
                     map((productRes) => ({ category, products: productRes.data.products })),
                     catchError(() => of({ category, products: [] }))
                   )

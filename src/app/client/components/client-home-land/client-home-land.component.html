@@ -1,6 +1,17 @@
 @for (item of listToShow;let index=$index; track $index) {
 @if (index === 1) {
+@defer (on viewport){
+
 <comp-general-list [data]="companies" [header]="'اهم الشركات'"></comp-general-list>
+}@placeholder {
+<div></div>
 }
+}
+@defer (on viewport){
+
 <prod-general-list [id]="item.category.categoryID" [data]="item.products" [header]="item.category.categoryName" />
-}|
+}@placeholder {
+<div></div>
+}
+
+}

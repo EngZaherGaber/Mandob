@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ConfirmationService } from 'primeng/api';
 import { catchError, of, switchMap } from 'rxjs';
 import { DynamicViewComponent } from '../../../../shared/components/dynamic-view/dynamic-view.component';
 import { InfoTable } from '../../../../shared/interface/info-table';
@@ -65,21 +66,36 @@ export class PlanManagementShowComponent {
     this.router.navigate(['owner/plan-management/detail/display/' + rowData.planID]);
   };
   deleteFunc: (rowData: any) => void = (rowData: any) => {
-    this.planSrv.delete(rowData.planID).subscribe((res) => {
-      if (res.succeeded) {
-        this.tableConfig.getSub$.next({});
-        this.msgSrv.showSuccess('تم حذف الشركة');
-      } else {
-        this.msgSrv.showError(res.message);
-      }
+    this.confirmationService.confirm({
+      message: 'هل تريد حذف هذه الحساب؟',
+      header: 'حذف الحساب',
+      icon: 'pi pi-info-circle',
+      rejectLabel: 'الغاء',
+      rejectButtonProps: {
+        label: 'الغاء',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'تأكييد',
+        severity: 'danger',
+      },
+
+      accept: () => {
+        this.planManagement.delete(rowData.userId).subscribe((res) => {
+          this.msgSrv.showMessage(res.message, res.succeeded);
+          if (res.succeeded) this.tableConfig.getSub$.next({});
+        });
+      },
     });
   };
   constructor(
     private tableSrv: DyTableService,
     private msgSrv: MessageToastService,
+    private confirmationService: ConfirmationService,
     private route: ActivatedRoute,
     private router: Router,
-    private planSrv: PlanManagementService
+    private planManagement: PlanManagementService
   ) {
     this.tableConfig = tableSrv.getStandardInfo(this.deleteFunc, this.editFunc, this.displayFunc, this.addFunc);
   }
@@ -89,7 +105,7 @@ export class PlanManagementShowComponent {
       this.tableConfig.get$ = this.tableConfig.getSub$.pipe(
         switchMap((body: any) => {
           if (body) {
-            return this.planSrv.getAll(body).pipe(
+            return this.planManagement.getAll(body).pipe(
               switchMap((res) =>
                 of({
                   data: res.data,
