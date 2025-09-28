@@ -4,6 +4,7 @@ import { TableLazyLoadEvent } from 'primeng/table';
 import { environment } from '../../../environments/environment';
 import { APIResponse } from '../../shared/interface/response';
 import { Offer } from '../interfaces/offer';
+import { OfferMetadataItem } from '../interfaces/offer-metadata-item';
 
 @Injectable({
   providedIn: 'root',
@@ -31,6 +32,6 @@ export class OfferManagementService {
     return this.http.put<APIResponse<boolean>>(this.url + 'status/' + id, {});
   }
   getOfferMetadata() {
-    return this.http.get<APIResponse<any[]>>(this.url + 'GetOfferMetadata/');
+    return this.http.get<APIResponse<OfferMetadataItem[]>>(this.url + 'GetOfferMetadata/');
   }
 }

@@ -302,7 +302,7 @@ const clientRoutes = {
       children: [
         {
           path: 'group/:type/:header/:id',
-          title: 'قائمة المنتجات',
+          title: 'عرض المنتجات',
           loadComponent: () =>
             import('./product/components/product-general/prod-general-group/prod-general-group.component').then(
               (m) => m.ProdGeneralGroupComponent

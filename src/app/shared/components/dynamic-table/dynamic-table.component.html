@@ -126,19 +126,21 @@
         <tr [pContextMenuRow]="rowData" *ngIf="(dt.value ? dt.value.length > 0 : false)"
             [ngStyle]="changeColor(rowData)">
             <td pFrozenColumn style="max-width: 250px !important;">
-                <button type="button" pButton pRipple [pRowToggler]="rowData" *ngIf="expandedTable"
-                    [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
-                <ng-container *ngFor="let btn of rowData.buttons">
-                    <p-button [severity]="'secondary'" [rounded]="true"
-                        *ngIf="((btn.showCommand && btn.showCommand(rowData)) || btn.isShow) && btn.permission"
-                        [pTooltip]="btn.tooltip" [icon]="btn.icon ?? ''"
-                        (click)="btn.command(rowData,rowData.buttons,dt);hitAction.emit({key:btn.key,rowDataId:rowData.Id})" />
+                <div class="d-flex jsutify-content-end align-items-center button-cell">
+                    <button type="button" pButton pRipple [pRowToggler]="rowData" *ngIf="expandedTable"
+                        [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                    <ng-container *ngFor="let btn of rowData.buttons">
+                        <p-button [severity]="'secondary'" [rounded]="true"
+                            *ngIf="((btn.showCommand && btn.showCommand(rowData)) || btn.isShow) && btn.permission"
+                            [pTooltip]="btn.tooltip" [icon]="btn.icon ?? ''"
+                            (click)="btn.command(rowData,rowData.buttons,dt);hitAction.emit({key:btn.key,rowDataId:rowData.Id})" />
 
-                    <p-button [severity]="'secondary'" [rounded]="true"
-                        *ngIf="((btn.showCommand && btn.showCommand(rowData)) || btn.isShow) && !btn.permission"
-                        [pTooltip]="btn.tooltip" [icon]="btn.icon ?? ''"
-                        (click)="btn.command(rowData,rowData.buttons,dt);hitAction.emit({key:btn.key,rowDataId:rowData.Id})" />
-                </ng-container>
+                        <p-button [severity]="'secondary'" [rounded]="true"
+                            *ngIf="((btn.showCommand && btn.showCommand(rowData)) || btn.isShow) && !btn.permission"
+                            [pTooltip]="btn.tooltip" [icon]="btn.icon ?? ''"
+                            (click)="btn.command(rowData,rowData.buttons,dt);hitAction.emit({key:btn.key,rowDataId:rowData.Id})" />
+                    </ng-container>
+                </div>
             </td>
             <td *ngIf="imageField" class="d-flex justify-content-center">
                 <p-avatar [image]="getImageValue(rowData,imageField)" size="xlarge" shape="circle" />

@@ -3,16 +3,18 @@ tr {
   // display: flex;
   border-bottom: 1px solid;
   transition: background-color 0.2s ease-in-out;
+
   th,
   td {
-    // max-width: 250px;
-    // min-width: 150px;
+    max-width: 300px;
+    min-width: 200px;
     padding-block: 10px !important;
     padding-inline: 20px !important;
     border: 0;
+
     // display: flex;
     // align-items: center;
-    > div {
+    > div:not(.button-cell) {
       display: flex;
       justify-content: left;
     }
@@ -21,6 +23,11 @@ tr {
     }
     .text-red-500 {
       color: red;
+    }
+    * {
+      white-space: pre-wrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
   th {
@@ -44,6 +51,7 @@ tr {
 ::ng-deep .p-datatable-table-container table {
   // width: 100% !important;
   min-width: 100% !important;
+  table-layout: auto !important;
   .p-button {
     padding: 0;
   }

@@ -39,12 +39,12 @@ export class CompanyStrategy extends BaseUserStrategy<Company> {
       label: 'المنتجات',
       items: [
         {
-          label: 'قائمة المنتجات',
+          label: 'المنتجات',
           icon: 'pi pi-box', // 📦 منتج
           routerLink: ['company/product-management/show'],
         },
         {
-          label: 'قائمة المجموعات',
+          label: 'المجموعات',
           icon: 'pi pi-folder', // 📦 منتج
           routerLink: ['company/collection-management/show'],
         },
