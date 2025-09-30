@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { OfferMetadataItem } from '../../../offer/interfaces/offer-metadata-item';
 import { InputDynamic } from '../../interface/input-dynamic';
 import { PrimeNgSharedModule } from '../../modules/shared/primeng-shared.module';
 
@@ -10,7 +11,7 @@ import { PrimeNgSharedModule } from '../../modules/shared/primeng-shared.module'
   styleUrl: './dynamic-input.component.scss',
 })
 export class DynamicInputComponent {
-  @Input() object: InputDynamic = {
+  @Input() object: InputDynamic | OfferMetadataItem = {
     key: '',
     value: null,
     label: '',
@@ -130,7 +131,7 @@ export class DynamicInputComponent {
     if (drop) {
       if (searchValue) {
         drop.options = this.object.options?.filter((x) =>
-          (x.name as string).toLowerCase().replace(/\s+/g, '').includes(searchValue)
+          (x.name as string).toLowerCase().replace(/\s+/g, '').includes(searchValue),
         );
       } else {
         drop.options = drop.options;

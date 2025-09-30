@@ -82,7 +82,7 @@ export class PlanManagementShowComponent {
       },
 
       accept: () => {
-        this.planManagement.delete(rowData.userId).subscribe((res) => {
+        this.planManagement.delete(rowData.planID).subscribe((res) => {
           this.msgSrv.showMessage(res.message, res.succeeded);
           if (res.succeeded) this.tableConfig.getSub$.next({});
         });
@@ -95,7 +95,7 @@ export class PlanManagementShowComponent {
     private confirmationService: ConfirmationService,
     private route: ActivatedRoute,
     private router: Router,
-    private planManagement: PlanManagementService
+    private planManagement: PlanManagementService,
   ) {
     this.tableConfig = tableSrv.getStandardInfo(this.deleteFunc, this.editFunc, this.displayFunc, this.addFunc);
   }
@@ -112,13 +112,13 @@ export class PlanManagementShowComponent {
                   columns: this.columns,
                   loading: false,
                   count: res.count,
-                })
+                }),
               ),
-              catchError(() => of({ loading: false, data: [], columns: this.columns }))
+              catchError(() => of({ loading: false, data: [], columns: this.columns })),
             );
           }
           return of({ loading: false, data: [], columns: this.columns });
-        })
+        }),
       );
     });
   }

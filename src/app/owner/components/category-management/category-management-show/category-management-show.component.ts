@@ -52,7 +52,7 @@ export class CategoryManagementShowComponent {
       },
 
       accept: () => {
-        this.categoryManagement.delete(rowData.userId).subscribe((res) => {
+        this.categoryManagement.delete(rowData.categoryID).subscribe((res) => {
           this.msgSrv.showMessage(res.message, res.succeeded);
           if (res.succeeded) this.tableConfig.getSub$.next({});
         });
@@ -64,7 +64,7 @@ export class CategoryManagementShowComponent {
     private msgSrv: MessageToastService,
     private router: Router,
     private confirmationService: ConfirmationService,
-    private categoryManagement: CategoryManagementService
+    private categoryManagement: CategoryManagementService,
   ) {
     this.tableConfig = tableSrv.getStandardInfo(this.deleteFunc, this.editFunc, this.displayFunc, this.addFunc);
   }
@@ -79,13 +79,13 @@ export class CategoryManagementShowComponent {
                 columns: this.columns,
                 loading: false,
                 count: res.count,
-              })
+              }),
             ),
-            catchError(() => of({ loading: false, data: [], columns: this.columns }))
+            catchError(() => of({ loading: false, data: [], columns: this.columns })),
           );
         }
         return of({ loading: false, data: [], columns: this.columns });
-      })
+      }),
     );
   }
 }

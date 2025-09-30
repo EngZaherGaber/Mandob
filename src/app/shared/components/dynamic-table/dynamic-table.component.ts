@@ -1,3 +1,4 @@
+import { formatDate } from '@angular/common';
 import { Component, ContentChild, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import * as ExcelJS from 'exceljs';
@@ -33,7 +34,7 @@ export class DynamicTableComponent {
   @Input() expandedTable: boolean = false;
   @Input() changeColor: (rowData: any) => any = () => {};
   @Input() getSeverity: (
-    rowData: any
+    rowData: any,
   ) => 'success' | 'info' | 'warn' | 'danger' | 'secondary' | 'contrast' | undefined = () => {
     return 'secondary';
   };
@@ -103,7 +104,8 @@ export class DynamicTableComponent {
                 row = { ...row, buttons: arr };
                 (body.columns as any[])
                   .filter(
-                    (col) => col.HeaderType.toLowerCase() === 'datetime' || col.HeaderType.toLowerCase() === 'datetimeo'
+                    (col) =>
+                      col.HeaderType.toLowerCase() === 'datetime' || col.HeaderType.toLowerCase() === 'datetimeo',
                   )
                   .forEach((col) => {
                     if (row[col.field]) {
@@ -210,6 +212,13 @@ export class DynamicTableComponent {
   }
   loadCarsLazy(event: any) {
     this.body.loading = true;
+    this.body.columns.forEach((x) => {
+      if ((x.HeaderType as string).toLowerCase().startsWith('datetime') && event.filters) {
+        const filter = event.filters[x.field];
+        if (filter && (filter as any).value instanceof Date)
+          event.filters[x.field].value = formatDate((filter as any).value, 'yyyy-MM-dd', 'en-US');
+      }
+    });
     this.onLazy.emit(event);
   }
   clearFilter() {
@@ -229,14 +238,17 @@ export class DynamicTableComponent {
       // Remove duplicate keys
       const filterData = arr.map(({ buttons, ...rest }) => {
         const seenKeys = new Set<string>();
-        return Object.keys(rest).reduce((acc, key) => {
-          const lowerCaseKey = key.toLowerCase();
-          if (!seenKeys.has(lowerCaseKey)) {
-            seenKeys.add(lowerCaseKey);
-            acc[key] = rest[key];
-          }
-          return acc;
-        }, {} as { [key: string]: any });
+        return Object.keys(rest).reduce(
+          (acc, key) => {
+            const lowerCaseKey = key.toLowerCase();
+            if (!seenKeys.has(lowerCaseKey)) {
+              seenKeys.add(lowerCaseKey);
+              acc[key] = rest[key];
+            }
+            return acc;
+          },
+          {} as { [key: string]: any },
+        );
       });
       // Create workbook and worksheet
       const workbook = new ExcelJS.Workbook();

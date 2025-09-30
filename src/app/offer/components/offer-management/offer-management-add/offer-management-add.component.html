@@ -1,131 +1,79 @@
-<div *ngIf="showForm" class="conainter-fluid position-relative">
+<div *ngIf="showForm" class="offer-con conainter-fluid position-relative">
     <div class="row">
         <div class="col-1 py-md-0 py-2" style="width: auto;">
-            <p-button (onClick)="router.navigate(['company/product-management/show'])" class="Nbtn" pTooltip="Back"
-                icon="pi pi-arrow-right" />
+            <!-- router.navigate(['company/offer-management/show']) -->
+            <p-button (onClick)="submit()" class="Nbtn" pTooltip="Back" icon="pi pi-arrow-right" />
         </div>
         <div class="col-md-6 col-12 px-0 px-md-1">
-            <p-accordion value="0" (onOpen)="openVariantPanel($event)">
-                <p-accordion-panel value="0">
-                    <p-accordion-header>المعلومات الاساسية</p-accordion-header>
+            <p-accordion (onOpen)="openVariantPanel($event)">
+                @for (key of keys;let index=$index; track $index) {
+                <p-accordion-panel [value]="key.key">
+                    <p-accordion-header>{{key.stepName}}</p-accordion-header>
                     <p-accordion-content>
-                        <div class="d-flex flex-column gap-4 pt-5 pb-2 px-2 ">
-                            <dynamic-input [object]="objs[0]" [FEcontrol]="getControl('productName')" />
-                            <dynamic-input [object]="objs[1]" [FEcontrol]="getControl('productDescription')" />
-                            <dynamic-input [object]="objs[2]" [FEcontrol]="getControl('CollectionIDs')" />
-                            <dynamic-input [object]="objs[3]" [FEcontrol]="getControl('CategorieIDs')" />
+                        @if (isArray(key.key)) {
+                        <div class="d-flex flex-column gap-2 py-2 array-show">
+                            <p-button icon="pi pi-plus" severity="success" size="small" [disabled]="disableMap[key.key]"
+                                (onClick)="addnewGroup(key.key)" [disabled]=""></p-button>
+                            <div class="border border-2 d-flex flex-column gap-1  mb-2">
+                                <p-accordion>
+                                    @for (group of objs[key.key];let groupIndex=$index ;track
+                                    $index) {
+                                    <p-accordion-panel [value]="key.key + '-'+groupIndex">
+                                        <p-accordion-header>
+                                            <div class="d-flex justify-content-between w-100 py-1 px-2"
+                                                style="background-color: var(--p-amber-500);">
+                                                <p-tag severity="secondary" [value]="`${groupIndex + 1}`"
+                                                    [style]="{'width':'35px','height':'35px'}"></p-tag>
+                                                <p-button icon="pi pi-times" severity="danger" size="small"
+                                                    (onClick)="removeGroup(key.key,groupIndex)"></p-button>
+                                            </div>
+                                        </p-accordion-header>
+                                        <p-accordion-content>
+                                            <div class="d-flex flex-column pt-2 px-2 ">
+                                                @for (control of group;let controlIndex=$index ; track
+                                                $index) {
+                                                <!-- {{control | json}} -->
+                                                <dynamic-input [object]="control"
+                                                    [FEcontrol]="getControl(key.key,control.key,groupIndex)" />
+                                                }
+                                            </div>
+                                        </p-accordion-content>
+                                    </p-accordion-panel>
+                                    }
+                                </p-accordion>
+                            </div>
+                        </div>
+                        }@else {
+                        <div class="d-flex flex-column  px-2 pt-2">
+                            @for (obj of objs[key.key]; track $index) {
+                            <dynamic-input [object]="obj" [FEcontrol]="getControl(key.key,obj.key,index)" />
+                            }
+                        </div>
+                        }
+                    </p-accordion-content>
+                </p-accordion-panel>
+
+                }
+                <!-- <p-accordion-panel value="0">
+                    <p-accordion-header>معلومات عامة</p-accordion-header>
+                    <p-accordion-content>
+                        <div class="d-flex flex-column gap-5 pt-5 pb-2 px-2 ">
+                            <dynamic-input *ngFor="let obj of objs" [object]="obj" [FEcontrol]="getControl(obj.key)" />
                         </div>
                     </p-accordion-content>
                 </p-accordion-panel>
                 <p-accordion-panel value="1" [disabled]="form.invalid">
-                    <p-accordion-header>الخيارات</p-accordion-header>
+                    <p-accordion-header>الشروط</p-accordion-header>
                     <p-accordion-content>
-                        <div class="d-flex flex-column gap-4 pt-2 pb-2 px-2 ">
-                            <div
-                                class="d-flex justify-content-between align-items-center border-bottom border-4 pb-2 pe-2">
-                                <div class="d-flex justify-content-start align-items-center gap-2  ">
-                                    <p-button [disabled]="!optionName.value" size="small" [text]="true"
-                                        (onClick)="addOptionName(optionName)" [rounded]="true"
-                                        icon="pi pi-plus"></p-button>
-                                    <p-floatlabel variant="over">
-                                        <label for="optionNameInpt">اضافة خيار</label>
-                                        <input id="optionNameInpt" (keydown.enter)="addOptionName(optionName)"
-                                            #optionName type="text" pInputText [style]="{'width':'100%'}" />
-                                    </p-floatlabel>
-                                </div>
-                            </div>
-                            <div *ngFor="let option of options;let optionIndex=index;let last=last"
-                                class="d-flex flex-column gap-2">
-                                <div class="d-flex justify-content-between align-items-center  pb-2">
-                                    <div class="col-6 ">
-                                        <div class="d-flex justify-content-start gap-2 align-items-center">
-                                            <p-button size="small" [text]="true" (onClick)="removeOption(optionIndex)"
-                                                [rounded]="true" icon="pi pi-times" severity="danger"></p-button>
-                                            <span class="fw-bold">{{option.optionName}}</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="d-flex justify-content-start align-items-center gap-2 ">
-                                            <p-button size="small" [text]="true"
-                                                (onClick)="addOptionValue(optionValue,optionIndex)" [rounded]="true"
-                                                icon="pi pi-plus" [disabled]="!optionValue.value"></p-button>
-                                            <p-floatlabel variant="over">
-                                                <label for="optionValueInpt">اضافة قيمة</label>
-                                                <input (keydown.enter)="addOptionValue(optionValue,optionIndex)"
-                                                    id="optionValueInpt" #optionValue type="text" pInputText
-                                                    [style]="{'width':'100%'}" />
-                                            </p-floatlabel>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div *ngIf="option.values.length > 0"
-                                    class="d-flex justify-content-between align-items-center pb-2"
-                                    [ngClass]="{'border-bottom border-2':!last}">
-                                    <div class="col-6"></div>
-                                    <div class="col-6">
-                                        <div class="d-flex flex-column gap-2">
-                                            <div class="d-flex justify-content-start align-items-center pe-2"
-                                                *ngFor="let optionValue of option.values;let valueIndex=index">
-                                                <p-button size="small" [text]="true"
-                                                    (onClick)="removeOptionValue(optionIndex,valueIndex)"
-                                                    [rounded]="true" icon="pi pi-times" severity="danger"></p-button>
-                                                <span>{{optionValue.valueName}}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- <small>القيم</small> -->
-                            </div>
-                        </div>
+
                     </p-accordion-content>
                 </p-accordion-panel>
                 <p-accordion-panel value="2" [disabled]="checkVariantPanel()">
-                    <p-accordion-header>التشكيل</p-accordion-header>
+                    <p-accordion-header>النتائج</p-accordion-header>
                     <p-accordion-content>
-                        <div class="d-flex flex-column gap-4 pt-2 pb-2 px-2 ">
-                            <div class="d-flex flex-column gap-2 pb-2" [ngClass]="{'border-bottom border-2':!last}"
-                                *ngFor="let variant of variants;let last=last">
-                                <span class="fw-bold mb-4"><i class="pi pi-circle"></i> {{variant.variantName}}</span>
-                                <div class="d-flex justify-content-between gap-2">
-                                    <p-floatlabel variant="over">
-                                        <label [for]="variant.variantName+'-SKU'">SKU </label>
-                                        <input [id]="variant.variantName+'-SKU'" [(ngModel)]="variant.sku" type="text"
-                                            pInputText [style]="{'width':'100%'}" />
-                                    </p-floatlabel>
-                                    <p-floatlabel variant="over">
-                                        <label [for]="variant.variantName+'-quantity'">الكمية</label>
-                                        <p-inputNumber [id]="variant.variantName+'-quantity'"
-                                            [(ngModel)]="variant.quantity" [step]="1" [min]="0" [showButtons]="true"
-                                            [style]="{'width':'100%'}"></p-inputNumber>
-                                    </p-floatlabel>
-                                    <p-floatlabel variant="over">
-                                        <label [for]="variant.variantName+'-price'">السعر</label>
-                                        <p-inputNumber [id]="variant.variantName+'-price'" [(ngModel)]="variant.price"
-                                            [minFractionDigits]="1" [step]="0.1" mode="decimal" [showButtons]="true"
-                                            [style]="{'width':'100%'}"></p-inputNumber>
-                                    </p-floatlabel>
-                                    <p-floatlabel variant="over">
-                                        <label [for]="variant.variantName+'-VariantImages'">الصور المرتبطة</label>
-                                        <p-multiselect [style]="{'max-width':'120px'}" appendTo="body"
-                                            [options]="uploadedFiles" [(ngModel)]="variant.variantImages"
-                                            optionLabel="name" display="chip" optionValue="name">
-                                            <ng-template let-image #item>
-                                                <div class="flex items-center gap-2">
-                                                    <img [src]="image.objectURL" width="40" height="40" />
-                                                    <!-- <div>{{ image.name }}</div> -->
-                                                </div>
-                                            </ng-template>
-                                        </p-multiselect>
-                                    </p-floatlabel>
 
-                                </div>
-                            </div>
-                            <div class="w-100 d-flex justify-content-start">
-                                <p-button label="حفظ المنتج" icon="pi pi-check"></p-button>
-                            </div>
-                        </div>
                     </p-accordion-content>
-                </p-accordion-panel>
+                </p-accordion-panel> -->
             </p-accordion>
         </div>
         <div class="col-md-5 col-12 px-0 px-md-1">

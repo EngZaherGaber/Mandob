@@ -63,9 +63,6 @@
       min-height: calc(100vh - 50px);
       max-height: calc(100vh - 50px);
       box-shadow: inset 0px 0px 10px -5px var(--p-focus-ring-shadow);
-      > * {
-        padding-inline: 0 !important;
-      }
       .rout-div {
         position: relative;
         height: 100%;

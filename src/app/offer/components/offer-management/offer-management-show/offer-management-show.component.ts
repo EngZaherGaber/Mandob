@@ -81,7 +81,7 @@ export class OfferManagementShowComponent {
       },
 
       accept: () => {
-        this.offerManagement.changeStatus(rowData.userId).subscribe((res) => {
+        this.offerManagement.changeStatus(rowData.id).subscribe((res) => {
           this.msgSrv.showMessage(res.message, res.succeeded);
           if (res.succeeded) this.tableConfig.getSub$.next({});
         });
@@ -105,7 +105,7 @@ export class OfferManagementShowComponent {
       },
 
       accept: () => {
-        this.offerManagement.delete(rowData.userId).subscribe((res) => {
+        this.offerManagement.delete(rowData.id).subscribe((res) => {
           this.msgSrv.showMessage(res.message, res.succeeded);
           if (res.succeeded) this.tableConfig.getSub$.next({});
         });
@@ -117,7 +117,7 @@ export class OfferManagementShowComponent {
     private msgSrv: MessageToastService,
     private confirmationService: ConfirmationService,
     private router: Router,
-    private offerManagement: OfferManagementService
+    private offerManagement: OfferManagementService,
   ) {
     this.tableConfig = tableSrv.getStandardInfo(this.deleteFunc, this.editFunc, this.displayFunc, this.addFunc);
   }
@@ -140,13 +140,13 @@ export class OfferManagementShowComponent {
                 columns: this.columns,
                 loading: false,
                 count: res.count,
-              })
+              }),
             ),
-            catchError(() => of({ loading: false, data: [], columns: this.columns }))
+            catchError(() => of({ loading: false, data: [], columns: this.columns })),
           );
         }
         return of({ loading: false, data: [], columns: this.columns });
-      })
+      }),
     );
   }
 }

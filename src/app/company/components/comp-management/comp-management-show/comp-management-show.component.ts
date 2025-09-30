@@ -205,7 +205,7 @@ export class CompManagementShowComponent {
     private router: Router,
     private confirmationService: ConfirmationService,
     private userState: UserStateService,
-    private companyManagement: CompanyManagementService
+    private companyManagement: CompanyManagementService,
   ) {
     this.tableConfig = tableSrv.getStandardInfo(this.deleteFunc, this.editFunc, this.displayFunc, this.addFunc);
     this.tableConfig.Buttons.push({
@@ -273,13 +273,13 @@ export class CompManagementShowComponent {
                   columns: this.columns,
                   loading: false,
                   count: res.count,
-                })
+                }),
               ),
-              catchError(() => of({ loading: false, data: [], columns: this.columns }))
+              catchError(() => of({ loading: false, data: [], columns: this.columns })),
             );
           }
           return of({ loading: false, data: [], columns: this.columns });
-        })
+        }),
       );
     });
   }

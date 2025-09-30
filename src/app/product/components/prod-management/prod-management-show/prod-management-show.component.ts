@@ -68,7 +68,7 @@ export class ProdManagementShowComponent {
       },
 
       accept: () => {
-        this.productManagement.changeStatus(rowData.userId).subscribe((res) => {
+        this.productManagement.changeStatus(rowData.productID).subscribe((res) => {
           this.msgSrv.showMessage(res.message, res.succeeded);
           if (res.succeeded) this.tableConfig.getSub$.next({});
         });
@@ -92,7 +92,7 @@ export class ProdManagementShowComponent {
       },
 
       accept: () => {
-        this.productManagement.delete(rowData.userId).subscribe((res) => {
+        this.productManagement.delete(rowData.productID).subscribe((res) => {
           this.msgSrv.showMessage(res.message, res.succeeded);
           if (res.succeeded) this.tableConfig.getSub$.next({});
         });
@@ -105,7 +105,7 @@ export class ProdManagementShowComponent {
     private msgSrv: MessageToastService,
     private router: Router,
     private confirmationService: ConfirmationService,
-    private productManagement: ProductManagementService
+    private productManagement: ProductManagementService,
   ) {
     this.tableConfig = tableSrv.getStandardInfo(this.deleteFunc, this.editFunc, this.displayFunc, this.addFunc);
   }
@@ -128,13 +128,13 @@ export class ProdManagementShowComponent {
                 columns: this.columns,
                 loading: false,
                 count: res.count,
-              })
+              }),
             ),
-            catchError(() => of({ loading: false, data: [], columns: this.columns }))
+            catchError(() => of({ loading: false, data: [], columns: this.columns })),
           );
         }
         return of({ loading: false, data: [], columns: this.columns });
-      })
+      }),
     );
   }
 }

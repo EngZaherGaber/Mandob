@@ -43,7 +43,7 @@
     <ng-template pTemplate="header" let-columns>
         <tr pFrozenRow>
             <th pFrozenColumn style="max-width: 250px !important;justify-content: center;">
-                <div>
+                <div class="d-flex justify-content-center">
                     <p-button icon="pi pi-filter" [rounded]="true" [text]="true" pTooltip="Use custom filters"
                         (click)="filterdMode = !filterdMode" severity="primary" />
                     <p-button icon="pi pi-filter-slash" [rounded]="true" [text]="true" pTooltip="Clear filters"

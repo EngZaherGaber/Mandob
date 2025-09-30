@@ -70,7 +70,7 @@ export class CollectionManagementShowComponent {
       },
 
       accept: () => {
-        this.collectionManagement.changeStatus(rowData.userId).subscribe((res) => {
+        this.collectionManagement.changeStatus(rowData.collectionID).subscribe((res) => {
           this.msgSrv.showMessage(res.message, res.succeeded);
           if (res.succeeded) this.tableConfig.getSub$.next({});
         });
@@ -94,7 +94,7 @@ export class CollectionManagementShowComponent {
       },
 
       accept: () => {
-        this.collectionManagement.delete(rowData.userId).subscribe((res) => {
+        this.collectionManagement.delete(rowData.collectionID).subscribe((res) => {
           this.msgSrv.showMessage(res.message, res.succeeded);
           if (res.succeeded) this.tableConfig.getSub$.next({});
         });
@@ -108,7 +108,7 @@ export class CollectionManagementShowComponent {
     private userState: UserStateService,
     private router: Router,
     private confirmationService: ConfirmationService,
-    private collectionManagement: CollectionManagementService
+    private collectionManagement: CollectionManagementService,
   ) {
     this.tableConfig = tableSrv.getStandardInfo(this.deleteFunc, this.editFunc, this.displayFunc, this.addFunc);
   }
@@ -124,13 +124,13 @@ export class CollectionManagementShowComponent {
                 columns: this.columns,
                 loading: false,
                 count: res.count,
-              })
+              }),
             ),
-            catchError(() => of({ loading: false, data: [], columns: this.columns }))
+            catchError(() => of({ loading: false, data: [], columns: this.columns })),
           );
         }
         return of({ loading: false, data: [], columns: this.columns });
-      })
+      }),
     );
   }
 }

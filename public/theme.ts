@@ -1066,10 +1066,10 @@ export const MyPreset = definePreset({
               },
             },
             success: {
-              background: '{green.500}',
-              hoverBackground: '{green.600}',
+              background: '{green.400}',
+              hoverBackground: '{green.300}',
               activeBackground: '{green.700}',
-              borderColor: '{green.500}',
+              borderColor: '{green.300}',
               hoverBorderColor: '{green.600}',
               activeBorderColor: '{green.700}',
               color: '#ffffff',

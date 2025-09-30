@@ -49,6 +49,18 @@ tr {
   }
 }
 ::ng-deep .p-datatable-table-container table {
+  .p-datatable-tbody > tr > td:nth-child(1),
+  .p-datatable-thead > tr > th:nth-child(1) {
+    position: sticky;
+    right: 0;
+    border-left: 1px solid;
+    background: var(--p-content-background);
+    z-index: 1;
+  }
+  .p-datatable-thead > tr > th:nth-child(1) {
+    z-index: 999;
+    top: 0;
+  }
   // width: 100% !important;
   min-width: 100% !important;
   table-layout: auto !important;

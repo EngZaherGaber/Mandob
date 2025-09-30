@@ -32,6 +32,6 @@ export class OfferManagementService {
     return this.http.put<APIResponse<boolean>>(this.url + 'status/' + id, {});
   }
   getOfferMetadata() {
-    return this.http.get<APIResponse<OfferMetadataItem[]>>(this.url + 'GetOfferMetadata/');
+    return this.http.get<OfferMetadataItem>(this.url + 'GetOfferMetadata/');
   }
 }

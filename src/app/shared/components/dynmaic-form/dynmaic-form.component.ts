@@ -65,7 +65,6 @@ export class DynmaicFormComponent {
         (this.objs as any)[key] = this.DySrv.addCommand(this.triggers, (this.objs as any)[key], key);
       });
       this.createForm();
-
       this.isShow ? this.form.disable() : '';
       this.finsih = true;
     }

@@ -1,5 +1,6 @@
 <dynamic-view (onLazy)="tableConfig.getSub$.next($event)" [lazyLoading]="true" [load]="tableConfig.get$"
-    [buttons]="tableConfig.Buttons" [showHeader]="true" [captionButton]="tableConfig.captionButton" />
+    [buttons]="tableConfig.Buttons" [showHeader]="true" [captionButton]="tableConfig.captionButton"
+    [columnsEvent]="columnsEvent"></dynamic-view>
 <p-dialog header="تغير كلمة السر" [modal]="true" [(visible)]="resetDialogVisible" [style]="{ width: '25rem' }">
     <ng-container [ngSwitch]="step">
         <div *ngSwitchCase="1" class="d-flex flex-column w-100 gap-4 pt-4">
