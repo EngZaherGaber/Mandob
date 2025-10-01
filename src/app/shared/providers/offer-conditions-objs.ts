@@ -5,7 +5,7 @@ const variantMetadata: OfferMetadataItem = {
   visible: true,
   value: null,
   label: 'نوع المنتج',
-  source: { url: 'api/ProductManagement/getall-variant', method: 'Get' },
+  source: 'api/ProductManagement/getall-variant',
   dataType: 'autoComplete',
   required: true,
   options: [],
@@ -15,7 +15,7 @@ const productMetadata: OfferMetadataItem = {
   visible: true,
   value: null,
   label: 'نوع المنتج',
-  source: { url: 'api/ProductManagement/getall', method: 'post' },
+  source: 'api/ProductManagement/getall',
   dataType: 'list',
   required: true,
   options: [],
@@ -126,7 +126,7 @@ const categoryMetadata: OfferMetadataItem = {
   label: 'الفئة',
   dataType: 'list',
   required: true,
-  source: { url: 'api/Category/GetAll/false', method: 'post' },
+  source: 'api/Category/GetAll/false',
   options: [],
 };
 const valueMetadata: OfferMetadataItem = {

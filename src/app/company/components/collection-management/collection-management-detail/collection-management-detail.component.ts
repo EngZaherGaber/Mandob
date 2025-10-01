@@ -21,7 +21,7 @@ export class CollectionManagementDetailComponent {
     private collectionManagement: CollectionManagementService,
     private router: Router,
     private route: ActivatedRoute,
-    private msgSrv: MessageToastService
+    private msgSrv: MessageToastService,
   ) {}
   ngOnInit() {
     this.route.params
@@ -30,7 +30,7 @@ export class CollectionManagementDetailComponent {
           this.collectionId = param['id'];
           this.isShow = param['type'] === 'display';
           return this.collectionManagement.getOne(this.collectionId);
-        })
+        }),
       )
       .subscribe((res) => {
         this.resetObjs = {
@@ -38,7 +38,7 @@ export class CollectionManagementDetailComponent {
             {
               key: 'collectionName',
               label: 'اسم المجموعة',
-              value: res.data.collectionName,
+              value: (res.data as any).collectionName,
               dataType: 'string',
               required: true,
               visible: true,
@@ -47,7 +47,7 @@ export class CollectionManagementDetailComponent {
             {
               key: 'description',
               label: 'وصف المجموعة',
-              value: res.data.description,
+              value: (res.data as any).description,
               dataType: 'string',
               required: true,
               visible: true,

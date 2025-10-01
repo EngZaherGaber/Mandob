@@ -2,10 +2,14 @@ import { Component, model } from '@angular/core';
 import { FormArray, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs';
+import { ShoppingCartAddItem } from '../../../../client/interfaces/shopping-cart-add-item';
+import { ShoppingManagementService } from '../../../../client/services/shopping.service';
 import { DynamicInputComponent } from '../../../../shared/components/dynamic-input/dynamic-input.component';
 import { InputDynamic } from '../../../../shared/interface/input-dynamic';
 import { PrimeNgSharedModule } from '../../../../shared/modules/shared/primeng-shared.module';
 import { DyTableService } from '../../../../shared/service/dy-table.service';
+import { MessageToastService } from '../../../../shared/service/message-toast.service';
+import { StateService } from '../../../../shared/service/state.service';
 import { OptionItem } from '../../../interfaces/option-item';
 import { ProductManagementItem } from '../../../interfaces/product-management-item';
 import { VariantItem } from '../../../interfaces/variant-item';
@@ -58,12 +62,16 @@ export class ProdGeneralItemComponent {
   price: number = 0;
   activeIndex: number = 0;
   productId: number = 0;
+  variantSKU: string = '';
   product: ProductManagementItem | null = null;
   constructor(
     private productManagement: ProductManagementService,
+    private shoppingManagement: ShoppingManagementService,
+    private msgSrv: MessageToastService,
+    private stateSrv: StateService,
     private tableSrv: DyTableService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {}
   ngOnInit() {
     this.route.params
@@ -71,7 +79,7 @@ export class ProdGeneralItemComponent {
         switchMap((param) => {
           this.productId = param['id'];
           return this.productManagement.getOne(this.productId);
-        })
+        }),
       )
       .subscribe((res) => {
         this.images.set(res.data.productImages ?? []);
@@ -90,10 +98,11 @@ export class ProdGeneralItemComponent {
   getPrice() {
     const optionsValues = this.optionsArrayControl.getRawValue();
     const variant = this.variants.find((x) =>
-      x.optionAssignments.map((assign) => assign.optionValueName).every((assign) => optionsValues.includes(assign))
+      x.optionAssignments.map((assign) => assign.optionValueName).every((assign) => optionsValues.includes(assign)),
     );
     if (variant) {
       this.price = variant.price;
+      this.variantSKU = variant.sku;
       const images = this.images().map((x: string) => {
         const imgSplitter = x.split('/');
         return imgSplitter[imgSplitter.length - 1];
@@ -105,6 +114,18 @@ export class ProdGeneralItemComponent {
   createOptionArrayControl() {
     this.options.forEach((opt) => {
       this.optionsArrayControl.controls.push(new FormControl(opt.values[0].valueName));
+    });
+  }
+  addToCart() {
+    const body: ShoppingCartAddItem = {
+      variantSKU: this.variantSKU,
+      quantity: this.countControl.value,
+    };
+    this.shoppingManagement.add(body).subscribe((res) => {
+      this.msgSrv.showMessage(res.message, res.succeeded);
+      if (res.succeeded) {
+        this.stateSrv.collapseCart();
+      }
     });
   }
 }

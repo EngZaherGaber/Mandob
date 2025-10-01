@@ -1,6 +1,6 @@
 export interface Collection {
-  collectionID: number;
-  collectionName: string;
+  id: number;
+  name: string;
   description: string;
   collectionImageUrl: string;
   isActive: boolean;

@@ -46,7 +46,7 @@ export class ProdManagementDetailComponent {
     private http: HttpClient,
     categoryManagement: CategoryManagementService,
     userState: UserStateService,
-    collectionManagement: CollectionManagementService
+    collectionManagement: CollectionManagementService,
   ) {
     this.route.params
       .pipe(
@@ -92,10 +92,7 @@ export class ProdManagementDetailComponent {
                 dataType: 'MultiSelect',
                 required: true,
                 visible: true,
-                options: res.collection.data.map((item) => ({
-                  id: item.collectionID.toString(),
-                  name: item.collectionName,
-                })),
+                options: res.collection.data.map((x: any) => ({ id: x.id.toString(), name: x.name })),
               },
               {
                 key: 'CategorieIDs',
@@ -104,10 +101,7 @@ export class ProdManagementDetailComponent {
                 dataType: 'MultiSelect',
                 required: true,
                 visible: true,
-                options: res.categories.data.map((item) => ({
-                  id: item.categoryID.toString(),
-                  name: item.categoryName,
-                })),
+                options: res.categories.data.map((x: any) => ({ id: x.id.toString(), name: x.name })),
               },
             ];
             this.form.setValue({
@@ -122,7 +116,7 @@ export class ProdManagementDetailComponent {
           } else {
             return of(null);
           }
-        })
+        }),
       )
       .subscribe((res) => {
         if (res && typeof res !== 'boolean') {
@@ -170,12 +164,12 @@ export class ProdManagementDetailComponent {
           const filename = url.split('/').pop() || 'image.jpg';
           return new File([blob], filename, { type: blob.type });
         }),
-        catchError((err) => of(null))
-      )
+        catchError((err) => of(null)),
+      ),
     );
     if (observables.length > 0) {
       return forkJoin(observables).pipe(
-        map((files) => files.filter((f): f is File => f !== null)) // filter out failed ones
+        map((files) => files.filter((f): f is File => f !== null)), // filter out failed ones
       );
     }
     return of(true);
@@ -189,7 +183,7 @@ export class ProdManagementDetailComponent {
       opt.values.map((v) => ({
         optionName: opt.optionName,
         optionValueName: v.valueName,
-      }))
+      })),
     );
 
     // Step 2: Cartesian product
@@ -206,8 +200,8 @@ export class ProdManagementDetailComponent {
         (v) =>
           v.optionAssignments.length === combo.length &&
           v.optionAssignments.every(
-            (oa, i) => oa.optionName === combo[i].optionName && oa.optionValueName === combo[i].optionValueName
-          )
+            (oa, i) => oa.optionName === combo[i].optionName && oa.optionValueName === combo[i].optionValueName,
+          ),
       );
 
       if (existing) {

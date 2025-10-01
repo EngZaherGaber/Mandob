@@ -20,7 +20,7 @@ export class CollectionManagementShowComponent {
   imageField: string = 'collectionImageUrl';
   columns = [
     {
-      field: 'collectionName',
+      field: 'name',
       header: 'الاسم',
       HeaderType: 'string',
     },
@@ -48,10 +48,10 @@ export class CollectionManagementShowComponent {
     this.router.navigate(['company/collection-management/add']);
   };
   editFunc: (rowData: any) => void = (rowData: any) => {
-    this.router.navigate(['company/collection-management/detail/edit/' + rowData.collectionID]);
+    this.router.navigate(['company/collection-management/detail/edit/' + rowData.id]);
   };
   displayFunc: (rowData: any) => void = (rowData: any) => {
-    this.router.navigate(['company/collection-management/detail/display/' + rowData.collectionID]);
+    this.router.navigate(['company/collection-management/detail/display/' + rowData.id]);
   };
   changeState: (rowData: any) => void = (rowData: any) => {
     this.confirmationService.confirm({
@@ -70,7 +70,7 @@ export class CollectionManagementShowComponent {
       },
 
       accept: () => {
-        this.collectionManagement.changeStatus(rowData.collectionID).subscribe((res) => {
+        this.collectionManagement.changeStatus(rowData.id).subscribe((res) => {
           this.msgSrv.showMessage(res.message, res.succeeded);
           if (res.succeeded) this.tableConfig.getSub$.next({});
         });
@@ -94,7 +94,7 @@ export class CollectionManagementShowComponent {
       },
 
       accept: () => {
-        this.collectionManagement.delete(rowData.collectionID).subscribe((res) => {
+        this.collectionManagement.delete(rowData.id).subscribe((res) => {
           this.msgSrv.showMessage(res.message, res.succeeded);
           if (res.succeeded) this.tableConfig.getSub$.next({});
         });

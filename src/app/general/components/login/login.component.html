@@ -1,4 +1,5 @@
-<div *ngIf="!loading || !isBrowser()" class="d-flex flex-column align-items-center w-100 p-0">
+@if(!loading || !isBrowser()){
+<div class="d-flex flex-column align-items-center w-100 p-0">
     <div class="d-flex flex-column w-75 gap-4 pt-4">
         <dynamic-input [style]="'width: 100%;'" [FEcontrol]="getControl('input')" [object]="objs[0]"></dynamic-input>
         <dynamic-input [style]="'width: 100%;'" [FEcontrol]="getControl('password')" [object]="objs[1]"></dynamic-input>
@@ -9,13 +10,16 @@
         <p-button label="انشاء حساب" icon="pi pi-user-plus" [severity]="'contrast'" styleClass="w-100"
             [style]="{width:'100%'}" (onClick)="goToRegister()" />
         <!-- <p-button severity="secondary" label="حساب جوجل" icon="pi pi-google" styleClass="w-100"
-            [style]="{width:'100%'}" />
-        <p-button severity="secondary" label="حساب فيسبوك" icon="pi pi-facebook" styleClass="w-100"
-            [style]="{width:'100%'}" /> -->
+                [style]="{width:'100%'}" />
+            <p-button severity="secondary" label="حساب فيسبوك" icon="pi pi-facebook" styleClass="w-100"
+                [style]="{width:'100%'}" /> -->
         <p-button size="small" label="نسيت كلمة المرور؟" [variant]="'text'" styleClass="w-100"
             [style]="{width:'100%','font-size':'smaller'}" (onClick)="forgetPassword()" />
     </div>
 </div>
-<div *ngIf="loading && isBrowser()" class="w-100 overflow-hidden">
+}
+@if(loading && isBrowser()){
+<div class="w-100 overflow-hidden">
     <loading />
 </div>
+}

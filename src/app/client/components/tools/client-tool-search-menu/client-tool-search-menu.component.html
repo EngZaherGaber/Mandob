@@ -1,5 +1,7 @@
-<div class="w-100  d-flex flex-column align-items-start" *ngIf="result()">
-    <div class="col-12 col-md-6" style="border-bottom: 2px solid var(--p-surface-50);" *ngIf="getProducts().length > 0">
+@if(result()){
+<div class="w-100  d-flex flex-column align-items-start">
+    @if(getProducts().length > 0){
+    <div class="col-12 col-md-6" style="border-bottom: 2px solid var(--p-surface-50);">
         <div class="w-100 d-flex justify-content-between align-items-center">
             <p style="color: var(--p-surface-50);font-weight: bold;">المنتجات</p>
             <p-button severity="contrast" size="large" [text]="true" [outlined]="true" ngClass="w-auto"
@@ -17,8 +19,9 @@
             }
         </div>
     </div>
-    <div class="col-12 col-md-6 mt-2" style="border-bottom: 2px solid var(--p-surface-50);"
-        *ngIf="getCollections().length > 0">
+    }
+    @if(getCollections().length > 0){
+    <div class="col-12 col-md-6 mt-2" style="border-bottom: 2px solid var(--p-surface-50);">
         <div class="w-100 d-flex justify-content-between align-items-center">
             <p style="color: var(--p-surface-50);font-weight: bold;">المجموعات</p>
 
@@ -35,8 +38,9 @@
             }
         </div>
     </div>
-    <div class="col-12 col-md-6 mt-2" style="border-bottom: 2px solid var(--p-surface-50);"
-        *ngIf="getCategories().length > 0">
+    }
+    @if(getCategories().length > 0){
+    <div class="col-12 col-md-6 mt-2" style="border-bottom: 2px solid var(--p-surface-50);">
         <div class="w-100 d-flex justify-content-between align-items-center">
             <p style="color: var(--p-surface-50);font-weight: bold;">الفئات</p>
 
@@ -53,8 +57,9 @@
             }
         </div>
     </div>
-    <div class="col-12 col-md-6 mt-2" style="border-bottom: 2px solid var(--p-surface-50);"
-        *ngIf="getCompanies().length > 0">
+    }
+    @if(getCompanies().length > 0){
+    <div class="col-12 col-md-6 mt-2" style="border-bottom: 2px solid var(--p-surface-50);">
         <div class="w-100 d-flex justify-content-between align-items-center">
             <p style="color: var(--p-surface-50);font-weight: bold;">الشركات</p>
         </div>
@@ -70,4 +75,7 @@
             }
         </div>
     </div>
+    }
 </div>
+
+}

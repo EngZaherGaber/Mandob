@@ -7,26 +7,7 @@
             </div>
         </ng-template>
         <ng-container *ngIf="stateSrv.isOpenedCart(); then openCart"></ng-container>
-        <ng-template #openCart>
-            <div class="cart position-absolute pt-2 px-0 start-0 h-100 d-flex flex-column" [@sidebarAnimation]
-                style="background-color: var(--p-content-background);z-index: 999;">
-                <div class="d-flex align-items-center">
-                    <p-button (onClick)="stateSrv.collapseCart()" class="w-auto p-0" size="small" icon="pi pi-times"
-                        [rounded]="true" [outlined]="true" [text]="true" severity="secondary" pTooltip="اغلاق" />
-                    <h6 class="fw-bold">السلة</h6>
-                </div>
-                <div class="h-100"></div>
-                <div class="py-2 h-auto d-flex justify-content-center align-items-end gap-2 flex-wrap flex-lg-nowrap"
-                    style="box-shadow: -2px 0px 5px 0px var(--p-focus-ring-shadow);">
-                    <p-button class="w-auto p-0" size="small" icon="pi pi-trash" [rounded]="false" severity="danger"
-                        label="الغاء" />
-                    <p-button class="w-auto p-0" size="small" icon="pi pi-send" [rounded]="false" severity="success"
-                        label="ارسال" />
 
-
-                </div>
-            </div>
-        </ng-template>
         <div class="main-content my-2 p-0 " style="max-height: 100vh" [@contentAnimation]
             [class.col-lg-10]="stateSrv.isOpenedSideNav()" [class.col-lg-12]="!stateSrv.isOpenedSideNav()">
             <div class="row head-content mx-0 w-100" style="position: relative;">
@@ -48,3 +29,12 @@
     *ngIf="stateSrv.isOpenedCart() || (stateSrv.isOpenedSideNav() && (stateSrv.screenType() === 'mobile' || stateSrv.screenType() === 'tablet'))"
     style="background-color: var(--p-surface-700);opacity: 0.9;z-index: 998;">
 </div>
+<ng-template #openCart>
+    <div class="cart position-absolute px-0 start-0 top-0 py-2 h-100 d-flex flex-column" [@sidebarAnimation]
+        style="background-color: var(--p-content-background);z-index: 999;">
+        <ng-container *ngIf="userState.role() === 'client'; then clientCart"></ng-container>
+    </div>
+</ng-template>
+<ng-template #clientCart>
+    <client-cart class="h-100"></client-cart>
+</ng-template>

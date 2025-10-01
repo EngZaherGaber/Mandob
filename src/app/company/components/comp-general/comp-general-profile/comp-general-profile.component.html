@@ -40,15 +40,14 @@
         <p-tabs [selectOnFocus]="true" [scrollable]="true" [value]="tabindex">
             <p-tablist>
                 @for (tab of collectionsData; track $index) {
-                <p-tab [value]="tab.collection.collectionID">{{ tab.collection.collectionName }}</p-tab>
+                <p-tab [value]="tab.collection.id">{{ tab.collection.name }}</p-tab>
                 }
             </p-tablist>
             <p-tabpanels>
                 @for (tab of collectionsData; track $index) {
                 @defer (on viewport){
-                <p-tabpanel [value]="tab.collection.collectionID">
-                    <prod-general-list [data]="tab.products"
-                        [header]="tab.collection.collectionName"></prod-general-list>
+                <p-tabpanel [value]="tab.collection.id">
+                    <prod-general-list [data]="tab.products" [header]="tab.collection.name"></prod-general-list>
                 </p-tabpanel>
                 }@placeholder {
                 <div></div>

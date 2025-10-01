@@ -1,0 +1,29 @@
+<div class="h-100 d-flex flex-column justify-content-center">
+
+    <div class="d-flex align-items-center">
+        <p-button (onClick)="stateSrv.collapseCart()" class="w-auto p-0" size="small" icon="pi pi-times"
+            [rounded]="true" [outlined]="true" [text]="true" severity="secondary" pTooltip="اغلاق" />
+        <h6 class="fw-bold">السلة</h6>
+    </div>
+    <div class="h-100 w-100 overflow-y-auto d-flex flex-column justify-content-between align-items-center">
+        @for (item of result?.items; track $index) {
+        <a [routerLink]="'/client/product/item/'+item.productId">
+            <div class="w-100 d-flex gap-4 align-items-center p-1 product-div">
+                <img (error)="onImgError($event)" [src]="item.image" [alt]="item.variantName" height="50" width="50" />
+                <span>{{item.variantName}}</span>
+            </div>
+        </a>
+        }@empty {
+        <p>لا يوجد منتجات في السلة</p>
+        }
+    </div>
+    <div class="py-2 h-auto d-flex justify-content-center align-items-end gap-2 flex-wrap flex-lg-nowrap"
+        style="box-shadow: -2px 0px 5px 0px var(--p-focus-ring-shadow);">
+        <p-button [disabled]="!result" class="w-auto p-0" size="small" icon="pi pi-trash" [rounded]="false"
+            severity="danger" label="الغاء" />
+        <p-button [disabled]="!result" class="w-auto p-0" size="small" icon="pi pi-send" [rounded]="false"
+            severity="success" label="ارسال" />
+
+
+    </div>
+</div>

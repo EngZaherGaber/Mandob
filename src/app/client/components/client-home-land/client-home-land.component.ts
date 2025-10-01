@@ -19,11 +19,11 @@ import { ProductStoreService } from '../../../product/services/product-store.ser
 export class ClientHomeLandComponent {
   categories: Category[] = [];
   companies: Company[] = [];
-  listToShow: { category: Category; products: ProdManagementTableItem[] }[] = [];
+  listToShow: { category: { id: number; name: string }; products: ProdManagementTableItem[] }[] = [];
   constructor(
     private categoryManagement: CategoryManagementService,
     private companyStore: CompanyStoreService,
-    private productStore: ProductStoreService
+    private productStore: ProductStoreService,
   ) {}
   ngOnInit() {
     const productObs$ = this.categoryManagement
@@ -34,19 +34,19 @@ export class ClientHomeLandComponent {
             this.categories = res.data;
           }
           return from(this.categories).pipe(
-            concatMap((category) =>
+            concatMap((category: any) =>
               timer(0).pipe(
                 // wait 3 seconds before request
                 switchMap(() =>
-                  this.productStore.getAll({ categoryId: category.categoryID, pageNumber: 1, pageSize: 8 }).pipe(
+                  this.productStore.getAll({ categoryId: category.id, pageNumber: 1, pageSize: 8 }).pipe(
                     map((productRes) => ({ category, products: productRes.data.products })),
-                    catchError(() => of({ category, products: [] }))
-                  )
-                )
-              )
-            )
+                    catchError(() => of({ category, products: [] })),
+                  ),
+                ),
+              ),
+            ),
           );
-        })
+        }),
       );
     this.companyStore
       .getAll({ first: 0, rows: 10, multiSortMeta: [{ field: 'name', order: 1 }] })
@@ -57,7 +57,7 @@ export class ClientHomeLandComponent {
           }
           return productObs$;
         }),
-        catchError((err) => productObs$)
+        catchError((err) => productObs$),
       )
       .subscribe((res) => {
         if (res.products.length > 0) this.listToShow.push(res);

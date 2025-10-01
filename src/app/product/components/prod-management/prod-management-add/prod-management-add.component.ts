@@ -38,7 +38,7 @@ export class ProdManagementAddComponent {
     public router: Router,
     categoryManagement: CategoryManagementService,
     userState: UserStateService,
-    collectionManagement: CollectionManagementService
+    collectionManagement: CollectionManagementService,
   ) {
     const user = userState.user();
     if (user && user.userId) {
@@ -48,7 +48,7 @@ export class ProdManagementAddComponent {
       }).subscribe((res) => {
         this.objs = [
           {
-            key: 'productName',
+            key: 'name',
             value: null,
             label: 'الاسم',
             dataType: 'string',
@@ -72,10 +72,7 @@ export class ProdManagementAddComponent {
             dataType: 'MultiSelect',
             required: true,
             visible: true,
-            options: res.collection.data.map((item) => ({
-              id: item.collectionID.toString(),
-              name: item.collectionName,
-            })),
+            options: res.collection.data,
           },
           {
             key: 'CategorieIDs',
@@ -84,7 +81,7 @@ export class ProdManagementAddComponent {
             dataType: 'MultiSelect',
             required: true,
             visible: true,
-            options: res.categories.data.map((item) => ({ id: item.categoryID.toString(), name: item.categoryName })),
+            options: res.categories.data,
           },
         ];
         this.showForm = true;
@@ -128,7 +125,7 @@ export class ProdManagementAddComponent {
       opt.values.map((v) => ({
         optionName: opt.optionName,
         optionValueName: v.valueName,
-      }))
+      })),
     );
 
     // Step 2: Cartesian product
@@ -145,8 +142,8 @@ export class ProdManagementAddComponent {
         (v) =>
           v.optionAssignments.length === combo.length &&
           v.optionAssignments.every(
-            (oa, i) => oa.optionName === combo[i].optionName && oa.optionValueName === combo[i].optionValueName
-          )
+            (oa, i) => oa.optionName === combo[i].optionName && oa.optionValueName === combo[i].optionValueName,
+          ),
       );
 
       if (existing) {

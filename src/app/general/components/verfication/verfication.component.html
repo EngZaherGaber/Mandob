@@ -1,3 +1,8 @@
+@if(loading){
+<div class="w-100 overflow-hidden">
+    <loading />
+</div>
+}@else {
 <div class="d-flex flex-column align-items-center w-100 p-0">
     <div class="d-flex flex-column w-75 gap-4 pt-4">
         <dynamic-input [style]="'width: 100%;'" [FEcontrol]="codeControl" [object]="codeInput"></dynamic-input>
@@ -5,6 +10,5 @@
             (onClick)="verfication()" />
     </div>
 </div>
-<div *ngIf="loading" class="w-100 overflow-hidden">
-    <loading />
-</div>
+
+}

@@ -19,7 +19,7 @@ export class ProdManagementShowComponent {
   imageField: string = '';
   columns = [
     {
-      field: 'productName',
+      field: 'name',
       header: 'الاسم',
       HeaderType: 'string',
     },
@@ -46,10 +46,10 @@ export class ProdManagementShowComponent {
     this.router.navigate(['company/product-management/add']);
   };
   editFunc: (rowData: any) => void = (rowData: any) => {
-    this.router.navigate(['company/product-management/detail/edit/' + rowData.productID]);
+    this.router.navigate(['company/product-management/detail/edit/' + rowData.id]);
   };
   displayFunc: (rowData: any) => void = (rowData: any) => {
-    this.router.navigate(['company/product-management/detail/display/' + rowData.productID]);
+    this.router.navigate(['company/product-management/detail/display/' + rowData.id]);
   };
   changeState: (rowData: any) => void = (rowData: any) => {
     this.confirmationService.confirm({
@@ -68,7 +68,7 @@ export class ProdManagementShowComponent {
       },
 
       accept: () => {
-        this.productManagement.changeStatus(rowData.productID).subscribe((res) => {
+        this.productManagement.changeStatus(rowData.id).subscribe((res) => {
           this.msgSrv.showMessage(res.message, res.succeeded);
           if (res.succeeded) this.tableConfig.getSub$.next({});
         });
@@ -92,7 +92,7 @@ export class ProdManagementShowComponent {
       },
 
       accept: () => {
-        this.productManagement.delete(rowData.productID).subscribe((res) => {
+        this.productManagement.delete(rowData.id).subscribe((res) => {
           this.msgSrv.showMessage(res.message, res.succeeded);
           if (res.succeeded) this.tableConfig.getSub$.next({});
         });

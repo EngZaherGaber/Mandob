@@ -38,8 +38,8 @@
             [icon]="stateSrv.isDark() ? 'pi pi-sun' : 'pi pi-moon'" [rounded]="true" [text]="true" severity="primary"
             [pTooltip]="stateSrv.isDark() ? 'الوضع النهاري' : 'الوضع الليلي'" />
         <p-button icon="pi pi-bell" [rounded]="true" [text]="true" severity="primary" pTooltip="الاشعارات" />
-        <p-button icon="pi pi-truck" (onClick)="stateSrv.collapseCart()" [rounded]="true" [text]="true"
-            severity="primary" pTooltip="الشاحنة" />
+        <p-button *ngIf="user?.role !== 'owner'" icon="pi pi-truck" (onClick)="stateSrv.collapseCart()" [rounded]="true"
+            [text]="true" severity="primary" pTooltip="الشاحنة" />
         <a (click)="menu.toggle($event)" style="cursor: pointer;">
             <p-avatar *ngIf="user && user.logo" [image]="user.logo" shape="circle" />
             <p-avatar *ngIf="!(user && user.logo)" icon="pi pi-user" shape="circle" />

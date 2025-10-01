@@ -1,11 +1,13 @@
-<div *ngIf="showForm" class="offer-con conainter-fluid position-relative">
+@if(showForm){
+<div class="offer-con conainter-fluid position-relative">
     <div class="row">
         <div class="col-1 py-md-0 py-2" style="width: auto;">
             <!-- router.navigate(['company/offer-management/show']) -->
-            <p-button (onClick)="submit()" class="Nbtn" pTooltip="Back" icon="pi pi-arrow-right" />
+            <p-button (onClick)="router.navigate(['company/offer-management/show'])" class="Nbtn" pTooltip="Back"
+                icon="pi pi-arrow-right" />
         </div>
         <div class="col-md-6 col-12 px-0 px-md-1">
-            <p-accordion (onOpen)="openVariantPanel($event)">
+            <p-accordion>
                 @for (key of keys;let index=$index; track $index) {
                 <p-accordion-panel [value]="key.key">
                     <p-accordion-header>{{key.stepName}}</p-accordion-header>
@@ -54,26 +56,6 @@
                 </p-accordion-panel>
 
                 }
-                <!-- <p-accordion-panel value="0">
-                    <p-accordion-header>معلومات عامة</p-accordion-header>
-                    <p-accordion-content>
-                        <div class="d-flex flex-column gap-5 pt-5 pb-2 px-2 ">
-                            <dynamic-input *ngFor="let obj of objs" [object]="obj" [FEcontrol]="getControl(obj.key)" />
-                        </div>
-                    </p-accordion-content>
-                </p-accordion-panel>
-                <p-accordion-panel value="1" [disabled]="form.invalid">
-                    <p-accordion-header>الشروط</p-accordion-header>
-                    <p-accordion-content>
-
-                    </p-accordion-content>
-                </p-accordion-panel>
-                <p-accordion-panel value="2" [disabled]="checkVariantPanel()">
-                    <p-accordion-header>النتائج</p-accordion-header>
-                    <p-accordion-content>
-
-                    </p-accordion-content>
-                </p-accordion-panel> -->
             </p-accordion>
         </div>
         <div class="col-md-5 col-12 px-0 px-md-1">
@@ -90,3 +72,4 @@
         </div>
     </div>
 </div>
+}

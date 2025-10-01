@@ -2,28 +2,35 @@
     [buttons]="tableConfig.Buttons" [showHeader]="true" [captionButton]="tableConfig.captionButton"
     [columnsEvent]="columnsEvent"></dynamic-view>
 <p-dialog header="تغير كلمة السر" [modal]="true" [(visible)]="resetDialogVisible" [style]="{ width: '25rem' }">
-    <ng-container [ngSwitch]="step">
-        <div *ngSwitchCase="1" class="d-flex flex-column w-100 gap-4 pt-4">
-            <dynamic-input [style]="'width: 100%;'" [FEcontrol]="getControl('newPassword')" [object]="objs[0]" />
-            <div class="d-flex justify-content-end">
+    @switch (step) {
+    @case (1) {
 
-                <p-button [disabled]="!getControl('newPassword').value" label="التالي" icon="pi pi-angle-left"
-                    [style]="{width:'100%'}" (onClick)="step=2" />
-            </div>
-        </div>
-        <div *ngSwitchCase="2" class="d-flex flex-column w-100 gap-4 pt-4">
-            <dynamic-input [style]="'width: 100%;'" [FEcontrol]="getControl('adminPassword')" [object]="objs[1]" />
-            <div class="d-flex justify-content-between">
-                <p-button label="رجوع" icon="pi pi-angle-right" (onClick)="step=1" />
+    <div class="d-flex flex-column w-100 gap-4 pt-4">
+        <dynamic-input [style]="'width: 100%;'" [FEcontrol]="getControl('newPassword')" [object]="objs[0]" />
+        <div class="d-flex justify-content-end">
 
-                <p-button label="تغير" icon="pi pi-check" (onClick)="resetPassword()" />
-            </div>
+            <p-button [disabled]="!getControl('newPassword').value" label="التالي" icon="pi pi-angle-left"
+                [style]="{width:'100%'}" (onClick)="step=2" />
         </div>
-    </ng-container>
+    </div>
+    }
+    @case (2) {
+    <div class="d-flex flex-column w-100 gap-4 pt-4">
+        <dynamic-input [style]="'width: 100%;'" [FEcontrol]="getControl('adminPassword')" [object]="objs[1]" />
+        <div class="d-flex justify-content-between">
+            <p-button label="رجوع" icon="pi pi-angle-right" (onClick)="step=1" />
+
+            <p-button label="تغير" icon="pi pi-check" (onClick)="resetPassword()" />
+        </div>
+    </div>
+    }
+    }
+
 </p-dialog>
-<p-dialog header="تغيير رقم الهاتف" [modal]="true" *ngIf="changePhoneNumbervisible"
-    (visibleChange)="closeDialog($event,changePhoneNumberForm)" [(visible)]="changePhoneNumbervisible"
-    [style]="{ width: '25rem' }">
+@if(changePhoneNumbervisible){
+<p-dialog header="تغيير رقم الهاتف" [modal]="true" (visibleChange)="closeDialog($event,changePhoneNumberForm)"
+    [(visible)]="changePhoneNumbervisible" [style]="{ width: '25rem' }">
     <dynmaic-form class="dyn-frm" [scrollHeight]="'25vh'" (submit)="changePhoneNumber($event)" [display]="'flex'"
         [withBackBtn]="false" [objs]="changePhoneNumberForm" style="width: 100%;" [justOneStep]="true"></dynmaic-form>
 </p-dialog>
+}

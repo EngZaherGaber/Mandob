@@ -1,3 +1,5 @@
-<dynmaic-form *ngIf="finsih" class="dyn-frm" (submit)="submit($event)" [stepsList]="stepsList" [display]="'flex'"
+@if(finsih){
+<dynmaic-form class="dyn-frm" (submit)="submit($event)" [stepsList]="stepsList" [display]="'flex'"
     [preRoute]="'owner/company-management/show'" [justOneStep]="true" [objs]="resetObjs" style="width: 100%;"
     [scrollHeight]="'100%'" [isShow]="isShow"></dynmaic-form>
+}

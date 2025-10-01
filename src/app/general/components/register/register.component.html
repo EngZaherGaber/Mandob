@@ -1,4 +1,9 @@
-<div *ngIf="!loading" class="d-flex flex-column align-items-center w-100 gap-2 p-0 ">
+@if(loading){
+<div class="w-100 overflow-hidden">
+    <loading />
+</div>
+}@else{
+<div class="d-flex flex-column align-items-center w-100 gap-2 p-0 ">
     <div class="d-flex flex-column w-100 gap-4 pt-0 overflow-y-auto">
         <dynmaic-form class="dyn-frm" [scrollHeight]="'25vh'" [stepsList]="stepsList" (submit)="register($event)"
             [display]="'flex'" [withBackBtn]="false" [objs]="resetObjs" style="width: 100%;"
@@ -10,6 +15,4 @@
             (onClick)="goToLogin()" />
     </div>
 </div>
-<div *ngIf="loading" class="w-100 overflow-hidden">
-    <loading />
-</div>
+}

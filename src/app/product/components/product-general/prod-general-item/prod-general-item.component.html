@@ -14,14 +14,15 @@
                     <div class=" row py-2 pb-2">
                         <p class="mb-2">الخيارات</p>
                         <div class="d-flex flex-column gap-4 py-3">
-                            <p-floatlabel variant="over" *ngFor="let opt of options;let optionIndex=index"
-                                [style]="{'width':'100%'}">
+                            @for (opt of options;let optionIndex=$index; track $index) {
+                            <p-floatlabel variant="over" [style]="{'width':'100%'}">
                                 <label [for]="opt.optionName">{{opt.optionName}}</label>
                                 <p-select [formControl]="getControl(optionIndex)" [style]="{'width':'100%'}"
                                     appendTo="body" [options]="opt.values" (onChange)="getPrice()"
                                     optionLabel="valueName" display="chip" optionValue="valueName">
                                 </p-select>
                             </p-floatlabel>
+                            }
                         </div>
                     </div>
                 </div>
@@ -42,10 +43,10 @@
                         <div class="button-div d-flex flex-column gap-2">
                             <dynamic-input [style]="'width: 100%;'" [FEcontrol]="countControl"
                                 [object]="countObj"></dynamic-input>
-                            <p-button [ngClass]="'w-100 d-block'" [raised]="true" [style]="{'width':'100%'}"
-                                label="طلب شحن" icon="pi pi-truck" />
-                            <p-button [ngClass]="'w-100 d-block'" severity="secondary" [style]="{'width':'100%'}"
-                                label="وضع في السلة" icon="pi pi-cart-plus" />
+                            <!-- <p-button [ngClass]="'w-100 d-block'" [raised]="true" [style]="{'width':'100%'}"
+                                label="طلب شحن" icon="pi pi-truck" oncli/> -->
+                            <p-button [ngClass]="'w-100 d-block'" [style]="{'width':'100%'}" label="وضع في السلة"
+                                icon="pi pi-cart-plus" (onClick)="addToCart()" />
                         </div>
                     </div>
                 </div>

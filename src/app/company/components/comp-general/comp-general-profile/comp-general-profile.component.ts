@@ -27,7 +27,7 @@ export class CompGeneralProfileComponent {
     private companyStore: CompanyStoreService,
     private productStore: ProductStoreService,
     private route: ActivatedRoute,
-    private collectionManagement: CollectionManagementService
+    private collectionManagement: CollectionManagementService,
   ) {
     this.route.params
       .pipe(
@@ -52,20 +52,20 @@ export class CompGeneralProfileComponent {
           if (res?.succeeded) {
             return from(res.data).pipe(
               concatMap((collection) =>
-                this.productStore.getAll({ collectionId: collection.collectionID, pageNumber: 1, pageSize: 8 }).pipe(
+                this.productStore.getAll({ collectionId: collection.id, pageNumber: 1, pageSize: 8 }).pipe(
                   map((productRes) => ({ collection, products: productRes.data.products })),
-                  catchError(() => of({ collection, products: [] }))
-                )
-              )
+                  catchError(() => of({ collection, products: [] })),
+                ),
+              ),
             );
           }
           return of(null);
-        })
+        }),
       )
       .subscribe((res) => {
         if (res) {
           this.collectionsData.push(res);
-          this.tabindex = this.collectionsData[0].collection.collectionID;
+          this.tabindex = this.collectionsData[0].collection.id;
           console.log(this.tabindex);
         }
       });

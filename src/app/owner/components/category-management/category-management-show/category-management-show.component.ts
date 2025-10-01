@@ -21,7 +21,7 @@ export class CategoryManagementShowComponent {
   type: 'table' | 'list' | string = 'table';
   columns = [
     {
-      field: 'categoryName',
+      field: 'name',
       header: 'اسم التصنيف',
       HeaderType: 'string',
     },
@@ -30,10 +30,10 @@ export class CategoryManagementShowComponent {
     this.router.navigate(['owner/category-management/add']);
   };
   editFunc: (rowData: any) => void = (rowData: any) => {
-    this.router.navigate(['owner/category-management/detail/edit/' + rowData.categoryID]);
+    this.router.navigate(['owner/category-management/detail/edit/' + rowData.id]);
   };
   displayFunc: (rowData: any) => void = (rowData: any) => {
-    this.router.navigate(['owner/category-management/detail/display/' + rowData.categoryID]);
+    this.router.navigate(['owner/category-management/detail/display/' + rowData.id]);
   };
   deleteFunc: (rowData: any) => void = (rowData: any) => {
     this.confirmationService.confirm({

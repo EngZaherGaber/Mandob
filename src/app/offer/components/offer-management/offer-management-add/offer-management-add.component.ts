@@ -59,11 +59,7 @@ export class OfferManagementAddComponent {
           if (elemnt?.options.length > 0) {
             nextInput.forEach((inpt) => {
               if (inpt.source) {
-                const obs$ =
-                  inpt.source.method === 'post'
-                    ? this.http.post<APIResponse<any[]>>(inpt.source.url, {})
-                    : this.http.get<APIResponse<any[]>>(inpt.source.url);
-                obs$.subscribe((res) => {
+                this.http.post<APIResponse<any[]>>(inpt.source, {}).subscribe((res) => {
                   inpt.options = res.data;
                   this.objs[step][index].push(inpt);
                   const newControl = new FormControl(null);
@@ -145,9 +141,7 @@ export class OfferManagementAddComponent {
     (this.objs[key] as any[]).splice(index, 1);
     (this.form.get(key) as FormArray).removeAt(index);
   }
-  submit() {
-    console.log(this.form.getRawValue());
-  }
+
   onSelect(event: any) {
     for (let file of event.files) {
       this.uploadedFiles.push(file);
@@ -159,77 +153,8 @@ export class OfferManagementAddComponent {
       this.uploadedFiles.splice(index, 1);
     }
   }
-  addOptionName(input: any) {
-    this.options.push({ optionName: input.value, values: [] });
-    input.value = null;
-  }
-  addOptionValue(input: any, optionIndex: number) {
-    this.options[optionIndex].values.push({ valueName: input.value });
-    input.value = null;
-  }
-  removeOptionValue(optionIndex: number, valueIndex: number) {
-    this.options[optionIndex].values.splice(valueIndex, 1);
-  }
-  removeOption(optionIndex: number) {
-    this.options.splice(optionIndex, 1);
-  }
-  generateVariants(): VariantItem[] {
-    const options = this.options;
 
-    // Step 1: prepare array of arrays of values
-    const valuesArray = options.map((opt) =>
-      opt.values.map((v) => ({
-        optionName: opt.optionName,
-        optionValueName: v.valueName,
-      })),
-    );
-
-    // Step 2: Cartesian product
-    const cartesian = (arr: any[][]): any[][] => arr.reduce((a, b) => a.flatMap((d) => b.map((e) => [...d, e])), [[]]);
-
-    const combinations = cartesian(valuesArray);
-
-    // Step 3: map to VariantItem but keep old values if exist
-    const newVariants: VariantItem[] = combinations.map((combo, index) => {
-      const variantName = this.form.value.productName + ' ' + combo.map((c) => c.optionValueName).join(' ');
-
-      // Try to find existing variant
-      const existing = this.variants?.find(
-        (v) =>
-          v.optionAssignments.length === combo.length &&
-          v.optionAssignments.every(
-            (oa, i) => oa.optionName === combo[i].optionName && oa.optionValueName === combo[i].optionValueName,
-          ),
-      );
-
-      if (existing) {
-        // Keep its values
-        return {
-          ...existing,
-          variantName, // update name if productName changed
-        };
-      }
-
-      // Otherwise create new default variant
-      return {
-        variantName,
-        sku: `SKU-${index + 1}`,
-        quantity: 0,
-        optionAssignments: combo,
-        VariantImages: [],
-        price: 0,
-      };
-    });
-    console.log(this.uploadedFiles);
-    return newVariants;
-  }
-
-  openVariantPanel(event: any) {
-    if (event.index === '2') {
-      this.variants = this.generateVariants();
-    }
-  }
-  checkVariantPanel() {
-    return this.form.invalid || this.options.filter((opt) => opt.values.length === 0).length > 0;
+  submit() {
+    console.log(this.form.getRawValue());
   }
 }

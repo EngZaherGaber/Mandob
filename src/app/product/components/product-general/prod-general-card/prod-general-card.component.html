@@ -1,22 +1,28 @@
 <a [routerLink]="['/client/product/item/'+product().productID]">
-    <div *ngIf="product()" class="item-div mx-2 position-relative overflow-visible">
+    @if(product()){
+    <div class="item-div mx-2 position-relative overflow-visible">
 
         <div class="mb-2">
-            @defer (on viewport){
             <div class="position-relative mx-auto">
+                @defer (on viewport){
+                @if(product().productImages[0]){
+
                 <img class="position-relative w-100  top-0 z-0" [ngClass]="{'primary-img': product().productImages[1]}"
-                    *ngIf="product().productImages[0]" [src]="product().productImages[0].imageURL"
-                    [alt]="product().productName" style="aspect-ratio: 1/1;" (error)="onImgError($event)" />
+                    [src]="product().productImages[0].imageURL" [alt]="product().productName" style="aspect-ratio: 1/1;"
+                    (error)="onImgError($event)" />
+                @if(product().productImages[1] ){
                 <img class="position-absolute w-100 opacity-0 secondary-img start-0 top-0 z-1"
-                    *ngIf="product().productImages[1] && product().productImages[0]" style="aspect-ratio: 1/1;"
+                    style="aspect-ratio: 1/1;"
                     [src]="product().productImages[1].imageURL ? product().productImages[1].imageURL : product().productImages[0].imageURL"
                     [alt]="product().productName" (error)="onImgError($event)" />
+                }
+                }
 
+                }
+                @placeholder(minimum 1000) {
+                <div class="w-100" style="aspect-ratio: 1/1;"></div>
+                }
             </div>
-            }
-            @placeholder(minimum 1000) {
-            <div></div>
-            }
         </div>
         <div class="row py-2 position-absolute rounded-2 detail-div z-2">
             <div class="w-100 mb-1  d-flex flex-column justify-content-between">
@@ -27,26 +33,19 @@
                 <div class="ellipsis-multiline mb-0" [innerHTML]="product().productDescription">
                 </div>
             </div>
-            <!-- <div class="d-flex flex-column justify-content-between mb-2">
-                                <div class="d-flex flex-column" *ngFor="let option of product().options">
-                                    <small>{{option.key}} : </small>
-                                    <div class="d-flex gap-2">
-                                        <p-tag *ngFor="let choice of option.choices" [value]="choice.value" />
-    
-                                    </div>
-                                </div>
-                            </div> -->
             <div class="auto-height d-flex  flex-column  align-items-end justify-content-between px-2">
-                <span class="ellipsis-oneline text-start mt-0 mb-2 fw-bold"
-                    *ngIf="product().maxPrice !== product().minPrice">{{
+                @if(product().maxPrice !== product().minPrice){
+                <span class="ellipsis-oneline text-start mt-0 mb-2 fw-bold">{{
                     product().maxPrice |
                     currency }} - {{product().minPrice | currency}}
                 </span>
-                <span class="ellipsis-oneline text-start mt-0 mb-2 fw-bold"
-                    *ngIf="product().maxPrice === product().minPrice">{{
+                }
+                @if(product().maxPrice === product().minPrice){
+                <span class="ellipsis-oneline text-start mt-0 mb-2 fw-bold">{{
                     product().maxPrice |
                     currency }}
                 </span>
+                }
                 <span
                     class="d-flex flex-wrap flex-md-nowrap align-items-start align-items-md-center justify-content-end justify-content-md-center gap-2 align-self-end">
                     <!-- <span>{{(product().likes / 1000) | number:'1.1-1'}}K</span> -->
@@ -57,4 +56,5 @@
             </div>
         </div>
     </div>
+    }
 </a>
