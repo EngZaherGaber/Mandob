@@ -31,7 +31,10 @@ export class ProdGeneralGroupComponent {
   priceRange$: Subject<number[]> = new Subject();
   priceRange: number[] = [];
 
-  constructor(private route: ActivatedRoute, private productStoreSrv: ProductStoreService) {
+  constructor(
+    private route: ActivatedRoute,
+    private productStoreSrv: ProductStoreService,
+  ) {
     this.loadData$
       .pipe(
         debounceTime(2000),
@@ -41,7 +44,7 @@ export class ProdGeneralGroupComponent {
           const number = (event.first ?? 0) / this.body.pageSize;
           this.body.pageNumber = number + 1;
           return this.productStoreSrv.getAll(this.body);
-        })
+        }),
       )
       .subscribe((res) => {
         this.result = res.data;
@@ -67,7 +70,6 @@ export class ProdGeneralGroupComponent {
   }
   ngOnInit() {
     this.route.params.subscribe((param) => {
-      console.log(param);
       this.type = param['type'];
       this.id = param['id'];
       this.header = param['header'];

@@ -84,7 +84,6 @@ export class ProdGeneralItemComponent {
         this.options = res.data.options;
         this.variants = res.data.variants;
         this.createOptionArrayControl();
-        console.log(this.optionsArrayControl);
         this.getPrice();
       });
   }

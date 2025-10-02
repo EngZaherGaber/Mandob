@@ -118,7 +118,7 @@ export class HeaderComponent {
     private router: Router,
     private authSrv: AuthService,
     private msgSrv: MessageToastService,
-    private productStore: ProductStoreService
+    private productStore: ProductStoreService,
   ) {
     this.user = null;
     this.items = [
@@ -172,13 +172,13 @@ export class HeaderComponent {
           } else {
             return of(null);
           }
-        })
+        }),
       )
       .pipe(
         catchError((err) => {
           this.searchLoading = false;
           return of(null);
-        })
+        }),
       )
       .subscribe((res) => {
         if (res) {
@@ -207,7 +207,6 @@ export class HeaderComponent {
     }
   }
   changeSearchInput(event: string) {
-    console.log(event);
     this.stateSrv.changeSearchInput(event);
   }
   onClickOutside(event: any) {

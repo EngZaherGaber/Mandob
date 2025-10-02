@@ -164,7 +164,6 @@ export class ProdManagementAddComponent {
         price: 0,
       };
     });
-    console.log(this.uploadedFiles);
     return newVariants;
   }
 

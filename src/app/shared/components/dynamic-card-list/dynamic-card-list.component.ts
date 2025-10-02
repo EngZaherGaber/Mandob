@@ -157,7 +157,6 @@ export class DynamicCardListComponent {
   hasToggleShow(field: string, rowData: any) {
     const column = this.columnsEvent.find((x) => x.field.toLowerCase() === field.toLowerCase());
     if (column && typeof column.visible === 'function') {
-      console.log(column.visible(rowData));
       return column.visible(rowData);
     }
     return null;

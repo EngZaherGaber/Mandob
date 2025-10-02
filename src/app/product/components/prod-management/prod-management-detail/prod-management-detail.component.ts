@@ -222,7 +222,6 @@ export class ProdManagementDetailComponent {
         price: 0,
       };
     });
-    console.log(this.uploadedFiles);
     return newVariants;
   }
 

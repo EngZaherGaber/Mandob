@@ -66,7 +66,6 @@ export class CompGeneralProfileComponent {
         if (res) {
           this.collectionsData.push(res);
           this.tabindex = this.collectionsData[0].collection.id;
-          console.log(this.tabindex);
         }
       });
   }

@@ -35,7 +35,7 @@ export class StateService {
   constructor(
     private router: Router,
     private breakpointObserver: BreakpointObserver,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
   ) {
     this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((event: any) => {
       this.updateTitleFromRoute();
@@ -131,6 +131,5 @@ export class StateService {
       ...prev,
       openSearchMenu: openSearchMenu,
     }));
-    console.log(this.isOpenSearchMenu());
   }
 }
