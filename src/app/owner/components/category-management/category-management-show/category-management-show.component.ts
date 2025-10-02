@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
 import { catchError, of, switchMap } from 'rxjs';
 import { DynamicViewComponent } from '../../../../shared/components/dynamic-view/dynamic-view.component';
+import { columnTable } from '../../../../shared/interface/body-table';
 import { InfoTable } from '../../../../shared/interface/info-table';
 import { DyTableService } from '../../../../shared/service/dy-table.service';
 import { MessageToastService } from '../../../../shared/service/message-toast.service';
@@ -19,11 +20,11 @@ export class CategoryManagementShowComponent {
   tableConfig: InfoTable;
   imageField: string = '';
   type: 'table' | 'list' | string = 'table';
-  columns = [
+  columns: columnTable[] = [
     {
       field: 'name',
       header: 'اسم التصنيف',
-      HeaderType: 'string',
+      headerType: 'string',
     },
   ];
   addFunc: () => void = () => {

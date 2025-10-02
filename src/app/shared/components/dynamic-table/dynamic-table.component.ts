@@ -6,6 +6,7 @@ import { saveAs } from 'file-saver';
 import { MenuItem } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { Observable } from 'rxjs';
+import { BodyTable } from '../../interface/body-table';
 import { DyButton } from '../../interface/dy-button';
 import { PrimeNgSharedModule } from '../../modules/shared/primeng-shared.module';
 import { DyTableService } from '../../service/dy-table.service';
@@ -62,11 +63,7 @@ export class DynamicTableComponent {
 
   filterdMode: boolean = false;
   tb: Table | undefined;
-  body: {
-    loading: boolean;
-    data: any[];
-    columns: any[];
-  } = {
+  body: BodyTable = {
     loading: true,
     data: [],
     columns: [],
@@ -105,7 +102,7 @@ export class DynamicTableComponent {
                 (body.columns as any[])
                   .filter(
                     (col) =>
-                      col.HeaderType.toLowerCase() === 'datetime' || col.HeaderType.toLowerCase() === 'datetimeo',
+                      col.headerType.toLowerCase() === 'datetime' || col.headerType.toLowerCase() === 'datetimeo',
                   )
                   .forEach((col) => {
                     if (row[col.field]) {
@@ -122,7 +119,7 @@ export class DynamicTableComponent {
           body.data = body.data.sort((a: any, b: any) => a[this.sortColumn]?.localeCompare(b[this.sortColumn]));
         }
         (body.columns as any[])
-          .filter((x) => x.HeaderType === 'json')
+          .filter((x) => x.headerType === 'json')
           .forEach((x) => {
             body.data = (body.data as any[]).map((z) => {
               z[x.field] = z[x.field] ? JSON.parse(z[x.field]) : {};
@@ -165,22 +162,20 @@ export class DynamicTableComponent {
     }
   }
   changeVisible() {
-    this.items = this.buttons.map((btn) => {
-      return {
-        label: btn.tooltip,
-        icon: btn.icon,
-        visible: this.visibleBtn(btn.isShow ?? true, btn.permission, btn.showCommand),
-        command: () => {
-          if (btn && btn.command) {
-            btn.command(this.selectedItem);
-            this.hitAction.emit({
-              key: btn.key ?? '',
-              rowDataId: this.selectedItem,
-            });
-          }
-        },
-      };
-    });
+    this.items = this.buttons.map((btn) => ({
+      label: btn.tooltip,
+      icon: btn.icon,
+      visible: this.visibleBtn(btn.isShow ?? true, btn.permission, btn.showCommand),
+      command: () => {
+        if (btn && btn.command) {
+          btn.command(this.selectedItem);
+          this.hitAction.emit({
+            key: btn.key ?? '',
+            rowDataId: this.selectedItem,
+          });
+        }
+      },
+    }));
   }
   visibleBtn(isShow: boolean, permission?: string, showCommand?: (body: any) => boolean) {
     if (permission) {
@@ -213,7 +208,7 @@ export class DynamicTableComponent {
   loadCarsLazy(event: any) {
     this.body.loading = true;
     this.body.columns.forEach((x) => {
-      if ((x.HeaderType as string).toLowerCase().startsWith('datetime') && event.filters) {
+      if ((x.headerType as string).toLowerCase().startsWith('datetime') && event.filters) {
         const filter = event.filters[x.field];
         if (filter && (filter as any).value instanceof Date)
           event.filters[x.field].value = formatDate((filter as any).value, 'yyyy-MM-dd', 'en-US');
@@ -230,7 +225,7 @@ export class DynamicTableComponent {
       // Filter and map data
       arr = arr.map((x) => {
         let z: any = {};
-        this.body.columns.forEach((col: any) => {
+        this.body.columns.forEach((col) => {
           if (this.selectedColumns.includes(col.header)) z[col.header] = x[col.field];
         });
         return z;

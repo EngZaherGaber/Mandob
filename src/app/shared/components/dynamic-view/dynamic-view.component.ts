@@ -28,7 +28,7 @@ export class DynamicViewComponent {
   @Input() expandedTable: boolean = false;
   @Input() changeColor: (rowData: any) => any = () => {};
   @Input() getSeverity: (
-    rowData: any
+    rowData: any,
   ) => 'success' | 'info' | 'warn' | 'danger' | 'secondary' | 'contrast' | undefined = () => {
     return 'secondary';
   };

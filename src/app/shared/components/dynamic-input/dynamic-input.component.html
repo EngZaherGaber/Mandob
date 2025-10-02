@@ -1,116 +1,106 @@
-<ng-container [ngSwitch]="object.dataType">
-    <div style="position: relative;">
-        <p-floatlabel class="w-full md:w-56" variant="over">
-            <ng-container *ngIf="object.dataType !== 'bool' && object.dataType !== 'editor'">
-                <label [ngClass]="{ required: object.required }" [for]="object.key">{{
-                    object.label
-                    }}</label>
-            </ng-container>
-            <ng-template ngSwitchCase="list">
-                <p-select [id]="object.key" optionDisabled="disable" #drop (onChange)="drop.resetFilter()"
-                    [appendTo]="'body'" [options]="object.options" [formControl]="FEcontrol" optionLabel="name"
-                    [filter]="object.options ? object.options.length > 4 : false" optionValue="id" [showClear]="true"
-                    [checkmark]="true"></p-select>
-            </ng-template>
-            <ng-template ngSwitchCase="List">
-                <p-select [id]="object.key" optionDisabled="disable" [showTransitionOptions]="'250ms'"
-                    [hideTransitionOptions]="'250ms'" [showTransitionOptions]="'250ms'"
-                    [hideTransitionOptions]="'250ms'" #drop (onChange)="drop.resetFilter()"
-                    (onFilter)="filterList($event,drop)" [appendTo]="'body'" [options]="object.options"
-                    [formControl]="FEcontrol" [filter]="object.options ? object.options.length > 4 : false"
-                    optionLabel="name" optionValue="id" [showClear]="true" [checkmark]="true"></p-select>
-            </ng-template>
-
-            <ng-template ngSwitchCase="int">
-                <p-inputNumber [id]="object.key" [step]="1" [formControl]="FEcontrol" [min]="object.required ? 1 : null"
-                    [showButtons]="true" (keydown)="preventSpace($event, FEcontrol.value)"></p-inputNumber>
-            </ng-template>
-            <ng-template ngSwitchCase="float">
-                <p-inputNumber [id]="object.key" [minFractionDigits]="1" [step]="0.1" mode="decimal"
-                    [formControl]="FEcontrol" [showButtons]="true" [min]="object.required ? 0.1 : null"></p-inputNumber>
-            </ng-template>
-            <ng-template ngSwitchCase="double">
-                <p-inputNumber [id]="object.key" [minFractionDigits]="1" [step]="0.1" mode="decimal"
-                    [formControl]="FEcontrol" [showButtons]="true" [min]="object.required ? 0.1 : null"></p-inputNumber>
-            </ng-template>
-            <ng-template ngSwitchCase="email">
-                <input [id]="object.key" [formControl]="FEcontrol" type="email" pInputText />
-            </ng-template>
-            <ng-template ngSwitchCase="text">
-                <textarea style="max-height: 105px;" [fluid]="true" pSize="small" [autoResize]="false" [id]="object.key"
-                    [rows]="5" [formControl]="FEcontrol" pTextarea></textarea>
-            </ng-template>
-            <ng-template ngSwitchCase="string">
-                <input [id]="object.key"
-                    [pKeyFilter]="object.lang  ? (object.lang ==='en' ? nonArabicPattern : arabicPattern) : undefined"
-                    [pValidateOnly]="false" [formControl]="FEcontrol" type="text" pInputText />
-            </ng-template>
-            <ng-template ngSwitchCase="phone">
-                <input [id]="object.key" [pKeyFilter]="numberPlusPattern" [pValidateOnly]="false"
-                    [formControl]="FEcontrol" type="text" pInputText />
-
-            </ng-template>
-            <ng-template ngSwitchCase="password">
-                <p-password [id]="object.key" [feedback]="false" [formControl]="FEcontrol" type="text"
-                    [toggleMask]="true" />
-            </ng-template>
-            <ng-template ngSwitchCase="boolean">
-                <p-checkbox [id]="object.key" [binary]="true" [formControl]="FEcontrol" [value]="object.value"
-                    inputId="binary"></p-checkbox>
-            </ng-template>
-            <ng-template ngSwitchCase="autoComplete">
-                <div class="p-field">
-                    <p-autoComplete [id]="object.key" [dropdown]="true" [name]="object.key"
-                        [(ngModel)]="autoCompleteValue" field="name" [suggestions]="items ?? []"
-                        [disabled]="disableAutoComplete()" [virtualScroll]="true" [virtualScrollItemSize]="10"
-                        (completeMethod)="getSuggestions($event)" (onSelect)="selectValue($event.value)"
-                        [appendTo]="'body'"></p-autoComplete>
-                </div>
-            </ng-template>
-            <ng-template ngSwitchCase="DateTime">
-                <p-datePicker [id]="object.key" (onSelect)="selectDate($event)" appendTo="body" dataType="string"
-                    [showIcon]="true" inputId="icon" dateFormat="yy-mm-dd" [formControl]="FEcontrol"></p-datePicker>
-            </ng-template>
-            <ng-template ngSwitchCase="datetime">
-
-                <p-datePicker [id]="object.key" (onSelect)="selectDate($event)" appendTo="body" dataType="string"
-                    [showIcon]="true" inputId="icon" dateFormat="yy-mm-dd" [formControl]="FEcontrol"></p-datePicker>
-            </ng-template>
-            <ng-template ngSwitchCase="MultiSelect">
-                <p-multiSelect [id]="object.key" [appendTo]="'body'" [options]="object.options"
-                    [formControl]="FEcontrol" [selectionLimit]="object.Max" size="small" optionLabel="name"
-                    optionValue="id" [showClear]="object.required ? false : true"></p-multiSelect>
-            </ng-template>
-            <ng-template ngSwitchCase="year">
-
-                <p-datepicker [id]="object.key"
-                    [minDate]="object.startValidation && object.startValidation === true ? minDate : null"
-                    [maxDate]="maxDate" [disabled]="FEcontrol.disabled" [(ngModel)]="autoCompleteValue"
-                    (onSelect)="selectYM($event,'yy')" appendTo="body" view="year" dateFormat="yy"></p-datepicker>
-            </ng-template>
-            <ng-template ngSwitchCase="month">
-                <p-datepicker [id]="object.key" [maxDate]="maxDate"
-                    [minDate]="object.startValidation && object.startValidation === true ? minDate : null"
-                    [disabled]="FEcontrol.disabled" [(ngModel)]="autoCompleteValue" (onSelect)="selectYM($event,'mm')"
-                    appendTo="body" view="month" dateFormat="mm"></p-datepicker>
-            </ng-template>
-        </p-floatlabel>
-        <small *ngIf="object.dataType === 'autoComplete'" [id]="object.label + 'help'"
-            class="helper">AutoComplete</small>
-        <small [id]="object.label + 'help'" class="helper" *ngIf="object.dataType !== 'bool'">{{ object.desc }}</small>
-        <ng-template ngSwitchCase="editor">
-            <p-editor [id]="object.key" [style]="{ height: '320px' }" [formControl]="FEcontrol"
-                [placeholder]="object.label"></p-editor>
-        </ng-template>
-        <ng-template ngSwitchCase="bool">
-            <div style="display: flex;gap: 15px;">
-                <label [ngClass]="{ required: object.required }" [for]="object.key">{{
-                    object.label
-                    }}</label>
-                <p-checkbox [id]="object.key" [binary]="true" [formControl]="FEcontrol" [value]="object.value"
-                    inputId="binary"></p-checkbox>
-            </div>
-            <small [id]="object.key + 'help'" class="helper">{{ object.desc }}</small>
-        </ng-template>
+<div style="position: relative;">
+    @if(object.dataType !== 'bool' && object.dataType !== 'editor'){
+    <p-floatlabel class="w-full md:w-56" variant="over">
+        <label [ngClass]="{ required: object.required }" [for]="object.key">{{
+            object.label
+            }}</label>
+        @switch (object.dataType) {
+        @case ('list') {
+        <p-select [id]="object.key" optionDisabled="disable" #drop (onChange)="drop.resetFilter()" [appendTo]="'body'"
+            (onFilter)="filterList($event,drop)" [options]="object.options" [formControl]="FEcontrol" optionLabel="name"
+            [filter]="object.options ? object.options.length > 4 : false" optionValue="id" [showClear]="true"
+            [checkmark]="true"></p-select>
+        }
+        @case ('List') {
+        <p-select [id]="object.key" optionDisabled="disable" #drop (onChange)="drop.resetFilter()"
+            (onFilter)="filterList($event,drop)" [appendTo]="'body'" [options]="object.options"
+            [formControl]="FEcontrol" [filter]="object.options ? object.options.length > 4 : false" optionLabel="name"
+            optionValue="id" [showClear]="true" [checkmark]="true"></p-select>
+        }
+        @case ('int') {
+        <p-inputNumber [id]="object.key" [step]="1" [formControl]="FEcontrol" [min]="object.required ? 1 : null"
+            [showButtons]="true" (keydown)="preventSpace($event, FEcontrol.value)"></p-inputNumber>
+        }
+        @case ('float') {
+        <p-inputNumber [id]="object.key" [minFractionDigits]="1" [step]="0.1" mode="decimal" [formControl]="FEcontrol"
+            [showButtons]="true" [min]="object.required ? 0.1 : null"></p-inputNumber>
+        }
+        @case ('email') {
+        <input [id]="object.key" [formControl]="FEcontrol" type="email" pInputText />
+        }
+        @case ('text') {
+        <textarea style="max-height: 105px;" [fluid]="true" pSize="small" [autoResize]="false" [id]="object.key"
+            [rows]="5" [formControl]="FEcontrol" pTextarea></textarea>
+        }
+        @case ('string') {
+        <input [id]="object.key"
+            [pKeyFilter]="object.lang  ? (object.lang ==='en' ? nonArabicPattern : arabicPattern) : undefined"
+            [pValidateOnly]="false" [formControl]="FEcontrol" type="text" pInputText />
+        }
+        @case ('phone') {
+        <input [id]="object.key" [pKeyFilter]="numberPlusPattern" [pValidateOnly]="false" [formControl]="FEcontrol"
+            type="text" pInputText />
+        }
+        @case ('password') {
+        <p-password [id]="object.key" [feedback]="false" [formControl]="FEcontrol" type="text" [toggleMask]="true" />
+        }
+        @case ('boolean') {
+        <p-checkbox [id]="object.key" [binary]="true" [formControl]="FEcontrol" [value]="object.value"
+            inputId="binary"></p-checkbox>
+        }
+        @case ('autoComplete') {
+        <div class="p-field">
+            <p-autoComplete [id]="object.key" [dropdown]="true" [name]="object.key" [(ngModel)]="autoCompleteValue"
+                field="name" [suggestions]="items ?? []" [disabled]="disableAutoComplete()" [virtualScroll]="true"
+                [virtualScrollItemSize]="10" (completeMethod)="getSuggestions($event)"
+                (onSelect)="selectValue($event.value)" [appendTo]="'body'"></p-autoComplete>
+        </div>
+        <small [id]="object.label + 'help'" class="helper">AutoComplete</small>
+        }
+        @case ('DateTime') {
+        <p-datePicker [id]="object.key" (onSelect)="selectDate($event)" appendTo="body" dataType="string"
+            [showIcon]="true" inputId="icon" dateFormat="yy-mm-dd" [formControl]="FEcontrol"></p-datePicker>
+        }
+        @case ('datetime') {
+        <p-datePicker [id]="object.key" (onSelect)="selectDate($event)" appendTo="body" dataType="string"
+            [showIcon]="true" inputId="icon" dateFormat="yy-mm-dd" [formControl]="FEcontrol"></p-datePicker>
+        }
+        @case ('MultiSelect') {
+        <p-multiSelect [id]="object.key" [appendTo]="'body'" [options]="object.options" [formControl]="FEcontrol"
+            [selectionLimit]="object.Max" size="small" optionLabel="name" optionValue="id"
+            [showClear]="object.required ? false : true"></p-multiSelect>
+        }
+        @case ('year') {
+        <p-datepicker [id]="object.key"
+            [minDate]="object.startValidation && object.startValidation === true ? minDate : null" [maxDate]="maxDate"
+            [disabled]="FEcontrol.disabled" [(ngModel)]="autoCompleteValue" (onSelect)="selectYM($event,'yy')"
+            appendTo="body" view="year" dateFormat="yy"></p-datepicker>
+        }
+        @case ('month') {
+        <p-datepicker [id]="object.key" [maxDate]="maxDate"
+            [minDate]="object.startValidation && object.startValidation === true ? minDate : null"
+            [disabled]="FEcontrol.disabled" [(ngModel)]="autoCompleteValue" (onSelect)="selectYM($event,'mm')"
+            appendTo="body" view="month" dateFormat="mm"></p-datepicker>
+        }
+        }
+    </p-floatlabel>
+    <small [id]="object.label + 'help'" class="helper">{{ object.desc }}</small>
+    }@else {
+    @switch (object.dataType) {
+    @case ('bool') {
+    <div style="display: flex;gap: 15px;">
+        <label [ngClass]="{ required: object.required }" [for]="object.key">{{
+            object.label
+            }}</label>
+        <p-checkbox [id]="object.key" [binary]="true" [formControl]="FEcontrol" [value]="object.value"
+            inputId="binary"></p-checkbox>
     </div>
-</ng-container>
+    <small [id]="object.key + 'help'" class="helper">{{ object.desc }}</small>
+    }
+    @case ('editor') {
+    <p-editor [id]="object.key" [style]="{ height: '320px' }" [formControl]="FEcontrol"
+        [placeholder]="object.label"></p-editor>
+    }
+    }
+    }
+</div>

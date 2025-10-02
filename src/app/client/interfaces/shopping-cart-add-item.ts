@@ -1,4 +1,5 @@
 export interface ShoppingCartAddItem {
-  variantSKU: string;
+  sku: string;
   quantity: number;
+  userId: number;
 }

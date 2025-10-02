@@ -6,17 +6,24 @@
                     [icon]="stateSrv.isOpenedSideNav() ? 'pi pi-angle-right' : 'pi pi-angle-left'" severity="primary" />
             </div>
             <div class="col  d-flex align-items-center p-0 ">
-                <ng-container *ngIf="isBrowser; then browserView; else serverView"></ng-container>
+                @if (isBrowser) {
+                <ng-container *ngTemplateOutlet="browserView"></ng-container>
+                }@else {
+                <ng-container *ngTemplateOutlet="serverView"></ng-container>
+                }
 
                 <!-- Client-side template with animations -->
                 <ng-template #browserView>
-                    <div @fade *ngIf="!isChanging()"
-                        class="typewriter-container border-start border-2 border-secondary ps-4">
+                    @if (!isChanging()) {
+                    <div @fade class="typewriter-container border-start border-2 border-secondary ps-4">
                         <p class="typewriter-text fw-bold">
                             {{displayText()}}
-                            <span class="cursor" *ngIf="isTyping()">|</span>
+                            @if(isTyping()){
+                            <span class="cursor">|</span>
+                            }
                         </p>
                     </div>
+                    }
                 </ng-template>
 
                 <!-- Server-side template (static) -->
@@ -26,23 +33,33 @@
             </div>
         </div>
     </div>
-    <div class="col" style="position: relative;z-index: 999;" *ngIf="user?.role === 'client'">
+    @if (user?.role === 'client') {
+    <div class="col" style="position: relative;z-index: 999;">
         <p-iconfield>
             <p-inputicon class="pi" [ngClass]="!searchLoading ? ['pi-search'] : ['pi-spinner','pi-spin']" />
             <input type="text" #search (input)="changeSearchInput(search.value)" [value]="stateSrv.searchInput()"
                 pInputText placeholder="Search" />
         </p-iconfield>
     </div>
+    }
     <div class="col d-flex position-relative justify-content-end align-items-center gap-2" style="z-index: 1;">
         <p-button (onClick)="stateSrv.setIsDark(!stateSrv.isDark())"
             [icon]="stateSrv.isDark() ? 'pi pi-sun' : 'pi pi-moon'" [rounded]="true" [text]="true" severity="primary"
             [pTooltip]="stateSrv.isDark() ? 'الوضع النهاري' : 'الوضع الليلي'" />
         <p-button icon="pi pi-bell" [rounded]="true" [text]="true" severity="primary" pTooltip="الاشعارات" />
-        <p-button *ngIf="user?.role !== 'owner'" icon="pi pi-truck" (onClick)="stateSrv.collapseCart()" [rounded]="true"
-            [text]="true" severity="primary" pTooltip="الشاحنة" />
+        @if(user?.role !== 'owner'){
+        <p-button icon="pi pi-truck" (onClick)="stateSrv.collapseCart()" [rounded]="true" [text]="true"
+            severity="primary" pTooltip="الشاحنة" />
+        }
         <a (click)="menu.toggle($event)" style="cursor: pointer;">
-            <p-avatar *ngIf="user && user.logo" [image]="user.logo" shape="circle" />
-            <p-avatar *ngIf="!(user && user.logo)" icon="pi pi-user" shape="circle" />
+            @if(user && user.logo){
+
+            <p-avatar [image]="user.logo" shape="circle" />
+            }
+            @else{
+            <p-avatar icon="pi pi-user" shape="circle" />
+
+            }
         </a>
         <p-menu #menu [model]="items" [popup]="true">
             <ng-template #start>
@@ -54,9 +71,11 @@
                             <span class="fw-bold">{{user?.role}}</span>
                         </div>
                         <div class="rounded-4 d-flex justify-content-center" style="width: 50px;height: 50px;">
-
-                            <p-avatar *ngIf="user && user.logo" [image]="user.logo" shape="circle" />
-                            <p-avatar *ngIf="!(user && user.logo)" icon="pi pi-user" shape="circle" />
+                            @if(user && user.logo){
+                            <p-avatar [image]="user.logo" shape="circle" />
+                            }@else {
+                            <p-avatar icon="pi pi-user" shape="circle" />
+                            }
                         </div>
                     </div>
                 </div>
@@ -66,21 +85,26 @@
 
     </div>
 </div>
-<div *ngIf="stateSrv.isOpenSearchMenu()" (ClickOutside)="onClickOutside($event)" class="position-absolute search-menu ">
+@if(stateSrv.isOpenSearchMenu()){
+
+<div (ClickOutside)="onClickOutside($event)" class="position-absolute search-menu ">
     <client-tool-search-menu [result]="searchResult" [header]="stateSrv.searchInput()"
         (closeMenu)="onClickOutside($event)" />
 
 </div>
-
+}
+@if(changePasswordvisible){
 <p-dialog (visibleChange)="closeDialog($event,changePasswordForm)" header="تغيير كلمة السر" [modal]="true"
-    *ngIf="changePasswordvisible" [(visible)]="changePasswordvisible" [style]="{ width: '25rem' }">
+    [(visible)]="changePasswordvisible" [style]="{ width: '25rem' }">
     <dynmaic-form class="dyn-frm" [scrollHeight]="'25vh'" (submit)="changePassword($event)" [display]="'flex'"
         [withBackBtn]="false" [objs]="changePasswordForm" style="width: 100%;" [justOneStep]="true"></dynmaic-form>
 </p-dialog>
-<p-dialog header="تغيير رقم الهاتف" [modal]="true" *ngIf="changePhoneNumbervisible"
-    (visibleChange)="closeDialog($event,changePhoneNumberForm)" [(visible)]="changePhoneNumbervisible"
-    [style]="{ width: '25rem' }">
+}
+@if(changePhoneNumbervisible){
+<p-dialog header="تغيير رقم الهاتف" [modal]="true" (visibleChange)="closeDialog($event,changePhoneNumberForm)"
+    [(visible)]="changePhoneNumbervisible" [style]="{ width: '25rem' }">
     <dynmaic-form class="dyn-frm" [scrollHeight]="'25vh'" (submit)="verifyChangePhoneNumber($event)" [display]="'flex'"
         [withBackBtn]="false" [stepsList]="stepsPhoneNumberList" [objs]="changePhoneNumberForm" style="width: 100%;"
         [showSteps]="true" (onActiveIndexChange)="changePhoneNumber($event)"></dynmaic-form>
 </p-dialog>
+}

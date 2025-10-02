@@ -1,19 +1,18 @@
 import { Component, model } from '@angular/core';
 import { FormArray, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs';
 import { ShoppingCartAddItem } from '../../../../client/interfaces/shopping-cart-add-item';
 import { ShoppingManagementService } from '../../../../client/services/shopping.service';
 import { DynamicInputComponent } from '../../../../shared/components/dynamic-input/dynamic-input.component';
 import { InputDynamic } from '../../../../shared/interface/input-dynamic';
 import { PrimeNgSharedModule } from '../../../../shared/modules/shared/primeng-shared.module';
-import { DyTableService } from '../../../../shared/service/dy-table.service';
 import { MessageToastService } from '../../../../shared/service/message-toast.service';
 import { StateService } from '../../../../shared/service/state.service';
 import { OptionItem } from '../../../interfaces/option-item';
 import { ProductManagementItem } from '../../../interfaces/product-management-item';
 import { VariantItem } from '../../../interfaces/variant-item';
-import { ProductManagementService } from '../../../services/product-management.service';
+import { ProductStoreService } from '../../../services/product-store.service';
 
 @Component({
   selector: 'app-prod-general-item',
@@ -65,12 +64,10 @@ export class ProdGeneralItemComponent {
   variantSKU: string = '';
   product: ProductManagementItem | null = null;
   constructor(
-    private productManagement: ProductManagementService,
+    private productStore: ProductStoreService,
     private shoppingManagement: ShoppingManagementService,
     private msgSrv: MessageToastService,
     private stateSrv: StateService,
-    private tableSrv: DyTableService,
-    private router: Router,
     private route: ActivatedRoute,
   ) {}
   ngOnInit() {
@@ -78,7 +75,7 @@ export class ProdGeneralItemComponent {
       .pipe(
         switchMap((param) => {
           this.productId = param['id'];
-          return this.productManagement.getOne(this.productId);
+          return this.productStore.getOne(this.productId);
         }),
       )
       .subscribe((res) => {
@@ -118,8 +115,9 @@ export class ProdGeneralItemComponent {
   }
   addToCart() {
     const body: ShoppingCartAddItem = {
-      variantSKU: this.variantSKU,
+      sku: this.variantSKU,
       quantity: this.countControl.value,
+      userId: +(this.product?.companyId ?? 0),
     };
     this.shoppingManagement.add(body).subscribe((res) => {
       this.msgSrv.showMessage(res.message, res.succeeded);

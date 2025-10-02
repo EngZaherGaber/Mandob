@@ -4,6 +4,7 @@ import { environment } from '../../../environments/environment';
 import { GlobalSearchResponse } from '../../client/interfaces/global-search-response';
 import { APIResponse } from '../../shared/interface/response';
 import { ProductListFilter } from '../interfaces/product-list-filter';
+import { ProductManagementItem } from '../interfaces/product-management-item';
 import { ProductStoreResult } from '../interfaces/product-store-result';
 
 @Injectable({
@@ -19,5 +20,8 @@ export class ProductStoreService {
     let params = new HttpParams();
     params = params.append('globalFilter', globalFilter);
     return this.http.get<APIResponse<GlobalSearchResponse>>(this.url + 'GlobalSearch', { params: params });
+  }
+  getOne(id: number) {
+    return this.http.get<APIResponse<ProductManagementItem>>(this.url + id);
   }
 }

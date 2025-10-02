@@ -25,32 +25,32 @@ export class ClientManagementShowComponent {
     {
       field: 'name',
       header: 'الاسم',
-      HeaderType: 'string',
+      headerType: 'string',
     },
     {
       field: 'email',
       header: 'الايميل',
-      HeaderType: 'string',
+      headerType: 'string',
     },
     {
       field: 'phoneNumber',
       header: 'رقم الهاتف',
-      HeaderType: 'string',
+      headerType: 'string',
     },
     {
       field: 'commercialRegistrationNumber',
       header: 'السجل التجاري',
-      HeaderType: 'string',
+      headerType: 'string',
     },
     {
       field: 'address',
       header: 'العنوان',
-      HeaderType: 'string',
+      headerType: 'string',
     },
     {
       field: 'isActive',
       header: 'فعال',
-      HeaderType: 'Toggle',
+      headerType: 'Toggle',
     },
   ];
   columnsEvent = [
@@ -106,7 +106,7 @@ export class ClientManagementShowComponent {
     private confirmationService: ConfirmationService,
     private route: ActivatedRoute,
     private router: Router,
-    private clientManagement: ClientManagementService
+    private clientManagement: ClientManagementService,
   ) {
     this.tableConfig = tableSrv.getStandardInfo(undefined, undefined, this.displayFunc, undefined);
     this.route.params.subscribe((param) => {
@@ -121,13 +121,13 @@ export class ClientManagementShowComponent {
                   columns: this.columns,
                   loading: false,
                   count: res.count,
-                })
+                }),
               ),
-              catchError(() => of({ loading: false, data: [], columns: this.columns }))
+              catchError(() => of({ loading: false, data: [], columns: this.columns })),
             );
           }
           return of({ loading: false, data: [], columns: this.columns });
-        })
+        }),
       );
     });
     this.tableConfig.Buttons.push({

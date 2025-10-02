@@ -1,9 +1,9 @@
-import { ReplaySubject, Observable } from "rxjs";
-import { DyButton } from "./dy-button";
+import { Observable, ReplaySubject } from 'rxjs';
+import { DyButton } from './dy-button';
 
 export interface InfoTable {
-    getSub$: ReplaySubject<any>;
-    get$: Observable<any>;
-    captionButton: DyButton[];
-    Buttons: DyButton[];
+  getSub$: ReplaySubject<any>;
+  get$: Observable<any>;
+  captionButton: DyButton[];
+  Buttons: DyButton[];
 }

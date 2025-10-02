@@ -4,7 +4,10 @@ import { MenuItem } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { Observable } from 'rxjs';
 import { UserStateService } from '../../../general/services/user-state.service';
+import { BodyTable } from '../../interface/body-table';
+import { columnAlignment } from '../../interface/columns-alignment';
 import { DyButton } from '../../interface/dy-button';
+import { EventColumn } from '../../interface/event-column';
 import { PrimeNgSharedModule } from '../../modules/shared/primeng-shared.module';
 import { DyTableService } from '../../service/dy-table.service';
 
@@ -32,24 +35,15 @@ export class DynamicCardListComponent {
   @Input() layout: 'grid' | 'list' = 'grid';
   @Input() changeColor: (rowData: any) => any = () => {};
   @Input() getSeverity: (
-    rowData: any
+    rowData: any,
   ) => 'success' | 'info' | 'warn' | 'danger' | 'secondary' | 'contrast' | undefined = () => {
     return 'secondary';
   };
   @Input() captionButton: DyButton[] = [];
-  @Input() columnsEvent: {
-    field: string;
-    command?: (event: any, field: string, rowData: any) => void;
-    permission?: string;
-    visible?: (rowData: any) => boolean;
-    disable?: (field: string, rowData: any) => boolean;
-  }[] = [];
+  @Input() columnsEvent: EventColumn[] = [];
   @Input() lazyLoading: boolean = false;
   @Input() showHeader: boolean = false;
-  @Input() columnAlignment: {
-    column: string;
-    alignment: 'right' | 'center';
-  }[] = [];
+  @Input() columnAlignment: columnAlignment[] = [];
   @Input() currenciesColumn: string[] = [];
   @Output() hitAction: EventEmitter<{ key: string; rowDataId: number }> = new EventEmitter<{
     key: string;
@@ -60,11 +54,7 @@ export class DynamicCardListComponent {
 
   filterdMode: boolean = false;
   tb: Table | undefined;
-  body: {
-    loading: boolean;
-    data: any[];
-    columns: any[];
-  } = {
+  body: BodyTable = {
     loading: true,
     data: [],
     columns: [],
@@ -85,7 +75,7 @@ export class DynamicCardListComponent {
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private tableSrv: DyTableService,
-    private userState: UserStateService
+    private userState: UserStateService,
   ) {}
   ngOnInit(): void {}
   ngAfterContentInit(): void {
@@ -108,9 +98,7 @@ export class DynamicCardListComponent {
                 const arr = this.buttons.map((button) => ({ ...button }));
                 row = { ...row, buttons: arr };
                 (body.columns as any[])
-                  .filter(
-                    (col) => col.HeaderType.toLowerCase() === 'datetime' || col.HeaderType.toLowerCase() === 'datetimeo'
-                  )
+                  .filter((col) => col.headerType === 'datetime')
                   .forEach((col) => {
                     if (row[col.field]) {
                       const date = new Date(row[col.field]);
@@ -126,7 +114,7 @@ export class DynamicCardListComponent {
           body.data = body.data.sort((a: any, b: any) => a[this.sortColumn]?.localeCompare(b[this.sortColumn]));
         }
         (body.columns as any[])
-          .filter((x) => x.HeaderType === 'json')
+          .filter((x) => x.headerType === 'json')
           .forEach((x) => {
             body.data = (body.data as any[]).map((z) => {
               z[x.field] = z[x.field] ? JSON.parse(z[x.field]) : {};

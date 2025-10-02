@@ -7,9 +7,12 @@
                   }"></i>
     </ng-template>
 </p-selectbutton>
-<dynamic-table *ngIf="layout === 'table'" [columnsEvent]="columnsEvent" [lazyLoading]="true"
-    (onLazy)="onLazy.emit($event)" [load]="load" [buttons]="buttons" [showHeader]="true" [captionButton]="captionButton"
-    [imageField]="imageField"></dynamic-table>
-<dynamic-card-list *ngIf="layout === 'grid' || layout === 'list'" [imageField]="imageField" [layout]="layout"
-    [load]="load" [columnsEvent]="columnsEvent" [buttons]="buttons" [lazyLoading]="true" (onLazy)="onLazy.emit($event)"
+@if (layout === 'table') {
+<dynamic-table [columnsEvent]="columnsEvent" [lazyLoading]="true" (onLazy)="onLazy.emit($event)" [load]="load"
+    [buttons]="buttons" [showHeader]="true" [captionButton]="captionButton" [imageField]="imageField"></dynamic-table>
+}@else {
+<dynamic-card-list [imageField]="imageField" [layout]="layout" [load]="load" [columnsEvent]="columnsEvent"
+    [buttons]="buttons" [lazyLoading]="true" (onLazy)="onLazy.emit($event)"
     [captionButton]="captionButton"></dynamic-card-list>
+
+}

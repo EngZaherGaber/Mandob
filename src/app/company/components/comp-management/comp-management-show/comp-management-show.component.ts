@@ -8,6 +8,8 @@ import { OwnerStrategy } from '../../../../owner/classes/owner-strategy';
 import { DynamicInputComponent } from '../../../../shared/components/dynamic-input/dynamic-input.component';
 import { DynamicViewComponent } from '../../../../shared/components/dynamic-view/dynamic-view.component';
 import { DynmaicFormComponent } from '../../../../shared/components/dynmaic-form/dynmaic-form.component';
+import { columnTable } from '../../../../shared/interface/body-table';
+import { EventColumn } from '../../../../shared/interface/event-column';
 import { InfoTable } from '../../../../shared/interface/info-table';
 import { InputDynamic } from '../../../../shared/interface/input-dynamic';
 import { PrimeNgSharedModule } from '../../../../shared/modules/shared/primeng-shared.module';
@@ -25,74 +27,74 @@ export class CompManagementShowComponent {
   tableConfig: InfoTable;
   imageField: string = '';
   type: 'table' | 'list' | string = 'table';
-  columns = [
+  columns: columnTable[] = [
     {
       field: 'name',
       header: 'الاسم',
-      HeaderType: 'string',
+      headerType: 'string',
     },
     {
       field: 'companyDescription',
       header: 'الوصف',
-      HeaderType: 'string',
+      headerType: 'string',
     },
     {
       field: 'planName',
       header: 'الاشتراك',
-      HeaderType: 'string',
+      headerType: 'string',
     },
     {
       field: 'planStartDate',
       header: 'بدأ الاشتراك',
-      HeaderType: 'DateTime',
+      headerType: 'datetime',
     },
     {
       field: 'planEndDate',
       header: 'نهاية الاشتراك',
-      HeaderType: 'DateTime',
+      headerType: 'datetime',
     },
     {
       field: 'email',
       header: 'الايميل',
-      HeaderType: 'string',
+      headerType: 'string',
     },
     {
       field: 'phoneNumber',
       header: 'رقم الهاتف',
-      HeaderType: 'string',
+      headerType: 'string',
     },
     {
       field: 'address',
       header: 'العنوان',
-      HeaderType: 'string',
+      headerType: 'string',
     },
     {
       field: 'commercialRegistrationNumber',
       header: 'السجل التجاري',
-      HeaderType: 'string',
+      headerType: 'string',
     },
     {
       field: 'planStartDate',
       header: 'بداية خطة الاشتراك',
-      HeaderType: 'DateTime',
+      headerType: 'datetime',
     },
     {
       field: 'planEndDate',
       header: 'نهاية خطة الاشتراك',
-      HeaderType: 'DateTime',
+      headerType: 'datetime',
     },
     {
       field: 'createdBy',
       header: 'المسؤول',
-      HeaderType: 'string',
+      headerType: 'string',
     },
     {
       field: 'isActive',
       header: 'فعال',
-      HeaderType: 'Toggle',
+      headerType: 'toggle',
     },
   ];
-  columnsEvent = [
+  columnsEvent: EventColumn[] = [
     {
       field: 'isActive',
       command: (event: any, field: string, rowData: any) => {

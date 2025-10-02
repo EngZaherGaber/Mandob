@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
 import { catchError, of, switchMap } from 'rxjs';
 import { DynamicViewComponent } from '../../../../shared/components/dynamic-view/dynamic-view.component';
+import { columnTable } from '../../../../shared/interface/body-table';
+import { EventColumn } from '../../../../shared/interface/event-column';
 import { InfoTable } from '../../../../shared/interface/info-table';
 import { DyTableService } from '../../../../shared/service/dy-table.service';
 import { MessageToastService } from '../../../../shared/service/message-toast.service';
@@ -17,24 +19,24 @@ import { ProductManagementService } from '../../../services/product-management.s
 export class ProdManagementShowComponent {
   tableConfig: InfoTable;
   imageField: string = '';
-  columns = [
+  columns: columnTable[] = [
     {
       field: 'name',
       header: 'الاسم',
-      HeaderType: 'string',
+      headerType: 'string',
     },
     {
       field: 'productDescription',
       header: 'الوصف',
-      HeaderType: 'string',
+      headerType: 'string',
     },
     {
       field: 'isActive',
       header: 'فعال',
-      HeaderType: 'Toggle',
+      headerType: 'toggle',
     },
   ];
-  columnsEvent = [
+  columnsEvent: EventColumn[] = [
     {
       field: 'isActive',
       command: (event: any, field: string, rowData: any) => {

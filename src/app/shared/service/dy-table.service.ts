@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { catchError, first, Observable, of, ReplaySubject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { columnTable } from '../interface/body-table';
 import { DyButton } from '../interface/dy-button';
 import { InfoTable } from '../interface/info-table';
 
@@ -12,7 +13,7 @@ export class DyTableService {
   getInstObs(
     instObs$: Observable<any>,
     notAllowed: string[],
-    additional?: { attribute: string; dynamic: string; dataType: string }[]
+    additional?: { attribute: string; dynamic: string; dataType: string }[],
   ): Observable<any> {
     if (!additional) {
       additional = [];
@@ -58,8 +59,8 @@ export class DyTableService {
           loading: false,
           data: [],
           columns: [],
-        })
-      )
+        }),
+      ),
     );
     return instObs$;
   }
@@ -85,8 +86,8 @@ export class DyTableService {
           loading: false,
           data: [],
           columns: [],
-        })
-      )
+        }),
+      ),
     );
     return instObs$;
   }
@@ -94,7 +95,7 @@ export class DyTableService {
     instObs$: Observable<any>,
     notAllowed: string[],
     ToggleColumn: string[] = [],
-    additional?: { attribute: string; dynamic: string; dataType: string }[]
+    additional?: { attribute: string; dynamic: string; dataType: string }[],
   ) {
     if (!additional) {
       additional = [];
@@ -123,7 +124,7 @@ export class DyTableService {
             ]).map((col) => {
               col = ToggleColumn.includes(col.field)
                 ? (col = {
-                    HeaderType: 'Toggle',
+                    headerType: 'toggle',
                     field: col.field,
                     header: col.header,
                   })
@@ -163,8 +164,8 @@ export class DyTableService {
           loading: false,
           data: [],
           columns: [],
-        })
-      )
+        }),
+      ),
     );
     return instObs$;
   }
@@ -191,7 +192,7 @@ export class DyTableService {
             ]).map((col) => {
               col = ToggleColumn.includes(col.field)
                 ? (col = {
-                    HeaderType: 'Toggle',
+                    headerType: 'toggle',
                     field: col.field,
                     header: col.header,
                   })
@@ -213,8 +214,8 @@ export class DyTableService {
                   .forEach(
                     (type) =>
                       (item[type.dynamic ? type.dynamic : type.attribute] = new Date(
-                        item[type.dynamic ? type.dynamic : type.attribute]
-                      ))
+                        item[type.dynamic ? type.dynamic : type.attribute],
+                      )),
                   );
                 return item;
               }),
@@ -241,15 +242,15 @@ export class DyTableService {
           loading: false,
           data: [],
           columns: [],
-        })
-      )
+        }),
+      ),
     );
     return instObsList$;
   }
   getSchema(
     allowedKeys: any,
     types: { attribute: string; dynamic: string; dataType: string }[],
-    notForeignKey: string[]
+    notForeignKey: string[],
   ): any[] {
     let schema: any[] = [];
     types.forEach((element) => {
@@ -262,7 +263,7 @@ export class DyTableService {
           schema.push({
             header: key,
             field: key,
-            HeaderType: element.dataType,
+            headerType: element.dataType,
           });
         } else if (
           (key as string).toLowerCase().endsWith('id') &&
@@ -275,7 +276,7 @@ export class DyTableService {
             schema.push({
               header: key,
               field: endKey,
-              HeaderType: element.dataType,
+              headerType: element.dataType,
             });
           }
         }
@@ -289,7 +290,7 @@ export class DyTableService {
     displayFunc?: (rowData: any) => void,
     deletePer?: string,
     editPer?: string,
-    displayPer?: string
+    displayPer?: string,
   ) {
     const Buttons: DyButton[] = [];
     if (deleteFunc) {
@@ -358,7 +359,7 @@ export class DyTableService {
     deletePer?: string,
     editPer?: string,
     displayPer?: string,
-    addPer?: string
+    addPer?: string,
   ): InfoTable {
     const info: InfoTable = {
       getSub$: new ReplaySubject(),
@@ -370,7 +371,7 @@ export class DyTableService {
     info.captionButton = this.getStandardCaptionButtons(addFunc, addPer);
     return info;
   }
-  repeairHeader(columns: { field: string; header: string; HeaderType: string }[]) {
+  repeairHeader(columns: { field: string; header: string; headerType: string }[]) {
     columns.map((col) => {
       col.header = col.header.replace(/([a-z])([A-Z])/g, '$1 $2');
       if (col.header.toLowerCase().endsWith(' id')) {
@@ -386,16 +387,10 @@ export class DyTableService {
       column: string;
       alignment: 'right' | 'center';
     }[],
-    columns: any[]
+    columns: columnTable[],
   ) {
     const col = columns.find((x) => x.field === column);
-    if (
-      col &&
-      (col.HeaderType === 'float' ||
-        col.HeaderType === 'int' ||
-        col.HeaderType === 'double' ||
-        col.HeaderType === 'currency')
-    ) {
+    if (col && (col.headerType === 'float' || col.headerType === 'int' || col.headerType === 'currency')) {
       return 'right';
     }
     const alignment = columnAlignment.find((x) => x.column === column);

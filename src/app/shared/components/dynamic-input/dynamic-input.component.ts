@@ -51,11 +51,7 @@ export class DynamicInputComponent {
         this.items;
         const value = this.object.options?.find((x) => x.id === this.FEcontrol.value);
         value ? (this.autoCompleteValue = value) : '';
-      } else if (
-        this.object.dataType.toLowerCase() === 'float' ||
-        this.object.dataType.toLowerCase() === 'double' ||
-        this.object.dataType.toLowerCase() === 'int'
-      ) {
+      } else if (this.object.dataType.toLowerCase() === 'float' || this.object.dataType.toLowerCase() === 'int') {
         this.FEcontrol.setValue(0);
       } else if (this.object.dataType.toLowerCase() === 'bool') {
         this.FEcontrol.setValue(false);

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MenuItem } from 'primeng/api';
 import { InputDynamic } from '../interface/input-dynamic';
 
@@ -16,9 +16,6 @@ export class DynamicAttributeService {
       let value = obj.value;
       if (!value) {
         switch (obj.dataType.toLowerCase()) {
-          case 'double':
-            value = 0;
-            break;
           case 'int':
             value = 0;
             break;
@@ -51,9 +48,6 @@ export class DynamicAttributeService {
     let dyValue = obj.value;
     if (!dyValue) {
       switch (obj.dataType.toLowerCase()) {
-        case 'double':
-          dyValue = 0;
-          break;
         case 'int':
           dyValue = 0;
           break;
@@ -87,9 +81,6 @@ export class DynamicAttributeService {
         let value = internalObj.value;
         if (!value) {
           switch (internalObj.dataType.toLowerCase()) {
-            case 'double':
-              value = 0;
-              break;
             case 'int':
               value = 0;
               break;
@@ -175,7 +166,7 @@ export class DynamicAttributeService {
     returnIfDisable: { [key: string]: string[] },
     form: any,
     recursionSteps: string[],
-    withIdSteps: string[]
+    withIdSteps: string[],
   ) {
     if (returnIfDisable) {
       Object.keys(returnIfDisable).forEach((key) => {
@@ -197,7 +188,7 @@ export class DynamicAttributeService {
       [key: string]: { key: string; command: (event?: any) => void }[];
     },
     objs: InputDynamic[],
-    key: string
+    key: string,
   ): InputDynamic[] {
     triggers[key]
       ? triggers[key].forEach((trigger) => {
@@ -255,7 +246,7 @@ export class DynamicAttributeService {
   }
   getFormControl(parent: string, child: string, form: FormGroup): FormControl | null {
     const realKey = Object.keys((form.controls[parent] as FormGroup).controls).find(
-      (key) => key.toLowerCase() === child.toLowerCase()
+      (key) => key.toLowerCase() === child.toLowerCase(),
     );
     if (realKey) {
       return (form.controls[parent] as FormGroup).controls[realKey] as FormControl;
@@ -272,7 +263,7 @@ export class DynamicAttributeService {
       if (isVisible) {
         if (inpt.dataType.toLowerCase() === 'int') {
           control.addValidators(Validators.min(1));
-        } else if (inpt.dataType.toLowerCase() === 'float' || inpt.dataType.toLowerCase() === 'double') {
+        } else if (inpt.dataType.toLowerCase() === 'float') {
           control.addValidators(Validators.min(0.01));
         }
         control.addValidators(Validators.required);
@@ -282,13 +273,7 @@ export class DynamicAttributeService {
         inpt.required = true;
       } else {
         control.clearValidators();
-        control.setValue(
-          inpt.dataType.toLowerCase() === 'int' ||
-            inpt.dataType.toLowerCase() === 'float' ||
-            inpt.dataType.toLowerCase() === 'double'
-            ? 0
-            : value
-        );
+        control.setValue(inpt.dataType.toLowerCase() === 'int' || inpt.dataType.toLowerCase() === 'float' ? 0 : value);
         inpt.visible = false;
         inpt.required = false;
       }

@@ -27,22 +27,22 @@ export class DistributorManagementShowComponent {
     {
       field: 'name',
       header: 'الاسم',
-      HeaderType: 'string',
+      headerType: 'string',
     },
     {
       field: 'email',
       header: 'الايميل',
-      HeaderType: 'string',
+      headerType: 'string',
     },
     {
       field: 'phoneNumber',
       header: 'رقم الهاتف',
-      HeaderType: 'string',
+      headerType: 'string',
     },
     {
       field: 'isActive',
       header: 'فعال',
-      HeaderType: 'Toggle',
+      headerType: 'Toggle',
     },
   ];
   columnsEvent = [
@@ -126,7 +126,7 @@ export class DistributorManagementShowComponent {
     private route: ActivatedRoute,
     private router: Router,
     private confirmationService: ConfirmationService,
-    private distributorManagement: DistributorManagementService
+    private distributorManagement: DistributorManagementService,
   ) {
     this.tableConfig = tableSrv.getStandardInfo(undefined, this.editFunc, this.displayFunc, this.addFunc);
     this.route.params.subscribe((param) => {
@@ -142,13 +142,13 @@ export class DistributorManagementShowComponent {
                   columns: this.columns,
                   loading: false,
                   count: res.count,
-                })
+                }),
               ),
-              catchError(() => of({ loading: false, data: [], columns: this.columns }))
+              catchError(() => of({ loading: false, data: [], columns: this.columns })),
             );
           }
           return of({ loading: false, data: [], columns: this.columns });
-        })
+        }),
       );
     });
   }

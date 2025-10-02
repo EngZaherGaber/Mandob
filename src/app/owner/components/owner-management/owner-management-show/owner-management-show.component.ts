@@ -5,6 +5,8 @@ import { catchError, of, switchMap } from 'rxjs';
 import { UserStateService } from '../../../../general/services/user-state.service';
 import { DynamicViewComponent } from '../../../../shared/components/dynamic-view/dynamic-view.component';
 import { DynmaicFormComponent } from '../../../../shared/components/dynmaic-form/dynmaic-form.component';
+import { columnTable } from '../../../../shared/interface/body-table';
+import { EventColumn } from '../../../../shared/interface/event-column';
 import { InfoTable } from '../../../../shared/interface/info-table';
 import { InputDynamic } from '../../../../shared/interface/input-dynamic';
 import { PrimeNgSharedModule } from '../../../../shared/modules/shared/primeng-shared.module';
@@ -21,29 +23,29 @@ import { OwnerManagementService } from '../../../services/owner-management.servi
 export class OwnerManagementShowComponent {
   tableConfig: InfoTable;
   type: 'table' | 'list' | string = '';
-  columns = [
+  columns: columnTable[] = [
     {
       field: 'name',
       header: 'الاسم',
-      HeaderType: 'string',
+      headerType: 'string',
     },
     {
       field: 'email',
       header: 'الايميل',
-      HeaderType: 'string',
+      headerType: 'string',
     },
     {
       field: 'phoneNumber',
       header: 'رقم الهاتف',
-      HeaderType: 'string',
+      headerType: 'string',
     },
     {
       field: 'isActive',
       header: 'فعال',
-      HeaderType: 'Toggle',
+      headerType: 'toggle',
     },
   ];
-  columnsEvent = [
+  columnsEvent: EventColumn[] = [
     {
       field: 'isActive',
       command: (event: any, field: string, rowData: any) => {
@@ -104,7 +106,7 @@ export class OwnerManagementShowComponent {
     private msgSrv: MessageToastService,
     private route: ActivatedRoute,
     private router: Router,
-    private ownerManagement: OwnerManagementService
+    private ownerManagement: OwnerManagementService,
   ) {
     this.tableConfig = tableSrv.getStandardInfo(undefined, this.editFunc, this.displayFunc, this.addFunc);
     this.route.params.subscribe((param) => {
@@ -119,13 +121,13 @@ export class OwnerManagementShowComponent {
                   columns: this.columns,
                   loading: false,
                   count: res.count,
-                })
+                }),
               ),
-              catchError(() => of({ loading: false, data: [], columns: this.columns }))
+              catchError(() => of({ loading: false, data: [], columns: this.columns })),
             );
           }
           return of({ loading: false, data: [], columns: this.columns });
-        })
+        }),
       );
     });
     this.tableConfig.Buttons.push({

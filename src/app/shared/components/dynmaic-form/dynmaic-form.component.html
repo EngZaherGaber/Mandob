@@ -1,11 +1,14 @@
-<div class="form-box" *ngIf="finsih">
+@if(finsih){
+<div class="form-box">
     <p-card card>
         <ng-template #header>
             <div class="above">
-                <p-button class="Nbtn" *ngIf="withBackBtn && activeIndex === 0" pTooltip="Back" icon="pi pi-arrow-right"
-                    (click)="back()" />
-                <p-steps step *ngIf="showSteps" [(activeIndex)]="activeIndex" [model]="stepsList"
-                    [readonly]="true"></p-steps>
+                @if(withBackBtn && activeIndex === 0){
+                <p-button class="Nbtn" pTooltip="Back" icon="pi pi-arrow-right" (click)="back()" />
+                }
+                @if(showSteps){
+                <p-steps step [(activeIndex)]="activeIndex" [model]="stepsList" [readonly]="true"></p-steps>
+                }
             </div>
         </ng-template>
         <ng-template pTemplate="content">
@@ -15,53 +18,63 @@
                     <div>
                         <ng-content></ng-content>
                     </div>
-                    <div class="tab-content" id="cardPillContent"
-                        *ngFor="let key of keys; let i = index; let first = first; let last = last"
-                        [ngSwitch]="activeIndex">
-                        <ng-template class="p-fluid row p-2 animation-fade" [ngSwitchCase]="i">
+                    @for (key of keys;let i = $index;let first = $first; let last = $last; track $index) {
+                    <div class="tab-content" id="cardPillContent">
+                        @switch (activeIndex) {
+                        @case (i) {
+                        <ng-template class="p-fluid row p-2 animation-fade">
                             <div style="padding-top: 1.125rem;"
                                 class="animation-fade d-flex align-items-center flex-wrap justify-content-start">
-                                <div *ngFor="let obj of objs[key]; let k = index" class="z-field"
-                                    [style.display]="obj.visible ? 'block' : 'none'"
+                                @for (obj of objs[key];let k=$index; track $index) {
+                                <div class="z-field" [style.display]="obj.visible ? 'block' : 'none'"
                                     style="min-width: 30%;padding-top: 5px;">
-                                    <div *ngIf="obj.visible">
-                                        <div
-                                            style="display: flex;max-width: 300px; justify-content: space-between; gap: -11px;margin-bottom: 20px !important;">
-                                            <dynamic-input [style]="'width: 100%;'"
-                                                *ngIf="form.controls[key] && form.get([key,obj.key])"
-                                                [FEcontrol]="isFormGroup(form.get([key,obj.key]) ?? undefined)"
-                                                [object]="obj"></dynamic-input>
-                                        </div>
+                                    @if (obj.visible && form.controls[key] && form.get([key,obj.key])) {
+                                    <div
+                                        style="display: flex;max-width: 300px; justify-content: space-between; gap: -11px;margin-bottom: 20px !important;">
+                                        <dynamic-input [style]="'width: 100%;'" *
+                                            [FEcontrol]="isFormGroup(form.get([key,obj.key]) ?? undefined)"
+                                            [object]="obj"></dynamic-input>
                                     </div>
+                                    }
                                 </div>
+                                }
                             </div>
                         </ng-template>
+                        }
+                        }
                     </div>
+                    }
                 </div>
             </p-scrollPanel>
         </ng-template>
         <ng-template pTemplate="footer">
             <div class="button-container">
                 <div class="left-buttons">
+                    @if (activeIndex !== 0) {
                     <button pButton label="رجوع" icon="pi pi-angle-right"
-                        (click)="back();onActiveIndexChange.emit({index:activeIndex,form:form});"
-                        *ngIf="activeIndex !== 0"></button>
+                        (click)="back();onActiveIndexChange.emit({index:activeIndex,form:form});"></button>
+                    }
                 </div>
                 <div class="right-buttons">
-                    <button iconPos="right" #nextBtn
-                        *ngIf="activeIndex < stepsList.length - 1 || (activeIndex === 0 && stepsList.length > 1)"
-                        pButton label="التالي" icon="pi pi-angle-left"
-                        [disabled]="form.controls[keys[activeIndex]].invalid"
-                        (click)="activeIndex = activeIndex + 1;onActiveIndexChange.emit({index:activeIndex,form:form});"></button>
-                    <button iconPos="right" *ngIf="activeIndex === stepsList.length - 1 && isShow" pButton label="خروج"
-                        icon="pi pi-angle-left" (click)="exit()"></button>
-                    <button iconPos="right" id="saveBtn" #saveBtn
-                        *ngIf="(activeIndex === stepsList.length - 1 && (justOneStep || activeIndex !== 0)) && !isShow"
-                        pButton pRipple [label]="submitLabel ? submitLabel : 'حفظ'" icon="pi pi-check"
-                        [disabled]="form.controls[keys[activeIndex]].invalid || disableSaveButton"
-                        class="p-button-success" (click)="submitFunc()"></button>
+                    @if (activeIndex < stepsList.length - 1 || (activeIndex===0 && stepsList.length> 1)) {
+                        <button iconPos="right" #nextBtn pButton label="التالي" icon="pi pi-angle-left"
+                            [disabled]="form.controls[keys[activeIndex]].invalid"
+                            (click)="activeIndex = activeIndex + 1;onActiveIndexChange.emit({index:activeIndex,form:form});"></button>
+                        }
+                        @if (activeIndex === stepsList.length - 1) {
+                        @if (isShow) {
+                        <button iconPos="right" pButton label="خروج" icon="pi pi-angle-left" (click)="exit()"></button>
+                        }
+                        @else if ((justOneStep || activeIndex !== 0)) {
+                        <button iconPos="right" id="saveBtn" #saveBtn pButton pRipple
+                            [label]="submitLabel ? submitLabel : 'حفظ'" icon="pi pi-check"
+                            [disabled]="form.controls[keys[activeIndex]].invalid || disableSaveButton"
+                            class="p-button-success" (click)="submitFunc()"></button>
+                        }
+                        }
                 </div>
             </div>
         </ng-template>
     </p-card>
 </div>
+}

@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
 import { catchError, of, switchMap } from 'rxjs';
 import { DynamicViewComponent } from '../../../../shared/components/dynamic-view/dynamic-view.component';
+import { columnTable } from '../../../../shared/interface/body-table';
 import { InfoTable } from '../../../../shared/interface/info-table';
 import { DyTableService } from '../../../../shared/service/dy-table.service';
 import { MessageToastService } from '../../../../shared/service/message-toast.service';
@@ -19,41 +20,41 @@ export class PlanManagementShowComponent {
   tableConfig: InfoTable;
   imageField: string = '';
   type: 'table' | 'list' | string = 'table';
-  columns = [
+  columns: columnTable[] = [
     {
       field: 'planName',
       header: 'اسم الباقة',
-      HeaderType: 'string',
+      headerType: 'string',
     },
     {
       field: 'price',
       header: 'السعر',
-      HeaderType: 'int',
+      headerType: 'int',
     },
     {
       field: 'maxRequestsPerMonth',
       header: 'اقصى عدد منتجات بالشهر',
-      HeaderType: 'int',
+      headerType: 'int',
     },
     {
       field: 'maxDistributors',
       header: 'عدد الموزعين',
-      HeaderType: 'int',
+      headerType: 'int',
     },
     {
       field: 'priorityWeight',
       header: 'الوزن',
-      HeaderType: 'int',
+      headerType: 'int',
     },
     {
       field: 'hasAdsFeature',
       header: 'امكانية الاعلان',
-      HeaderType: 'bool',
+      headerType: 'bool',
     },
     {
       field: 'hasMonthlyNotifications',
       header: 'امكانية الاشعار الشهري',
-      HeaderType: 'bool',
+      headerType: 'bool',
     },
   ];
   addFunc: () => void = () => {

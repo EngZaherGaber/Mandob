@@ -1,13 +1,16 @@
 <div class="container-fluid main-container">
     <div class="row">
-        <ng-container *ngIf="stateSrv.isOpenedSideNav(); then openSidenav"></ng-container>
+        @if(stateSrv.isOpenedSideNav()){
+        <ng-container *ngTemplateOutlet="openSidenav"></ng-container>
+        }
         <ng-template #openSidenav>
             <div class="sidebar vh-100 py-2 px-1" [@sidebarAnimation]>
                 <sidenav></sidenav>
             </div>
         </ng-template>
-        <ng-container *ngIf="stateSrv.isOpenedCart(); then openCart"></ng-container>
-
+        @if(stateSrv.isOpenedCart()){
+        <ng-container *ngTemplateOutlet="openCart"></ng-container>
+        }
         <div class="main-content my-2 p-0 " style="max-height: 100vh" [@contentAnimation]
             [class.col-lg-10]="stateSrv.isOpenedSideNav()" [class.col-lg-12]="!stateSrv.isOpenedSideNav()">
             <div class="row head-content mx-0 w-100" style="position: relative;">
@@ -25,14 +28,19 @@
         </div>
     </div>
 </div>
+@if(stateSrv.isOpenedCart() || (stateSrv.isOpenedSideNav() && (stateSrv.screenType() === 'mobile' ||
+stateSrv.screenType()
+=== 'tablet'))){
 <div class="w-100 h-100 position-absolute start-0 top-0"
-    *ngIf="stateSrv.isOpenedCart() || (stateSrv.isOpenedSideNav() && (stateSrv.screenType() === 'mobile' || stateSrv.screenType() === 'tablet'))"
     style="background-color: var(--p-surface-700);opacity: 0.9;z-index: 998;">
 </div>
+}
 <ng-template #openCart>
     <div class="cart position-absolute px-0 start-0 top-0 py-2 h-100 d-flex flex-column" [@sidebarAnimation]
         style="background-color: var(--p-content-background);z-index: 999;">
-        <ng-container *ngIf="userState.role() === 'client'; then clientCart"></ng-container>
+        @if(userState.role() === 'client'){
+        <ng-container *ngTemplateOutlet="clientCart"></ng-container>
+        }
     </div>
 </ng-template>
 <ng-template #clientCart>

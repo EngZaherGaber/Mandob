@@ -116,14 +116,14 @@
         <td class="w-50" style="max-width: 50%;word-break: break-all;">{{ col.header }}:</td>
         <td class="w-50" style="max-width: 50%;word-break: break-all;">
           <div>
-            @switch (col.HeaderType) {
+            @switch (col.headerType) {
             @case ('bool') {
             <i class="pi" [ngClass]="{
                                   'text-green-500 pi-check-circle': item[col.field],
                                   'text-red-500 pi-times-circle': !item[col.field]
                                 }"></i>
             }
-            @case ('DateTime') {
+            @case ('datetime') {
             <div>
               @if(item[col.field] !== null){
               <small>
@@ -145,15 +145,6 @@
               }
             </div>
             }
-            @case ('double') {
-            <div>
-              @if(item[col.field] !== null){
-              <small>
-                {{ item[col.field] | number : "1.2-2" }}
-              </small>
-              }
-            </div>
-            }
             @case ('currency') {
             <div>
               @if(item[col.field] !== null){
@@ -163,7 +154,7 @@
               }
             </div>
             }
-            @case ('Toggle') {
+            @case ('toggle') {
             <div>
               @if(hasToggleShow(col.field, item)){
               <p-toggleswitch [pTooltip]="item[col.field] ? 'True' : 'False'" [(ngModel)]="item[col.field]"
