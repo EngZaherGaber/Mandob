@@ -1,4 +1,4 @@
 export interface ShoppingCartUpdateItem {
   cartItemId: number;
-  quantity: number;
+  newQuantity: number;
 }

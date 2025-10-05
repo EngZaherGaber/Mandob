@@ -17,19 +17,26 @@ export class CollectionManagementService {
     return this.http.post<APIResponse<Collection[]>>(
       this.url + 'getall',
       body, // request body
-      { params: params } // request options
+      { params: params }, // request options
     );
   }
   getOne(id: number) {
     return this.http.get<APIResponse<Collection>>(this.url + id);
   }
-  edit(id: number, body: Collection) {
-    return this.http.put<APIResponse<Collection>>(this.url + id, body);
+  edit(id: number, body: Collection, files: File[]) {
+    const formData = new FormData();
+    files.forEach((file, index) => {
+      formData.append('CollectionImageUrl', file, file.name);
+    });
+    Object.keys(body).forEach((key) => {
+      formData.append(key, (body as any)[key]);
+    });
+    return this.http.put<APIResponse<Collection>>(this.url + id, formData);
   }
   add(body: Collection, files: File[]) {
     const formData = new FormData();
     files.forEach((file, index) => {
-      formData.append('LogoFiles', file, file.name);
+      formData.append('CollectionImageUrl', file, file.name);
     });
     Object.keys(body).forEach((key) => {
       formData.append(key, (body as any)[key]);

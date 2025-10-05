@@ -40,7 +40,7 @@
                     (onClick)="exportExcel()" />
                 }
                 <p-multiselect size="small" appendTo="body" [options]="columns" [(ngModel)]="selectedColumns"
-                    placeholder="Select Columns" styleClass="w-full md:w-80" />
+                    placeholder="Select Columns" />
 
             </ng-template>
         </p-toolbar>
@@ -48,7 +48,7 @@
     </ng-template>
     <ng-template pTemplate="header" let-columns>
         <tr pFrozenRow>
-            <th pFrozenColumn style="max-width: 250px !important;justify-content: center;">
+            <th pFrozenColumn style="max-width: 250px !important;">
                 <div class="d-flex justify-content-center">
                     <p-button icon="pi pi-filter" [rounded]="true" [text]="true" pTooltip="Use custom filters"
                         (click)="filterdMode = !filterdMode" severity="primary" />
@@ -63,7 +63,7 @@
             @if (isSelect(col.header)) {
             <th pResizableColumn [pSortableColumn]="col.field"
                 [style]="col.headerType === 'bool' ? {'justify-content':'center'} : ''">
-                <div style="display: flex;align-items: center;justify-content: space-between;">
+                <div class="d-flex justify-content-between align-items-center">
                     <small>{{col.header}}</small>
                     @if(col.headerType !== 'img'){
                     <p-sortIcon [field]="col.field"></p-sortIcon>
@@ -162,8 +162,9 @@
             @for (col of columns; track $index) {
             @if (isSelect(col.header)) {
             <td>
-                <div [ngClass]="col.headerType === 'bool' || col.headerType === 'img' ? 'bool-cell' : ''"
-                    style="display: flex;" [style]="{'justify-content':getAlignment(col.field)}">
+                <div class="d-flex"
+                    [ngClass]="(col.headerType === 'bool' || col.headerType === 'img') ? 'bool-cell' : ''"
+                    [style]="{'justify-content':getAlignment(col.field)}">
                     @if(col.headerType !== 'img'){
 
                     @switch (col.headerType) {

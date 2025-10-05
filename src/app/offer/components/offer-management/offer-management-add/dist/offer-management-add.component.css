@@ -1,0 +1,13 @@
+::ng-deep .offer-con .helper {
+  position: relative !important;
+}
+::ng-deep .offer-con .p-floatlabel label {
+  position: relative !important;
+  top: 0 !important;
+}
+
+::ng-deep .array-show .p-accordionheader {
+  padding-block: 0 !important;
+  background-color: var(--p-amber-500) !important;
+  border-radius: 0 !important;
+}

@@ -21,7 +21,7 @@ export class CollectionManagementAddComponent {
   constructor(
     private collectionManagement: CollectionManagementService,
     private router: Router,
-    private msgSrv: MessageToastService
+    private msgSrv: MessageToastService,
   ) {
     this.resetObjs = {
       generalInfo: [
@@ -51,6 +51,12 @@ export class CollectionManagementAddComponent {
   onSelect(event: any) {
     for (let file of event.files) {
       this.uploadedFiles.push(file);
+    }
+  }
+  onRemove(event: any) {
+    const index = this.uploadedFiles.findIndex((x) => x.name === event.file.name);
+    if (index > -1) {
+      this.uploadedFiles.splice(index, 1);
     }
   }
   submit(event: any) {

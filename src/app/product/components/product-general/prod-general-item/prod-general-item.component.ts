@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs';
 import { ShoppingCartAddItem } from '../../../../client/interfaces/shopping-cart-add-item';
 import { ShoppingManagementService } from '../../../../client/services/shopping.service';
+import { UserStateService } from '../../../../general/services/user-state.service';
 import { DynamicInputComponent } from '../../../../shared/components/dynamic-input/dynamic-input.component';
 import { InputDynamic } from '../../../../shared/interface/input-dynamic';
 import { PrimeNgSharedModule } from '../../../../shared/modules/shared/primeng-shared.module';
@@ -64,6 +65,7 @@ export class ProdGeneralItemComponent {
   variantSKU: string = '';
   product: ProductManagementItem | null = null;
   constructor(
+    public userState: UserStateService,
     private productStore: ProductStoreService,
     private shoppingManagement: ShoppingManagementService,
     private msgSrv: MessageToastService,

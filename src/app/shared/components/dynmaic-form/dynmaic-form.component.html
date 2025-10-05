@@ -22,24 +22,22 @@
                     <div class="tab-content" id="cardPillContent">
                         @switch (activeIndex) {
                         @case (i) {
-                        <ng-template class="p-fluid row p-2 animation-fade">
-                            <div style="padding-top: 1.125rem;"
-                                class="animation-fade d-flex align-items-center flex-wrap justify-content-start">
-                                @for (obj of objs[key];let k=$index; track $index) {
-                                <div class="z-field" [style.display]="obj.visible ? 'block' : 'none'"
-                                    style="min-width: 30%;padding-top: 5px;">
-                                    @if (obj.visible && form.controls[key] && form.get([key,obj.key])) {
-                                    <div
-                                        style="display: flex;max-width: 300px; justify-content: space-between; gap: -11px;margin-bottom: 20px !important;">
-                                        <dynamic-input [style]="'width: 100%;'" *
-                                            [FEcontrol]="isFormGroup(form.get([key,obj.key]) ?? undefined)"
-                                            [object]="obj"></dynamic-input>
-                                    </div>
-                                    }
+                        <div
+                            class="p-fluid row p-2 animation-fade d-flex flex-column flex-md-row align-items-center flex-wrap justify-content-start">
+                            @for (obj of objs[key];let k=$index; track $index) {
+                            <div class="z-field w-auto pt-4" [style.display]="obj.visible ? 'block' : 'none'"
+                                style="min-width: 30%;">
+                                @if (obj.visible && form.controls[key] && form.get([key,obj.key])) {
+                                <div
+                                    style="display: flex;max-width: 300px; justify-content: space-between; gap: -11px;margin-bottom: 20px !important;">
+                                    <dynamic-input [style]="'width: 100%;'"
+                                        [FEcontrol]="isFormGroup(form.get([key,obj.key]) ?? undefined)"
+                                        [object]="obj"></dynamic-input>
                                 </div>
                                 }
                             </div>
-                        </ng-template>
+                            }
+                        </div>
                         }
                         }
                     </div>

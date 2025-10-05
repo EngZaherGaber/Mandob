@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { Route, Routes } from '@angular/router';
 import { authGuard } from './shared/guards/auth.guard';
 
 const companyRoutes = {
@@ -41,7 +41,7 @@ const companyRoutes = {
           title: 'عرض المنتجات',
           loadComponent: () =>
             import('./product/components/prod-management/prod-management-show/prod-management-show.component').then(
-              (m) => m.ProdManagementShowComponent
+              (m) => m.ProdManagementShowComponent,
             ),
         },
         {
@@ -49,7 +49,7 @@ const companyRoutes = {
           title: 'بيانات المنتج',
           loadComponent: () =>
             import('./product/components/prod-management/prod-management-detail/prod-management-detail.component').then(
-              (m) => m.ProdManagementDetailComponent
+              (m) => m.ProdManagementDetailComponent,
             ),
         },
         {
@@ -57,7 +57,7 @@ const companyRoutes = {
           title: 'بيانات المنتج',
           loadComponent: () =>
             import('./product/components/product-general/prod-general-item/prod-general-item.component').then(
-              (m) => m.ProdGeneralItemComponent
+              (m) => m.ProdGeneralItemComponent,
             ),
         },
         {
@@ -65,7 +65,7 @@ const companyRoutes = {
           title: 'اضافة منتج',
           loadComponent: () =>
             import('./product/components/prod-management/prod-management-add/prod-management-add.component').then(
-              (m) => m.ProdManagementAddComponent
+              (m) => m.ProdManagementAddComponent,
             ),
         },
       ],
@@ -78,7 +78,7 @@ const companyRoutes = {
           title: 'عرض العروض',
           loadComponent: () =>
             import('./offer/components/offer-management/offer-management-show/offer-management-show.component').then(
-              (m) => m.OfferManagementShowComponent
+              (m) => m.OfferManagementShowComponent,
             ),
         },
         {
@@ -94,7 +94,7 @@ const companyRoutes = {
           title: 'اضافة عرض',
           loadComponent: () =>
             import('./offer/components/offer-management/offer-management-add/offer-management-add.component').then(
-              (m) => m.OfferManagementAddComponent
+              (m) => m.OfferManagementAddComponent,
             ),
         },
       ],
@@ -141,7 +141,7 @@ const ownerRoutes = {
           title: 'عرض الشركات',
           loadComponent: () =>
             import('./company/components/comp-management/comp-management-show/comp-management-show.component').then(
-              (m) => m.CompManagementShowComponent
+              (m) => m.CompManagementShowComponent,
             ),
         },
         {
@@ -149,7 +149,7 @@ const ownerRoutes = {
           title: 'بيانات الشركة',
           loadComponent: () =>
             import('./company/components/comp-management/comp-management-detail/comp-management-detail.component').then(
-              (m) => m.CompManagementDetailComponent
+              (m) => m.CompManagementDetailComponent,
             ),
         },
         {
@@ -157,7 +157,7 @@ const ownerRoutes = {
           title: 'اضافة شركة',
           loadComponent: () =>
             import('./company/components/comp-management/comp-management-add/comp-management-add.component').then(
-              (m) => m.CompManagementAddComponent
+              (m) => m.CompManagementAddComponent,
             ),
         },
       ],
@@ -170,7 +170,7 @@ const ownerRoutes = {
           title: 'عرض المدراء',
           loadComponent: () =>
             import('./owner/components/owner-management/owner-management-show/owner-management-show.component').then(
-              (m) => m.OwnerManagementShowComponent
+              (m) => m.OwnerManagementShowComponent,
             ),
         },
         {
@@ -178,7 +178,7 @@ const ownerRoutes = {
           title: 'اضافة مدير',
           loadComponent: () =>
             import('./owner/components/owner-management/owner-management-add/owner-management-add.component').then(
-              (m) => m.OwnerManagementAddComponent
+              (m) => m.OwnerManagementAddComponent,
             ),
         },
         {
@@ -220,7 +220,7 @@ const ownerRoutes = {
           title: 'عرض الباقات',
           loadComponent: () =>
             import('./owner/components/plan-management/plan-management-show/plan-management-show.component').then(
-              (m) => m.PlanManagementShowComponent
+              (m) => m.PlanManagementShowComponent,
             ),
         },
         {
@@ -228,7 +228,7 @@ const ownerRoutes = {
           title: 'اضافة باقة',
           loadComponent: () =>
             import('./owner/components/plan-management/plan-management-add/plan-management-add.component').then(
-              (m) => m.PlanManagementAddComponent
+              (m) => m.PlanManagementAddComponent,
             ),
         },
         {
@@ -236,7 +236,7 @@ const ownerRoutes = {
           title: 'بيانات باقة',
           loadComponent: () =>
             import('./owner/components/plan-management/plan-management-detail/plan-management-detail.component').then(
-              (m) => m.PlanManagementDetailComponent
+              (m) => m.PlanManagementDetailComponent,
             ),
         },
       ],
@@ -273,15 +273,20 @@ const ownerRoutes = {
   ],
 };
 
-const clientRoutes = {
+const clientRoutes: Route = {
   path: 'client',
   children: [
+    {
+      path: '',
+      pathMatch: 'full', // ✅ ensure exact match
+      redirectTo: 'home', // ✅ redirect /client -> /client/home
+    },
     {
       path: 'home',
       title: 'الصفحة الرئيسية',
       loadComponent: () =>
         import('./client/components/client-home-land/client-home-land.component').then(
-          (m) => m.ClientHomeLandComponent
+          (m) => m.ClientHomeLandComponent,
         ),
     }, //TODO: create its company
     {
@@ -292,7 +297,7 @@ const clientRoutes = {
           title: 'صفحة الشركة',
           loadComponent: () =>
             import('./company/components/comp-general/comp-general-profile/comp-general-profile.component').then(
-              (m) => m.CompGeneralProfileComponent
+              (m) => m.CompGeneralProfileComponent,
             ),
         },
       ],
@@ -305,7 +310,7 @@ const clientRoutes = {
           title: 'عرض المنتجات',
           loadComponent: () =>
             import('./product/components/product-general/prod-general-group/prod-general-group.component').then(
-              (m) => m.ProdGeneralGroupComponent
+              (m) => m.ProdGeneralGroupComponent,
             ),
         },
         {
@@ -313,7 +318,7 @@ const clientRoutes = {
           title: 'صفحة منتج',
           loadComponent: () =>
             import('./product/components/product-general/prod-general-item/prod-general-item.component').then(
-              (m) => m.ProdGeneralItemComponent
+              (m) => m.ProdGeneralItemComponent,
             ),
         },
       ],

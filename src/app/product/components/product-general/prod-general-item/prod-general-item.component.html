@@ -40,6 +40,7 @@
                                 {{countControl.value * price |
                                 currency}}</p>
                         </div>
+                        @if(userState.role() === 'client'){
                         <div class="button-div d-flex flex-column gap-2">
                             <dynamic-input [style]="'width: 100%;'" [FEcontrol]="countControl"
                                 [object]="countObj"></dynamic-input>
@@ -48,6 +49,7 @@
                             <p-button [ngClass]="'w-100 d-block'" [style]="{'width':'100%'}" label="وضع في السلة"
                                 icon="pi pi-cart-plus" (onClick)="addToCart()" />
                         </div>
+                        }
                     </div>
                 </div>
             </div>

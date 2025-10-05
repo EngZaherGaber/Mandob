@@ -3,17 +3,19 @@ import { Component, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FileUpload } from 'primeng/fileupload';
-import { forkJoin, Observable, of } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { forkJoin, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { CollectionManagementService } from '../../../../company/services/collection-management.service';
 import { UserStateService } from '../../../../general/services/user-state.service';
 import { CategoryManagementService } from '../../../../owner/services/category-management.service';
 import { DynamicInputComponent } from '../../../../shared/components/dynamic-input/dynamic-input.component';
 import { InputDynamic } from '../../../../shared/interface/input-dynamic';
 import { PrimeNgSharedModule } from '../../../../shared/modules/shared/primeng-shared.module';
+import { FileService } from '../../../../shared/service/file.service';
 import { MessageToastService } from '../../../../shared/service/message-toast.service';
 import { OptionItem } from '../../../interfaces/option-item';
 import { ProductManagementAdd } from '../../../interfaces/product-management-add';
+import { ProductManagementItem } from '../../../interfaces/product-management-item';
 import { VariantItem } from '../../../interfaces/variant-item';
 import { ProductManagementService } from '../../../services/product-management.service';
 
@@ -41,6 +43,7 @@ export class ProdManagementDetailComponent {
   constructor(
     private productManagement: ProductManagementService,
     private msgSrv: MessageToastService,
+    private fileSrv: FileService,
     public router: Router,
     private route: ActivatedRoute,
     private http: HttpClient,
@@ -48,6 +51,7 @@ export class ProdManagementDetailComponent {
     userState: UserStateService,
     collectionManagement: CollectionManagementService,
   ) {
+    let result: ProductManagementItem | null = null;
     this.route.params
       .pipe(
         switchMap((param) => {
@@ -110,18 +114,31 @@ export class ProdManagementDetailComponent {
               CollectionIDs: res.product.data.collectionIDs.map((x) => x.toString()),
               CategorieIDs: res.product.data.categorieIDs.map((x) => x.toString()),
             });
-            this.options = res.product.data.options;
-            this.variants = res.product.data.variants;
-            return this.getImages(res.product.data.productImages ?? []);
+            result = res.product.data;
+            return this.fileSrv.getImages(res.product.data.productImages ?? []);
           } else {
             return of(null);
           }
         }),
+        switchMap((res) => {
+          if (res && typeof res !== 'boolean') {
+            this.uploadedFiles = res; // assign to <p-fileupload> if needed
+            this.options = result?.options ?? [];
+            // const filesNames = result?.productImages?.map((x: string) => {
+            //   const sections = x.split('/');
+            //   return sections[sections.length - 1];
+            // });
+            // result?.variants.forEach((variant) => {
+            //   variant.variantImages = variant.variantImages?.filter((img) => filesNames?.includes(img));
+            // });
+            return of(true);
+          }
+          return of(false);
+        }),
       )
       .subscribe((res) => {
-        if (res && typeof res !== 'boolean') {
-          this.uploadedFiles = res; // assign to <p-fileupload> if needed
-        }
+        this.variants = result?.variants ?? [];
+        this.options = result?.options ?? [];
         this.showForm = true;
       });
   }
@@ -156,23 +173,6 @@ export class ProdManagementDetailComponent {
   }
   removeOption(optionIndex: number) {
     this.options.splice(optionIndex, 1);
-  }
-  getImages(imageUrls: string[]): Observable<File[] | boolean> {
-    const observables = imageUrls.map((url) =>
-      this.http.get(url, { responseType: 'blob' }).pipe(
-        map((blob) => {
-          const filename = url.split('/').pop() || 'image.jpg';
-          return new File([blob], filename, { type: blob.type });
-        }),
-        catchError((err) => of(null)),
-      ),
-    );
-    if (observables.length > 0) {
-      return forkJoin(observables).pipe(
-        map((files) => files.filter((f): f is File => f !== null)), // filter out failed ones
-      );
-    }
-    return of(true);
   }
 
   generateVariants(): VariantItem[] {

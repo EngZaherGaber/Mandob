@@ -15,7 +15,7 @@ export class ShoppingManagementService {
   add(body: ShoppingCartAddItem) {
     return this.http.post<APIResponse<ShoppingCart>>(this.url + 'add', body);
   }
-  update(body: ShoppingCartUpdateItem[]) {
+  update(body: { itemUpdates: ShoppingCartUpdateItem[] }) {
     return this.http.put<APIResponse<ShoppingCart>>(this.url + 'update', body);
   }
   getOne() {
