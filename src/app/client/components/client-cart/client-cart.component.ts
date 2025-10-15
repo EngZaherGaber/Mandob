@@ -6,7 +6,7 @@ import { PrimeNgSharedModule } from '../../../shared/modules/shared/primeng-shar
 import { MessageToastService } from '../../../shared/service/message-toast.service';
 import { StateService } from '../../../shared/service/state.service';
 import { ShoppingCart } from '../../interfaces/shopping-cart';
-import { RequestManagementService } from '../../services/request-management.service';
+import { ClientRequestService } from '../../services/client-request.service';
 import { ShoppingManagementService } from '../../services/shopping.service';
 
 @Component({
@@ -27,7 +27,7 @@ export class ClientCartComponent {
     public stateSrv: StateService,
     public msgSrv: MessageToastService,
     private shoppingManagement: ShoppingManagementService,
-    private requestManagement: RequestManagementService,
+    private clientRequestSrv: ClientRequestService,
   ) {
     this.getSub$ = this.get$.pipe(
       switchMap((res) => {
@@ -51,7 +51,7 @@ export class ClientCartComponent {
 
   makeItRequest() {
     if (this.result) {
-      this.requestManagement.createFromCart(this.result).subscribe((res) => {
+      this.clientRequestSrv.createFromCart(this.result).subscribe((res) => {
         this.msgSrv.showMessage(res.message, res.succeeded);
         this.get$.next(true);
       });

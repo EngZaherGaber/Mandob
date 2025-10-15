@@ -21,6 +21,11 @@ export class ProdManagementShowComponent {
   imageField: string = '';
   columns: columnTable[] = [
     {
+      field: 'isActive',
+      header: 'فعال',
+      headerType: 'toggle',
+    },
+    {
       field: 'name',
       header: 'الاسم',
       headerType: 'string',
@@ -28,12 +33,7 @@ export class ProdManagementShowComponent {
     {
       field: 'productDescription',
       header: 'الوصف',
-      headerType: 'string',
-    },
-    {
-      field: 'isActive',
-      header: 'فعال',
-      headerType: 'toggle',
+      headerType: 'html',
     },
   ];
   columnsEvent: EventColumn[] = [
@@ -55,8 +55,8 @@ export class ProdManagementShowComponent {
   };
   changeState: (rowData: any) => void = (rowData: any) => {
     this.confirmationService.confirm({
-      message: 'هل تريد تغيير حالة هذا المستخدم؟',
-      header: 'تغيير حالة المستخدم',
+      message: 'هل تريد تغيير حالة هذا المنتج؟',
+      header: 'تغيير حالة المنتج',
       icon: 'pi pi-info-circle',
       rejectLabel: 'الغاء',
       rejectButtonProps: {
@@ -79,8 +79,8 @@ export class ProdManagementShowComponent {
   };
   deleteFunc: (rowData: any) => void = (rowData: any) => {
     this.confirmationService.confirm({
-      message: 'هل تريد حذف هذه الحساب؟',
-      header: 'حذف الحساب',
+      message: 'هل تريد حذف هذه المنتج؟',
+      header: 'حذف المنتج',
       icon: 'pi pi-info-circle',
       rejectLabel: 'الغاء',
       rejectButtonProps: {

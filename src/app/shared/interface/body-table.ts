@@ -1,7 +1,7 @@
 export interface columnTable {
   header: string;
   field: string;
-  headerType: 'bool' | 'int' | 'datetime' | 'float' | 'currency' | 'json' | 'tag' | 'toggle' | 'string';
+  headerType: 'bool' | 'int' | 'datetime' | 'float' | 'currency' | 'json' | 'tag' | 'toggle' | 'string' | 'html';
 }
 export interface BodyTable {
   loading: boolean;

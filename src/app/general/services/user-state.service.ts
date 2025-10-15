@@ -13,6 +13,7 @@ import { Owner } from '../../owner/interfaces/owner';
 import { User } from '../interfaces/user';
 import { UserStrategy } from '../interfaces/user-strategy';
 import { AuthService } from './auth.service';
+import { WebsocketService } from './websocket.service';
 
 interface StrategyRegistry {
   client: Client;
@@ -29,6 +30,7 @@ export class UserStateService {
   role = computed(() => (this.user() ? this.user()?.role : null));
   fingerPrint = computed(() => this.getFingerPrint());
   user = signal<User | null>(null);
+  loginForm = signal<{ input: string; password: string } | null>(null);
   strategy = computed(() => {
     const role = this.role();
     if (this.isBrowser() && role && this.isValidRole(role)) {
@@ -42,7 +44,8 @@ export class UserStateService {
     private distributor: DistributorStrategy,
     private owner: OwnerStrategy,
     public authSrv: AuthService,
-    @Inject(PLATFORM_ID) private platformId: Object
+    public wsSrv: WebsocketService,
+    @Inject(PLATFORM_ID) private platformId: Object,
   ) {
     this.strategies = {
       client: this.client,
@@ -73,12 +76,13 @@ export class UserStateService {
       switchMap((res) => {
         if (res.succeeded) {
           this.user.set(res.data);
+          this.wsSrv.startConnection(this.user()?.userId ?? 0);
           return of(true);
         } else {
           return of(false);
         }
       }),
-      catchError(() => of(false)) // handle errors
+      catchError(() => of(false)), // handle errors
     );
   }
 }

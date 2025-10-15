@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   defaultLanguage: 'en-US',
   api: '/api/',
+  socket: '/notificationHub',
 };
 /*
  * For easier debugging in development mode, you can import the following file

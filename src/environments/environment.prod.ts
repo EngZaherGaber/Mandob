@@ -3,4 +3,5 @@ export const environment = {
   defaultLanguage: 'en-US',
   supportedLanguages: ['vi-VN', 'en-US', 'ja-JP'],
   api: '/api/',
+  socket: '/notificationHub',
 };

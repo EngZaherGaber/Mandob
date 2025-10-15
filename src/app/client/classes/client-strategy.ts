@@ -41,12 +41,19 @@ export class ClientStrategy extends BaseUserStrategy<Client> {
       label: 'الطلبات',
       items: [
         {
-          label: 'الطلبات المسلمة',
+          label: 'الطلبات المنتظرة',
           icon: 'pi pi-send', // 📤 تم تسليمها
+          routerLink: ['client/request-management/waiting/show'],
         },
         {
-          label: 'الطلبات المرسلة',
+          label: 'الطلبات المنتهية',
           icon: 'pi pi-inbox', // 📥 واردة
+          routerLink: ['client/request-management/ending/show'],
+        },
+        {
+          label: 'المرتجع',
+          icon: 'pi pi-arrow-circle-left', // 📥 واردة
+          routerLink: ['client/return-management/show'],
         },
       ],
     },

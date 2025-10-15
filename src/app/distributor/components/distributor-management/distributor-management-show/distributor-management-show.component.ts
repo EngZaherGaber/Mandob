@@ -25,6 +25,11 @@ export class DistributorManagementShowComponent {
   type: 'table' | 'list' | string = '';
   columns = [
     {
+      field: 'isActive',
+      header: 'فعال',
+      headerType: 'toggle',
+    },
+    {
       field: 'name',
       header: 'الاسم',
       headerType: 'string',
@@ -38,11 +43,6 @@ export class DistributorManagementShowComponent {
       field: 'phoneNumber',
       header: 'رقم الهاتف',
       headerType: 'string',
-    },
-    {
-      field: 'isActive',
-      header: 'فعال',
-      headerType: 'Toggle',
     },
   ];
   columnsEvent = [
@@ -106,6 +106,32 @@ export class DistributorManagementShowComponent {
       },
     });
   };
+  deleteFunc: (rowData: any) => void = (rowData: any) => {
+    this.confirmationService.confirm({
+      message: 'هل تريد حذف هذا المستخدم؟',
+      header: 'حذف المستخدم',
+      icon: 'pi pi-info-circle',
+      rejectLabel: 'الغاء',
+      rejectButtonProps: {
+        label: 'الغاء',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'تأكييد',
+        severity: 'danger',
+      },
+
+      accept: () => {
+        this.distributorManagement.delete(rowData.userId).subscribe((res) => {
+          this.msgSrv.showMessage(res.message, res.succeeded);
+          if (res.succeeded) {
+            this.tableConfig.getSub$.next({});
+          }
+        });
+      },
+    });
+  };
   addFunc: () => void = () => {
     this.router.navigate(['company/distributor-management/add']);
   };
@@ -128,7 +154,7 @@ export class DistributorManagementShowComponent {
     private confirmationService: ConfirmationService,
     private distributorManagement: DistributorManagementService,
   ) {
-    this.tableConfig = tableSrv.getStandardInfo(undefined, this.editFunc, this.displayFunc, this.addFunc);
+    this.tableConfig = tableSrv.getStandardInfo(this.deleteFunc, this.editFunc, this.displayFunc, this.addFunc);
     this.route.params.subscribe((param) => {
       this.type = param['type'];
       this.tableConfig.get$ = this.tableConfig.getSub$.pipe(

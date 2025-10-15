@@ -29,6 +29,11 @@ export class CompManagementShowComponent {
   type: 'table' | 'list' | string = 'table';
   columns: columnTable[] = [
     {
+      field: 'isActive',
+      header: 'فعال',
+      headerType: 'toggle',
+    },
+    {
       field: 'name',
       header: 'الاسم',
       headerType: 'string',
@@ -87,11 +92,6 @@ export class CompManagementShowComponent {
       field: 'createdBy',
       header: 'المسؤول',
       headerType: 'string',
-    },
-    {
-      field: 'isActive',
-      header: 'فعال',
-      headerType: 'toggle',
     },
   ];
   columnsEvent: EventColumn[] = [

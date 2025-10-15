@@ -2,6 +2,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ClientCartComponent } from '../../../client/components/client-cart/client-cart.component';
+import { CompTasksComponent } from '../../../company/components/comp-tasks/comp-tasks.component';
 import { UserStateService } from '../../../general/services/user-state.service';
 import { PrimeNgSharedModule } from '../../modules/shared/primeng-shared.module';
 import { StateService } from '../../service/state.service';
@@ -10,7 +11,14 @@ import { SidenavComponent } from '../sidenav/sidenav.component';
 
 @Component({
   selector: 'layout',
-  imports: [SidenavComponent, RouterOutlet, HeaderComponent, ClientCartComponent, PrimeNgSharedModule],
+  imports: [
+    SidenavComponent,
+    RouterOutlet,
+    HeaderComponent,
+    ClientCartComponent,
+    PrimeNgSharedModule,
+    CompTasksComponent,
+  ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
   animations: [

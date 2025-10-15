@@ -14,6 +14,7 @@ import { DynamicTableComponent } from '../dynamic-table/dynamic-table.component'
   styleUrl: './dynamic-view.component.scss',
 })
 export class DynamicViewComponent {
+  @Input() withList: boolean = true;
   @Input() load: Observable<any> = new Observable();
   @Input() tablePermission: string = '';
   @Input() buttons: DyButton[] = [];

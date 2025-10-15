@@ -3,7 +3,7 @@
     @if(getProducts().length > 0){
     <div class="col-12 col-md-6" style="border-bottom: 2px solid var(--p-surface-50);">
         <div class="w-100 d-flex justify-content-between align-items-center">
-            <p style="color: var(--p-surface-50);font-weight: bold;">المنتجات</p>
+            <p style="color: var(--p-surface-50);font-weight: bold;" class="border-bottom border-2">المنتجات:</p>
             <p-button severity="contrast" size="large" [text]="true" [outlined]="true" ngClass="w-auto"
                 label="رؤية المزيد .."></p-button>
         </div>
@@ -13,7 +13,14 @@
                 <div class="w-100 d-flex gap-4 align-items-center p-1 product-div">
                     <img (error)="onImgError($event)" [src]="product.image" [alt]="product.productName" height="50"
                         width="50" />
-                    <span>{{product.productName}}</span>
+                    <div class="d-flex flex-column justify-content-center">
+                        <p>{{product.productName}}</p>
+                        <span>{{product.minPrice | currency:(product.currencyId === 1 ? 'SYP' :
+                            'USD'):'symbol':'1.2-2'}} - {{product.maxPrice | currency:(product.currencyId === 1 ? 'SYP'
+                            :
+                            'USD'):'symbol':'1.2-2'}} </span>
+                    </div>
+
                 </div>
             </a>
             }
@@ -23,7 +30,7 @@
     @if(getCollections().length > 0){
     <div class="col-12 col-md-6 mt-2" style="border-bottom: 2px solid var(--p-surface-50);">
         <div class="w-100 d-flex justify-content-between align-items-center">
-            <p style="color: var(--p-surface-50);font-weight: bold;">المجموعات</p>
+            <p style="color: var(--p-surface-50);font-weight: bold;" class="border-bottom border-2">المجموعات:</p>
 
         </div>
         <div class="w-100 d-flex flex-column justify-content-between align-items-center">
@@ -32,7 +39,7 @@
                 [routerLink]="'/client/product/group/collection/'+collection.collectionName+'/'+collection.collectionId">
                 <div class="w-100 d-flex gap-4 align-items-center p-1 product-div">
                     <div style="width: 50px;height: 50px;"></div>
-                    <span>{{collection.collectionName}} لشركة {{collection.companyName}}</span>
+                    <p>{{collection.collectionName}} لشركة {{collection.companyName}}</p>
                 </div>
             </a>
             }
@@ -42,7 +49,7 @@
     @if(getCategories().length > 0){
     <div class="col-12 col-md-6 mt-2" style="border-bottom: 2px solid var(--p-surface-50);">
         <div class="w-100 d-flex justify-content-between align-items-center">
-            <p style="color: var(--p-surface-50);font-weight: bold;">الفئات</p>
+            <p style="color: var(--p-surface-50);font-weight: bold;" class="border-bottom border-2">الفئات:</p>
 
         </div>
         <div class="w-100 d-flex flex-column justify-content-between align-items-center">
@@ -51,7 +58,7 @@
                 [routerLink]="'/client/product/group/category/'+category.categoryName+'/'+category.categoryId">
                 <div class="w-100 d-flex gap-4 align-items-center p-1 product-div">
                     <div style="width: 50px;height: 50px;"></div>
-                    <span>{{category.categoryName}}</span>
+                    <p>{{category.categoryName}}</p>
                 </div>
             </a>
             }
@@ -61,7 +68,7 @@
     @if(getCompanies().length > 0){
     <div class="col-12 col-md-6 mt-2" style="border-bottom: 2px solid var(--p-surface-50);">
         <div class="w-100 d-flex justify-content-between align-items-center">
-            <p style="color: var(--p-surface-50);font-weight: bold;">الشركات</p>
+            <p style="color: var(--p-surface-50);font-weight: bold;" class="border-bottom border-2">الشركات:</p>
         </div>
         <div class="w-100 d-flex flex-column justify-content-between align-items-center">
             @for (company of result()?.companies; track $index) {
@@ -69,7 +76,7 @@
                 [routerLink]="'/client/product/group/company/'+company.companyName+'/'+company.companyId">
                 <div class="w-100 d-flex gap-4 align-items-center p-1 product-div">
                     <div style="width: 50px;height: 50px;"></div>
-                    <span>{{company.companyName}}</span>
+                    <p>{{company.companyName}}</p>
                 </div>
             </a>
             }

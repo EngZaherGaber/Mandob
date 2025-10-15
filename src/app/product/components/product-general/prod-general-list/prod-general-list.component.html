@@ -3,10 +3,14 @@
         <h6 class="my-3 fw-bold text-end w-auto" style="color: var(--p-primary-500);">
             {{header}}
         </h6>
+        @if(totalCount > data.length){
         <p-button severity="warn" size="large" [text]="true" [outlined]="true" ngClass="w-auto" label="رؤية المزيد .."
             (onClick)="seeMoreNavigation()"></p-button>
+        }
     </div>
     <div class="row">
+        @if(data.length > 0){
+
         <p-carousel [value]="data" [circular]="true" [numVisible]="5" [numScroll]="1"
             [responsiveOptions]="responsiveOptions">
             <ng-template let-item #item>
@@ -14,5 +18,8 @@
 
             </ng-template>
         </p-carousel>
+        }@else {
+        <h6 class="w-100 text-center" style="color: var(--p-primary-500);">لا يوجد منتجات</h6>
+        }
     </div>
 </div>

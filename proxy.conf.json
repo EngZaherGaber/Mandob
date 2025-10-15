@@ -13,5 +13,12 @@
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
+  },
+  "/notificationHub": {
+    "target": "ws://192.168.1.50:2222",
+    "ws": true,
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
   }
 }

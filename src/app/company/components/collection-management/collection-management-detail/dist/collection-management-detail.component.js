@@ -77,9 +77,11 @@ var CollectionManagementDetailComponent = /** @class */ (function () {
         }
     };
     CollectionManagementDetailComponent.prototype.onRemove = function (event) {
-        var index = this.uploadedFiles.findIndex(function (x) { return x.name === event.file.name; });
-        if (index > -1) {
-            this.uploadedFiles.splice(index, 1);
+        if (!this.isShow) {
+            var index = this.uploadedFiles.findIndex(function (x) { return x.name === event.file.name; });
+            if (index > -1) {
+                this.uploadedFiles.splice(index, 1);
+            }
         }
     };
     CollectionManagementDetailComponent.prototype.submit = function (event) {

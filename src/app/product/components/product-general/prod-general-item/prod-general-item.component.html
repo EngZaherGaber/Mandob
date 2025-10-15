@@ -7,6 +7,12 @@
                     style="color: var(--p-primary-500);border-color: var(--p-primary-500) !important;">
                     <h1 class="fw-bold" style="color: var(--p-primary-500);">{{product?.productName}}
                     </h1>
+                    <div class="d-flex justify-content-center align-items-center gap-2">
+                        <p-tag icon="pi pi-heart-fill" [value]="getRating()"></p-tag>
+                        <p-button icon="pi pi-building" severity="contrast" [label]="product?.companyName" size="small"
+                            (onClick)="goToCompany(product?.companyId ?? 0)"></p-button>
+
+                    </div>
                 </div>
             </div>
             <div class="row">
@@ -31,14 +37,15 @@
                         style="transform: rotate(-0deg);">
                         <div class="d-flex-flex-column gap-2">
                             <h4 class="fw-bold p-1 text-center w-100" style="color: var(--p-primary-500);">
-                                {{price |
-                                currency}}</h4>
+                                {{price | currency:(product?.currecnyId === 1 ? 'SYP' : 'USD'):'symbol':'1.2-2' }}
+                            </h4>
                             <!-- <h4 class=" fw-bold p-1 text-center w-100" style="color: var(--p-amber-500);">
                                 {{4900 |
                                 currency}}</h4> -->
                             <p class=" fw-bold p-1 text-center w-100">المجموع
-                                {{countControl.value * price |
-                                currency}}</p>
+                                {{(countControl.value * price) | currency:(product?.currecnyId === 1 ? 'SYP' :
+                                'USD'):'symbol':'1.2-2'}}
+                            </p>
                         </div>
                         @if(userState.role() === 'client'){
                         <div class="button-div d-flex flex-column gap-2">
@@ -58,6 +65,7 @@
                 <div style="white-space: normal;word-break: keep-all;overflow-wrap: break-word;"
                     [innerHTML]="product?.productDescription"></div>
             </div>
+
         </div>
         <div class="col-12 col-md-6 py-4 px-2 position-relative">
             <p-galleria [ngClass]="'position-sticky top-0'" [value]="images()" [responsiveOptions]="responsiveOptions"
@@ -75,9 +83,9 @@
     </div>
     <div class="row w-100 rounded-2 py-0" style="height: 4px;background-color: var(--p-primary-500);"></div>
     <div class="row ">
-        <!-- <product-list [header]="'منتجات اخرى لنفس المصدر'"></product-list> -->
+        <prod-general-list [data]="productsForSameCompany" [header]="'منتجات اخرى لنفس المصدر'"></prod-general-list>
     </div>
     <div class="row mt-5">
-        <!-- <product-list [header]="'منتجات اخرى ذات صلة'"></product-list> -->
+        <prod-general-list [data]="productsForSameCategory" [header]="'منتجات اخرى لنفس التصنيف'"></prod-general-list>
     </div>
 </div>

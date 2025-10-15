@@ -14,6 +14,7 @@ export class ProdGeneralListComponent {
   @Input() header: string = '';
   @Input() data: ProdManagementTableItem[] = [];
   @Input() type: string = 'category';
+  @Input() totalCount: number = 0;
   @Input() id = 0;
   @Input() getSeverity: (item: any) => any = () => {
     return;

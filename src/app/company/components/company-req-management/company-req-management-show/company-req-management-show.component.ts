@@ -1,0 +1,214 @@
+import { Component, signal } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ConfirmationService } from 'primeng/api';
+import { catchError, of, switchMap } from 'rxjs';
+import { Request } from '../../../../client/interfaces/request';
+import { Distributor } from '../../../../distributor/interfaces/distributor';
+import { DistributorManagementService } from '../../../../distributor/services/distributor-management.service';
+import { UserStateService } from '../../../../general/services/user-state.service';
+import { DynamicTableComponent } from '../../../../shared/components/dynamic-table/dynamic-table.component';
+import { InfoTable } from '../../../../shared/interface/info-table';
+import { PrimeNgSharedModule } from '../../../../shared/modules/shared/primeng-shared.module';
+import { DyTableService } from '../../../../shared/service/dy-table.service';
+import { MessageToastService } from '../../../../shared/service/message-toast.service';
+import { CompanyRequestService } from '../../../services/company-request.service';
+
+@Component({
+  selector: 'app-company-req-management-show',
+  imports: [DynamicTableComponent, PrimeNgSharedModule],
+  templateUrl: './company-req-management-show.component.html',
+  styleUrl: './company-req-management-show.component.scss',
+})
+export class CompanyReqManagementShowComponent {
+  tableConfig: InfoTable;
+  isWaiting: boolean = false;
+  selectedRequest = signal<Request | null>(null);
+  columns = [
+    {
+      field: 'requestDate',
+      header: 'تاريخ الطلبية',
+      headerType: 'datetime',
+    },
+    {
+      field: 'clientName',
+      header: 'الزبون',
+      headerType: 'string',
+    },
+    {
+      field: 'distributorName',
+      header: 'الموزع',
+      headerType: 'string',
+    },
+    {
+      field: 'status',
+      header: 'الحالة',
+      headerType: 'tag',
+    },
+  ];
+  distributors: Distributor[] = [];
+  getSeverity: (rowData: any) => 'success' | 'info' | 'warn' | 'danger' | 'secondary' | 'contrast' | undefined = (
+    rowData,
+  ) => {
+    switch (rowData.status) {
+      case 'قيد المراجعة':
+        return 'contrast';
+      case 'جار تحضير الطلب':
+      case 'قيد التوصيل':
+      case 'تم التاكيد':
+        return 'info';
+      case 'مرفوض':
+      case 'ملغى':
+        return 'danger';
+
+      default:
+        return 'success';
+    }
+  };
+  assignDistributorVisible: boolean = false;
+  assignDistributorFunc: (rowData: any) => void = (rowData: any) => {
+    this.selectedRequest.set(rowData);
+    this.assignDistributorVisible = true;
+  };
+  rejectFunc: (rowData: any) => void = (rowData: any) => {
+    this.confirmationService.confirm({
+      message: 'هل تريد رفض هذه الطلبية؟',
+      header: 'رفض',
+      icon: 'pi pi-info-circle',
+      rejectLabel: 'الغاء',
+      rejectButtonProps: {
+        label: 'الغاء',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'تأكييد',
+        severity: 'danger',
+      },
+
+      accept: () => {
+        this.companyRequestSrv.reject(rowData.requestID).subscribe((res) => {
+          this.msgSrv.showMessage(res.message, res.succeeded);
+          if (res.succeeded) this.tableConfig.getSub$.next({});
+        });
+      },
+    });
+  };
+  itemsVisible: boolean = false;
+  showItemsFunc: (rowData: any) => void = (rowData: Request) => {
+    this.selectedRequest.set(rowData);
+    this.itemsVisible = true;
+  };
+  usersVisible: boolean = false;
+  showUsersFunc: (rowData: any) => void = (rowData: Request) => {
+    this.selectedRequest.set(rowData);
+    this.usersVisible = true;
+  };
+  constructor(
+    tableSrv: DyTableService,
+    private route: ActivatedRoute,
+    private msgSrv: MessageToastService,
+    private confirmationService: ConfirmationService,
+    private distributorManagement: DistributorManagementService,
+    private userState: UserStateService,
+    private companyRequestSrv: CompanyRequestService,
+  ) {
+    this.tableConfig = tableSrv.getStandardInfo(undefined, undefined, undefined, undefined);
+    this.route.paramMap
+      .pipe(
+        switchMap((paramMap) => {
+          this.isWaiting = paramMap.get('type') === 'waiting';
+          this.tableConfig.get$ = this.tableConfig.getSub$.pipe(
+            switchMap((body: any) => {
+              if (body) {
+                return this.companyRequestSrv.getAll(this.isWaiting, body).pipe(
+                  switchMap((res) =>
+                    of({
+                      data: res.data,
+                      columns: this.columns,
+                      loading: false,
+                      count: res.count,
+                    }),
+                  ),
+                  catchError(() => of({ loading: false, data: [], columns: this.columns })),
+                );
+              }
+              return of({ loading: false, data: [], columns: this.columns });
+            }),
+          );
+          if (this.isWaiting)
+            return this.distributorManagement.getAll({ rows: 5000, first: 0 }, this.userState.user()?.userId ?? 0);
+          else return of(null);
+        }),
+      )
+      .subscribe((res) => {
+        this.tableConfig.Buttons = [
+          {
+            isShow: false,
+            tooltip: 'اسناد موزع',
+            showCommand: (rowData: any) => {
+              return rowData.status === 'قيد المراجعة';
+            },
+            icon: 'pi pi-truck',
+            key: 'Edit',
+            severity: 'contrast',
+            command: (rowData: any) => {
+              this.assignDistributorFunc(rowData);
+            },
+          },
+          {
+            isShow: false,
+            showCommand: (rowData: Request) => {
+              return rowData.status !== 'تم التوصيل' && this.isWaiting;
+            },
+            tooltip: 'رفض',
+            icon: 'pi pi-times',
+            key: 'reject',
+            severity: 'contrast',
+            command: (rowData: any) => {
+              this.rejectFunc(rowData);
+            },
+          },
+          {
+            isShow: true,
+            tooltip: 'المنتجات',
+            icon: 'pi pi-box',
+            key: 'show',
+            severity: 'contrast',
+            command: (rowData: any) => {
+              this.showItemsFunc(rowData);
+            },
+          },
+          {
+            isShow: true,
+            tooltip: 'المستخدمين',
+            icon: 'pi pi-users',
+            key: 'users',
+            severity: 'contrast',
+            command: (rowData: any) => {
+              this.showUsersFunc(rowData);
+            },
+          },
+        ];
+        if (res) {
+          this.distributors = res.data;
+        }
+        this.tableConfig.getSub$.next({});
+      });
+  }
+  onRowExapnd(event: any) {
+    console.log(event.requestItems);
+  }
+  assignDistributor(value: number) {
+    const req = this.selectedRequest();
+    if (req && value) {
+      this.companyRequestSrv.assignDistributor({ requestId: req.requestID, distributorId: value }).subscribe((res) => {
+        this.msgSrv.showMessage(res.message, res.succeeded);
+        this.assignDistributorVisible = false;
+        this.tableConfig.getSub$.next({});
+      });
+    }
+  }
+  clostReturnDialog(event: any) {
+    if (!event) this.selectedRequest.set(null);
+  }
+}

@@ -21,7 +21,11 @@ export class AccountComponent {
     general: ['phoneNumber'],
   };
   final: boolean = false;
-  constructor(private userState: UserStateService, private router: Router, private msgSrv: MessageToastService) {
+  constructor(
+    private userState: UserStateService,
+    private router: Router,
+    private msgSrv: MessageToastService,
+  ) {
     this.userState
       .strategy()
       ?.getById()
@@ -69,8 +73,22 @@ export class AccountComponent {
                 required: true,
                 visible: true,
                 options: [],
-              }
+              },
             );
+            if ('currencyID' in res.data) {
+              this.resetObjs['general'].push({
+                key: 'currencyID',
+                label: 'العملة',
+                value: res.data.currencyID,
+                dataType: 'list',
+                required: true,
+                visible: true,
+                options: [
+                  { id: 1, name: 'الليرة السورية' },
+                  { id: 2, name: 'الدولار' },
+                ],
+              });
+            }
           }
           this.final = true;
         }
@@ -87,7 +105,7 @@ export class AccountComponent {
             return this.userState.checkUser();
           }
           return of(false);
-        })
+        }),
       )
       .subscribe((res) => {
         if (res) {

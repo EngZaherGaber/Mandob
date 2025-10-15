@@ -53,7 +53,7 @@ export class CategoryManagementShowComponent {
       },
 
       accept: () => {
-        this.categoryManagement.delete(rowData.categoryID).subscribe((res) => {
+        this.categoryManagement.delete(rowData.id).subscribe((res) => {
           this.msgSrv.showMessage(res.message, res.succeeded);
           if (res.succeeded) this.tableConfig.getSub$.next({});
         });

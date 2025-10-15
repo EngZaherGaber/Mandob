@@ -14,7 +14,11 @@ import { PlanManagementService } from '../../../services/plan-management.service
 })
 export class PlanManagementAddComponent {
   resetObjs: { [key: string]: InputDynamic[] } = {};
-  constructor(private router: Router, private planSrv: PlanManagementService, private msgSrv: MessageToastService) {
+  constructor(
+    private router: Router,
+    private planSrv: PlanManagementService,
+    private msgSrv: MessageToastService,
+  ) {
     this.resetObjs = {
       general: [
         {
@@ -86,6 +90,7 @@ export class PlanManagementAddComponent {
   ngOnInit() {}
   submit(event: any) {
     this.planSrv.add(event).subscribe((res) => {
+      this.msgSrv.showMessage(res.message, res.succeeded);
       if (res.succeeded) {
         this.router.navigate(['owner/plan-management/show']);
       }

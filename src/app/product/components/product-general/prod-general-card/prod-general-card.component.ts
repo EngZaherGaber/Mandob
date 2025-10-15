@@ -15,4 +15,8 @@ export class ProdGeneralCardComponent {
     const img = event.target as HTMLImageElement;
     img.src = 'productIcon.svg'; // 👈 your fallback image
   }
+  getRating() {
+    if (this.product) return this.product()?.ratingCount.toString();
+    else return '0';
+  }
 }

@@ -38,11 +38,21 @@ stateSrv.screenType()
 <ng-template #openCart>
     <div class="cart position-absolute px-0 start-0 top-0 py-2 h-100 d-flex flex-column" [@sidebarAnimation]
         style="background-color: var(--p-content-background);z-index: 999;">
-        @if(userState.role() === 'client'){
-        <ng-container *ngTemplateOutlet="clientCart"></ng-container>
-        }
+        <ng-container *ngTemplateOutlet="cart"></ng-container>
     </div>
 </ng-template>
-<ng-template #clientCart>
+<ng-template #cart>
+    @switch (userState.role()) {
+    @case ('client') {
+
     <client-cart class="h-100"></client-cart>
+    }
+    @case ('company') {
+    <comp-tasks class="h-100"></comp-tasks>
+
+    }
+    @case ('distributor') {
+
+    }
+    }
 </ng-template>

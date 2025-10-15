@@ -4,7 +4,7 @@ import { Component, effect, inject, PLATFORM_ID, signal } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
-import { catchError, debounceTime, distinctUntilChanged, of, switchMap } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, of, Subscription, switchMap } from 'rxjs';
 import { ClientToolSearchMenuComponent } from '../../../client/components/tools/client-tool-search-menu/client-tool-search-menu.component';
 import { GlobalSearchResponse } from '../../../client/interfaces/global-search-response';
 import { User } from '../../../general/interfaces/user';
@@ -112,6 +112,8 @@ export class HeaderComponent {
   activeIndexPhoneNumber: number = 0;
   searchLoading: boolean = false;
   searchResult: GlobalSearchResponse | null = null;
+  messages: string[] = [];
+  private sub!: Subscription;
   constructor(
     public stateSrv: StateService,
     private userState: UserStateService,
@@ -206,6 +208,9 @@ export class HeaderComponent {
       });
     }
   }
+  ngOnInit() {
+    this.userState.wsSrv.message$.subscribe((msg) => this.messages.push(msg));
+  }
   changeSearchInput(event: string) {
     this.stateSrv.changeSearchInput(event);
   }
@@ -292,5 +297,9 @@ export class HeaderComponent {
           this.changePhoneNumbervisible = !res.succeeded;
         });
     }
+  }
+  ngOnDestroy() {
+    this.sub?.unsubscribe();
+    this.userState.wsSrv.stopConnection();
   }
 }

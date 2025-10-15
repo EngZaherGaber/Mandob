@@ -3,6 +3,7 @@ import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { CollectionManagementService } from '../../../../company/services/collection-management.service';
+import { CompanyManagementService } from '../../../../company/services/company-management.service';
 import { UserStateService } from '../../../../general/services/user-state.service';
 import { CategoryManagementService } from '../../../../owner/services/category-management.service';
 import { DynamicInputComponent } from '../../../../shared/components/dynamic-input/dynamic-input.component';
@@ -28,6 +29,7 @@ export class ProdManagementAddComponent {
     CategorieIDs: new FormControl(null, Validators.required),
   });
   objs: InputDynamic[] = [];
+  currencyID: number = 0;
   options: OptionItem[] = [];
   variants: VariantItem[] = [];
   uploadedFiles: File[] = [];
@@ -39,13 +41,20 @@ export class ProdManagementAddComponent {
     categoryManagement: CategoryManagementService,
     userState: UserStateService,
     collectionManagement: CollectionManagementService,
+    companyManagement: CompanyManagementService,
   ) {
     const user = userState.user();
-    if (user && user.userId) {
+    const strategy = userState.strategy();
+
+    if (user && user.userId && strategy) {
       forkJoin({
+        company: strategy.getById(),
         collection: collectionManagement.getAll({ first: 0, rows: 1000 }, user.userId),
         categories: categoryManagement.getAll({ first: 0, rows: 1000 }),
       }).subscribe((res) => {
+        if ('currencyId' in res.company.data) {
+          this.currencyID = res.company.data.currencyId as number;
+        }
         this.objs = [
           {
             key: 'name',
@@ -94,7 +103,9 @@ export class ProdManagementAddComponent {
 
   onSelect(event: any) {
     for (let file of event.files) {
-      this.uploadedFiles.push(file);
+      if (!this.uploadedFiles.find((x) => x.name === (file as File).name)) {
+        this.uploadedFiles.push(file);
+      }
     }
   }
   onRemove(event: any) {

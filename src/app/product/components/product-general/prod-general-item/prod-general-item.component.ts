@@ -1,7 +1,7 @@
 import { Component, model } from '@angular/core';
 import { FormArray, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { switchMap } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { forkJoin, switchMap } from 'rxjs';
 import { ShoppingCartAddItem } from '../../../../client/interfaces/shopping-cart-add-item';
 import { ShoppingManagementService } from '../../../../client/services/shopping.service';
 import { UserStateService } from '../../../../general/services/user-state.service';
@@ -12,12 +12,14 @@ import { MessageToastService } from '../../../../shared/service/message-toast.se
 import { StateService } from '../../../../shared/service/state.service';
 import { OptionItem } from '../../../interfaces/option-item';
 import { ProductManagementItem } from '../../../interfaces/product-management-item';
+import { ProdManagementTableItem } from '../../../interfaces/product-management-table-item';
 import { VariantItem } from '../../../interfaces/variant-item';
 import { ProductStoreService } from '../../../services/product-store.service';
+import { ProdGeneralListComponent } from '../prod-general-list/prod-general-list.component';
 
 @Component({
   selector: 'app-prod-general-item',
-  imports: [ReactiveFormsModule, DynamicInputComponent, FormsModule, PrimeNgSharedModule],
+  imports: [ReactiveFormsModule, DynamicInputComponent, FormsModule, PrimeNgSharedModule, ProdGeneralListComponent],
   templateUrl: './prod-general-item.component.html',
   styleUrl: './prod-general-item.component.scss',
 })
@@ -64,6 +66,8 @@ export class ProdGeneralItemComponent {
   productId: number = 0;
   variantSKU: string = '';
   product: ProductManagementItem | null = null;
+  productsForSameCompany: ProdManagementTableItem[] = [];
+  productsForSameCategory: ProdManagementTableItem[] = [];
   constructor(
     public userState: UserStateService,
     private productStore: ProductStoreService,
@@ -71,6 +75,7 @@ export class ProdGeneralItemComponent {
     private msgSrv: MessageToastService,
     private stateSrv: StateService,
     private route: ActivatedRoute,
+    private router: Router,
   ) {}
   ngOnInit() {
     this.route.params
@@ -79,14 +84,26 @@ export class ProdGeneralItemComponent {
           this.productId = param['id'];
           return this.productStore.getOne(this.productId);
         }),
+        switchMap((res) => {
+          this.images.set(res.data.productImages ?? []);
+          this.product = res.data;
+          this.options = res.data.options;
+          this.variants = res.data.variants;
+          this.createOptionArrayControl();
+          this.getPrice();
+          return forkJoin({
+            sameCompany: this.productStore.getAll({ userId: this.product?.companyId, pageNumber: 1, pageSize: 8 }),
+            sameCategory: this.productStore.getAll({
+              categoryId: this.product?.categorieIDs[0],
+              pageNumber: 1,
+              pageSize: 8,
+            }),
+          });
+        }),
       )
       .subscribe((res) => {
-        this.images.set(res.data.productImages ?? []);
-        this.product = res.data;
-        this.options = res.data.options;
-        this.variants = res.data.variants;
-        this.createOptionArrayControl();
-        this.getPrice();
+        this.productsForSameCompany = res.sameCompany.data.products;
+        this.productsForSameCategory = res.sameCategory.data.products;
       });
   }
 
@@ -109,6 +126,9 @@ export class ProdGeneralItemComponent {
       this.activeIndex = Index > -1 ? Index : 0;
     }
   }
+  goToCompany(companyId: number) {
+    this.router.navigate(['client/company/profile/' + companyId]);
+  }
   createOptionArrayControl() {
     this.options.forEach((opt) => {
       this.optionsArrayControl.controls.push(new FormControl(opt.values[0].valueName));
@@ -126,5 +146,9 @@ export class ProdGeneralItemComponent {
         this.stateSrv.collapseCart();
       }
     });
+  }
+  getRating() {
+    if (this.product) return this.product?.ratingCount.toString();
+    else return '0';
   }
 }

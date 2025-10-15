@@ -46,7 +46,6 @@ export class DynamicInputComponent {
     this.maxDate.setFullYear(nextYear);
   }
   ngOnInit(): void {
-    console.log(this.FEcontrol);
     if (this.FEcontrol.value === null && this.FEcontrol.value !== 0) {
       if (this.object.dataType.toLowerCase() === 'autocomplete') {
         this.items;

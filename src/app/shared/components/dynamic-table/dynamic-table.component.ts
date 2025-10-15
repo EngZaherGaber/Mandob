@@ -3,7 +3,7 @@ import { Component, ContentChild, EventEmitter, Input, Output, TemplateRef, View
 import { FormsModule } from '@angular/forms';
 import * as ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
-import { MenuItem } from 'primeng/api';
+import { FilterMetadata, MenuItem } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { Observable } from 'rxjs';
 import { BodyTable } from '../../interface/body-table';
@@ -19,8 +19,8 @@ import { DyTableService } from '../../service/dy-table.service';
 })
 export class DynamicTableComponent {
   @ViewChild('dt') table: Table | undefined;
-  @ContentChild('rowExpansionContent', { static: true })
-  rowExpansionContent: TemplateRef<any> | null = null;
+  @ContentChild('rowExpansionContent', { static: false })
+  rowExpansionContent!: TemplateRef<any>;
   @Input() load: Observable<any> = new Observable();
   @Input() tablePermission: string = '';
   @Input() buttons: DyButton[] = [];
@@ -33,6 +33,8 @@ export class DynamicTableComponent {
   @Input() dataKey: string = 'id';
   @Input() scrollHeight: string = '55vh';
   @Input() expandedTable: boolean = false;
+  @Input() firstColumn: boolean = true;
+  @Input() withPaginator: boolean = true;
   @Input() changeColor: (rowData: any) => any = () => {};
   @Input() getSeverity: (
     rowData: any,
@@ -60,7 +62,7 @@ export class DynamicTableComponent {
   }>();
   @Output() RowExpand: EventEmitter<any> = new EventEmitter<any>();
   @Output() onLazy: EventEmitter<any> = new EventEmitter<any>();
-
+  filters: { [s: string]: FilterMetadata | FilterMetadata[] } = {};
   filterdMode: boolean = false;
   tb: Table | undefined;
   body: BodyTable = {
@@ -69,7 +71,7 @@ export class DynamicTableComponent {
     columns: [],
   };
   first: number = 0;
-  rows: number = 5;
+  rows: number = 25;
   totalRecords: number = 0;
   carsoulPage: number = 1;
   columns: string[] = [];
@@ -77,78 +79,95 @@ export class DynamicTableComponent {
   havePermission: boolean = false;
   selectedItem: any | null = null;
   items: MenuItem[] = [];
+  expandedRows: any = {};
   constructor(private tableSrv: DyTableService) {}
 
   ngOnInit(): void {}
   ngAfterContentInit(): void {
-    this.load.subscribe((body) => {
-      if (this.columnsEvent && this.columnsEvent.length > 0) {
-        this.columnsEvent.forEach((col) => {
-          if (!col.visible) {
-            col.visible = (rowData) => true;
-          }
-          if (!col.disable) {
-            col.disable = (rowData) => false;
-          }
-        });
-      }
-      this.tableSrv.repeairHeader(body.columns);
-      if (body.data) {
-        body.data =
-          body.data.length > 0
-            ? (body.data as any[]).map((row) => {
-                const arr = this.buttons.map((button) => ({ ...button }));
-                row = { ...row, buttons: arr };
-                (body.columns as any[])
-                  .filter(
-                    (col) =>
-                      col.headerType.toLowerCase() === 'datetime' || col.headerType.toLowerCase() === 'datetimeo',
-                  )
-                  .forEach((col) => {
-                    if (row[col.field]) {
-                      const date = new Date(row[col.field]);
-                      row[col.field] = date;
-                    } else {
-                      row[col.field] = null;
-                    }
-                  });
-                return row;
-              })
-            : body.data;
-        if (this.sortColumn) {
-          body.data = body.data.sort((a: any, b: any) => a[this.sortColumn]?.localeCompare(b[this.sortColumn]));
-        }
-        (body.columns as any[])
-          .filter((x) => x.headerType === 'json')
-          .forEach((x) => {
-            body.data = (body.data as any[]).map((z) => {
-              z[x.field] = z[x.field] ? JSON.parse(z[x.field]) : {};
-              return z;
-            });
-          });
-      }
-
-      this.columns = (body.columns as any[]).map((x) => x.header);
-      this.selectedColumns = this.columns;
-      this.totalRecords = this.lazyLoading ? body.count : body.data.length;
-      this.body = body;
-      this.items = this.buttons.map((btn) => {
-        return {
-          label: btn.tooltip,
-          icon: btn.icon,
-          visible: true,
-          command: () => {
-            if (btn && btn.command) {
-              btn.command(this.selectedItem);
-              this.hitAction.emit({
-                key: btn.key ?? '',
-                rowDataId: this.selectedItem,
-              });
+    this.load
+      // .pipe(
+      //   switchMap((body) => {
+      //     if (!body) {
+      //       const newBody: TableLazyLoadEvent = {
+      //         rows: this.rows,
+      //         first: this.first,
+      //         globalFilter: null,
+      //         filters: {},
+      //         sortOrder: 1,
+      //       };
+      //       return of(newBody);
+      //     }
+      //     return of(body);
+      //   }),
+      // )
+      .subscribe((body) => {
+        if (this.columnsEvent && this.columnsEvent.length > 0) {
+          this.columnsEvent.forEach((col) => {
+            if (!col.visible) {
+              col.visible = (rowData) => true;
             }
-          },
-        };
+            if (!col.disable) {
+              col.disable = (rowData) => false;
+            }
+          });
+        }
+        this.tableSrv.repeairHeader(body.columns);
+        if (body.data) {
+          body.data =
+            body.data.length > 0
+              ? (body.data as any[]).map((row) => {
+                  const arr = this.buttons.map((button) => ({ ...button }));
+                  row = { ...row, buttons: arr };
+                  (body.columns as any[])
+                    .filter(
+                      (col) =>
+                        col.headerType.toLowerCase() === 'datetime' || col.headerType.toLowerCase() === 'datetimeo',
+                    )
+                    .forEach((col) => {
+                      if (row[col.field]) {
+                        const date = new Date(row[col.field]);
+                        row[col.field] = date;
+                      } else {
+                        row[col.field] = null;
+                      }
+                    });
+                  return row;
+                })
+              : body.data;
+          if (this.sortColumn) {
+            body.data = body.data.sort((a: any, b: any) => a[this.sortColumn]?.localeCompare(b[this.sortColumn]));
+          }
+          (body.columns as any[])
+            .filter((x) => x.headerType === 'json')
+            .forEach((x) => {
+              body.data = (body.data as any[]).map((z) => {
+                z[x.field] = z[x.field] ? JSON.parse(z[x.field]) : {};
+                return z;
+              });
+            });
+        }
+
+        this.columns = (body.columns as any[]).map((x) => x.header);
+        this.selectedColumns = this.columns;
+        this.totalRecords = this.lazyLoading ? body.count : body.data.length;
+        this.body = body;
+        this.items = this.buttons.map((btn) => {
+          return {
+            label: btn.tooltip,
+            icon: btn.icon,
+            visible: true,
+            command: () => {
+              if (btn && btn.command) {
+                btn.command(this.selectedItem);
+                this.hitAction.emit({
+                  key: btn.key ?? '',
+                  rowDataId: this.selectedItem,
+                });
+              }
+            },
+          };
+        });
       });
-    });
   }
   ngAfterViewInit() {
     if (this.table && this.table.expandedRowKeys) {
@@ -176,6 +195,11 @@ export class DynamicTableComponent {
         }
       },
     }));
+  }
+  onRowExpandHandler(event: any) {
+    const key = event.data[this.dataKey];
+    this.expandedRows[key] = true;
+    this.RowExpand.emit(event.data); // still emit to parent if needed
   }
   visibleBtn(isShow: boolean, permission?: string, showCommand?: (body: any) => boolean) {
     if (permission) {
@@ -206,15 +230,17 @@ export class DynamicTableComponent {
     return this.selectedColumns.includes(header);
   }
   loadCarsLazy(event: any) {
+    this.filters = event.filters;
+    const newEvent = JSON.parse(JSON.stringify(event));
     this.body.loading = true;
     this.body.columns.forEach((x) => {
-      if ((x.headerType as string).toLowerCase().startsWith('datetime') && event.filters) {
-        const filter = event.filters[x.field];
-        if (filter && (filter as any).value instanceof Date)
-          event.filters[x.field].value = formatDate((filter as any).value, 'yyyy-MM-dd', 'en-US');
+      if (x.headerType.toLowerCase() === 'datetime' && newEvent.filters) {
+        const filter = newEvent.filters[x.field];
+        if (filter && (filter as any).value)
+          newEvent.filters[x.field].value = formatDate((filter as any).value, 'yyyy-MM-dd', 'en-US');
       }
     });
-    this.onLazy.emit(event);
+    this.onLazy.emit(newEvent);
   }
   clearFilter() {
     this.table?.reset();
@@ -328,7 +354,9 @@ export class DynamicTableComponent {
   getCorrectDate(date: Date) {
     return date;
   }
-
+  getValueByPath(path: string, rowData: any) {
+    return path.split('.').reduce((acc, part) => acc && acc[part], rowData);
+  }
   getAlignment(column: string) {
     return this.tableSrv.getAlignment(column, this.columnAlignment, this.body.columns);
   }

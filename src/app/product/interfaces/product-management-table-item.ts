@@ -9,5 +9,9 @@ export interface ProdManagementTableItem {
   }[];
   companyID: number;
   maxPrice: number;
+  currencyId: number;
+  averageRating: number;
+  ratingCount: number;
+  currencyName: string;
   minPrice: number;
 }

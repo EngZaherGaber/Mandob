@@ -3,6 +3,9 @@ export interface GlobalSearchResponse {
     productId: number;
     productName: string;
     productDescription: string;
+    currencyId: number;
+    maxPrice: number;
+    minPrice: number;
     image: string;
   }[];
   categories: {

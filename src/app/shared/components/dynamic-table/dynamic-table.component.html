@@ -1,12 +1,12 @@
-<!-- <div> -->
-
-<p-table (onContextMenuSelect)="changeVisible()" [(contextMenuSelection)]="selectedItem" [value]="body.data"
-    [paginator]="true" [rowHover]="true" [rows]="25" [rowsPerPageOptions]="[5,10,25,50,100,200,500,800]"
-    [scrollable]="true" [alwaysShowPaginator]="dt.value ? dt.value.length > 0 : false" [exportFilename]="tableName"
-    [lazy]="lazyLoading" [size]="'small'" stripedRows (onLazyLoad)="loadCarsLazy($event)" [scrollHeight]="scrollHeight"
-    (onRowExpand)="RowExpand.emit($event)" #dt sortMode="multiple" [paginatorDropdownAppendTo]="'body'"
-    [columns]="body.columns" [dataKey]="dataKey" [filterDelay]="0" [totalRecords]="totalRecords" [showLoader]="false"
-    [loading]="body.loading" [showLoader]="true" [rowHover]="true" [responsive]="true" [resizableColumns]="true"
+<p-table #dt (onContextMenuSelect)="changeVisible()" [(contextMenuSelection)]="selectedItem" [value]="body.data"
+    [paginator]="withPaginator" [rowHover]="true" [rows]="withPaginator ? 25 : totalRecords"
+    [rowsPerPageOptions]="[5,10,25,50,100,200,500,800]" [scrollable]="true"
+    [alwaysShowPaginator]="dt.value ? dt.value.length > 0 : false" [exportFilename]="tableName" [lazy]="lazyLoading"
+    [size]="'small'" stripedRows (onLazyLoad)="loadCarsLazy($event)" [scrollHeight]="scrollHeight"
+    (onRowExpand)="onRowExpandHandler($event)" [expandedRowKeys]="expandedRows" sortMode="multiple"
+    [paginatorDropdownAppendTo]="'body'" [columns]="body.columns" [dataKey]="dataKey" [filterDelay]="0"
+    [totalRecords]="totalRecords" [showLoader]="false" [loading]="body.loading" [showLoader]="true" [rowHover]="true"
+    [responsive]="true" [resizableColumns]="true" [filters]="filters"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" columnResizeMode="expand"
     [showCurrentPageReport]="true" [autoLayout]="true" [globalFilterFields]="['Name']"
     [tableStyle]="{ 'min-width': '50rem'}">
@@ -48,7 +48,7 @@
     </ng-template>
     <ng-template pTemplate="header" let-columns>
         <tr pFrozenRow>
-            <th pFrozenColumn style="max-width: 250px !important;">
+            <th pFrozenColumn style="max-width: 250px !important;" [class]="!firstColumn ? 'd-none' : ''">
                 <div class="d-flex justify-content-center">
                     <p-button icon="pi pi-filter" [rounded]="true" [text]="true" pTooltip="Use custom filters"
                         (click)="filterdMode = !filterdMode" severity="primary" />
@@ -65,7 +65,7 @@
                 [style]="col.headerType === 'bool' ? {'justify-content':'center'} : ''">
                 <div class="d-flex justify-content-between align-items-center">
                     <small>{{col.header}}</small>
-                    @if(col.headerType !== 'img'){
+                    @if(col.headerType !== 'img' && col.headerType !== 'nest' && col.headerType !== 'json' ){
                     <p-sortIcon [field]="col.field"></p-sortIcon>
                     }
                 </div>
@@ -75,7 +75,7 @@
         </tr>
         @if (filterdMode) {
         <tr pFrozenRow>
-            <th></th>
+            <th [class]="!firstColumn ? 'd-none' : ''"></th>
             @if (imageField) {
             <th></th>
             }
@@ -94,7 +94,7 @@
                         [placeholder]="col.header"></p-columnFilter>
                     }
                     @case ('datetime') {
-                    <p-columnFilter dateFormat="yy-mm-dd" type="date" [field]="col.field" [placeholder]="col.header"
+                    <p-columnFilter type="date" [field]="col.field" [placeholder]="col.header"
                         appendTo="body"></p-columnFilter>
                     }
                     @case ('float') {
@@ -111,6 +111,8 @@
                     }
                     @case ('img') {
 
+                    }@case ('nest') {
+
                     }@case ('json') {
 
                     }@default {
@@ -125,22 +127,21 @@
         </tr>
         }
     </ng-template>
-    <ng-template #loadingicon style="width: 100%;height: 250px;">
-        <img src="IconBlue.svg" width="200" alt="">
-    </ng-template>
+
     <ng-template pTemplate="body" let-rowData let-columns="columns" let-index let-expanded="expanded">
         @if ((dt.value ? dt.value.length > 0 : false)) {
         <tr [pContextMenuRow]="rowData" [ngStyle]="changeColor(rowData)">
-            <td pFrozenColumn style="max-width: 250px !important;">
-                <div class="d-flex jsutify-content-end align-items-center button-cell">
+            <td pFrozenColumn [class]="!firstColumn ? 'd-none' : ''" style="max-width: 250px !important;">
+                <div class="d-flex jsutify-content-end align-items-center gap-2 button-cell">
                     @if (expandedTable) {
-                    <button type="button" pButton pRipple [pRowToggler]="rowData"
-                        [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                    <p-button [text]="true" [pRowToggler]="rowData" severity="secondary" pTooltip="توسيع"
+                        [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" [rounded]="true"></p-button>
                     }
                     @for (btn of rowData.buttons; track $index) {
                     @if ((btn.showCommand && btn.showCommand(rowData)) || btn.isShow) {
                     @if (btn.permission) {
-                    <p-button [severity]="'secondary'" [rounded]="true" [pTooltip]="btn.tooltip" [icon]="btn.icon ?? ''"
+                    <p-button [text]="true" size="small" [severity]="'secondary'" [rounded]="true"
+                        [pTooltip]="btn.tooltip" [icon]="btn.icon ?? ''"
                         (click)="btn.command(rowData,rowData.buttons,dt);hitAction.emit({key:btn.key,rowDataId:rowData.Id})" />
                     }@else {
                     <p-button [severity]="'secondary'" [rounded]="true" [pTooltip]="btn.tooltip" [icon]="btn.icon ?? ''"
@@ -163,7 +164,7 @@
             @if (isSelect(col.header)) {
             <td>
                 <div class="d-flex"
-                    [ngClass]="(col.headerType === 'bool' || col.headerType === 'img') ? 'bool-cell' : ''"
+                    [ngClass]="(col.headerType === 'bool' || col.headerType === 'img' || col.headerType === 'tag' || col.headerType === 'toggle') ? 'bool-cell' : ''"
                     [style]="{'justify-content':getAlignment(col.field)}">
                     @if(col.headerType !== 'img'){
 
@@ -204,6 +205,14 @@
                     @case ('tag') {
                     <p-tag [value]="rowData[col.field]" [severity]="getSeverity(rowData)" />
                     }
+                    @case ('nest') {
+                    <small>
+                        {{getValueByPath(col.field,rowData)}}
+                    </small>
+                    }
+                    @case ('html') {
+                    <div [innerHTML]="rowData[col.field]"> </div>
+                    }
                     @case ('toggle') {
                     @if (hasToggleShow(col.field,rowData)) {
                     <p-toggleswitch [pTooltip]="rowData[col.field] ? 'True': 'False'" [(ngModel)]=" rowData[col.field]"
@@ -230,9 +239,19 @@
         }
 
     </ng-template>
-    <ng-template pTemplate="rowexpansion" let-rowData>
-        <ng-container *ngTemplateOutlet="rowExpansionContent; context: { item: rowData }">
-        </ng-container>
+
+    <ng-template pTemplate="expandedrow" let-rowData>
+        <tr class="expaned">
+            <td [colSpan]="selectedColumns.length + 1" class="border-0">
+                @if(rowExpansionContent){
+                <ng-container *ngTemplateOutlet="rowExpansionContent; context: { item: rowData }">
+                </ng-container>
+                }
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template #loadingicon style="width: 100%;height: 250px;">
+        <img src="IconBlue.svg" width="200" alt="">
     </ng-template>
     <ng-template emptymessage>
         <tr>
@@ -247,4 +266,3 @@
         <ng-content select="[footer]"></ng-content>
     </ng-template>
 </p-table>
-<!-- </div> -->

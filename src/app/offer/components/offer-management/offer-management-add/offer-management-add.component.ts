@@ -7,8 +7,8 @@ import { VariantItem } from '../../../../product/interfaces/variant-item';
 import { DynamicInputComponent } from '../../../../shared/components/dynamic-input/dynamic-input.component';
 import { APIResponse } from '../../../../shared/interface/response';
 import { PrimeNgSharedModule } from '../../../../shared/modules/shared/primeng-shared.module';
-import { offerConditionsobjs } from '../../../../shared/providers/offer-conditions-objs';
 import { MessageToastService } from '../../../../shared/service/message-toast.service';
+import { OfferConditionService } from '../../../../shared/service/offer-condition.service';
 import { OfferMetadataItem } from '../../../interfaces/offer-metadata-item';
 import { OfferManagementService } from '../../../services/offer-management.service';
 
@@ -100,9 +100,10 @@ export class OfferManagementAddComponent {
     private offerManagement: OfferManagementService,
     private msgSrv: MessageToastService,
     private http: HttpClient,
+    private offerConditionSrv: OfferConditionService,
     public router: Router,
   ) {
-    this.metadata = offerConditionsobjs;
+    this.metadata = this.offerConditionSrv.offerConditionsobjs;
     this.objs = { generalInfo: [this.metadata] };
     const newControl = new FormControl();
     newControl.valueChanges.subscribe((value) => {

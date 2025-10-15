@@ -1,16 +1,18 @@
+@if(withList){
 <p-selectbutton [(ngModel)]="layout" [options]="options" [allowEmpty]="false">
     <ng-template #item let-item>
         <i class="pi" [ngClass]="{
-                    'pi-bars': item === 'list',
-                    'pi-sitemap':item==='grid',
-                    'pi-table': item === 'table',
-                  }"></i>
+                        'pi-bars': item === 'list',
+                        'pi-sitemap':item==='grid',
+                        'pi-table': item === 'table',
+                      }"></i>
     </ng-template>
 </p-selectbutton>
+}
 @if (layout === 'table') {
 <dynamic-table [columnsEvent]="columnsEvent" [lazyLoading]="true" (onLazy)="onLazy.emit($event)" [load]="load"
     [buttons]="buttons" [showHeader]="true" [captionButton]="captionButton" [imageField]="imageField"></dynamic-table>
-}@else {
+}@else if(withList){
 <dynamic-card-list [imageField]="imageField" [layout]="layout" [load]="load" [columnsEvent]="columnsEvent"
     [buttons]="buttons" [lazyLoading]="true" (onLazy)="onLazy.emit($event)"
     [captionButton]="captionButton"></dynamic-card-list>

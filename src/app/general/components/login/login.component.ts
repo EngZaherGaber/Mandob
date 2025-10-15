@@ -51,7 +51,7 @@ export class LoginComponent {
     private router: Router,
     private userState: UserStateService,
     private authSrv: AuthService,
-    private msgSrv: MessageToastService
+    private msgSrv: MessageToastService,
   ) {
     this.isBrowser = authSrv.isBrowser;
   }
@@ -69,6 +69,7 @@ export class LoginComponent {
         if (res.succeeded) {
           localStorage.setItem('role', data.role);
           localStorage.setItem('name', data.name);
+          this.userState.loginForm.set(formValue);
           this.userState.user.set(null);
           if (data.isVerified === true) this.router.navigate(['']);
         } else {
@@ -80,7 +81,7 @@ export class LoginComponent {
       },
       (err) => {
         this.loading = false;
-      }
+      },
     );
   }
   goToRegister() {

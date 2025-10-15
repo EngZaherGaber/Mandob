@@ -50,6 +50,7 @@ var ProdManagementDetailComponent = /** @class */ (function () {
         this.options = [];
         this.variants = [];
         this.uploadedFiles = [];
+        this.currencyID = 0;
         this.showForm = false;
         this.productId = 0;
         this.isShow = false;
@@ -59,8 +60,10 @@ var ProdManagementDetailComponent = /** @class */ (function () {
             _this.productId = param['id'];
             _this.isShow = param['type'] === 'display';
             var user = userState.user();
-            if (user && user.userId) {
+            var strategy = userState.strategy();
+            if (user && user.userId && strategy) {
                 return rxjs_1.forkJoin({
+                    company: strategy.getById(),
                     collection: collectionManagement.getAll({ first: 0, rows: 1000 }, user.userId),
                     categories: categoryManagement.getAll({ first: 0, rows: 1000 }),
                     product: productManagement.getOne(_this.productId)
@@ -72,6 +75,9 @@ var ProdManagementDetailComponent = /** @class */ (function () {
         }), operators_1.switchMap(function (res) {
             var _a;
             if (res) {
+                if ('currencyId' in res.company.data) {
+                    _this.currencyID = res.company.data.currencyId;
+                }
                 _this.objs = [
                     {
                         key: 'ProductName',
@@ -153,9 +159,15 @@ var ProdManagementDetailComponent = /** @class */ (function () {
         img.src = 'productIcon.svg'; // 👈 your fallback image
     };
     ProdManagementDetailComponent.prototype.onSelect = function (event) {
+        var _loop_1 = function (file) {
+            if (!this_1.uploadedFiles.find(function (x) { return x.name === file.name; })) {
+                this_1.uploadedFiles.push(file);
+            }
+        };
+        var this_1 = this;
         for (var _i = 0, _a = event.files; _i < _a.length; _i++) {
             var file = _a[_i];
-            this.uploadedFiles.push(file);
+            _loop_1(file);
         }
     };
     ProdManagementDetailComponent.prototype.onRemove = function (event) {

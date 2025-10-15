@@ -82,9 +82,11 @@ export class CollectionManagementDetailComponent {
     }
   }
   onRemove(event: any) {
-    const index = this.uploadedFiles.findIndex((x) => x.name === event.file.name);
-    if (index > -1) {
-      this.uploadedFiles.splice(index, 1);
+    if (!this.isShow) {
+      const index = this.uploadedFiles.findIndex((x) => x.name === event.file.name);
+      if (index > -1) {
+        this.uploadedFiles.splice(index, 1);
+      }
     }
   }
   submit(event: any) {

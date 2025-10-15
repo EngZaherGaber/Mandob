@@ -22,6 +22,11 @@ export class OfferManagementShowComponent {
   imageField: string = '';
   columns: columnTable[] = [
     {
+      field: 'isActive',
+      header: 'فعال',
+      headerType: 'toggle',
+    },
+    {
       field: 'name',
       header: 'الاسم',
       headerType: 'string',
@@ -40,11 +45,6 @@ export class OfferManagementShowComponent {
       field: 'endDate',
       header: 'تاريخ الانتهاء',
       headerType: 'datetime',
-    },
-    {
-      field: 'isActive',
-      header: 'فعال',
-      headerType: 'toggle',
     },
   ];
   columnsEvent: EventColumn[] = [

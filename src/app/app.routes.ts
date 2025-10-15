@@ -1,7 +1,7 @@
 import { Route, Routes } from '@angular/router';
 import { authGuard } from './shared/guards/auth.guard';
 
-const companyRoutes = {
+const companyRoutes: Route = {
   path: 'company',
   children: [
     {
@@ -100,6 +100,53 @@ const companyRoutes = {
       ],
     },
     {
+      path: 'return-management',
+      children: [
+        {
+          path: 'show',
+          title: 'عرض المرتجع',
+          loadComponent: () =>
+            import(
+              './company/components/comp-return-management/comp-return-management-show/comp-return-management-show.component'
+            ).then((m) => m.CompReturnManagementShowComponent),
+        },
+        {
+          path: 'show/:requestId',
+          title: 'عرض المرتجع',
+          loadComponent: () =>
+            import(
+              './company/components/comp-return-management/comp-return-management-show/comp-return-management-show.component'
+            ).then((m) => m.CompReturnManagementShowComponent),
+        },
+      ],
+    },
+    {
+      path: 'request-management',
+      children: [
+        {
+          path: ':type',
+          children: [
+            {
+              path: 'show',
+              title: (snapshot) => {
+                const type = snapshot.paramMap.get('type');
+                switch (type) {
+                  case 'waiting':
+                    return 'عرض الطلبات المنتظرة';
+                  default:
+                    return 'عرض الطلبات المنتهية';
+                }
+              },
+              loadComponent: () =>
+                import(
+                  './company/components/company-req-management/company-req-management-show/company-req-management-show.component'
+                ).then((m) => m.CompanyReqManagementShowComponent),
+            },
+          ],
+        },
+      ],
+    },
+    {
       path: 'collection-management',
       children: [
         {
@@ -130,7 +177,7 @@ const companyRoutes = {
     },
   ],
 };
-const ownerRoutes = {
+const ownerRoutes: Route = {
   path: 'owner',
   children: [
     {
@@ -323,10 +370,108 @@ const clientRoutes: Route = {
         },
       ],
     },
+    {
+      path: 'request-management',
+      children: [
+        {
+          path: ':type',
+          children: [
+            {
+              path: 'show',
+              title: (snapshot) => {
+                const type = snapshot.paramMap.get('type');
+                switch (type) {
+                  case 'waiting':
+                    return 'عرض الطلبات المنتظرة';
+                  default:
+                    return 'عرض الطلبات المنتهية';
+                }
+              },
+              loadComponent: () =>
+                import(
+                  './client/components/client-req-management/client-req-management-show/client-req-management-show.component'
+                ).then((m) => m.ClientReqManagementShowComponent),
+            },
+          ],
+        },
+      ],
+    },
+    {
+      path: 'return-management',
+      children: [
+        {
+          path: 'show',
+          title: 'عرض المرتجع',
+          loadComponent: () =>
+            import(
+              './client/components/client-return-management/client-return-management-show/client-return-management-show.component'
+            ).then((m) => m.ClientReturnManagementShowComponent),
+        },
+        {
+          path: 'show/:requestId',
+          title: 'عرض المرتجع',
+          loadComponent: () =>
+            import(
+              './client/components/client-return-management/client-return-management-show/client-return-management-show.component'
+            ).then((m) => m.ClientReturnManagementShowComponent),
+        },
+      ],
+    },
   ],
 };
-
-const authRoutes = {
+const distributorRoutes: Route = {
+  path: 'distributor',
+  children: [
+    {
+      path: 'request-management',
+      children: [
+        {
+          path: ':type',
+          children: [
+            {
+              path: 'show',
+              title: (snapshot) => {
+                const type = snapshot.paramMap.get('type');
+                switch (type) {
+                  case 'waiting':
+                    return 'عرض الطلبات المنتظرة';
+                  default:
+                    return 'عرض الطلبات المنتهية';
+                }
+              },
+              loadComponent: () =>
+                import(
+                  './distributor/components/distributor-request-management/distributor-req-management-show/distributor-req-management-show.component'
+                ).then((m) => m.DistributorReqManagementShowComponent),
+            },
+          ],
+        },
+      ],
+    },
+    {
+      path: 'return-management',
+      children: [
+        {
+          path: 'show',
+          title: 'عرض المرتجع',
+          loadComponent: () =>
+            import(
+              './distributor/components/distributor-return-management/distributor-return-management-show/distributor-return-management-show.component'
+            ).then((m) => m.DistributorReturnManagementShowComponent),
+        },
+        {
+          path: 'show/:requestId',
+          title: 'عرض المرتجع',
+          loadComponent: () =>
+            import(
+              './distributor/components/distributor-return-management/distributor-return-management-show/distributor-return-management-show.component'
+            ).then((m) => m.DistributorReturnManagementShowComponent),
+        },
+      ],
+    },
+  ],
+};
+const authRoutes: Route = {
   path: 'auth',
   loadComponent: () => import('./general/components/auth/auth.component').then((m) => m.AuthComponent),
   children: [
@@ -355,7 +500,7 @@ const authRoutes = {
   ],
 };
 
-const generalRoutes = [
+const generalRoutes: Route[] = [
   {
     path: 'account',
     title: 'معلومات الحساب',
@@ -373,7 +518,7 @@ export const routes: Routes = [
     canActivate: [authGuard],
     title: 'الصفحة الرئيسية',
     loadComponent: () => import('./shared/components/layout/layout.component').then((m) => m.LayoutComponent),
-    children: [ownerRoutes, companyRoutes, clientRoutes, ...generalRoutes],
+    children: [ownerRoutes, companyRoutes, clientRoutes, distributorRoutes, ...generalRoutes],
   },
   authRoutes,
   {

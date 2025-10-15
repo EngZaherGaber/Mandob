@@ -59,12 +59,19 @@ export class CompanyStrategy extends BaseUserStrategy<Company> {
       label: 'الطلبات',
       items: [
         {
-          label: 'الطلبات المسلمة',
+          label: 'الطلبات المنتظرة',
           icon: 'pi pi-send', // 📤 تم تسليمها
+          routerLink: ['company/request-management/waiting/show'],
         },
         {
-          label: 'الطلبات الواردة',
+          label: 'الطلبات المنتهية',
           icon: 'pi pi-inbox', // 📥 واردة
+          routerLink: ['company/request-management/ending/show'],
+        },
+        {
+          label: 'المرتجع',
+          icon: 'pi pi-arrow-circle-left', // 📥 واردة
+          routerLink: ['company/return-management/show'],
         },
       ],
     },

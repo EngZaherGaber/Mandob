@@ -56,7 +56,7 @@ export class ForgetPasswordComponent {
     private router: Router,
     private authSrv: AuthService,
     private userState: UserStateService,
-    private msgSrv: MessageToastService
+    private msgSrv: MessageToastService,
   ) {}
   getControl(name: string) {
     return this.form.get(name) as FormControl;
@@ -79,7 +79,7 @@ export class ForgetPasswordComponent {
       },
       (err) => {
         this.loading = false;
-      }
+      },
     );
   }
   verfication() {
@@ -98,7 +98,7 @@ export class ForgetPasswordComponent {
       },
       (err) => {
         this.loading = false;
-      }
+      },
     );
   }
   resetPassword() {
@@ -111,13 +111,11 @@ export class ForgetPasswordComponent {
     this.authSrv.resetPassword(formValue).subscribe(
       (res) => {
         this.loading = false;
-        if (res.succeeded) {
-          this.router.navigate(['']);
-        }
+        if (res.succeeded) this.router.navigate(['auth/login']);
       },
       (err) => {
         this.loading = false;
-      }
+      },
     );
   }
 }

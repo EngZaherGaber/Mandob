@@ -5,6 +5,8 @@ export interface Company extends User {
   companyDescription: string;
   createdBy: string;
   commercialRegistrationNumber: string;
+  currencyID: number;
+  currencyName: string;
   address: string;
   planName: string;
   planId: number;

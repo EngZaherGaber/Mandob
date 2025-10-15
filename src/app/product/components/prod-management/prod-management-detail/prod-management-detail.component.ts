@@ -37,6 +37,7 @@ export class ProdManagementDetailComponent {
   options: OptionItem[] = [];
   variants: VariantItem[] = [];
   uploadedFiles: File[] = [];
+  currencyID: number = 0;
   showForm: boolean = false;
   productId: number = 0;
   isShow: boolean = false;
@@ -58,8 +59,11 @@ export class ProdManagementDetailComponent {
           this.productId = param['id'];
           this.isShow = param['type'] === 'display';
           const user = userState.user();
-          if (user && user.userId) {
+          const strategy = userState.strategy();
+
+          if (user && user.userId && strategy) {
             return forkJoin({
+              company: strategy.getById(),
               collection: collectionManagement.getAll({ first: 0, rows: 1000 }, user.userId),
               categories: categoryManagement.getAll({ first: 0, rows: 1000 }),
               product: productManagement.getOne(this.productId),
@@ -70,6 +74,9 @@ export class ProdManagementDetailComponent {
         }),
         switchMap((res) => {
           if (res) {
+            if ('currencyId' in res.company.data) {
+              this.currencyID = res.company.data.currencyId as number;
+            }
             this.objs = [
               {
                 key: 'ProductName',
@@ -151,7 +158,9 @@ export class ProdManagementDetailComponent {
   }
   onSelect(event: any) {
     for (let file of event.files) {
-      this.uploadedFiles.push(file);
+      if (!this.uploadedFiles.find((x) => x.name === (file as File).name)) {
+        this.uploadedFiles.push(file);
+      }
     }
   }
   onRemove(event: any) {

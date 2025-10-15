@@ -1,11 +1,11 @@
-import { MenuItem } from 'primeng/api';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { MenuItem } from 'primeng/api';
+import { environment } from '../../../environments/environment';
+import { BaseUserStrategy } from '../../general/classes/base-user-strategy';
 import { AuthService } from '../../general/services/auth.service';
 import { Distributor } from '../interfaces/distributor';
-import { BaseUserStrategy } from '../../general/classes/base-user-strategy';
-import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root', // or inside providers: [] of a module
 })
@@ -35,12 +35,19 @@ export class DistributorStrategy extends BaseUserStrategy<Distributor> {
       label: 'الطلبات',
       items: [
         {
-          label: 'الطلبات المسلمة',
+          label: 'الطلبات المنتظرة',
           icon: 'pi pi-send', // 📤 تم تسليمها
+          routerLink: ['distributor/request-management/waiting/show'],
         },
         {
-          label: 'الطلبات الواردة',
+          label: 'الطلبات المنتهية',
           icon: 'pi pi-inbox', // 📥 واردة
+          routerLink: ['distributor/request-management/ending/show'],
+        },
+        {
+          label: 'المرتجع',
+          icon: 'pi pi-arrow-circle-left', // 📥 واردة
+          routerLink: ['distributor/return-management/show'],
         },
       ],
     },

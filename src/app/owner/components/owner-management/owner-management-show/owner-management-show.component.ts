@@ -25,6 +25,11 @@ export class OwnerManagementShowComponent {
   type: 'table' | 'list' | string = '';
   columns: columnTable[] = [
     {
+      field: 'isActive',
+      header: 'فعال',
+      headerType: 'toggle',
+    },
+    {
       field: 'name',
       header: 'الاسم',
       headerType: 'string',
@@ -38,11 +43,6 @@ export class OwnerManagementShowComponent {
       field: 'phoneNumber',
       header: 'رقم الهاتف',
       headerType: 'string',
-    },
-    {
-      field: 'isActive',
-      header: 'فعال',
-      headerType: 'toggle',
     },
   ];
   columnsEvent: EventColumn[] = [

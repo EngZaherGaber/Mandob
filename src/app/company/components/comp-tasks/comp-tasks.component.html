@@ -1,0 +1,32 @@
+<div class="h-100 d-flex flex-column justify-content-start ">
+
+    <div class="d-flex align-items-center">
+        <p-button (onClick)="stateSrv.collapseCart()" class="w-auto p-0" size="small" icon="pi pi-times"
+            [rounded]="true" [outlined]="true" [text]="true" severity="secondary" pTooltip="اغلاق" />
+        <h6 class="fw-bold">المهمات</h6>
+    </div>
+    <div style="max-height: 100%;"
+        class=" w-100 overflow-y-auto d-flex flex-column justify-content-between align-items-center mt-4">
+        @for (item of result; track $index) {
+        <div class="w-100 px-2 border-bottom" style="text-decoration: none;">
+            <div class="w-100 d-flex flex-column gap-4 align-items-center justify-content-between p-1 product-div pt-4">
+
+                <div class="d-flex justify-content-between w-100">
+                    <p class="text-end w-100">{{item.title}}</p>
+                    <p-button [outlined]="true" icon="pi pi-eye"
+                        (onClick)="goToTask(item.taskTypeId,item.relatedEntityId)"></p-button>
+                </div>
+                <div class="d-flex justify-content-between w-100">
+
+                    <span>{{item.taskType}}</span>
+                    <span>{{item.date | date: 'dd-MM-yyyy'}}</span>
+                    <p-tag [value]="item.currentStatus"></p-tag>
+                </div>
+            </div>
+        </div>
+        }@empty {
+        <p>لا يوجد مهمات في السلة</p>
+        }
+    </div>
+
+</div>

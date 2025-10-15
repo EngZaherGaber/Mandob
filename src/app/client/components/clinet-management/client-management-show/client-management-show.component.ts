@@ -23,6 +23,11 @@ export class ClientManagementShowComponent {
   type: 'table' | 'list' | string = '';
   columns = [
     {
+      field: 'isActive',
+      header: 'فعال',
+      headerType: 'toggle',
+    },
+    {
       field: 'name',
       header: 'الاسم',
       headerType: 'string',
@@ -46,11 +51,6 @@ export class ClientManagementShowComponent {
       field: 'address',
       header: 'العنوان',
       headerType: 'string',
-    },
-    {
-      field: 'isActive',
-      header: 'فعال',
-      headerType: 'Toggle',
     },
   ];
   columnsEvent = [

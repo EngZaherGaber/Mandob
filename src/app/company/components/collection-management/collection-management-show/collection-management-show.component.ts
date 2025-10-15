@@ -22,6 +22,11 @@ export class CollectionManagementShowComponent {
   imageField: string = 'collectionImageUrl';
   columns: columnTable[] = [
     {
+      field: 'isActive',
+      header: 'فعال',
+      headerType: 'toggle',
+    },
+    {
       field: 'name',
       header: 'الاسم',
       headerType: 'string',
@@ -30,11 +35,6 @@ export class CollectionManagementShowComponent {
       field: 'description',
       header: 'الوصف',
       headerType: 'string',
-    },
-    {
-      field: 'isActive',
-      header: 'فعال',
-      headerType: 'toggle',
     },
   ];
   columnsEvent: EventColumn[] = [

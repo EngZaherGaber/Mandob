@@ -23,7 +23,7 @@ export class PlanManagementDetailComponent {
     private router: Router,
     private route: ActivatedRoute,
     private planSrv: PlanManagementService,
-    private msgSrv: MessageToastService
+    private msgSrv: MessageToastService,
   ) {
     this.route.params
       .pipe(
@@ -31,7 +31,7 @@ export class PlanManagementDetailComponent {
           this.isShow = param['type'] === 'display';
           this.planId = +param['id'];
           return planSrv.getOne(this.planId);
-        })
+        }),
       )
       .subscribe((res) => {
         this.plan = res.data;
@@ -108,8 +108,8 @@ export class PlanManagementDetailComponent {
   submit(event: any) {
     if (this.planId) {
       this.planSrv.edit(this.planId, event).subscribe((res) => {
+        this.msgSrv.showMessage(res.message, res.succeeded);
         if (res.succeeded) {
-          this.msgSrv.showSuccess('تم تعديل المدير');
           this.router.navigate(['owner/plan-management/show']);
         }
       });

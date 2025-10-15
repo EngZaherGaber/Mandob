@@ -68,8 +68,8 @@ export class PlanManagementShowComponent {
   };
   deleteFunc: (rowData: any) => void = (rowData: any) => {
     this.confirmationService.confirm({
-      message: 'هل تريد حذف هذه الحساب؟',
-      header: 'حذف الحساب',
+      message: 'هل تريد حذف هذه الخطة؟',
+      header: 'حذف الخطة',
       icon: 'pi pi-info-circle',
       rejectLabel: 'الغاء',
       rejectButtonProps: {

@@ -103,7 +103,9 @@
                                             [style]="{'width':'100%'}"></p-inputNumber>
                                     </p-floatlabel>
                                     <p-floatlabel variant="over">
-                                        <label [for]="variant.variantName+'-price'">السعر</label>
+                                        <label [for]="variant.variantName+'-price'">السعر {{currencyID === 1 ?
+                                            '(بالليرة)' :
+                                            '(بالدولار)'}}</label>
                                         <p-inputNumber [id]="variant.variantName+'-price'" [(ngModel)]="variant.price"
                                             [minFractionDigits]="1" [step]="0.1" mode="decimal" [showButtons]="true"
                                             [style]="{'width':'100%'}"></p-inputNumber>
