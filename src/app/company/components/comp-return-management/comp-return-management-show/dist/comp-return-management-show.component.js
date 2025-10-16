@@ -178,7 +178,6 @@ var CompReturnManagementShowComponent = /** @class */ (function () {
     };
     CompReturnManagementShowComponent.prototype.rejectReason = function (value) {
         var _this = this;
-        debugger;
         var req = this.selectedReturn();
         if (req && value) {
             this.companyReturnSrv

@@ -23,7 +23,11 @@ export class VerficationComponent {
   /**
    *
    */
-  constructor(private router: Router, private userState: UserStateService, private authSrv: AuthService) {
+  constructor(
+    private router: Router,
+    private userState: UserStateService,
+    private authSrv: AuthService,
+  ) {
     // this.role = userState.role;
     const nav = this.router.getCurrentNavigation();
     if (nav?.extras.state) {
@@ -39,7 +43,11 @@ export class VerficationComponent {
       options: [],
     };
   }
-
+  reSendCode() {
+    this.authSrv.resendCode({ email: this.input }).subscribe((res) => {
+      if (res.succeeded) this.router.navigate(['']);
+    });
+  }
   verfication() {
     this.authSrv.verifyCode({ code: this.codeControl.value, email: this.input }).subscribe((res) => {
       if (res.succeeded) this.router.navigate(['']);

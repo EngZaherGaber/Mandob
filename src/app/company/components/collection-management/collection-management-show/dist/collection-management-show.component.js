@@ -55,8 +55,8 @@ var CollectionManagementShowComponent = /** @class */ (function () {
         };
         this.changeState = function (rowData) {
             _this.confirmationService.confirm({
-                message: 'هل تريد تغيير حالة هذا المستخدم؟',
-                header: 'تغيير حالة المستخدم',
+                message: 'هل تريد تغيير حالة هذا المجموعة؟',
+                header: 'تغيير حالة المجموعة',
                 icon: 'pi pi-info-circle',
                 rejectLabel: 'الغاء',
                 rejectButtonProps: {
@@ -79,8 +79,8 @@ var CollectionManagementShowComponent = /** @class */ (function () {
         };
         this.deleteFunc = function (rowData) {
             _this.confirmationService.confirm({
-                message: 'هل تريد حذف هذه الحساب؟',
-                header: 'حذف الحساب',
+                message: 'هل تريد حذف هذه المجموعة؟',
+                header: 'حذف المجموعة',
                 icon: 'pi pi-info-circle',
                 rejectLabel: 'الغاء',
                 rejectButtonProps: {

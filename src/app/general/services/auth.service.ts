@@ -20,14 +20,14 @@ export class AuthService {
     private http: HttpClient,
     @Inject(PLATFORM_ID) private platformId: Object,
     private router: Router,
-    private msgSrv: MessageToastService
+    private msgSrv: MessageToastService,
   ) {}
 
   login(input: string, password: string) {
     return this.http.post<APIResponse<loginResponse>>(
       this.url + '/login', // 👈 always start with /api
       { input, password },
-      { withCredentials: true }
+      { withCredentials: true },
     );
   }
   forgetPassword(body: { email: string }) {
@@ -63,6 +63,9 @@ export class AuthService {
 
   verifyCode(body: { code: string; email: string }) {
     return this.http.post<APIResponse<any>>(this.url + '/verify-code', body);
+  }
+  resendCode(body: { email: string }) {
+    return this.http.post<APIResponse<any>>(this.url + '/resend-code', body);
   }
   myInfo() {
     return this.http.get<APIResponse<any>>(this.url + '/me');

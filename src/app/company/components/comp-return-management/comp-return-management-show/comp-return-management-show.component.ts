@@ -195,7 +195,6 @@ export class CompReturnManagementShowComponent {
     }
   }
   rejectReason(value: string) {
-    debugger;
     const req = this.selectedReturn();
     if (req && value) {
       this.companyReturnSrv

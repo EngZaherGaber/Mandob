@@ -151,4 +151,7 @@ export class ProdGeneralItemComponent {
     if (this.product) return this.product?.ratingCount.toString();
     else return '0';
   }
+  back() {
+    this.router.navigate(['/company/product-management/show']);
+  }
 }

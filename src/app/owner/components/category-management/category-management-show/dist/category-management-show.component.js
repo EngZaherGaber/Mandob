@@ -39,8 +39,8 @@ var CategoryManagementShowComponent = /** @class */ (function () {
         };
         this.deleteFunc = function (rowData) {
             _this.confirmationService.confirm({
-                message: 'هل تريد حذف هذه الحساب؟',
-                header: 'حذف الحساب',
+                message: 'هل تريد حذف هذه التصنيف؟',
+                header: 'حذف التصنيف',
                 icon: 'pi pi-info-circle',
                 rejectLabel: 'الغاء',
                 rejectButtonProps: {

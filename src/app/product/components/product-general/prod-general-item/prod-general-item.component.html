@@ -1,5 +1,8 @@
 <!-- <p-card> -->
 <div class="container-fluid">
+    @if(userState.role() === 'company'){
+    <p-button class="Nbtn" pTooltip="Back" icon="pi pi-arrow-right" (click)="back()" />
+    }
     <div class="row">
         <div class="col-12 col-md-6 position-relative">
             <div class="row">

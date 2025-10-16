@@ -113,6 +113,13 @@
 
                     }@case ('nest') {
 
+                    }@case ('html') {
+
+                    <p-columnFilter type="text" [field]="col.field" [placeholder]="col.header" matchMode="contains"
+                        [matchModeOptions]="[
+    { label: 'Contains', value: 'contains' },
+    { label: 'Not contains', value: 'notContains' }
+  ]"></p-columnFilter>
                     }@case ('json') {
 
                     }@default {

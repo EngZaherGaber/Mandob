@@ -145,6 +145,9 @@ var ProdGeneralItemComponent = /** @class */ (function () {
         else
             return '0';
     };
+    ProdGeneralItemComponent.prototype.back = function () {
+        this.router.navigate(['/company/product-management/show']);
+    };
     ProdGeneralItemComponent = __decorate([
         core_1.Component({
             selector: 'app-prod-general-item',

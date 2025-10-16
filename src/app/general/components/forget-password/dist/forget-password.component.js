@@ -110,6 +110,13 @@ var ForgetPasswordComponent = /** @class */ (function () {
             _this.loading = false;
         });
     };
+    ForgetPasswordComponent.prototype.reSendCode = function () {
+        var _this = this;
+        this.authSrv.resendCode({ email: this.form.value.email }).subscribe(function (res) {
+            if (res.succeeded)
+                _this.router.navigate(['']);
+        });
+    };
     ForgetPasswordComponent = __decorate([
         core_1.Component({
             selector: 'forget-password',

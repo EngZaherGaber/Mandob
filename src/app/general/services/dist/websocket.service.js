@@ -27,13 +27,30 @@ var WebsocketService = /** @class */ (function () {
             .start()
             .then(function () {
             console.log('✅ SignalR Connected');
-            _this.sendMessageToServer('RegisterUser', userId);
+            _this.sendMessageToServer('OnNotification', { type: 'login', value: { Sec: _this.hashUserId(userId) } });
         })["catch"](function (err) { return console.error('❌ SignalR Error:', err); });
         // Listen for notifications
-        this.hubConnection.on('ReceiveNotification', function (message) {
-            console.log('📩 Notification:', message);
-            _this.messageSource.next(message); // broadcast message to subscribers
+        this.hubConnection.on('OnNotification', function (message) {
+            var _a;
+            var type = message.type;
+            switch (type) {
+                case 'register':
+                    if (!((_a = message.value) === null || _a === void 0 ? void 0 : _a.success)) {
+                        _this.stopConnection();
+                        _this.startConnection(userId);
+                    }
+                    break;
+                case 'old_notifications':
+                    _this.messageSource.next(message);
+                    break;
+                default:
+                    break;
+            }
         });
+    };
+    WebsocketService.prototype.hashUserId = function (userId) {
+        var plainText = userId.toString();
+        return btoa(unescape(encodeURIComponent(plainText)));
     };
     WebsocketService.prototype.sendMessageToServer = function (method, payload) {
         var _a;

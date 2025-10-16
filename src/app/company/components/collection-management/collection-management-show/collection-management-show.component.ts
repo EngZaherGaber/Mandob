@@ -57,8 +57,8 @@ export class CollectionManagementShowComponent {
   };
   changeState: (rowData: any) => void = (rowData: any) => {
     this.confirmationService.confirm({
-      message: 'هل تريد تغيير حالة هذا المستخدم؟',
-      header: 'تغيير حالة المستخدم',
+      message: 'هل تريد تغيير حالة هذا المجموعة؟',
+      header: 'تغيير حالة المجموعة',
       icon: 'pi pi-info-circle',
       rejectLabel: 'الغاء',
       rejectButtonProps: {
@@ -81,8 +81,8 @@ export class CollectionManagementShowComponent {
   };
   deleteFunc: (rowData: any) => void = (rowData: any) => {
     this.confirmationService.confirm({
-      message: 'هل تريد حذف هذه الحساب؟',
-      header: 'حذف الحساب',
+      message: 'هل تريد حذف هذه المجموعة؟',
+      header: 'حذف المجموعة',
       icon: 'pi pi-info-circle',
       rejectLabel: 'الغاء',
       rejectButtonProps: {

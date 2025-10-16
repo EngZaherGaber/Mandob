@@ -7,7 +7,7 @@ import { ReplaySubject } from 'rxjs';
 })
 export class WebsocketService {
   private hubConnection!: signalR.HubConnection;
-  private messageSource = new ReplaySubject<string>(50);
+  private messageSource = new ReplaySubject<any>(50);
   public message$ = this.messageSource.asObservable(); // subscribe to this in components
 
   startConnection(userId: number): void {
@@ -22,17 +22,32 @@ export class WebsocketService {
       .start()
       .then(() => {
         console.log('✅ SignalR Connected');
-        this.sendMessageToServer('RegisterUser', userId);
+        this.sendMessageToServer('OnNotification', { type: 'login', value: { Sec: this.hashUserId(userId) } });
       })
       .catch((err) => console.error('❌ SignalR Error:', err));
 
     // Listen for notifications
-    this.hubConnection.on('ReceiveNotification', (message: string) => {
-      console.log('📩 Notification:', message);
-      this.messageSource.next(message); // broadcast message to subscribers
+    this.hubConnection.on('OnNotification', (message: any) => {
+      const type = message.type;
+      switch (type) {
+        case 'register':
+          if (!message.value?.success) {
+            this.stopConnection();
+            this.startConnection(userId);
+          }
+          break;
+        case 'old_notifications':
+          this.messageSource.next(message);
+          break;
+        default:
+          break;
+      }
     });
   }
-
+  private hashUserId(userId: number): string {
+    const plainText = userId.toString();
+    return btoa(unescape(encodeURIComponent(plainText)));
+  }
   sendMessageToServer(method: string, payload?: any): void {
     this.hubConnection?.invoke(method, payload).catch((err) => console.error('Send failed', err));
   }

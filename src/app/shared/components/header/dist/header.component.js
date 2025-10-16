@@ -214,7 +214,18 @@ var HeaderComponent = /** @class */ (function () {
     }
     HeaderComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.userState.wsSrv.message$.subscribe(function (msg) { return _this.messages.push(msg); });
+        this.userState.wsSrv.message$.subscribe(function (msg) {
+            var _a;
+            console.log('📩 Notification:', msg);
+            var type = msg.type;
+            switch (type) {
+                case 'old_notifications':
+                    (_a = _this.messages).push.apply(_a, msg.value);
+                    break;
+                default:
+                    break;
+            }
+        });
     };
     HeaderComponent.prototype.changeSearchInput = function (event) {
         this.stateSrv.changeSearchInput(event);

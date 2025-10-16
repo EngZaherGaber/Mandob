@@ -8,6 +8,8 @@
         <dynamic-input [style]="'width: 100%;'" [FEcontrol]="codeControl" [object]="codeInput"></dynamic-input>
         <p-button label="تحقق" icon="pi pi-check" styleClass="w-100" [style]="{width:'100%'}"
             (onClick)="verfication()" />
+        <p-button label="إعادة ارسال الكود" [text]="true" icon="pi pi-check" styleClass="w-100" [style]="{width:'100%'}"
+            (onClick)="reSendCode()" />
     </div>
 </div>
 

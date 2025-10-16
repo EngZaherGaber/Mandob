@@ -11,6 +11,6 @@ export const redirectGuard: CanActivateFn = (route, state) => {
   if (!isPlatformBrowser(platformId)) {
     return of(true);
   }
-  debugger;
+
   return of(router.createUrlTree([userState.role()]));
 };
