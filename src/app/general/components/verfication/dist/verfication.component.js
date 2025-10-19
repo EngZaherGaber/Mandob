@@ -17,10 +17,11 @@ var VerficationComponent = /** @class */ (function () {
     /**
      *
      */
-    function VerficationComponent(router, userState, authSrv) {
+    function VerficationComponent(router, userState, msgSrv, authSrv) {
         var _a;
         this.router = router;
         this.userState = userState;
+        this.msgSrv = msgSrv;
         this.authSrv = authSrv;
         this.codeControl = new forms_1.FormControl(null);
         this.input = '';
@@ -43,8 +44,7 @@ var VerficationComponent = /** @class */ (function () {
     VerficationComponent.prototype.reSendCode = function () {
         var _this = this;
         this.authSrv.resendCode({ email: this.input }).subscribe(function (res) {
-            if (res.succeeded)
-                _this.router.navigate(['']);
+            _this.msgSrv.showMessage(res.message, res.succeeded);
         });
     };
     VerficationComponent.prototype.verfication = function () {

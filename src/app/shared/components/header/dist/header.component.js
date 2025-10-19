@@ -129,7 +129,7 @@ var HeaderComponent = /** @class */ (function () {
         this.activeIndexPhoneNumber = 0;
         this.searchLoading = false;
         this.searchResult = null;
-        this.messages = [];
+        this.notifications = [];
         this.user = null;
         this.items = [
             {
@@ -212,21 +212,7 @@ var HeaderComponent = /** @class */ (function () {
             });
         }
     }
-    HeaderComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this.userState.wsSrv.message$.subscribe(function (msg) {
-            var _a;
-            console.log('📩 Notification:', msg);
-            var type = msg.type;
-            switch (type) {
-                case 'old_notifications':
-                    (_a = _this.messages).push.apply(_a, msg.value);
-                    break;
-                default:
-                    break;
-            }
-        });
-    };
+    HeaderComponent.prototype.ngOnInit = function () { };
     HeaderComponent.prototype.changeSearchInput = function (event) {
         this.stateSrv.changeSearchInput(event);
     };
@@ -348,7 +334,6 @@ var HeaderComponent = /** @class */ (function () {
     HeaderComponent.prototype.ngOnDestroy = function () {
         var _a;
         (_a = this.sub) === null || _a === void 0 ? void 0 : _a.unsubscribe();
-        this.userState.wsSrv.stopConnection();
     };
     HeaderComponent = __decorate([
         core_1.Component({

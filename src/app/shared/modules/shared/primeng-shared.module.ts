@@ -22,6 +22,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { MenuModule } from 'primeng/menu';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { OverlayBadgeModule } from 'primeng/overlaybadge';
 import { PasswordModule } from 'primeng/password';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { SelectModule } from 'primeng/select';
@@ -40,6 +41,7 @@ import { TooltipModule } from 'primeng/tooltip';
 @NgModule({
   declarations: [],
   exports: [
+    OverlayBadgeModule,
     InputIconModule,
     TabsModule,
     IconFieldModule,

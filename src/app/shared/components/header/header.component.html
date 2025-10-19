@@ -46,7 +46,10 @@
         <p-button (onClick)="stateSrv.setIsDark(!stateSrv.isDark())"
             [icon]="stateSrv.isDark() ? 'pi pi-sun' : 'pi pi-moon'" [rounded]="true" [text]="true" severity="primary"
             [pTooltip]="stateSrv.isDark() ? 'الوضع النهاري' : 'الوضع الليلي'" />
-        <p-button icon="pi pi-bell" [rounded]="true" [text]="true" severity="primary" pTooltip="الاشعارات" />
+        <p-overlaybadge badgeSize="small" severity="danger" size="small" [value]="stateSrv.notficiations().length">
+            <p-button (onClick)="stateSrv.collapseNotficiation()" icon="pi pi-bell" [rounded]="true" [text]="true"
+                severity="primary" pTooltip="الاشعارات" />
+        </p-overlaybadge>
         @if(user?.role !== 'owner'){
         <p-button icon="pi pi-truck" (onClick)="stateSrv.collapseCart()" [rounded]="true" [text]="true"
             severity="primary" pTooltip="الشاحنة" />
@@ -61,7 +64,7 @@
 
             }
         </a>
-        <p-menu #menu [model]="items" [popup]="true">
+        <p-menu #menu [model]="items" [popup]="true" appendTo="body">
             <ng-template #start>
                 <div class="d-flex flex-column align-items-end p-2"
                     style="background-color: var(--p-primary-500);color: var(--p-text-hover-color);">
@@ -81,7 +84,21 @@
                 </div>
             </ng-template>
         </p-menu>
+        <p-menu #notification [style]="{'width':'350px','max-height':'40vh'}" [model]="notifications" [popup]="true">
+            <ng-template #item let-item>
+                <div class="d-flex flex-column justify-content-end gap-2 px-3 py-2 border-bottom border-2">
+                    <p>
+                        @switch (item.title) {
+                        @case ('review') {
+                        اجراء تقييم
+                        }
 
+                        }
+                    </p>
+                    <span>{{item.label}}</span>
+                </div>
+            </ng-template>
+        </p-menu>
 
     </div>
 </div>

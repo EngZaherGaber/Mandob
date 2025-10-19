@@ -5,6 +5,7 @@ import { DynamicInputComponent } from '../../../shared/components/dynamic-input/
 import { LoadingComponent } from '../../../shared/components/loading/loading.component';
 import { InputDynamic } from '../../../shared/interface/input-dynamic';
 import { PrimeNgSharedModule } from '../../../shared/modules/shared/primeng-shared.module';
+import { MessageToastService } from '../../../shared/service/message-toast.service';
 import { AuthService } from '../../services/auth.service';
 import { UserStateService } from '../../services/user-state.service';
 
@@ -26,6 +27,7 @@ export class VerficationComponent {
   constructor(
     private router: Router,
     private userState: UserStateService,
+    private msgSrv: MessageToastService,
     private authSrv: AuthService,
   ) {
     // this.role = userState.role;
@@ -45,7 +47,7 @@ export class VerficationComponent {
   }
   reSendCode() {
     this.authSrv.resendCode({ email: this.input }).subscribe((res) => {
-      if (res.succeeded) this.router.navigate(['']);
+      this.msgSrv.showMessage(res.message, res.succeeded);
     });
   }
   verfication() {

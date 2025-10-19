@@ -6,6 +6,10 @@
     @include responsive-font-sizes(16px, 22px, 22px, 22px);
   }
 }
+::ng-deep .p-badge {
+  top: 15px !important;
+  right: 2.5px !important;
+}
 
 .search-menu {
   z-index: 900;

@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "http://192.168.1.50:2222/api",
+    "target": "http://192.168.1.200:2222/api",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug",
@@ -9,13 +9,13 @@
     }
   },
   "/images": {
-    "target": "http://192.168.1.50:2222",
+    "target": "http://192.168.1.200:2222",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
   },
   "/notificationHub": {
-    "target": "ws://192.168.1.50:2222",
+    "target": "ws://192.168.1.200:2222",
     "ws": true,
     "secure": false,
     "changeOrigin": true,

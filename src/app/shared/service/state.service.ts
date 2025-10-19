@@ -3,7 +3,9 @@ import { isPlatformBrowser } from '@angular/common';
 import { computed, Inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, Subject } from 'rxjs';
+import { WebsocketService } from '../../general/services/websocket.service';
 import { AppState } from '../interface/app-state';
+import { NotificationApp } from '../interface/notficiation-app';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +17,8 @@ export class StateService {
     isDark: false,
     isOpenedSideNav: true,
     isOpenedCart: false,
+    isOpenedNotficiation: false,
+    notficiations: [],
     searchInput: '',
     openSearchMenu: false,
   });
@@ -24,6 +28,8 @@ export class StateService {
   page = computed(() => this.state().page);
   isBrowser = computed(() => isPlatformBrowser(this.platformId));
   isOpenedSideNav = computed(() => this.state().isOpenedSideNav);
+  isOpenedNotficiation = computed(() => this.state().isOpenedNotficiation);
+  notficiations = computed(() => this.state().notficiations);
   isOpenedCart = computed(() => this.state().isOpenedCart);
   screenType = computed(() => {
     const w = this.state().width;
@@ -33,6 +39,7 @@ export class StateService {
   });
   isDark = computed(() => this.state().isDark);
   constructor(
+    public wsSrv: WebsocketService,
     private router: Router,
     private breakpointObserver: BreakpointObserver,
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -54,6 +61,21 @@ export class StateService {
       });
     this.getIsDark();
     this.setIsDark(this.isDark());
+    this.wsSrv.message$.subscribe((msg) => {
+      console.log('📩 Notification:', msg);
+      const type = msg.type;
+      const value = msg.value;
+      switch (type) {
+        case 'old_notifications':
+          (msg.value as any[]).forEach((noti) => this.addNotification(noti));
+          break;
+        case 'review':
+          this.addNotification(value);
+          break;
+        default:
+          break;
+      }
+    });
   }
 
   private updateTitleFromRoute(): void {
@@ -113,12 +135,32 @@ export class StateService {
       isOpenedSideNav: !this.isOpenedSideNav(),
     }));
   }
+  collapseNotficiation() {
+    this.state.update((prev) => ({
+      ...prev,
+      isOpenedNotficiation: !this.isOpenedNotficiation(),
+    }));
+  }
+  addNotification(notification: NotificationApp) {
+    this.state.update((prev) => ({
+      ...prev,
+      notficiations: [...this.notficiations(), notification],
+    }));
+  }
+  markNotificationAsRead(id: number) {
+    this.state.update((prev) => ({
+      ...prev,
+      notficiations: [...this.notficiations().filter((x) => x.id !== id)],
+    }));
+    this.wsSrv.sendMessageToServer('OnNotification', { type: 'mark_read', recordId: id });
+  }
   collapseCart() {
     this.state.update((prev) => ({
       ...prev,
       isOpenedCart: !this.isOpenedCart(),
     }));
   }
+
   changeSearchInput(searchInput: string) {
     this.state.update((prev) => ({
       ...prev,

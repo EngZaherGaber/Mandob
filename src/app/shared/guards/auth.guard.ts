@@ -3,9 +3,11 @@ import { inject, PLATFORM_ID } from '@angular/core';
 import { CanActivateChildFn, Router } from '@angular/router';
 import { of, switchMap } from 'rxjs';
 import { UserStateService } from '../../general/services/user-state.service';
+import { StateService } from '../service/state.service';
 
 export const authGuard: CanActivateChildFn = (childRoute, state) => {
   const userState = inject(UserStateService);
+  const stateSrv = inject(StateService);
   const router = inject(Router);
   const platformId = inject(PLATFORM_ID);
 
@@ -16,6 +18,7 @@ export const authGuard: CanActivateChildFn = (childRoute, state) => {
   return userState.checkUser().pipe(
     switchMap((isLoggedIn) => {
       if (isLoggedIn) {
+        stateSrv.wsSrv.startConnection(userState.user()?.userId ?? 0);
         const role = userState.role();
         const targetUrl = `/${role}`;
 

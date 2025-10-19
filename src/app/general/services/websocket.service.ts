@@ -36,10 +36,8 @@ export class WebsocketService {
             this.startConnection(userId);
           }
           break;
-        case 'old_notifications':
-          this.messageSource.next(message);
-          break;
         default:
+          this.messageSource.next(message);
           break;
       }
     });

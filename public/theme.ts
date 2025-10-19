@@ -878,7 +878,7 @@ export const MyPreset = definePreset({
       sm: {
         fontSize: '0.625rem',
         minWidth: '1.25rem',
-        height: '1.25rem',
+        height: '1rem',
       },
       lg: {
         fontSize: '0.875rem',

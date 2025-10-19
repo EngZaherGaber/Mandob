@@ -417,6 +417,14 @@ const clientRoutes: Route = {
         },
       ],
     },
+    {
+      path: 'review/:id',
+      title: 'اضافة تقييم',
+      loadComponent: () =>
+        import(
+          './client/components/client-review-management/client-review-management-submit/client-review-management-submit.component'
+        ).then((m) => m.ClientReviewManagementSubmitComponent),
+    },
   ],
 };
 const distributorRoutes: Route = {

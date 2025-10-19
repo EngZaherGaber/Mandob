@@ -120,7 +120,7 @@ export class ForgetPasswordComponent {
   }
   reSendCode() {
     this.authSrv.resendCode({ email: this.form.value.email }).subscribe((res) => {
-      if (res.succeeded) this.router.navigate(['']);
+      this.msgSrv.showMessage(res.message, res.succeeded);
     });
   }
 }

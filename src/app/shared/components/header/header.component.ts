@@ -112,7 +112,7 @@ export class HeaderComponent {
   activeIndexPhoneNumber: number = 0;
   searchLoading: boolean = false;
   searchResult: GlobalSearchResponse | null = null;
-  messages: any[] = [];
+  notifications: MenuItem[] = [];
   private sub!: Subscription;
   constructor(
     public stateSrv: StateService,
@@ -208,19 +208,8 @@ export class HeaderComponent {
       });
     }
   }
-  ngOnInit() {
-    this.userState.wsSrv.message$.subscribe((msg) => {
-      console.log('📩 Notification:', msg);
-      const type = msg.type;
-      switch (type) {
-        case 'old_notifications':
-          this.messages.push(...msg.value);
-          break;
-        default:
-          break;
-      }
-    });
-  }
+  ngOnInit() {}
+
   changeSearchInput(event: string) {
     this.stateSrv.changeSearchInput(event);
   }
@@ -310,6 +299,5 @@ export class HeaderComponent {
   }
   ngOnDestroy() {
     this.sub?.unsubscribe();
-    this.userState.wsSrv.stopConnection();
   }
 }

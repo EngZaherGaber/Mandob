@@ -51,14 +51,13 @@ var core_1 = require("@angular/core");
 var fingerprintjs_1 = require("@fingerprintjs/fingerprintjs");
 var rxjs_1 = require("rxjs");
 var UserStateService = /** @class */ (function () {
-    function UserStateService(company, client, distributor, owner, authSrv, wsSrv, platformId) {
+    function UserStateService(company, client, distributor, owner, authSrv, platformId) {
         var _this = this;
         this.company = company;
         this.client = client;
         this.distributor = distributor;
         this.owner = owner;
         this.authSrv = authSrv;
-        this.wsSrv = wsSrv;
         this.platformId = platformId;
         this.isBrowser = core_1.computed(function () { return common_1.isPlatformBrowser(_this.platformId); });
         this.role = core_1.computed(function () { var _a; return (_this.user() ? (_a = _this.user()) === null || _a === void 0 ? void 0 : _a.role : null); });
@@ -110,10 +109,8 @@ var UserStateService = /** @class */ (function () {
             return rxjs_1.of(true); // user already exists locally
         }
         return this.authSrv.myInfo().pipe(rxjs_1.switchMap(function (res) {
-            var _a, _b;
             if (res.succeeded) {
                 _this.user.set(res.data);
-                _this.wsSrv.startConnection((_b = (_a = _this.user()) === null || _a === void 0 ? void 0 : _a.userId) !== null && _b !== void 0 ? _b : 0);
                 return rxjs_1.of(true);
             }
             else {
@@ -125,7 +122,7 @@ var UserStateService = /** @class */ (function () {
         core_1.Injectable({
             providedIn: 'root'
         }),
-        __param(6, core_1.Inject(core_1.PLATFORM_ID))
+        __param(5, core_1.Inject(core_1.PLATFORM_ID))
     ], UserStateService);
     return UserStateService;
 }());

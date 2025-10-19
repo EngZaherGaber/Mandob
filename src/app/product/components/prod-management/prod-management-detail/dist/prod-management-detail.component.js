@@ -171,8 +171,14 @@ var ProdManagementDetailComponent = /** @class */ (function () {
         }
     };
     ProdManagementDetailComponent.prototype.onRemove = function (event) {
+        var _this = this;
         var index = this.uploadedFiles.findIndex(function (x) { return x.name === event.file.name; });
         if (index > -1) {
+            this.variants = this.variants.map(function (variant) {
+                var _a;
+                variant.variantImages = (_a = variant.variantImages) === null || _a === void 0 ? void 0 : _a.filter(function (img) { return img !== _this.uploadedFiles[index].name; });
+                return variant;
+            });
             this.uploadedFiles.splice(index, 1);
         }
     };

@@ -166,6 +166,10 @@ export class ProdManagementDetailComponent {
   onRemove(event: any) {
     const index = this.uploadedFiles.findIndex((x) => x.name === event.file.name);
     if (index > -1) {
+      this.variants = this.variants.map((variant) => {
+        variant.variantImages = variant.variantImages?.filter((img) => img !== this.uploadedFiles[index].name);
+        return variant;
+      });
       this.uploadedFiles.splice(index, 1);
     }
   }

@@ -40,10 +40,8 @@ var WebsocketService = /** @class */ (function () {
                         _this.startConnection(userId);
                     }
                     break;
-                case 'old_notifications':
-                    _this.messageSource.next(message);
-                    break;
                 default:
+                    _this.messageSource.next(message);
                     break;
             }
         });
