@@ -15,11 +15,19 @@ import { ProductManagementItem } from '../../../interfaces/product-management-it
 import { ProdManagementTableItem } from '../../../interfaces/product-management-table-item';
 import { VariantItem } from '../../../interfaces/variant-item';
 import { ProductStoreService } from '../../../services/product-store.service';
+import { ProdCommentComponent } from '../../prod-comment/prod-comment.component';
 import { ProdGeneralListComponent } from '../prod-general-list/prod-general-list.component';
 
 @Component({
   selector: 'app-prod-general-item',
-  imports: [ReactiveFormsModule, DynamicInputComponent, FormsModule, PrimeNgSharedModule, ProdGeneralListComponent],
+  imports: [
+    ReactiveFormsModule,
+    DynamicInputComponent,
+    FormsModule,
+    PrimeNgSharedModule,
+    ProdGeneralListComponent,
+    ProdCommentComponent,
+  ],
   templateUrl: './prod-general-item.component.html',
   styleUrl: './prod-general-item.component.scss',
 })
@@ -68,6 +76,7 @@ export class ProdGeneralItemComponent {
   product: ProductManagementItem | null = null;
   productsForSameCompany: ProdManagementTableItem[] = [];
   productsForSameCategory: ProdManagementTableItem[] = [];
+
   constructor(
     public userState: UserStateService,
     private productStore: ProductStoreService,

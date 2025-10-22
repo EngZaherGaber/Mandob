@@ -3,6 +3,9 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
 import { catchError, of, switchMap } from 'rxjs';
+import { ProductGeneralItemsComponent } from '../../../../general/components/product-general-items/product-general-items.component';
+import { ProdGeneralListComponent } from '../../../../product/components/product-general/prod-general-list/prod-general-list.component';
+import { ReviewSubmitComponent } from '../../../../review/components/review-submit/review-submit.component';
 import { DynamicInputComponent } from '../../../../shared/components/dynamic-input/dynamic-input.component';
 import { DynamicTableComponent } from '../../../../shared/components/dynamic-table/dynamic-table.component';
 import { InfoTable } from '../../../../shared/interface/info-table';
@@ -16,7 +19,14 @@ import { ClientReturnService } from '../../../services/client-return.service';
 
 @Component({
   selector: 'app-client-req-management-show',
-  imports: [DynamicTableComponent, PrimeNgSharedModule, DynamicInputComponent],
+  imports: [
+    DynamicTableComponent,
+    PrimeNgSharedModule,
+    DynamicInputComponent,
+    ReviewSubmitComponent,
+    ProductGeneralItemsComponent,
+    ProdGeneralListComponent,
+  ],
   templateUrl: './client-req-management-show.component.html',
   styleUrl: './client-req-management-show.component.scss',
 })
@@ -24,6 +34,21 @@ export class ClientReqManagementShowComponent {
   tableConfig: InfoTable;
   isWaiting: boolean = false;
   selectedRequest = signal<Request | null>(null);
+  items = computed(() => {
+    const source = this.selectedRequest();
+    if (source) {
+      return source.requestItems.map((x) => {
+        return {
+          variantName: x.variantName,
+          quantity: x.quantity,
+          originalPrice: x.originalPrice,
+          totalFinalPrice: x.totalFinalPrice,
+          finalPrice: x.finalPrice,
+        };
+      });
+    }
+    return [];
+  });
   columns = [
     {
       field: 'requestDate',
@@ -44,6 +69,11 @@ export class ClientReqManagementShowComponent {
       field: 'status',
       header: 'الحالة',
       headerType: 'tag',
+    },
+    {
+      field: 'isReviewed',
+      header: 'تم تقييمه',
+      headerType: 'bool',
     },
   ];
   objs: InputDynamic[] = [
@@ -156,8 +186,7 @@ export class ClientReqManagementShowComponent {
       accept: () => {
         this.clientRequestSrv.complete(rowData.requestID).subscribe((res) => {
           this.msgSrv.showMessage(res.message, res.succeeded);
-          if (res.succeeded) {
-          }
+          if (res.succeeded) this.tableConfig.getSub$.next({});
         });
       },
     });
@@ -185,6 +214,11 @@ export class ClientReqManagementShowComponent {
         });
       },
     });
+  };
+  reviewVisible: boolean = false;
+  showReviewFunc: (rowData: any) => void = (rowData: Request) => {
+    this.selectedRequest.set(rowData);
+    this.reviewVisible = true;
   };
   constructor(
     tableSrv: DyTableService,
@@ -221,6 +255,19 @@ export class ClientReqManagementShowComponent {
         }),
         switchMap((res) => {
           this.tableConfig.Buttons = [
+            {
+              isShow: false,
+              showCommand: (rowData: Request) => {
+                return rowData.status === 'مكتمل' && !this.isWaiting && !rowData.reviews;
+              },
+              tooltip: 'اجراء تقييم',
+              icon: 'pi pi-comment',
+              key: 'review',
+              severity: 'contrast',
+              command: (rowData: any) => {
+                this.showReviewFunc(rowData);
+              },
+            },
             {
               isShow: false,
               showCommand: (rowData: Request) => {

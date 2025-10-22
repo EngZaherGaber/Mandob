@@ -1,9 +1,12 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
 import { catchError, of, switchMap } from 'rxjs';
 import { Request } from '../../../../client/interfaces/request';
+import { ProductGeneralItemsComponent } from '../../../../general/components/product-general-items/product-general-items.component';
 import { UserStateService } from '../../../../general/services/user-state.service';
+import { ReviewDetailComponent } from '../../../../review/components/review-detail/review-detail.component';
 import { DynamicTableComponent } from '../../../../shared/components/dynamic-table/dynamic-table.component';
 import { InfoTable } from '../../../../shared/interface/info-table';
 import { PrimeNgSharedModule } from '../../../../shared/modules/shared/primeng-shared.module';
@@ -13,7 +16,13 @@ import { DistributorRequestService } from '../../../services/distributor-request
 
 @Component({
   selector: 'app-distributor-req-management-show',
-  imports: [DynamicTableComponent, PrimeNgSharedModule],
+  imports: [
+    DynamicTableComponent,
+    PrimeNgSharedModule,
+    ReviewDetailComponent,
+    FormsModule,
+    ProductGeneralItemsComponent,
+  ],
   templateUrl: './distributor-req-management-show.component.html',
   styleUrl: './distributor-req-management-show.component.scss',
 })
@@ -21,6 +30,7 @@ export class DistributorReqManagementShowComponent {
   tableConfig: InfoTable;
   isWaiting: boolean = false;
   selectedRequest = signal<Request | null>(null);
+  selectedRequestStatus: number | null = null;
   columns = [
     {
       field: 'requestDate',
@@ -42,8 +52,27 @@ export class DistributorReqManagementShowComponent {
       header: 'الحالة',
       headerType: 'tag',
     },
+    {
+      field: 'isReviewed',
+      header: 'تم تقييمه',
+      headerType: 'bool',
+    },
   ];
-
+  items = computed(() => {
+    const source = this.selectedRequest();
+    if (source) {
+      return source.requestItems.map((x) => {
+        return {
+          variantName: x.variantName,
+          quantity: x.quantity,
+          originalPrice: x.originalPrice,
+          totalFinalPrice: x.totalFinalPrice,
+          finalPrice: x.finalPrice,
+        };
+      });
+    }
+    return [];
+  });
   getSeverity: (rowData: any) => 'success' | 'info' | 'warn' | 'danger' | 'secondary' | 'contrast' | undefined = (
     rowData,
   ) => {
@@ -68,8 +97,9 @@ export class DistributorReqManagementShowComponent {
     { id: 5, name: 'قيد التوصيل' },
     { id: 6, name: 'تم التوصيل' },
   ];
-  changeStatusFunc: (rowData: any) => void = (rowData: any) => {
+  changeStatusFunc: (rowData: Request) => void = (rowData: Request) => {
     this.selectedRequest.set(rowData);
+    this.selectedRequestStatus = this.status.find((x) => x.name === rowData.status)?.id ?? null;
     this.changeStatusVisible = true;
   };
   itemsVisible: boolean = false;
@@ -81,6 +111,11 @@ export class DistributorReqManagementShowComponent {
   showUsersFunc: (rowData: any) => void = (rowData: Request) => {
     this.selectedRequest.set(rowData);
     this.usersVisible = true;
+  };
+  reviewVisible: boolean = false;
+  showReviewFunc: (rowData: any) => void = (rowData: Request) => {
+    this.selectedRequest.set(rowData);
+    this.reviewVisible = true;
   };
   constructor(
     tableSrv: DyTableService,
@@ -152,6 +187,19 @@ export class DistributorReqManagementShowComponent {
               severity: 'contrast',
               command: (rowData: any) => {
                 this.changeStatusFunc(rowData);
+              },
+            },
+            {
+              isShow: false,
+              showCommand: (rowData: Request) => {
+                return rowData.status === 'مكتمل' && !this.isWaiting && !!rowData.reviews;
+              },
+              tooltip: 'تقييم الزبون',
+              icon: 'pi pi-comment',
+              key: 'review',
+              severity: 'contrast',
+              command: (rowData: any) => {
+                this.showReviewFunc(rowData);
               },
             },
           ];

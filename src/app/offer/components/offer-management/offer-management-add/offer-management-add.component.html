@@ -7,8 +7,8 @@
                 icon="pi pi-arrow-right" />
         </div>
         <div class="col-md-6 col-12 px-0 px-md-1">
-            <p-accordion>
-                @for (key of keys;let index=$index; track $index) {
+            <p-accordion [multiple]="true">
+                @for (key of keys;let index=$index;let last=$last; track $index) {
                 <p-accordion-panel [value]="key.key">
                     <p-accordion-header>{{key.stepName}}</p-accordion-header>
                     <p-accordion-content>
@@ -17,7 +17,7 @@
                             <p-button icon="pi pi-plus" severity="success" size="small" [disabled]="disableMap[key.key]"
                                 (onClick)="addnewGroup(key.key)" [disabled]=""></p-button>
                             <div class="border border-2 d-flex flex-column gap-1  mb-2">
-                                <p-accordion>
+                                <p-accordion [multiple]="true">
                                     @for (group of objs[key.key];let groupIndex=$index ;track
                                     $index) {
                                     <p-accordion-panel [value]="key.key + '-'+groupIndex">
@@ -44,9 +44,13 @@
                                     }
                                 </p-accordion>
                             </div>
+                            @if(!disableMap[key.key] && last){
+
+                            <p-button label="حفظ" icon="pi pi-check" severity="success" (onClick)="submit()"></p-button>
+                            }
                         </div>
                         }@else {
-                        <div class="d-flex flex-column  px-2 pt-2">
+                        <div class="d-flex flex-column  px-2 pt-3">
                             @for (obj of objs[key.key]; track $index) {
                             <dynamic-input [object]="obj" [FEcontrol]="getControl(key.key,obj.key,index)" />
                             }

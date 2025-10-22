@@ -9,6 +9,7 @@ exports.__esModule = true;
 exports.ClientReturnManagementShowComponent = void 0;
 var core_1 = require("@angular/core");
 var rxjs_1 = require("rxjs");
+var product_general_items_component_1 = require("../../../../general/components/product-general-items/product-general-items.component");
 var dynamic_table_component_1 = require("../../../../shared/components/dynamic-table/dynamic-table.component");
 var primeng_shared_module_1 = require("../../../../shared/modules/shared/primeng-shared.module");
 var ClientReturnManagementShowComponent = /** @class */ (function () {
@@ -20,6 +21,23 @@ var ClientReturnManagementShowComponent = /** @class */ (function () {
         this.clientReturnSrv = clientReturnSrv;
         this.requestId = null;
         this.selectedReturn = core_1.signal(null);
+        this.items = core_1.computed(function () {
+            var source = _this.selectedReturn();
+            if (source) {
+                return source.items.map(function (x) {
+                    var _a;
+                    return {
+                        variantName: x.variantName,
+                        quantity: x.quantity,
+                        reason: (_a = x.reason) !== null && _a !== void 0 ? _a : ' ',
+                        originalPrice: x.refundPricePerUnit,
+                        totalFinalPrice: x.totalItemRefundAmount,
+                        finalPrice: x.totalItemRefundAmount
+                    };
+                });
+            }
+            return [];
+        });
         this.columns = [
             {
                 field: 'requestDate',
@@ -154,7 +172,7 @@ var ClientReturnManagementShowComponent = /** @class */ (function () {
     ClientReturnManagementShowComponent = __decorate([
         core_1.Component({
             selector: 'app-client-return-management-show',
-            imports: [dynamic_table_component_1.DynamicTableComponent, primeng_shared_module_1.PrimeNgSharedModule],
+            imports: [dynamic_table_component_1.DynamicTableComponent, primeng_shared_module_1.PrimeNgSharedModule, product_general_items_component_1.ProductGeneralItemsComponent],
             templateUrl: './client-return-management-show.component.html',
             styleUrl: './client-return-management-show.component.scss'
         })

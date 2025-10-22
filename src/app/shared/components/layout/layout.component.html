@@ -48,18 +48,14 @@ stateSrv.screenType()
 <ng-template #notificationMenu>
     <div (ClickOutside)="onClickOutside($event)"
         class="notifications-div d-flex flex-column border border-2 position-absolute overflow-y-auto py-2">
+
         @for (noti of stateSrv.notficiations(); track $index) {
 
         <a (click)="goToByNotification(noti)"
             class="notification-div d-flex flex-column justify-content-end gap-2 px-3 py-2 border-bottom border-2">
             <div class="d-flex justify-content-between">
                 <span class="fw-bold">
-                    @switch (noti.type) {
-                    @case ('review') {
-                    اجراء تقييم
-                    }
-
-                    }
+                    {{noti.type}}
                 </span>
 
                 <p-tag severity="help" [value]="timeSince(noti.timestamp)"></p-tag>
@@ -92,3 +88,11 @@ stateSrv.screenType()
     }
     }
 </ng-template>
+@if(showSubmitReview && userState.role() === 'client'){
+
+<p-dialog header="اضافة تقييم" [modal]="true" [(visible)]="showSubmitReview" [style]="{ width: '50vw' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+
+    <review-submit [requestID]="requestID" [withOutput]="true" (onSubmit)="showSubmitReview=false"></review-submit>
+</p-dialog>
+}

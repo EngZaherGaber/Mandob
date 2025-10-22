@@ -10,6 +10,9 @@ exports.ClientReqManagementShowComponent = void 0;
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var rxjs_1 = require("rxjs");
+var product_general_items_component_1 = require("../../../../general/components/product-general-items/product-general-items.component");
+var prod_general_list_component_1 = require("../../../../product/components/product-general/prod-general-list/prod-general-list.component");
+var review_submit_component_1 = require("../../../../review/components/review-submit/review-submit.component");
 var dynamic_input_component_1 = require("../../../../shared/components/dynamic-input/dynamic-input.component");
 var dynamic_table_component_1 = require("../../../../shared/components/dynamic-table/dynamic-table.component");
 var primeng_shared_module_1 = require("../../../../shared/modules/shared/primeng-shared.module");
@@ -24,6 +27,21 @@ var ClientReqManagementShowComponent = /** @class */ (function () {
         this.clientReturnSrv = clientReturnSrv;
         this.isWaiting = false;
         this.selectedRequest = core_1.signal(null);
+        this.items = core_1.computed(function () {
+            var source = _this.selectedRequest();
+            if (source) {
+                return source.requestItems.map(function (x) {
+                    return {
+                        variantName: x.variantName,
+                        quantity: x.quantity,
+                        originalPrice: x.originalPrice,
+                        totalFinalPrice: x.totalFinalPrice,
+                        finalPrice: x.finalPrice
+                    };
+                });
+            }
+            return [];
+        });
         this.columns = [
             {
                 field: 'requestDate',
@@ -44,6 +62,11 @@ var ClientReqManagementShowComponent = /** @class */ (function () {
                 field: 'status',
                 header: 'الحالة',
                 headerType: 'tag'
+            },
+            {
+                field: 'isReviewed',
+                header: 'تم تقييمه',
+                headerType: 'bool'
             },
         ];
         this.objs = [
@@ -153,8 +176,8 @@ var ClientReqManagementShowComponent = /** @class */ (function () {
                 accept: function () {
                     _this.clientRequestSrv.complete(rowData.requestID).subscribe(function (res) {
                         _this.msgSrv.showMessage(res.message, res.succeeded);
-                        if (res.succeeded) {
-                        }
+                        if (res.succeeded)
+                            _this.tableConfig.getSub$.next({});
                     });
                 }
             });
@@ -183,6 +206,11 @@ var ClientReqManagementShowComponent = /** @class */ (function () {
                 }
             });
         };
+        this.reviewVisible = false;
+        this.showReviewFunc = function (rowData) {
+            _this.selectedRequest.set(rowData);
+            _this.reviewVisible = true;
+        };
         this.tableConfig = tableSrv.getStandardInfo(undefined, undefined, undefined, undefined);
         this.route.paramMap
             .pipe(rxjs_1.switchMap(function (paramMap) {
@@ -203,6 +231,19 @@ var ClientReqManagementShowComponent = /** @class */ (function () {
             return rxjs_1.of(null);
         }), rxjs_1.switchMap(function (res) {
             _this.tableConfig.Buttons = [
+                {
+                    isShow: false,
+                    showCommand: function (rowData) {
+                        return rowData.status === 'مكتمل' && !_this.isWaiting && !rowData.reviews;
+                    },
+                    tooltip: 'اجراء تقييم',
+                    icon: 'pi pi-comment',
+                    key: 'review',
+                    severity: 'contrast',
+                    command: function (rowData) {
+                        _this.showReviewFunc(rowData);
+                    }
+                },
                 {
                     isShow: false,
                     showCommand: function (rowData) {
@@ -294,7 +335,14 @@ var ClientReqManagementShowComponent = /** @class */ (function () {
     ClientReqManagementShowComponent = __decorate([
         core_1.Component({
             selector: 'app-client-req-management-show',
-            imports: [dynamic_table_component_1.DynamicTableComponent, primeng_shared_module_1.PrimeNgSharedModule, dynamic_input_component_1.DynamicInputComponent],
+            imports: [
+                dynamic_table_component_1.DynamicTableComponent,
+                primeng_shared_module_1.PrimeNgSharedModule,
+                dynamic_input_component_1.DynamicInputComponent,
+                review_submit_component_1.ReviewSubmitComponent,
+                product_general_items_component_1.ProductGeneralItemsComponent,
+                prod_general_list_component_1.ProdGeneralListComponent,
+            ],
             templateUrl: './client-req-management-show.component.html',
             styleUrl: './client-req-management-show.component.scss'
         })

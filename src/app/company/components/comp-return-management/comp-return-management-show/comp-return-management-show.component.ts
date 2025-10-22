@@ -1,9 +1,10 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { catchError, of, switchMap } from 'rxjs';
 import { Return } from '../../../../client/interfaces/return';
 import { Distributor } from '../../../../distributor/interfaces/distributor';
 import { DistributorManagementService } from '../../../../distributor/services/distributor-management.service';
+import { ProductGeneralItemsComponent } from '../../../../general/components/product-general-items/product-general-items.component';
 import { UserStateService } from '../../../../general/services/user-state.service';
 import { DynamicTableComponent } from '../../../../shared/components/dynamic-table/dynamic-table.component';
 import { InfoTable } from '../../../../shared/interface/info-table';
@@ -14,7 +15,7 @@ import { CompanyReturnService } from '../../../services/company-return.service';
 
 @Component({
   selector: 'app-comp-return-management-show',
-  imports: [DynamicTableComponent, PrimeNgSharedModule],
+  imports: [DynamicTableComponent, PrimeNgSharedModule, ProductGeneralItemsComponent],
   templateUrl: './comp-return-management-show.component.html',
   styleUrl: './comp-return-management-show.component.scss',
 })
@@ -22,6 +23,22 @@ export class CompReturnManagementShowComponent {
   tableConfig: InfoTable;
   requestId: number | null = null;
   selectedReturn = signal<Return | null>(null);
+  items = computed(() => {
+    const source = this.selectedReturn();
+    if (source) {
+      return source.items.map((x) => {
+        return {
+          variantName: x.variantName,
+          quantity: x.quantity,
+          reason: x.reason ?? ' ',
+          originalPrice: x.refundPricePerUnit,
+          totalFinalPrice: x.totalItemRefundAmount,
+          finalPrice: x.totalItemRefundAmount,
+        };
+      });
+    }
+    return [];
+  });
   columns = [
     {
       field: 'requestDate',

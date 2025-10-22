@@ -1,0 +1,68 @@
+@if(reviewDetails){
+
+<div class="container-fluid px-3 py-2">
+    <div class="row" [formGroup]="form">
+        <div class="col-12">
+            <div class="col-12 d-flex justify-content-between gap-2 p-2">
+                <span>تقييم لشركة <p class="fw-bold d-inline">{{reviewDetails.companyName}}</p> </span>
+                <p-rating formControlName="companyRating" />
+            </div>
+            <div class="col-12 d-flex justify-content-between gap-2">
+                <textarea style="max-height: 105px;" placeholder="تعليق" [fluid]="true" pSize="small"
+                    [autoResize]="false" id="companyName" [rows]="5" formControlName="companyComment"
+                    pTextarea></textarea>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="col-12 d-flex justify-content-between gap-2 p-2">
+                <span>تقييم للموزع <p class="fw-bold d-inline">{{reviewDetails.distributorName}}</p> </span>
+                <p-rating formControlName="distributorRating" />
+            </div>
+            <div class="col-12 d-flex justify-content-between gap-2">
+                <textarea style="max-height: 105px;" placeholder="تعليق" [fluid]="true" pSize="small"
+                    [autoResize]="false" id="distributorComment" [rows]="5" formControlName="distributorComment"
+                    pTextarea></textarea>
+            </div>
+        </div>
+        <div class="col-12" formArrayName="productReviews">
+            <p class="px-2 py-3 my-2 border-bottom border-2">تقييم
+                للمنتجات</p>
+            <p-accordion>
+                @for (item of reviewDetails.requestItems;let productIndex=$index; track $index) {
+
+                <p-accordion-panel>
+                    <p-accordion-header>{{item.productName}}</p-accordion-header>
+                    <p-accordion-content [formGroupName]="productIndex">
+                        <div class="row">
+                            <div class="col-12 d-flex justify-content-between my-2 px-3">
+
+                                <textarea style="max-height: 105px;" placeholder="تعليق" [fluid]="true" pSize="small"
+                                    [autoResize]="false" id="distributorComment" [rows]="5" formControlName="comment"
+                                    pTextarea></textarea>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-12 d-flex flex-column align-items-center justify-content-start px-3"
+                                formArrayName="variantReviews">
+
+                                @for (variant of item.variants;let variantIndex=$index; track $index) {
+                                <div [formGroupName]="variantIndex"
+                                    class="col-12 col-md-6 w-100 d-flex justify-content-start gap-2 my-2 px-3">
+                                    <p>{{variant.variantName}}</p>
+                                    <p-rating formControlName="rating" />
+                                </div>
+                                }
+                            </div>
+                        </div>
+                    </p-accordion-content>
+                </p-accordion-panel>
+                }
+            </p-accordion>
+        </div>
+    </div>
+    <div class="row my-2 d-flex justify-content-end">
+        <p-button class="w-auto" label="حفظ" icon="pi pi-check" severity="success" (onClick)="submit()"></p-button>
+    </div>
+</div>
+}

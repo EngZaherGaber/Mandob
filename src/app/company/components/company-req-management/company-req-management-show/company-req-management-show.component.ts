@@ -1,11 +1,13 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
 import { catchError, of, switchMap } from 'rxjs';
 import { Request } from '../../../../client/interfaces/request';
 import { Distributor } from '../../../../distributor/interfaces/distributor';
 import { DistributorManagementService } from '../../../../distributor/services/distributor-management.service';
+import { ProductGeneralItemsComponent } from '../../../../general/components/product-general-items/product-general-items.component';
 import { UserStateService } from '../../../../general/services/user-state.service';
+import { ReviewDetailComponent } from '../../../../review/components/review-detail/review-detail.component';
 import { DynamicTableComponent } from '../../../../shared/components/dynamic-table/dynamic-table.component';
 import { InfoTable } from '../../../../shared/interface/info-table';
 import { PrimeNgSharedModule } from '../../../../shared/modules/shared/primeng-shared.module';
@@ -15,7 +17,7 @@ import { CompanyRequestService } from '../../../services/company-request.service
 
 @Component({
   selector: 'app-company-req-management-show',
-  imports: [DynamicTableComponent, PrimeNgSharedModule],
+  imports: [DynamicTableComponent, PrimeNgSharedModule, ReviewDetailComponent, ProductGeneralItemsComponent],
   templateUrl: './company-req-management-show.component.html',
   styleUrl: './company-req-management-show.component.scss',
 })
@@ -23,6 +25,21 @@ export class CompanyReqManagementShowComponent {
   tableConfig: InfoTable;
   isWaiting: boolean = false;
   selectedRequest = signal<Request | null>(null);
+  items = computed(() => {
+    const source = this.selectedRequest();
+    if (source) {
+      return source.requestItems.map((x) => {
+        return {
+          variantName: x.variantName,
+          quantity: x.quantity,
+          originalPrice: x.originalPrice,
+          totalFinalPrice: x.totalFinalPrice,
+          finalPrice: x.finalPrice,
+        };
+      });
+    }
+    return [];
+  });
   columns = [
     {
       field: 'requestDate',
@@ -43,6 +60,11 @@ export class CompanyReqManagementShowComponent {
       field: 'status',
       header: 'الحالة',
       headerType: 'tag',
+    },
+    {
+      field: 'isReviewed',
+      header: 'تم تقييمه',
+      headerType: 'bool',
     },
   ];
   distributors: Distributor[] = [];
@@ -103,6 +125,11 @@ export class CompanyReqManagementShowComponent {
     this.selectedRequest.set(rowData);
     this.usersVisible = true;
   };
+  reviewVisible: boolean = false;
+  showReviewFunc: (rowData: any) => void = (rowData: Request) => {
+    this.selectedRequest.set(rowData);
+    this.reviewVisible = true;
+  };
   constructor(
     tableSrv: DyTableService,
     private route: ActivatedRoute,
@@ -146,7 +173,7 @@ export class CompanyReqManagementShowComponent {
             isShow: false,
             tooltip: 'اسناد موزع',
             showCommand: (rowData: any) => {
-              return rowData.status === 'قيد المراجعة';
+              return rowData.status === 'قيد المراجعة' || rowData.status === 'تم التأكيد';
             },
             icon: 'pi pi-truck',
             key: 'Edit',
@@ -166,6 +193,19 @@ export class CompanyReqManagementShowComponent {
             severity: 'contrast',
             command: (rowData: any) => {
               this.rejectFunc(rowData);
+            },
+          },
+          {
+            isShow: false,
+            showCommand: (rowData: Request) => {
+              return rowData.status === 'مكتمل' && !this.isWaiting && !!rowData.reviews;
+            },
+            tooltip: 'تقييم الزبون',
+            icon: 'pi pi-comment',
+            key: 'review',
+            severity: 'contrast',
+            command: (rowData: any) => {
+              this.showReviewFunc(rowData);
             },
           },
           {

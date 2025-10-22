@@ -5,6 +5,7 @@ export interface RequestItem {
   variantName: string;
   quantity: number;
   originalPrice: number;
+  totalFinalPrice: number;
   finalPrice: number;
   isAvailable: boolean;
 }

@@ -1561,7 +1561,7 @@ export const MyPreset = definePreset({
         rangeSelectedBackground: '{highlight.background}',
         color: '{content.color}',
         hoverColor: '{content.hover.color}',
-        selectedColor: '{primary.contrast.color}',
+        selectedColor: '{highlight.color}',
         rangeSelectedColor: '{highlight.color}',
         width: '2rem',
         height: '2rem',
@@ -1602,10 +1602,10 @@ export const MyPreset = definePreset({
       colorScheme: {
         light: {
           dropdown: {
-            background: '{surface.100}',
+            background: '{primary.500}',
             hoverBackground: '{surface.200}',
             activeBackground: '{surface.300}',
-            color: '{surface.600}',
+            color: '{surface.100}',
             hoverColor: '{surface.700}',
             activeColor: '{surface.800}',
           },

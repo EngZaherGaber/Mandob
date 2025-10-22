@@ -421,9 +421,7 @@ const clientRoutes: Route = {
       path: 'review/:id',
       title: 'اضافة تقييم',
       loadComponent: () =>
-        import(
-          './client/components/client-review-management/client-review-management-submit/client-review-management-submit.component'
-        ).then((m) => m.ClientReviewManagementSubmitComponent),
+        import('./review/components/review-submit/review-submit.component').then((m) => m.ReviewSubmitComponent),
     },
   ],
 };

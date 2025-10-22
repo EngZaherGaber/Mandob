@@ -70,9 +70,9 @@ var CollectionManagementShowComponent = /** @class */ (function () {
                 },
                 accept: function () {
                     _this.collectionManagement.changeStatus(rowData.id).subscribe(function (res) {
+                        debugger;
                         _this.msgSrv.showMessage(res.message, res.succeeded);
-                        if (res.succeeded)
-                            _this.tableConfig.getSub$.next({});
+                        _this.tableConfig.getSub$.next({});
                     });
                 }
             });
@@ -95,8 +95,7 @@ var CollectionManagementShowComponent = /** @class */ (function () {
                 accept: function () {
                     _this.collectionManagement["delete"](rowData.id).subscribe(function (res) {
                         _this.msgSrv.showMessage(res.message, res.succeeded);
-                        if (res.succeeded)
-                            _this.tableConfig.getSub$.next({});
+                        _this.tableConfig.getSub$.next({});
                     });
                 }
             });

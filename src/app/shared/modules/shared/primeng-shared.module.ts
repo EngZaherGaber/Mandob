@@ -24,6 +24,8 @@ import { MenuModule } from 'primeng/menu';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { OverlayBadgeModule } from 'primeng/overlaybadge';
 import { PasswordModule } from 'primeng/password';
+import { RatingModule } from 'primeng/rating';
+import { ScrollerModule } from 'primeng/scroller';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { SelectModule } from 'primeng/select';
 import { SelectButtonModule } from 'primeng/selectbutton';
@@ -44,6 +46,7 @@ import { TooltipModule } from 'primeng/tooltip';
     OverlayBadgeModule,
     InputIconModule,
     TabsModule,
+    ScrollerModule,
     IconFieldModule,
     SliderModule,
     AccordionModule,
@@ -80,6 +83,7 @@ import { TooltipModule } from 'primeng/tooltip';
     FileUploadModule,
     TooltipModule,
     CarouselModule,
+    RatingModule,
   ],
 })
 export class PrimeNgSharedModule {}

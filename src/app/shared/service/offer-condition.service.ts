@@ -5,7 +5,7 @@ import { OfferMetadataItem } from '../../offer/interfaces/offer-metadata-item';
   providedIn: 'root',
 })
 export class OfferConditionService {
-  variantMetadata: OfferMetadataItem = {
+  private variantMetadata: OfferMetadataItem = {
     key: 'SKU',
     visible: true,
     value: null,
@@ -15,17 +15,17 @@ export class OfferConditionService {
     required: true,
     options: [],
   };
-  productMetadata: OfferMetadataItem = {
+  private productMetadata: OfferMetadataItem = {
     key: 'productId',
     visible: true,
     value: null,
-    label: 'نوع المنتج',
+    label: 'المنتج',
     source: 'api/ProductManagement/getall',
     dataType: 'list',
     required: true,
     options: [],
   };
-  priorityMetadata: OfferMetadataItem = {
+  private priorityMetadata: OfferMetadataItem = {
     key: 'priority',
     visible: true,
     value: null,
@@ -34,7 +34,7 @@ export class OfferConditionService {
     required: true,
     options: [],
   };
-  categoryMetadata: OfferMetadataItem = {
+  private categoryMetadata: OfferMetadataItem = {
     key: 'CategoryId',
     visible: true,
     value: null,
@@ -44,7 +44,7 @@ export class OfferConditionService {
     source: 'api/Category/GetAll/false',
     options: [],
   };
-  valueMetadata: OfferMetadataItem = {
+  private valueMetadata: OfferMetadataItem = {
     key: 'value',
     visible: true,
     value: null,
@@ -53,7 +53,7 @@ export class OfferConditionService {
     required: true,
     options: [],
   };
-  offerBenfintsobjs: OfferMetadataItem = {
+  private offerBenfintsobjs: OfferMetadataItem = {
     key: 'actionTarget',
     visible: true,
     value: null,
@@ -78,7 +78,7 @@ export class OfferConditionService {
                 name: 'خصم بنسبة مئوية',
                 nextInput: [
                   {
-                    key: 'النسبة',
+                    key: 'percentage',
                     visible: true,
                     value: null,
                     label: 'النسبة المئوية (%)',
@@ -134,117 +134,185 @@ export class OfferConditionService {
       },
     ],
   };
-  offerConditionsobjs: OfferMetadataItem = {
-    key: 'offerType',
-    visible: true,
-    value: null,
-    label: 'اختر نوع العرض:',
-    dataType: 'list',
-    required: true,
-    addType: [
-      { canRepeatOption: true, key: 'conditions', stepName: 'الشروط' },
-      { canRepeatOption: true, key: 'benfints', stepName: 'النتائج' },
-    ],
-    options: [
-      {
-        id: 0,
-        name: 'عرض تلقائي',
-        nextInput: [
-          {
-            key: 'ruleCategory',
-            visible: true,
-            value: null,
-            label: 'اختيار فئة الشرط:',
-            dataType: 'list',
-            required: true,
-            options: [
-              {
-                id: 0,
-                name: 'السلة',
-                nextInput: [
-                  {
-                    key: 'ruleType',
-                    visible: true,
-                    value: null,
-                    label: 'اختيار نوع الشرط لـ السلة:',
-                    dataType: 'list',
-                    required: true,
-                    options: [
-                      { id: 0, name: 'إجمالي سعر السلة', nextInput: [this.getOperatorMetadata('float')] },
-                      { id: 1, name: 'إجمالي كمية المنتجات', nextInput: [this.getOperatorMetadata('int')] },
-                      { id: 2, name: 'يحتوي على فئة', nextInput: [this.categoryMetadata, this.priorityMetadata] },
-                      { id: 3, name: 'يحتوي على منتج', nextInput: [this.productMetadata, this.priorityMetadata] },
-                      { id: 5, name: 'يحتوي على نوع منتج', nextInput: [this.variantMetadata, this.priorityMetadata] },
-                      { id: 4, name: 'خصم عام (لا شروط)', nextInput: [this.valueMetadata, this.priorityMetadata] },
-                    ],
-                  },
-                ],
-              },
-              {
-                id: 1,
-                name: 'المنتجات',
-                nextInput: [
-                  {
-                    key: 'ruleType',
-                    visible: true,
-                    value: null,
-                    label: 'اختيار نوع الشرط لـ المنتجات:',
-                    dataType: 'list',
-                    required: true,
-                    options: [
-                      { id: 0, name: 'كمية منتج', nextInput: [this.productMetadata, this.getOperatorMetadata('int')] },
-                      { id: 1, name: 'يحتوي على نوع منتج', nextInput: [this.variantMetadata, this.priorityMetadata] },
-                      {
-                        id: 3,
-                        name: 'كمية نوع منتج',
-                        nextInput: [this.variantMetadata, this.getOperatorMetadata('int')],
-                      },
-                    ],
-                  },
-                ],
-              },
-              {
-                id: 2,
-                name: 'العميل',
-                nextInput: [
-                  {
-                    key: 'ruleType',
-                    visible: true,
-                    value: null,
-                    label: 'اختيار نوع الشرط لـ العميل:',
-                    dataType: 'list',
-                    required: true,
-                    options: [{ id: 0, name: 'الطلب الأول للعميل', nextInput: [this.priorityMetadata] }],
-                  },
-                ],
-              },
-            ],
-          },
-          this.offerBenfintsobjs,
-        ],
-      },
-      {
-        id: 1,
-        name: 'كود خصم',
-        nextInput: [
-          {
-            key: 'offerTypeFields',
-            visible: true,
-            value: null,
-            label: 'إعدادات كود الخصم:',
-            dataType: 'list',
-            required: true,
-            options: [{ id: 0, name: 'كود الخصم', nextInput: [this.valueMetadata] }],
-          },
-          this.offerBenfintsobjs,
-        ],
-      },
-    ],
-  };
+  private generalObjs: OfferMetadataItem[] = [
+    {
+      key: 'title',
+      visible: true,
+      value: null,
+      label: 'العنوان:',
+      dataType: 'string',
+      required: true,
+      options: [],
+    },
+    {
+      key: 'description',
+      visible: true,
+      value: null,
+      label: 'الوصف:',
+      dataType: 'string',
+      required: true,
+      options: [],
+    },
+    {
+      key: 'startDate',
+      visible: true,
+      value: null,
+      label: 'تاريخ بداية:',
+      dataType: 'datetime',
+      required: true,
+      options: [],
+    },
+    {
+      key: 'endDate',
+      visible: true,
+      value: null,
+      label: 'تاريخ نهاية:',
+      dataType: 'datetime',
+      required: true,
+      options: [],
+    },
+    this.priorityMetadata,
+  ];
+  offerConditionsobjs: OfferMetadataItem[] = [
+    ...this.generalObjs,
+    {
+      key: 'offerType',
+      visible: true,
+      value: null,
+      label: 'اختر نوع العرض:',
+      dataType: 'list',
+      required: true,
+      addType: [
+        { canRepeatOption: true, key: 'conditions', stepName: 'الشروط' },
+        { canRepeatOption: true, key: 'benfints', stepName: 'النتائج' },
+      ],
+      options: [
+        {
+          id: 0,
+          name: 'عرض تلقائي',
+          nextInput: [
+            {
+              key: 'ruleCategory',
+              visible: true,
+              value: null,
+              label: 'اختيار فئة الشرط:',
+              dataType: 'list',
+              required: true,
+              options: [
+                {
+                  id: 0,
+                  name: 'السلة',
+                  nextInput: [
+                    {
+                      key: 'ruleType',
+                      visible: true,
+                      value: null,
+                      label: 'اختيار نوع الشرط لـ السلة:',
+                      dataType: 'list',
+                      required: true,
+                      options: [
+                        { id: 0, name: 'إجمالي سعر السلة', nextInput: [this.getOperatorMetadata('float')] },
+                        { id: 1, name: 'إجمالي كمية المنتجات', nextInput: [this.getOperatorMetadata('int')] },
+                        { id: 2, name: 'يحتوي على فئة', nextInput: [this.categoryMetadata] },
+                        { id: 3, name: 'يحتوي على منتج', nextInput: [this.productMetadata] },
+                        { id: 5, name: 'يحتوي على نوع منتج', nextInput: [this.variantMetadata] },
+                        {
+                          id: 4,
+                          name: 'خصم عام (لا شروط)',
+                          nextInput: [this.getValueMetadata('float')],
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  id: 1,
+                  name: 'المنتجات',
+                  nextInput: [
+                    {
+                      key: 'ruleType',
+                      visible: true,
+                      value: null,
+                      label: 'اختيار نوع الشرط لـ المنتجات:',
+                      dataType: 'list',
+                      required: true,
+                      options: [
+                        {
+                          id: 0,
+                          name: 'كمية منتج',
+                          nextInput: [this.productMetadata, this.getOperatorMetadata('int')],
+                        },
+                        { id: 1, name: 'يحتوي على نوع منتج', nextInput: [this.variantMetadata] },
+                        {
+                          id: 3,
+                          name: 'كمية نوع منتج',
+                          nextInput: [this.variantMetadata, this.getOperatorMetadata('int')],
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  id: 2,
+                  name: 'العميل',
+                  nextInput: [
+                    {
+                      key: 'ruleType',
+                      visible: true,
+                      value: null,
+                      label: 'اختيار نوع الشرط لـ العميل:',
+                      dataType: 'list',
+                      required: true,
+                      options: [{ id: 0, name: 'الطلب الأول للعميل', nextInput: [this.priorityMetadata] }],
+                    },
+                  ],
+                },
+              ],
+            },
+            this.offerBenfintsobjs,
+          ],
+        },
+        {
+          id: 1,
+          name: 'كود خصم',
+          nextInput: [
+            {
+              key: 'offerTypeFields',
+              visible: true,
+              value: null,
+              label: 'إعدادات كود الخصم:',
+              dataType: 'list',
+              required: true,
+              options: [
+                {
+                  id: 0,
+                  name: 'كود الخصم',
+                  nextInput: [
+                    {
+                      id: 0,
+                      value: 0,
+                      key: 'MaxUsagePerUser',
+                      label: 'اقصى عدد لاستخدام الكود',
+                      dataType: 'int',
+                      required: true,
+                      visible: true,
+                      options: [],
+                    },
+                    this.getValueMetadata('string'),
+                  ],
+                },
+              ],
+            },
+            this.offerBenfintsobjs,
+          ],
+        },
+      ],
+    },
+  ];
+
   constructor() {}
-  getOperatorMetadata(type: 'float' | 'int'): OfferMetadataItem {
-    const value: OfferMetadataItem = this.valueMetadata;
-    value.dataType = type;
+  private getOperatorMetadata(type: 'float' | 'int'): OfferMetadataItem {
+    const value: OfferMetadataItem = this.getValueMetadata(type);
     const lst = [value, this.priorityMetadata];
     return {
       key: 'operator',
@@ -261,5 +329,10 @@ export class OfferConditionService {
         { id: 4, name: 'أصغر أو يساوي', nextInput: lst },
       ],
     };
+  }
+  private getValueMetadata(type: 'float' | 'int' | 'string') {
+    const value: OfferMetadataItem = JSON.parse(JSON.stringify(this.valueMetadata));
+    value.dataType = type;
+    return value;
   }
 }

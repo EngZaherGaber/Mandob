@@ -21,7 +21,6 @@ export class WebsocketService {
     this.hubConnection
       .start()
       .then(() => {
-        console.log('✅ SignalR Connected');
         this.sendMessageToServer('OnNotification', { type: 'login', value: { Sec: this.hashUserId(userId) } });
       })
       .catch((err) => console.error('❌ SignalR Error:', err));
@@ -53,6 +52,5 @@ export class WebsocketService {
   stopConnection(): void {
     this.hubConnection?.stop();
     this.hubConnection = undefined!;
-    console.log('🔌 SignalR Disconnected');
   }
 }

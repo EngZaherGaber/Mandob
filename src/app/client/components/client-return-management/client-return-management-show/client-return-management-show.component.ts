@@ -1,7 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
 import { catchError, of, switchMap } from 'rxjs';
+import { ProductGeneralItemsComponent } from '../../../../general/components/product-general-items/product-general-items.component';
 import { DynamicTableComponent } from '../../../../shared/components/dynamic-table/dynamic-table.component';
 import { InfoTable } from '../../../../shared/interface/info-table';
 import { PrimeNgSharedModule } from '../../../../shared/modules/shared/primeng-shared.module';
@@ -12,7 +13,7 @@ import { ClientReturnService } from '../../../services/client-return.service';
 
 @Component({
   selector: 'app-client-return-management-show',
-  imports: [DynamicTableComponent, PrimeNgSharedModule],
+  imports: [DynamicTableComponent, PrimeNgSharedModule, ProductGeneralItemsComponent],
   templateUrl: './client-return-management-show.component.html',
   styleUrl: './client-return-management-show.component.scss',
 })
@@ -20,6 +21,22 @@ export class ClientReturnManagementShowComponent {
   tableConfig: InfoTable;
   requestId: number | null = null;
   selectedReturn = signal<Return | null>(null);
+  items = computed(() => {
+    const source = this.selectedReturn();
+    if (source) {
+      return source.items.map((x) => {
+        return {
+          variantName: x.variantName,
+          quantity: x.quantity,
+          reason: x.reason ?? ' ',
+          originalPrice: x.refundPricePerUnit,
+          totalFinalPrice: x.totalItemRefundAmount,
+          finalPrice: x.totalItemRefundAmount,
+        };
+      });
+    }
+    return [];
+  });
   columns = [
     {
       field: 'requestDate',

@@ -12,6 +12,7 @@ var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var client_cart_component_1 = require("../../../client/components/client-cart/client-cart.component");
 var comp_tasks_component_1 = require("../../../company/components/comp-tasks/comp-tasks.component");
+var review_submit_component_1 = require("../../../review/components/review-submit/review-submit.component");
 var click_outside_directive_1 = require("../../directives/click-outside.directive");
 var primeng_shared_module_1 = require("../../modules/shared/primeng-shared.module");
 var header_component_1 = require("../header/header.component");
@@ -21,6 +22,8 @@ var LayoutComponent = /** @class */ (function () {
         this.stateSrv = stateSrv;
         this.router = router;
         this.userState = userState;
+        this.showSubmitReview = false;
+        this.requestID = null;
     }
     LayoutComponent.prototype.onClickOutside = function (event) {
         if (this.stateSrv.isOpenedNotficiation()) {
@@ -29,7 +32,15 @@ var LayoutComponent = /** @class */ (function () {
     };
     LayoutComponent.prototype.goToByNotification = function (value) {
         this.stateSrv.markNotificationAsRead(value.id);
-        this.router.navigate([this.userState.role() + '/' + value.type + '/' + value.recordId]);
+        switch (value.type) {
+            case 'تقييم':
+                this.requestID = value.recordId;
+                this.showSubmitReview = true;
+                break;
+            default:
+                this.router.navigate([this.userState.role() + '/' + value.type + '/' + value.recordId]);
+                break;
+        }
     };
     LayoutComponent.prototype.timeSince = function (timestamp) {
         var date = new Date(timestamp);
@@ -69,6 +80,7 @@ var LayoutComponent = /** @class */ (function () {
                 sidenav_component_1.SidenavComponent,
                 router_1.RouterOutlet,
                 header_component_1.HeaderComponent,
+                review_submit_component_1.ReviewSubmitComponent,
                 click_outside_directive_1.ClickOutsideDirective,
                 client_cart_component_1.ClientCartComponent,
                 primeng_shared_module_1.PrimeNgSharedModule,

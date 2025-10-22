@@ -1,0 +1,12 @@
+::ng-deep .p-virtualscroller-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-block: 10px;
+  .p-avatar-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: var(--p-avatar-xl-font-size) !important;
+  }
+}

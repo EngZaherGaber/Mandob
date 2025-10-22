@@ -4,6 +4,7 @@ import { Router, RouterOutlet } from '@angular/router';
 import { ClientCartComponent } from '../../../client/components/client-cart/client-cart.component';
 import { CompTasksComponent } from '../../../company/components/comp-tasks/comp-tasks.component';
 import { UserStateService } from '../../../general/services/user-state.service';
+import { ReviewSubmitComponent } from '../../../review/components/review-submit/review-submit.component';
 import { ClickOutsideDirective } from '../../directives/click-outside.directive';
 import { NotificationApp } from '../../interface/notficiation-app';
 import { PrimeNgSharedModule } from '../../modules/shared/primeng-shared.module';
@@ -17,6 +18,7 @@ import { SidenavComponent } from '../sidenav/sidenav.component';
     SidenavComponent,
     RouterOutlet,
     HeaderComponent,
+    ReviewSubmitComponent,
     ClickOutsideDirective,
     ClientCartComponent,
     PrimeNgSharedModule,
@@ -36,6 +38,8 @@ import { SidenavComponent } from '../sidenav/sidenav.component';
   ],
 })
 export class LayoutComponent {
+  showSubmitReview: boolean = false;
+  requestID: number | null = null;
   constructor(
     public stateSrv: StateService,
     public router: Router,
@@ -48,7 +52,16 @@ export class LayoutComponent {
   }
   goToByNotification(value: NotificationApp) {
     this.stateSrv.markNotificationAsRead(value.id);
-    this.router.navigate([this.userState.role() + '/' + value.type + '/' + value.recordId]);
+    switch (value.type) {
+      case 'تقييم':
+        this.requestID = value.recordId;
+        this.showSubmitReview = true;
+        break;
+
+      default:
+        this.router.navigate([this.userState.role() + '/' + value.type + '/' + value.recordId]);
+        break;
+    }
   }
   timeSince(timestamp: Date): string {
     const date = new Date(timestamp);

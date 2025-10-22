@@ -19,7 +19,7 @@ import { OfferManagementService } from '../../../services/offer-management.servi
   styleUrl: './offer-management-add.component.scss',
 })
 export class OfferManagementAddComponent {
-  metadata: OfferMetadataItem | null = null;
+  metadata: OfferMetadataItem[] | null = null;
   form: FormGroup = new FormGroup({});
   objs: any = {};
   keys: { stepName: string; key: string }[] = [];
@@ -104,13 +104,16 @@ export class OfferManagementAddComponent {
     public router: Router,
   ) {
     this.metadata = this.offerConditionSrv.offerConditionsobjs;
-    this.objs = { generalInfo: [this.metadata] };
-    const newControl = new FormControl();
-    newControl.valueChanges.subscribe((value) => {
-      this.nextInputCommand(value, 'generalInfo', 0, this.metadata, newControl);
+    console.log(JSON.stringify(this.metadata));
+    this.objs = { generalInfo: this.metadata };
+    this.metadata.forEach((item) => {
+      const newControl = new FormControl();
+      newControl.valueChanges.subscribe((value) => {
+        this.nextInputCommand(value, 'generalInfo', 0, item, newControl);
+      });
+      this.form.addControl('generalInfo', new FormGroup({}));
+      (this.form.controls['generalInfo'] as FormGroup).addControl(item.key, newControl);
     });
-    this.form.addControl('generalInfo', new FormGroup({}));
-    (this.form.controls['generalInfo'] as FormGroup).addControl(this.metadata.key, newControl);
     this.keys.push({ stepName: 'معلومات عامة', key: 'generalInfo' });
     this.showForm = true;
   }
@@ -141,6 +144,9 @@ export class OfferManagementAddComponent {
   removeGroup(key: string, index: number) {
     (this.objs[key] as any[]).splice(index, 1);
     (this.form.get(key) as FormArray).removeAt(index);
+    if ((this.objs[key] as any[]).length === 0) {
+      this.disableMap[key] = false;
+    }
   }
 
   onSelect(event: any) {
@@ -156,6 +162,9 @@ export class OfferManagementAddComponent {
   }
 
   submit() {
-    console.log(this.form.getRawValue());
+    this.offerManagement.add(this.form.getRawValue()).subscribe((res) => {
+      this.msgSrv.showMessage(res.message, res.succeeded);
+      if (res.succeeded) this.router.navigate(['company/offer-management/show']);
+    });
   }
 }

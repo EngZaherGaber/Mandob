@@ -73,8 +73,9 @@ export class CollectionManagementShowComponent {
 
       accept: () => {
         this.collectionManagement.changeStatus(rowData.id).subscribe((res) => {
+          debugger;
           this.msgSrv.showMessage(res.message, res.succeeded);
-          if (res.succeeded) this.tableConfig.getSub$.next({});
+          this.tableConfig.getSub$.next({});
         });
       },
     });
@@ -98,7 +99,7 @@ export class CollectionManagementShowComponent {
       accept: () => {
         this.collectionManagement.delete(rowData.id).subscribe((res) => {
           this.msgSrv.showMessage(res.message, res.succeeded);
-          if (res.succeeded) this.tableConfig.getSub$.next({});
+          this.tableConfig.getSub$.next({});
         });
       },
     });

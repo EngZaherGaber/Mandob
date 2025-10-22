@@ -107,13 +107,16 @@ var OfferManagementAddComponent = /** @class */ (function () {
             }
         };
         this.metadata = this.offerConditionSrv.offerConditionsobjs;
-        this.objs = { generalInfo: [this.metadata] };
-        var newControl = new forms_1.FormControl();
-        newControl.valueChanges.subscribe(function (value) {
-            _this.nextInputCommand(value, 'generalInfo', 0, _this.metadata, newControl);
+        console.log(JSON.stringify(this.metadata));
+        this.objs = { generalInfo: this.metadata };
+        this.metadata.forEach(function (item) {
+            var newControl = new forms_1.FormControl();
+            newControl.valueChanges.subscribe(function (value) {
+                _this.nextInputCommand(value, 'generalInfo', 0, item, newControl);
+            });
+            _this.form.addControl('generalInfo', new forms_1.FormGroup({}));
+            _this.form.controls['generalInfo'].addControl(item.key, newControl);
         });
-        this.form.addControl('generalInfo', new forms_1.FormGroup({}));
-        this.form.controls['generalInfo'].addControl(this.metadata.key, newControl);
         this.keys.push({ stepName: 'معلومات عامة', key: 'generalInfo' });
         this.showForm = true;
     }
@@ -145,6 +148,9 @@ var OfferManagementAddComponent = /** @class */ (function () {
     OfferManagementAddComponent.prototype.removeGroup = function (key, index) {
         this.objs[key].splice(index, 1);
         this.form.get(key).removeAt(index);
+        if (this.objs[key].length === 0) {
+            this.disableMap[key] = false;
+        }
     };
     OfferManagementAddComponent.prototype.onSelect = function (event) {
         for (var _i = 0, _a = event.files; _i < _a.length; _i++) {
@@ -159,7 +165,12 @@ var OfferManagementAddComponent = /** @class */ (function () {
         }
     };
     OfferManagementAddComponent.prototype.submit = function () {
-        console.log(this.form.getRawValue());
+        var _this = this;
+        this.offerManagement.add(this.form.getRawValue()).subscribe(function (res) {
+            _this.msgSrv.showMessage(res.message, res.succeeded);
+            if (res.succeeded)
+                _this.router.navigate(['company/offer-management/show']);
+        });
     };
     OfferManagementAddComponent = __decorate([
         core_1.Component({

@@ -62,11 +62,11 @@ export class StateService {
     this.getIsDark();
     this.setIsDark(this.isDark());
     this.wsSrv.message$.subscribe((msg) => {
-      console.log('📩 Notification:', msg);
       const type = msg.type;
       const value = msg.value;
       switch (type) {
         case 'old_notifications':
+          this.clearNotification();
           (msg.value as any[]).forEach((noti) => this.addNotification(noti));
           break;
         case 'review':
@@ -141,10 +141,18 @@ export class StateService {
       isOpenedNotficiation: !this.isOpenedNotficiation(),
     }));
   }
-  addNotification(notification: NotificationApp) {
+  clearNotification() {
     this.state.update((prev) => ({
       ...prev,
-      notficiations: [...this.notficiations(), notification],
+      notficiations: [],
+    }));
+  }
+  addNotification(notification: NotificationApp) {
+    const arr = [...this.notficiations(), notification];
+    const unique = Array.from(new Map(arr.map((item) => [item.id, item])).values());
+    this.state.update((prev) => ({
+      ...prev,
+      notficiations: unique,
     }));
   }
   markNotificationAsRead(id: number) {
