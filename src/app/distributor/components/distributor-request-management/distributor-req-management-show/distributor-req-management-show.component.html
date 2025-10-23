@@ -25,32 +25,8 @@
 @if(usersVisible){
 <p-dialog header="المستخدمين" [modal]="true" [(visible)]="usersVisible" [style]="{ width: '60rem' }"
     (visibleChange)="clostReturnDialog($event)">
-    <div class="d-flex flex-column gap-4 w-100">
-        <div class="w-100 p-2 d-flex flex-wrap justify-content-center gap-2" style="box-shadow: inset 0px 0px 5px 0px;">
-            <!-- Client -->
-            <div class="d-flex flex-column justify-content-start border border-2 shadow p-2" style="width: 30%;">
-                <p class="w-100 text-center fw-bold"
-                    style="background-color: var(--p-primary-500);color: var(--p-surface-50)">
-                    الزبون</p>
-                <ul class=" p-2" style="list-style-type: none;color: var(--p-text-color);text-wrap: auto;">
-                    <li class="fw-bold border-bottom pb-2 mb-2">الاسم : {{selectedRequest()?.client?.name}}</li>
-                    <li>رقم الهاتف : {{selectedRequest()?.client?.phoneNumber}}</li>
-                    <li>الموقع : {{selectedRequest()?.client?.address}}</li>
-                </ul>
-            </div>
-            <!-- company -->
-            <div class="d-flex flex-column justify-content-start border border-2 shadow p-2" style="width: 30%;">
-                <p class="w-100 text-center fw-bold"
-                    style="background-color: var(--p-primary-500);color: var(--p-surface-50)">
-                    الشركة</p>
-                <ul class=" p-2" style="list-style-type: none;color: var(--p-text-color);text-wrap: auto;">
-                    <li class="fw-bold border-bottom pb-2 mb-2">الاسم : {{selectedRequest()?.company?.name}}</li>
-                    <li>رقم الهاتف : {{selectedRequest()?.company?.phoneNumber}}</li>
-                    <li>الموقع : {{selectedRequest()?.company?.address}}</li>
-                </ul>
-            </div>
-        </div>
-    </div>
+    <users-general-items [client]="selectedRequest()?.client ?? null"
+        [company]="selectedRequest()?.company ?? null"></users-general-items>
 </p-dialog>
 }
 @if(reviewVisible && selectedRequest()?.reviews){

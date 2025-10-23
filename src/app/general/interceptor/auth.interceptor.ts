@@ -1,6 +1,6 @@
 import { isPlatformBrowser } from '@angular/common';
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
-import { inject, PLATFORM_ID } from '@angular/core';
+import { inject, Injector, PLATFORM_ID } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
 import { MessageToastService } from '../../shared/service/message-toast.service';
 import { UserStateService } from '../services/user-state.service';
@@ -8,12 +8,13 @@ import { UserStateService } from '../services/user-state.service';
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   let newReq;
   const platformId = inject(PLATFORM_ID);
-  const userState: UserStateService = inject(UserStateService);
+  const injector = inject(Injector); // 👈 add this
   const msgSrv: MessageToastService = inject(MessageToastService);
   newReq = req.clone({ withCredentials: true });
   return next(newReq).pipe(
     catchError((error) => {
       if (error instanceof HttpErrorResponse && isPlatformBrowser(platformId)) {
+        const userState = injector.get(UserStateService);
         if (error.error) {
           let msg = error.error?.message;
           switch (error.status) {

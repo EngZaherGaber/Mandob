@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
 import { catchError, of, switchMap } from 'rxjs';
 import { ProductGeneralItemsComponent } from '../../../../general/components/product-general-items/product-general-items.component';
-import { ProdGeneralListComponent } from '../../../../product/components/product-general/prod-general-list/prod-general-list.component';
+import { UsersGeneralItemsComponent } from '../../../../general/components/users-general-items/users-general-items.component';
 import { ReviewSubmitComponent } from '../../../../review/components/review-submit/review-submit.component';
 import { DynamicInputComponent } from '../../../../shared/components/dynamic-input/dynamic-input.component';
 import { DynamicTableComponent } from '../../../../shared/components/dynamic-table/dynamic-table.component';
@@ -25,7 +25,7 @@ import { ClientReturnService } from '../../../services/client-return.service';
     DynamicInputComponent,
     ReviewSubmitComponent,
     ProductGeneralItemsComponent,
-    ProdGeneralListComponent,
+    UsersGeneralItemsComponent,
   ],
   templateUrl: './client-req-management-show.component.html',
   styleUrl: './client-req-management-show.component.scss',
@@ -139,7 +139,7 @@ export class ClientReqManagementShowComponent {
   ) => {
     switch (rowData.status) {
       case 'قيد المراجعة':
-        return 'contrast';
+        return 'warn';
       case 'جار تحضير الطلب':
       case 'قيد التوصيل':
       case 'تم التاكيد':

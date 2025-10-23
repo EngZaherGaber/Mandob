@@ -1,4 +1,4 @@
-<a [routerLink]="['/client/product/item/'+product().productID]">
+<div class="prod-card">
     @if(product()){
     <div class="item-div mx-2 position-relative overflow-visible">
 
@@ -51,11 +51,25 @@
                     <!-- <span>{{(product().likes / 1000) | number:'1.1-1'}}K</span> -->
                     <p-button size="small" icon="pi pi-heart" severity="secondary" [label]="getRating()"
                         [disabled]="true" />
-                    <p-button size="small" icon="pi pi-eye" styleClass="ml-2" [severity]="'secondary'" />
-                    <p-button size="small" icon="pi pi-shopping-cart" styleClass="ml-2" [severity]="'contrast'" />
+                    <p-button (onClick)="router.navigate(['/client/product/item/'+product().productID])" size="small"
+                        icon="pi pi-eye" styleClass="ml-2" [severity]="'secondary'" />
+                    <p-button size="small" icon="pi pi-shopping-cart" styleClass="ml-2" [severity]="'contrast'"
+                        (onClick)="form.patchValue({quantity:null,variantSKU:null});getSub$.next(true);" />
                 </span>
             </div>
         </div>
     </div>
     }
-</a>
+</div>
+@if(buyDialog){
+
+<p-dialog [header]="'طلب منتج ' + product().productName" [(visible)]="buyDialog" [modal]="true" appendTo="body"
+    [style]="{ width: '35rem'}">
+    <div class="d-flex flex-column gap-5 w-100 pb-2 mt-4">
+        <dynamic-input [FEcontrol]="getControl('variantSKU')" [object]="objs[0]"></dynamic-input>
+        <dynamic-input [FEcontrol]="getControl('quanitiy')" [object]="objs[1]"></dynamic-input>
+
+        <p-button label="حفظ" icon="pi pi-check" severity="success" (onClick)="addToCart()"></p-button>
+    </div>
+</p-dialog>
+}

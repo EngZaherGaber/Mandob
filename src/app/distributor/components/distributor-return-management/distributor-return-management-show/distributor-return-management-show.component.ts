@@ -4,6 +4,7 @@ import { ConfirmationService } from 'primeng/api';
 import { catchError, of, switchMap } from 'rxjs';
 import { Return } from '../../../../client/interfaces/return';
 import { ProductGeneralItemsComponent } from '../../../../general/components/product-general-items/product-general-items.component';
+import { UsersGeneralItemsComponent } from '../../../../general/components/users-general-items/users-general-items.component';
 import { DynamicTableComponent } from '../../../../shared/components/dynamic-table/dynamic-table.component';
 import { InfoTable } from '../../../../shared/interface/info-table';
 import { PrimeNgSharedModule } from '../../../../shared/modules/shared/primeng-shared.module';
@@ -13,7 +14,7 @@ import { DistributorReturnService } from '../../../services/distributor-return.s
 
 @Component({
   selector: 'app-distributor-return-management-show',
-  imports: [DynamicTableComponent, PrimeNgSharedModule, ProductGeneralItemsComponent],
+  imports: [DynamicTableComponent, PrimeNgSharedModule, ProductGeneralItemsComponent, UsersGeneralItemsComponent],
   templateUrl: './distributor-return-management-show.component.html',
   styleUrl: './distributor-return-management-show.component.scss',
 })

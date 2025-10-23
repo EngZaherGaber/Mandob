@@ -40,70 +40,120 @@ var OfferManagementAddComponent = /** @class */ (function () {
         this.variants = [];
         this.uploadedFiles = [];
         this.showForm = false;
-        this.nextInputCommand = function (value, step, index, elemnt, control) {
+        /**
+         * Dynamically handles form input changes and builds dependent fields.
+         * When a user selects a value, this method:
+         *  1. Finds and initializes the corresponding next input(s).
+         *  2. Dynamically updates the form structure (FormControl, FormArray, FormGroup).
+         *  3. Optionally fetches options from an API if defined.
+         *  4. Supports recursive chaining of dependent inputs.
+         */
+        this.nextInputCommand = function (value, // Selected value from the current form input
+        stepKey, // Current step or form section key
+        groupIndex, // Index of the group inside FormArray
+        element, // Metadata definition for the current input
+        control) {
             var _a;
-            if (elemnt) {
-                var nextInput_1 = (_a = elemnt.options.find(function (x) { return x.id === value; })) === null || _a === void 0 ? void 0 : _a.nextInput;
-                if (nextInput_1) {
-                    if (elemnt === null || elemnt === void 0 ? void 0 : elemnt.addType) {
-                        elemnt.addType.forEach(function (addType, index) {
-                            var _a, _b, _c, _d;
-                            if ((elemnt === null || elemnt === void 0 ? void 0 : elemnt.dataType) === 'list') {
-                                _this.keys.push({ key: addType.key, stepName: addType.stepName });
-                                _this.disableMap = __assign(__assign({}, _this.disableMap), (_a = {}, _a[addType.key] = true, _a));
-                                _this.objs = __assign(__assign({}, _this.objs), (_b = {}, _b[addType.key] = [[nextInput_1[index]]], _b));
-                                var newControl_1 = new forms_1.FormControl(null);
-                                newControl_1.valueChanges.subscribe(function (value) {
-                                    if (elemnt === null || elemnt === void 0 ? void 0 : elemnt.addType)
-                                        _this.nextInputCommand(value, addType.key, 0, nextInput_1[index], newControl_1);
-                                });
-                                var group = new forms_1.FormGroup((_c = {}, _c[nextInput_1[index].key] = newControl_1, _c));
-                                var arr = new forms_1.FormArray([group]);
-                                _this.form.addControl(addType.key, arr);
-                                _this.groupFirstInput = __assign(__assign({}, _this.groupFirstInput), (_d = {}, _d[addType.key] = nextInput_1[index], _d));
-                            }
-                        });
+            var addNewControl = function (stepKey, groupIndex, element) {
+                if (element) {
+                    _this.objs[stepKey][groupIndex].push(element);
+                    // Create a new reactive FormControl
+                    var newControl_1 = new forms_1.FormControl(null);
+                    // Subscribe recursively to handle nested dependencies
+                    newControl_1.valueChanges.subscribe(function (newValue) {
+                        _this.nextInputCommand(newValue, stepKey, groupIndex, element, newControl_1);
+                    });
+                    // Add control to the corresponding FormGroup inside FormArray
+                    var stepControl = _this.form.get(stepKey);
+                    if (stepControl instanceof forms_1.FormArray) {
+                        var group = stepControl.at(groupIndex);
+                        group.addControl(element.key, newControl_1);
                     }
-                    else {
-                        if ((elemnt === null || elemnt === void 0 ? void 0 : elemnt.options.length) > 0) {
-                            nextInput_1.forEach(function (inpt) {
-                                if (inpt.source) {
-                                    _this.http.post(inpt.source, {}).subscribe(function (res) {
-                                        inpt.options = res.data;
-                                        _this.objs[step][index].push(inpt);
-                                        var newControl = new forms_1.FormControl(null);
-                                        newControl.valueChanges.subscribe(function (value) {
-                                            _this.nextInputCommand(value, step, index, inpt, newControl);
-                                        });
-                                        var stepControl = _this.form.get(step);
-                                        if (stepControl instanceof forms_1.FormArray) {
-                                            var orginalGroup = stepControl.controls[index];
-                                            orginalGroup.addControl(inpt.key, newControl);
-                                        }
-                                    });
-                                }
-                                else {
-                                    _this.objs[step][index].push(inpt);
-                                    var newControl_2 = new forms_1.FormControl(null);
-                                    newControl_2.valueChanges.subscribe(function (value) {
-                                        _this.nextInputCommand(value, step, index, inpt, newControl_2);
-                                    });
-                                    var stepControl = _this.form.get(step);
-                                    if (stepControl instanceof forms_1.FormArray) {
-                                        var orginalGroup = stepControl.controls[index];
-                                        orginalGroup.addControl(inpt.key, newControl_2);
-                                    }
+                }
+            };
+            // Exit early if the element definition is missing
+            if (!element)
+                return;
+            // Find the "nextInput" configuration based on the selected option
+            var nextInputs = (_a = element.options.find(function (opt) { return opt.id === value; })) === null || _a === void 0 ? void 0 : _a.nextInput;
+            // Only proceed if we have next inputs defined
+            if (nextInputs && nextInputs.length > 0) {
+                /**
+                 * CASE 1: Handle elements that define "addType"
+                 * (used for dynamically adding new form arrays or grouped inputs)
+                 */
+                if (element.addType) {
+                    element.addType.forEach(function (addType, addIndex) {
+                        var _a, _b, _c, _d;
+                        // --- Clean up any existing controls with the same key ---
+                        var existingKeyIndex = _this.keys.findIndex(function (k) { return k.key === addType.key; });
+                        if (existingKeyIndex > -1) {
+                            _this.form.removeControl(addType.key);
+                            delete _this.objs[addType.key];
+                            delete _this.disableMap[addType.key];
+                            delete _this.groupFirstInput[addType.key];
+                            _this.keys.splice(existingKeyIndex, 1);
+                        }
+                        // --- Add new controls only if dataType is "list" ---
+                        if (element.dataType === 'list') {
+                            // Track metadata key for the newly added field
+                            _this.keys.push({ key: addType.key, stepName: addType.stepName });
+                            // Disable new section initially
+                            _this.disableMap = __assign(__assign({}, _this.disableMap), (_a = {}, _a[addType.key] = true, _a));
+                            // Store the structure for the newly added section
+                            _this.objs = __assign(__assign({}, _this.objs), (_b = {}, _b[addType.key] = [[nextInputs[addIndex]]], _b));
+                            // Create reactive control for the next input
+                            var newControl_2 = new forms_1.FormControl(null);
+                            // Subscribe to changes → recursively process deeper inputs
+                            newControl_2.valueChanges.subscribe(function (newValue) {
+                                if (element.addType) {
+                                    _this.nextInputCommand(newValue, addType.key, 0, nextInputs[addIndex], newControl_2);
                                 }
                             });
+                            // Wrap control inside a FormGroup and then into a FormArray
+                            var group = new forms_1.FormGroup((_c = {}, _c[nextInputs[addIndex].key] = newControl_2, _c));
+                            var array = new forms_1.FormArray([group]);
+                            // Add this dynamic array to the root form
+                            _this.form.addControl(addType.key, array);
+                            // Keep track of the first input metadata for this group
+                            _this.groupFirstInput = __assign(__assign({}, _this.groupFirstInput), (_d = {}, _d[addType.key] = nextInputs[addIndex], _d));
                         }
-                    }
+                    });
                 }
-                if (elemnt.options.length === 0 || !nextInput_1) {
-                    _this.disableMap[step] = false;
+                else if (element.options.length > 0) {
+                    /**
+                     * CASE 2: Handle elements without "addType"
+                     * These are standard dependent inputs (may load data from API or local options)
+                     */
+                    nextInputs.forEach(function (inputMeta) {
+                        // --- If this input has an API source, fetch its options ---
+                        if (inputMeta.source) {
+                            _this.http.post(inputMeta.source, {}).subscribe(function (res) {
+                                // Populate options from server response
+                                inputMeta.options = res.data;
+                                // Store metadata structure
+                                addNewControl(stepKey, groupIndex, inputMeta);
+                            });
+                        }
+                        // --- Otherwise, add static options directly ---
+                        else {
+                            addNewControl(stepKey, groupIndex, inputMeta);
+                        }
+                    });
                 }
-                if (elemnt.dataType === 'list') {
-                    control === null || control === void 0 ? void 0 : control.disable({ emitEvent: false });
-                }
+            }
+            /**
+             * CASE 3: No next input exists → enable current step again
+             */
+            if (!nextInputs || element.options.length === 0) {
+                _this.disableMap[stepKey] = false;
+            }
+            /**
+             * CASE 4: Disable the control if it's a list without addType
+             * (prevents multiple triggers)
+             */
+            if (element.dataType === 'list' && !element.addType) {
+                control === null || control === void 0 ? void 0 : control.disable({ emitEvent: false });
             }
         };
         this.metadata = this.offerConditionSrv.offerConditionsobjs;

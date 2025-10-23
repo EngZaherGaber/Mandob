@@ -1,0 +1,122 @@
+@font-face {
+  font-family: "Noto Kufi";
+  src: url("fonts/NotoKufiArabic.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+::ng-deep .company-list {
+  direction: ltr;
+  background-color: var(--p-primary-500);
+  margin-top: -2px;
+}
+::ng-deep .company-list .glass-card {
+  background: rgba(255, 255, 255, 0.2);
+  /* semi-transparent */
+  position: relative;
+  backdrop-filter: blur(0px);
+  /* no blur initially */
+  -webkit-backdrop-filter: blur(0px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: 0.3s ease;
+  cursor: pointer;
+}
+::ng-deep .company-list .glass-card:hover {
+  background: rgba(255, 255, 255, 0.25);
+  /* slightly stronger */
+  backdrop-filter: blur(8px);
+  /* blur background */
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 100;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  /* subtle shadow */
+}
+::ng-deep .company-list .p-carousel-item .item-div {
+  position: relative;
+  direction: rtl;
+}
+::ng-deep .company-list .p-carousel-item .item-div:hover .detail-div {
+  height: 150px;
+}
+::ng-deep .company-list .p-carousel-item .item-div:hover .detail-div .detail-2 {
+  height: 50% !important;
+  padding-block: 10px !important;
+}
+::ng-deep .company-list .p-carousel-item .item-div:hover .detail-div .detail-1 {
+  height: 50%;
+  z-index: 2;
+}
+::ng-deep .company-list .p-carousel-item .item-div .detail-div,
+::ng-deep .company-list .p-carousel-item .item-div .detail-1,
+::ng-deep .company-list .p-carousel-item .item-div .detail-2 {
+  transition: 0.75s ease-in-out height, 0.75s ease-in-out padding;
+}
+::ng-deep .company-list .p-carousel-item .item-div .detail-div span,
+::ng-deep .company-list .p-carousel-item .item-div .detail-1 span,
+::ng-deep .company-list .p-carousel-item .item-div .detail-2 span {
+  font-size: 0.625rem !important;
+}
+@media screen and (min-width: 768px) {
+  ::ng-deep .company-list .p-carousel-item .item-div .detail-div span,
+::ng-deep .company-list .p-carousel-item .item-div .detail-1 span,
+::ng-deep .company-list .p-carousel-item .item-div .detail-2 span {
+    font-size: 0.7rem !important;
+  }
+}
+@media screen and (min-width: 992px) {
+  ::ng-deep .company-list .p-carousel-item .item-div .detail-div span,
+::ng-deep .company-list .p-carousel-item .item-div .detail-1 span,
+::ng-deep .company-list .p-carousel-item .item-div .detail-2 span {
+    font-size: 0.7rem !important;
+  }
+}
+@media screen and (min-width: 1200px) {
+  ::ng-deep .company-list .p-carousel-item .item-div .detail-div span,
+::ng-deep .company-list .p-carousel-item .item-div .detail-1 span,
+::ng-deep .company-list .p-carousel-item .item-div .detail-2 span {
+    font-size: 0.7rem !important;
+  }
+}
+::ng-deep .company-list .p-carousel-item .item-div .detail-div {
+  opacity: 1;
+  height: 70px;
+  width: 100%;
+  border-radius: 10px;
+}
+::ng-deep .company-list .p-carousel-item .item-div .detail-div .detail-1 {
+  height: 100%;
+  z-index: 2;
+}
+::ng-deep .company-list .p-carousel-item .item-div .detail-div .detail-2 {
+  width: 60% !important;
+  height: 0;
+  background-color: var(--p-primary-500);
+  padding-block: 0 !important;
+  border-radius: 10px;
+}
+::ng-deep .company-list .p-carousel-item .item-div .detail-div .ellipsis-multiline {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  /* Number of lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+::ng-deep .company-list .p-carousel-item .item-div .detail-div .ellipsis-oneline {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  /* Number of lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+@media screen and (max-width: 992px) {
+  ::ng-deep .company-list .p-carousel-item .item-div .detail-div {
+    width: 100%;
+    right: 0;
+  }
+  ::ng-deep .company-list .p-carousel-item .item-div .detail-div .detail-1 {
+    width: 60%;
+  }
+  ::ng-deep .company-list .p-carousel-item .item-div .detail-div .detail-2 {
+    width: 40% !important;
+  }
+}

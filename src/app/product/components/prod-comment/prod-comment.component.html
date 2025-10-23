@@ -1,18 +1,23 @@
 <div class="d-flex flex-column">
-    <p class="border-bottom border-2 fw-bold pb-2">التعليقات</p>
+    <p class="border-bottom border-2 fw-bold pb-2">التعليقات ({{totalCount}})</p>
+    @if(totalCount === 0){
+    <p class="py-2 text-center">لا يوجد تعليقات</p>
+    }@else {
+
     <p-virtualscroller [items]="comments" [itemSize]="5" [showLoader]="true" [autoSize]="true" [loading]="lazyLoading"
-        scrollHeight="350px" [lazy]="true" (onLazyLoad)="onLazyLoad($event)" styleClass="w-100"
-        [style]="{  height: '350px' }">
+        scrollHeight="350px" [lazy]="true" (onLazyLoad)="onLazyLoad($event)" styleClass="w-100">
         <ng-template #item let-item>
             <div class="w-100 d-flex gap-2 border-bottom py-2">
-                <p-avatar size="xlarge" icon="pi pi-user" class="d-flex align-items-center justify-content-center"
-                    [image]="item.image.imageURL" shape="circle"></p-avatar>
+                <p-avatar size="xlarge" class="d-flex align-items-center justify-content-center"
+                    [image]="item.image?.imageUrl" shape="circle"></p-avatar>
 
                 <div class="d-flex flex-column gap-2">
                     <span class="fw-bold" style="color: var(--p-primary-500);">{{item.name}}</span>
                     <span>{{item.comment}}</span>
+                    <p-rating [readonly]="true" [(ngModel)]="item.rating"></p-rating>
                 </div>
             </div>
         </ng-template>
     </p-virtualscroller>
+    }
 </div>

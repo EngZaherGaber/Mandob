@@ -11,7 +11,7 @@ var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var rxjs_1 = require("rxjs");
 var product_general_items_component_1 = require("../../../../general/components/product-general-items/product-general-items.component");
-var prod_general_list_component_1 = require("../../../../product/components/product-general/prod-general-list/prod-general-list.component");
+var users_general_items_component_1 = require("../../../../general/components/users-general-items/users-general-items.component");
 var review_submit_component_1 = require("../../../../review/components/review-submit/review-submit.component");
 var dynamic_input_component_1 = require("../../../../shared/components/dynamic-input/dynamic-input.component");
 var dynamic_table_component_1 = require("../../../../shared/components/dynamic-table/dynamic-table.component");
@@ -131,7 +131,7 @@ var ClientReqManagementShowComponent = /** @class */ (function () {
         this.getSeverity = function (rowData) {
             switch (rowData.status) {
                 case 'قيد المراجعة':
-                    return 'contrast';
+                    return 'warn';
                 case 'جار تحضير الطلب':
                 case 'قيد التوصيل':
                 case 'تم التاكيد':
@@ -341,7 +341,7 @@ var ClientReqManagementShowComponent = /** @class */ (function () {
                 dynamic_input_component_1.DynamicInputComponent,
                 review_submit_component_1.ReviewSubmitComponent,
                 product_general_items_component_1.ProductGeneralItemsComponent,
-                prod_general_list_component_1.ProdGeneralListComponent,
+                users_general_items_component_1.UsersGeneralItemsComponent,
             ],
             templateUrl: './client-req-management-show.component.html',
             styleUrl: './client-req-management-show.component.scss'

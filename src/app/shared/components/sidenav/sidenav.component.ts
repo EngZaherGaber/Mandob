@@ -13,9 +13,14 @@ import { StateService } from '../../service/state.service';
 })
 export class SidenavComponent implements OnInit {
   items: MenuItem[] = [];
-  constructor(public stateSrv: StateService, userState: UserStateService) {
+  role: string | null = '';
+  constructor(
+    public stateSrv: StateService,
+    userState: UserStateService,
+  ) {
     effect(() => {
       const strategy = userState.strategy();
+      this.role = userState.role() ?? null;
       this.items = strategy ? strategy.navMenu : [];
     });
   }

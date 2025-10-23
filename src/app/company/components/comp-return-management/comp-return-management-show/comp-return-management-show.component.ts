@@ -5,6 +5,7 @@ import { Return } from '../../../../client/interfaces/return';
 import { Distributor } from '../../../../distributor/interfaces/distributor';
 import { DistributorManagementService } from '../../../../distributor/services/distributor-management.service';
 import { ProductGeneralItemsComponent } from '../../../../general/components/product-general-items/product-general-items.component';
+import { UsersGeneralItemsComponent } from '../../../../general/components/users-general-items/users-general-items.component';
 import { UserStateService } from '../../../../general/services/user-state.service';
 import { DynamicTableComponent } from '../../../../shared/components/dynamic-table/dynamic-table.component';
 import { InfoTable } from '../../../../shared/interface/info-table';
@@ -15,7 +16,7 @@ import { CompanyReturnService } from '../../../services/company-return.service';
 
 @Component({
   selector: 'app-comp-return-management-show',
-  imports: [DynamicTableComponent, PrimeNgSharedModule, ProductGeneralItemsComponent],
+  imports: [DynamicTableComponent, PrimeNgSharedModule, ProductGeneralItemsComponent, UsersGeneralItemsComponent],
   templateUrl: './comp-return-management-show.component.html',
   styleUrl: './comp-return-management-show.component.scss',
 })

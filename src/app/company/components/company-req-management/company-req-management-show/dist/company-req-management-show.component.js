@@ -10,6 +10,7 @@ exports.CompanyReqManagementShowComponent = void 0;
 var core_1 = require("@angular/core");
 var rxjs_1 = require("rxjs");
 var product_general_items_component_1 = require("../../../../general/components/product-general-items/product-general-items.component");
+var users_general_items_component_1 = require("../../../../general/components/users-general-items/users-general-items.component");
 var review_detail_component_1 = require("../../../../review/components/review-detail/review-detail.component");
 var dynamic_table_component_1 = require("../../../../shared/components/dynamic-table/dynamic-table.component");
 var primeng_shared_module_1 = require("../../../../shared/modules/shared/primeng-shared.module");
@@ -70,7 +71,7 @@ var CompanyReqManagementShowComponent = /** @class */ (function () {
         this.getSeverity = function (rowData) {
             switch (rowData.status) {
                 case 'قيد المراجعة':
-                    return 'contrast';
+                    return 'warn';
                 case 'جار تحضير الطلب':
                 case 'قيد التوصيل':
                 case 'تم التاكيد':
@@ -220,11 +221,17 @@ var CompanyReqManagementShowComponent = /** @class */ (function () {
     CompanyReqManagementShowComponent.prototype.onRowExapnd = function (event) {
         console.log(event.requestItems);
     };
-    CompanyReqManagementShowComponent.prototype.assignDistributor = function (value) {
+    CompanyReqManagementShowComponent.prototype.assignDistributor = function (value, dexpectedDeliveryDate) {
         var _this = this;
         var req = this.selectedRequest();
         if (req && value) {
-            this.companyRequestSrv.assignDistributor({ requestId: req.requestID, distributorId: value }).subscribe(function (res) {
+            this.companyRequestSrv
+                .assignDistributor({
+                requestId: req.requestID,
+                distributorId: value,
+                expectedDeliveryDate: dexpectedDeliveryDate
+            })
+                .subscribe(function (res) {
                 _this.msgSrv.showMessage(res.message, res.succeeded);
                 _this.assignDistributorVisible = false;
                 _this.tableConfig.getSub$.next({});
@@ -238,7 +245,13 @@ var CompanyReqManagementShowComponent = /** @class */ (function () {
     CompanyReqManagementShowComponent = __decorate([
         core_1.Component({
             selector: 'app-company-req-management-show',
-            imports: [dynamic_table_component_1.DynamicTableComponent, primeng_shared_module_1.PrimeNgSharedModule, review_detail_component_1.ReviewDetailComponent, product_general_items_component_1.ProductGeneralItemsComponent],
+            imports: [
+                dynamic_table_component_1.DynamicTableComponent,
+                primeng_shared_module_1.PrimeNgSharedModule,
+                review_detail_component_1.ReviewDetailComponent,
+                product_general_items_component_1.ProductGeneralItemsComponent,
+                users_general_items_component_1.UsersGeneralItemsComponent,
+            ],
             templateUrl: './company-req-management-show.component.html',
             styleUrl: './company-req-management-show.component.scss'
         })

@@ -12,14 +12,16 @@ import { ProdGeneralCardComponent } from '../prod-general-card/prod-general-card
 })
 export class ProdGeneralListComponent {
   @Input() header: string = '';
+  @Input() view: 'slider' | 'grid' = 'slider';
   @Input() data: ProdManagementTableItem[] = [];
   @Input() type: string = 'category';
   @Input() totalCount: number = 0;
   @Input() id = 0;
+  @Input() numVisible = 5;
   @Input() getSeverity: (item: any) => any = () => {
     return;
   };
-  responsiveOptions = [
+  @Input() responsiveOptions = [
     {
       breakpoint: '1400px',
       numVisible: 4,

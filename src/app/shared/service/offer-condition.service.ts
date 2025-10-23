@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { OfferMetadataItem } from '../../offer/interfaces/offer-metadata-item';
 
@@ -263,7 +264,7 @@ export class OfferConditionService {
                       label: 'اختيار نوع الشرط لـ العميل:',
                       dataType: 'list',
                       required: true,
-                      options: [{ id: 0, name: 'الطلب الأول للعميل', nextInput: [this.priorityMetadata] }],
+                      options: [{ id: 0, name: 'الطلب الأول للعميل' }],
                     },
                   ],
                 },
@@ -310,10 +311,10 @@ export class OfferConditionService {
     },
   ];
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
   private getOperatorMetadata(type: 'float' | 'int'): OfferMetadataItem {
     const value: OfferMetadataItem = this.getValueMetadata(type);
-    const lst = [value, this.priorityMetadata];
+    const lst = [value];
     return {
       key: 'operator',
       visible: true,

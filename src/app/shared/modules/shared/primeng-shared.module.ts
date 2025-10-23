@@ -23,6 +23,7 @@ import { KeyFilterModule } from 'primeng/keyfilter';
 import { MenuModule } from 'primeng/menu';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { OverlayBadgeModule } from 'primeng/overlaybadge';
+import { PanelMenuModule } from 'primeng/panelmenu';
 import { PasswordModule } from 'primeng/password';
 import { RatingModule } from 'primeng/rating';
 import { ScrollerModule } from 'primeng/scroller';
@@ -46,6 +47,7 @@ import { TooltipModule } from 'primeng/tooltip';
     OverlayBadgeModule,
     InputIconModule,
     TabsModule,
+    PanelMenuModule,
     ScrollerModule,
     IconFieldModule,
     SliderModule,

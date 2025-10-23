@@ -1,5 +1,11 @@
 @use "../../../../../../public/mixin" as *;
 @use "../../../../../../public/font" as *;
+::ng-deep .p-dialog-mask {
+  direction: rtl;
+  * {
+    direction: inherit;
+  }
+}
 .item-div {
   height: 275px;
   position: relative;
@@ -26,7 +32,9 @@
   }
   .detail-div,
   .auto-height {
-    transition: 0.75s ease-in-out height, 0.75s ease-in-out padding;
+    transition:
+      0.75s ease-in-out height,
+      0.75s ease-in-out padding;
   }
   .detail-div {
     opacity: 1;

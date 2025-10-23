@@ -3733,22 +3733,22 @@ exports.MyPreset = themes_1.definePreset({
         },
         panelmenu: {
             root: {
-                gap: '0.5rem',
+                gap: '0.125rem',
                 transitionDuration: '{transition.duration}'
             },
             panel: {
                 background: '{transparent}',
                 borderColor: '{content.border.color}',
-                borderWidth: '1px',
+                borderWidth: '0px',
                 color: '{content.color}',
                 padding: '0.25rem 0.25rem',
                 borderRadius: '{content.border.radius}',
                 first: {
-                    borderWidth: '1px',
+                    borderWidth: '0px',
                     topBorderRadius: '{content.border.radius}'
                 },
                 last: {
-                    borderWidth: '1px',
+                    borderWidth: '0px',
                     bottomBorderRadius: '{content.border.radius}'
                 }
             },
@@ -3757,7 +3757,7 @@ exports.MyPreset = themes_1.definePreset({
                 color: '{navigation.item.color}',
                 focusColor: '{navigation.item.focus.color}',
                 gap: '0.5rem',
-                padding: '{navigation.item.padding}',
+                padding: '5px',
                 borderRadius: '{content.border.radius}',
                 icon: {
                     color: '{navigation.item.icon.color}',

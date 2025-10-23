@@ -4,89 +4,116 @@
     <p-button class="Nbtn" pTooltip="Back" icon="pi pi-arrow-right" (click)="back()" />
     }
     <div class="row">
-        <div class="col-12 col-md-6 position-relative">
-            <div class="row">
-                <div class="w-100 col-12 d-flex justify-content-between border-bottom border-4 pb-2"
-                    style="color: var(--p-primary-500);border-color: var(--p-primary-500) !important;">
-                    <h1 class="fw-bold" style="color: var(--p-primary-500);">{{product?.productName}}
-                    </h1>
-                    <div class="d-flex justify-content-center align-items-center gap-2">
-                        <p-tag icon="pi pi-heart-fill" [value]="getRating()"></p-tag>
-                        <p-button icon="pi pi-building" severity="contrast" [label]="product?.companyName" size="small"
-                            (onClick)="goToCompany(product?.companyId ?? 0)"></p-button>
-
-                    </div>
-                </div>
-            </div>
+        <div class="col-12 py-4 px-2 position-relative">
             <div class="row">
                 <div class="col-12 col-md-6">
-                    <div class=" row py-2 pb-2">
-                        <p class="mb-2">الخيارات</p>
-                        <div class="d-flex flex-column gap-4 py-3">
-                            @for (opt of options;let optionIndex=$index; track $index) {
-                            <p-floatlabel variant="over" [style]="{'width':'100%'}">
-                                <label [for]="opt.optionName">{{opt.optionName}}</label>
-                                <p-select [formControl]="getControl(optionIndex)" [style]="{'width':'100%'}"
-                                    appendTo="body" [options]="opt.values" (onChange)="getPrice()"
-                                    optionLabel="valueName" display="chip" optionValue="valueName">
-                                </p-select>
-                            </p-floatlabel>
-                            }
+                    <div class="row">
+                        <div class="col-12 position-relative">
+                            <div class="row g-0 justify-content-center">
+                                <div class="col-12 py-2 px-0 row"
+                                    style="background-color: var(--p-primary-500);color: var(--p-surface-50);">
+                                    <div class="col-12 col-md-6 d-flex justify-content-start align-items-center gap-2">
+                                        <p-avatar size="large" [image]=""></p-avatar>
+                                        <p>{{product?.companyName}}</p>
+                                    </div>
+                                    <div
+                                        class="col-12 col-md-6 d-flex align-items-center justify-content-end gap-2 rounded">
+
+                                        @if(product){
+                                        <span>( {{product.ratingCount}} )</span>
+                                        <p-rating [readonly]="true" [(ngModel)]="product.averageRating"></p-rating>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="col-12 d-flex justify-content-between  py-2"
+                                    style="color: var(--p-primary-500);">
+                                    <h1 class="fw-bold" style="color: var(--p-primary-500);">{{product?.productName}}
+                                    </h1>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class=" row py-2 pb-2">
+                                        <p class="mb-2">الخيارات</p>
+                                        <div class="d-flex flex-column gap-4 py-3">
+                                            @for (opt of options;let optionIndex=$index; track $index) {
+                                            <p-floatlabel variant="over" [style]="{'width':'100%'}">
+                                                <label [for]="opt.optionName">{{opt.optionName}}</label>
+                                                <p-select [formControl]="getControl(optionIndex)"
+                                                    [style]="{'width':'100%'}" appendTo="body" [options]="opt.values"
+                                                    (onChange)="getPrice()" optionLabel="valueName" display="chip"
+                                                    optionValue="valueName">
+                                                </p-select>
+                                            </p-floatlabel>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="row d-flex flex-column gap-4 justify-content-between h-100"
+                                        style="transform: rotate(-0deg);">
+                                        <div class="d-flex-flex-column gap-2">
+                                            <h4 class="fw-bold p-1 text-center w-100"
+                                                style="color: var(--p-primary-500);">
+                                                {{price | currency:(product?.currecnyId === 1 ? 'SYP' :
+                                                'USD'):'symbol':'1.2-2' }}
+                                            </h4>
+                                            <!-- <h4 class=" fw-bold p-1 text-center w-100" style="color: var(--p-amber-500);">
+                                                                        {{4900 |
+                                                                        currency}}</h4> -->
+                                            <p class=" fw-bold p-1 text-center w-100">المجموع
+                                                {{(countControl.value * price) | currency:(product?.currecnyId === 1 ?
+                                                'SYP' :
+                                                'USD'):'symbol':'1.2-2'}}
+                                            </p>
+                                        </div>
+                                        @if(userState.role() === 'client'){
+                                        <div class="button-div d-flex flex-column gap-2">
+                                            <dynamic-input [style]="'width: 100%;'" [FEcontrol]="countControl"
+                                                [object]="countObj"></dynamic-input>
+                                            <p-button [ngClass]="'w-100 d-block'" [style]="{'width':'100%'}"
+                                                label="وضع في السلة" icon="pi pi-cart-plus" (onClick)="addToCart()" />
+                                        </div>
+                                        }
+                                    </div>
+                                </div>ً
+                            </div>
+                            <div class="row my-2">
+                                <p class="p-0">الوصف:</p>
+                                <div style="white-space: normal;word-break: keep-all;overflow-wrap: break-word;"
+                                    [innerHTML]="product?.productDescription"></div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
                 <div class="col-12 col-md-6">
-                    <div class="row d-flex flex-column gap-4 justify-content-between h-100"
-                        style="transform: rotate(-0deg);">
-                        <div class="d-flex-flex-column gap-2">
-                            <h4 class="fw-bold p-1 text-center w-100" style="color: var(--p-primary-500);">
-                                {{price | currency:(product?.currecnyId === 1 ? 'SYP' : 'USD'):'symbol':'1.2-2' }}
-                            </h4>
-                            <!-- <h4 class=" fw-bold p-1 text-center w-100" style="color: var(--p-amber-500);">
-                                {{4900 |
-                                currency}}</h4> -->
-                            <p class=" fw-bold p-1 text-center w-100">المجموع
-                                {{(countControl.value * price) | currency:(product?.currecnyId === 1 ? 'SYP' :
-                                'USD'):'symbol':'1.2-2'}}
-                            </p>
-                        </div>
-                        @if(userState.role() === 'client'){
-                        <div class="button-div d-flex flex-column gap-2">
-                            <dynamic-input [style]="'width: 100%;'" [FEcontrol]="countControl"
-                                [object]="countObj"></dynamic-input>
-                            <!-- <p-button [ngClass]="'w-100 d-block'" [raised]="true" [style]="{'width':'100%'}"
-                                label="طلب شحن" icon="pi pi-truck" oncli/> -->
-                            <p-button [ngClass]="'w-100 d-block'" [style]="{'width':'100%'}" label="وضع في السلة"
-                                icon="pi pi-cart-plus" (onClick)="addToCart()" />
-                        </div>
-                        }
+                    <div class="row">
+
+                        <p-galleria [ngClass]="'position-sticky top-0'" [value]="images()"
+                            [responsiveOptions]="responsiveOptions" [showThumbnailNavigators]="false"
+                            [showItemNavigatorsOnHover]="true" [showItemNavigators]="true"
+                            [showTransitionOptions]="'250ms cubic-bezier(0, 0, 0.2, 1)'"
+                            [containerStyle]="{ 'max-width': '640px' }" [numVisible]="5" [activeIndex]="activeIndex">
+                            <ng-template #item let-item>
+                                <img [src]="item" style="width:100%;height: 50vh;" />
+                            </ng-template>
+                            <ng-template #thumbnail let-item>
+                                <img [src]="item" width="50px" height="50px" />
+                            </ng-template>
+                        </p-galleria>
+                    </div>
+
+                    <div class="row">
+                        <prod-comment [productID]="productId"></prod-comment>
                     </div>
                 </div>
-            </div>
-            <div class="row my-2">
-                <p class="p-0">الوصف:</p>
-                <div style="white-space: normal;word-break: keep-all;overflow-wrap: break-word;"
-                    [innerHTML]="product?.productDescription"></div>
-            </div>
 
-        </div>
-        <div class="col-12 col-md-6 py-4 px-2 position-relative">
-            <p-galleria [ngClass]="'position-sticky top-0'" [value]="images()" [responsiveOptions]="responsiveOptions"
-                [showThumbnailNavigators]="false" [showItemNavigatorsOnHover]="true" [showItemNavigators]="true"
-                [showTransitionOptions]="'250ms cubic-bezier(0, 0, 0.2, 1)'" [containerStyle]="{ 'max-width': '640px' }"
-                [numVisible]="5" [activeIndex]="activeIndex">
-                <ng-template #item let-item>
-                    <img [src]="item" style="width:100%;height: 50vh;" />
-                </ng-template>
-                <ng-template #thumbnail let-item>
-                    <img [src]="item" width="50px" height="50px" />
-                </ng-template>
-            </p-galleria>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <prod-comment [productID]="productId"></prod-comment>
-    </div>
+
     <div class="row w-100 rounded-2 py-0" style="height: 4px;background-color: var(--p-primary-500);"></div>
     <div class="row ">
         <prod-general-list [data]="productsForSameCompany" [header]="'منتجات اخرى لنفس المصدر'"></prod-general-list>

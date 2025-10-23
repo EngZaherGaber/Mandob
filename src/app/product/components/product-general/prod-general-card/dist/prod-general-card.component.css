@@ -1,0 +1,149 @@
+@font-face {
+  font-family: "Noto Kufi";
+  src: url("fonts/NotoKufiArabic.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+::ng-deep .p-dialog-mask {
+  direction: rtl;
+}
+::ng-deep .p-dialog-mask * {
+  direction: inherit;
+}
+
+.item-div {
+  height: 275px;
+  position: relative;
+  direction: rtl;
+}
+.item-div:hover .detail-div {
+  opacity: 1;
+}
+.item-div:hover .secondary-img {
+  opacity: 1 !important;
+}
+.item-div:hover .primary-img {
+  opacity: 0 !important;
+}
+.item-div:hover .auto-height {
+  height: 80px !important;
+  padding-block: 0.5rem;
+}
+.item-div .secondary-img,
+.item-div .primary-img {
+  transition: 0.75s ease-in-out opacity;
+  padding-inline: 7.5%;
+}
+.item-div .detail-div,
+.item-div .auto-height {
+  transition: 0.75s ease-in-out height, 0.75s ease-in-out padding;
+}
+.item-div .detail-div {
+  opacity: 1;
+  right: 7.5%;
+  left: 7.5%;
+  bottom: 0px;
+  background-color: var(--p-primary-400);
+  color: var(--p-primary-50);
+}
+.item-div .detail-div .auto-height {
+  height: 0;
+  overflow-y: hidden;
+  position: relative;
+}
+.item-div .detail-div .ellipsis-multiline {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  /* Number of lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 0.625rem !important;
+}
+@media screen and (min-width: 768px) {
+  .item-div .detail-div .ellipsis-multiline {
+    font-size: 0.7rem !important;
+  }
+}
+@media screen and (min-width: 992px) {
+  .item-div .detail-div .ellipsis-multiline {
+    font-size: 0.756rem !important;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .item-div .detail-div .ellipsis-multiline {
+    font-size: 0.8125rem !important;
+  }
+}
+.item-div .detail-div .ellipsis-multiline > * {
+  font-size: 0.625rem !important;
+}
+@media screen and (min-width: 768px) {
+  .item-div .detail-div .ellipsis-multiline > * {
+    font-size: 0.7rem !important;
+  }
+}
+@media screen and (min-width: 992px) {
+  .item-div .detail-div .ellipsis-multiline > * {
+    font-size: 0.756rem !important;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .item-div .detail-div .ellipsis-multiline > * {
+    font-size: 0.8125rem !important;
+  }
+}
+.item-div .detail-div .ellipsis-oneline {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  /* Number of lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+@media screen and (max-width: 992px) {
+  .item-div {
+    height: 300px;
+  }
+  .item-div .detail-div {
+    height: auto !important;
+  }
+  .item-div .detail-div .auto-height {
+    height: auto !important;
+  }
+}
+
+::ng-deep .ellipsis-multiline {
+  font-size: 0.625rem !important;
+}
+@media screen and (min-width: 768px) {
+  ::ng-deep .ellipsis-multiline {
+    font-size: 0.7rem !important;
+  }
+}
+@media screen and (min-width: 992px) {
+  ::ng-deep .ellipsis-multiline {
+    font-size: 0.756rem !important;
+  }
+}
+@media screen and (min-width: 1200px) {
+  ::ng-deep .ellipsis-multiline {
+    font-size: 0.8125rem !important;
+  }
+}
+::ng-deep .ellipsis-multiline > * {
+  font-size: 0.625rem !important;
+}
+@media screen and (min-width: 768px) {
+  ::ng-deep .ellipsis-multiline > * {
+    font-size: 0.7rem !important;
+  }
+}
+@media screen and (min-width: 992px) {
+  ::ng-deep .ellipsis-multiline > * {
+    font-size: 0.756rem !important;
+  }
+}
+@media screen and (min-width: 1200px) {
+  ::ng-deep .ellipsis-multiline > * {
+    font-size: 0.8125rem !important;
+  }
+}

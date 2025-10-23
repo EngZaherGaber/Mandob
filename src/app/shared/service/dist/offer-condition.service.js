@@ -16,7 +16,8 @@ exports.__esModule = true;
 exports.OfferConditionService = void 0;
 var core_1 = require("@angular/core");
 var OfferConditionService = /** @class */ (function () {
-    function OfferConditionService() {
+    function OfferConditionService(http) {
+        this.http = http;
         this.variantMetadata = {
             key: 'SKU',
             visible: true,
@@ -274,7 +275,7 @@ var OfferConditionService = /** @class */ (function () {
                                                 label: 'اختيار نوع الشرط لـ العميل:',
                                                 dataType: 'list',
                                                 required: true,
-                                                options: [{ id: 0, name: 'الطلب الأول للعميل', nextInput: [this.priorityMetadata] }]
+                                                options: [{ id: 0, name: 'الطلب الأول للعميل' }]
                                             },
                                         ]
                                     },
@@ -323,7 +324,7 @@ var OfferConditionService = /** @class */ (function () {
     }
     OfferConditionService.prototype.getOperatorMetadata = function (type) {
         var value = this.getValueMetadata(type);
-        var lst = [value, this.priorityMetadata];
+        var lst = [value];
         return {
             key: 'operator',
             visible: true,

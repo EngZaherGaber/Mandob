@@ -1,0 +1,46 @@
+<div class="w-100 p-2 row" style="box-shadow: inset 0px 0px 5px 0px;">
+    <!-- Client -->
+    @if(client){
+    <div class="col-12 col-md-6 p-1">
+        <div class="d-flex flex-column justify-content-start border border-2 shadow p-2 h-100">
+            <p class="w-100 text-center fw-bold"
+                style="background-color: var(--p-primary-500);color: var(--p-surface-50)">
+                الزبون</p>
+            <ul class=" p-2" style="list-style-type: none;color: var(--p-text-color);text-wrap: auto;">
+                <li class="fw-bold border-bottom pb-2 mb-2">الاسم : {{client.name}}</li>
+                <li>رقم الهاتف : {{client.phoneNumber}}</li>
+                <li>الموقع : {{client.address}}</li>
+            </ul>
+        </div>
+    </div>
+    }
+    <!-- distributor -->
+    @if (distributor) {
+    <div class="col-12 col-md-6 p-1">
+        <div class="d-flex flex-column justify-content-start border border-2 shadow p-2 h-100">
+            <p class="w-100 text-center fw-bold"
+                style="background-color: var(--p-primary-500);color: var(--p-surface-50)">
+                الموزع</p>
+            <ul class=" p-2" style="list-style-type: none;color: var(--p-text-color);text-wrap: auto;">
+                <li class="fw-bold border-bottom pb-2 mb-2">الاسم : {{distributor.name}}</li>
+                <li>رقم الهاتف : {{distributor.phoneNumber}}</li>
+            </ul>
+        </div>
+    </div>
+    }
+    <!-- company -->
+    @if (company) {
+    <div class="col-12 col-md-6 p-1">
+        <div class="d-flex flex-column justify-content-start border border-2 shadow p-2 h-100">
+            <p class="w-100 text-center fw-bold"
+                style="background-color: var(--p-primary-500);color: var(--p-surface-50)">
+                الشركة</p>
+            <ul class=" p-2" style="list-style-type: none;color: var(--p-text-color);text-wrap: auto;">
+                <li class="fw-bold border-bottom pb-2 mb-2">الاسم : {{company.name}}</li>
+                <li>رقم الهاتف : {{company.phoneNumber}}</li>
+                <li>الموقع : {{company.address}}</li>
+            </ul>
+        </div>
+    </div>
+    }
+</div>

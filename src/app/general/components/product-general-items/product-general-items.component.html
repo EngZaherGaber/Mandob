@@ -6,7 +6,7 @@
             {{i + 1}}</p>
         <ul class=" p-2" style="list-style-type: none;color: var(--p-text-color);text-wrap: auto;">
             <li class="fw-bold border-bottom pb-2 mb-2">المنتج : {{reqItem.variantName}}</li>
-            @if(reqItem){
+            @if(reqItem.reason){
             <li>السبب : {{reqItem.reason}}</li>
 
             }

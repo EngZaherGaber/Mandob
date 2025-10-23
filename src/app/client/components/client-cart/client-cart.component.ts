@@ -53,7 +53,7 @@ export class ClientCartComponent {
     if (this.result) {
       this.clientRequestSrv.createFromCart(this.result).subscribe((res) => {
         this.msgSrv.showMessage(res.message, res.succeeded);
-        this.get$.next(true);
+        this.stateSrv.collapseCart();
       });
     }
   }

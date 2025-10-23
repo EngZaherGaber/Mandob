@@ -5,6 +5,7 @@ import { ConfirmationService } from 'primeng/api';
 import { catchError, of, switchMap } from 'rxjs';
 import { Request } from '../../../../client/interfaces/request';
 import { ProductGeneralItemsComponent } from '../../../../general/components/product-general-items/product-general-items.component';
+import { UsersGeneralItemsComponent } from '../../../../general/components/users-general-items/users-general-items.component';
 import { UserStateService } from '../../../../general/services/user-state.service';
 import { ReviewDetailComponent } from '../../../../review/components/review-detail/review-detail.component';
 import { DynamicTableComponent } from '../../../../shared/components/dynamic-table/dynamic-table.component';
@@ -22,6 +23,7 @@ import { DistributorRequestService } from '../../../services/distributor-request
     ReviewDetailComponent,
     FormsModule,
     ProductGeneralItemsComponent,
+    UsersGeneralItemsComponent,
   ],
   templateUrl: './distributor-req-management-show.component.html',
   styleUrl: './distributor-req-management-show.component.scss',
@@ -78,7 +80,7 @@ export class DistributorReqManagementShowComponent {
   ) => {
     switch (rowData.status) {
       case 'قيد المراجعة':
-        return 'contrast';
+        return 'warn';
       case 'جار تحضير الطلب':
       case 'قيد التوصيل':
       case 'تم التاكيد':

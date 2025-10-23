@@ -69,10 +69,11 @@ export class ProdGeneralGroupComponent {
       });
   }
   ngOnInit() {
-    this.route.params.subscribe((param) => {
-      this.type = param['type'];
-      this.id = param['id'];
-      this.header = param['header'];
+    this.route.paramMap.subscribe((param) => {
+      this.type = param.get('type') ?? '';
+      this.id = Number(param.get('id')) ?? 0;
+      this.header = param.get('header') ?? '';
+      this.body.changeOption = true;
       switch (this.type) {
         case 'category':
           this.body.categoryId = +this.id;
@@ -89,6 +90,7 @@ export class ProdGeneralGroupComponent {
         default:
           break;
       }
+      this.loadData$.next({ ...this.body });
     });
   }
   load(event: TableLazyLoadEvent) {

@@ -11,6 +11,7 @@ var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var rxjs_1 = require("rxjs");
 var product_general_items_component_1 = require("../../../../general/components/product-general-items/product-general-items.component");
+var users_general_items_component_1 = require("../../../../general/components/users-general-items/users-general-items.component");
 var review_detail_component_1 = require("../../../../review/components/review-detail/review-detail.component");
 var dynamic_table_component_1 = require("../../../../shared/components/dynamic-table/dynamic-table.component");
 var primeng_shared_module_1 = require("../../../../shared/modules/shared/primeng-shared.module");
@@ -70,7 +71,7 @@ var DistributorReqManagementShowComponent = /** @class */ (function () {
         this.getSeverity = function (rowData) {
             switch (rowData.status) {
                 case 'قيد المراجعة':
-                    return 'contrast';
+                    return 'warn';
                 case 'جار تحضير الطلب':
                 case 'قيد التوصيل':
                 case 'تم التاكيد':
@@ -210,6 +211,7 @@ var DistributorReqManagementShowComponent = /** @class */ (function () {
                 review_detail_component_1.ReviewDetailComponent,
                 forms_1.FormsModule,
                 product_general_items_component_1.ProductGeneralItemsComponent,
+                users_general_items_component_1.UsersGeneralItemsComponent,
             ],
             templateUrl: './distributor-req-management-show.component.html',
             styleUrl: './distributor-req-management-show.component.scss'

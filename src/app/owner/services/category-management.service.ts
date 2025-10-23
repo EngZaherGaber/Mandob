@@ -12,7 +12,10 @@ export class CategoryManagementService {
   url = environment.api + 'Category/';
   constructor(private http: HttpClient) {}
   getAll(body: TableLazyLoadEvent, topFiveByProductCount: boolean = false) {
-    return this.http.post<APIResponse<Category[]>>(this.url + 'GetAll/' + topFiveByProductCount, body);
+    return this.http.post<APIResponse<{ id: number; name: string }[]>>(
+      this.url + 'GetAll/' + topFiveByProductCount,
+      body,
+    );
   }
   getOne(id: number) {
     return this.http.get<APIResponse<Category>>(this.url + id);

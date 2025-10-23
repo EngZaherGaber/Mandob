@@ -18,6 +18,19 @@ body {
 
   @include responsive-headings();
 }
+.p-panelmenu-item {
+  padding: 5px 25px;
+  .p-panelmenu-item-link {
+    padding-block: 7.5px;
+  }
+}
+.p-panelmenu-header-link {
+  position: relative;
+  .p-iconwrapper {
+    position: absolute;
+    left: 5px;
+  }
+}
 .cdk-overlay-container {
   z-index: 900;
   position: fixed;

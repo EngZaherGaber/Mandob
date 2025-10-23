@@ -6,6 +6,7 @@ import { Request } from '../../../../client/interfaces/request';
 import { Distributor } from '../../../../distributor/interfaces/distributor';
 import { DistributorManagementService } from '../../../../distributor/services/distributor-management.service';
 import { ProductGeneralItemsComponent } from '../../../../general/components/product-general-items/product-general-items.component';
+import { UsersGeneralItemsComponent } from '../../../../general/components/users-general-items/users-general-items.component';
 import { UserStateService } from '../../../../general/services/user-state.service';
 import { ReviewDetailComponent } from '../../../../review/components/review-detail/review-detail.component';
 import { DynamicTableComponent } from '../../../../shared/components/dynamic-table/dynamic-table.component';
@@ -17,7 +18,13 @@ import { CompanyRequestService } from '../../../services/company-request.service
 
 @Component({
   selector: 'app-company-req-management-show',
-  imports: [DynamicTableComponent, PrimeNgSharedModule, ReviewDetailComponent, ProductGeneralItemsComponent],
+  imports: [
+    DynamicTableComponent,
+    PrimeNgSharedModule,
+    ReviewDetailComponent,
+    ProductGeneralItemsComponent,
+    UsersGeneralItemsComponent,
+  ],
   templateUrl: './company-req-management-show.component.html',
   styleUrl: './company-req-management-show.component.scss',
 })
@@ -73,7 +80,7 @@ export class CompanyReqManagementShowComponent {
   ) => {
     switch (rowData.status) {
       case 'قيد المراجعة':
-        return 'contrast';
+        return 'warn';
       case 'جار تحضير الطلب':
       case 'قيد التوصيل':
       case 'تم التاكيد':
@@ -238,14 +245,20 @@ export class CompanyReqManagementShowComponent {
   onRowExapnd(event: any) {
     console.log(event.requestItems);
   }
-  assignDistributor(value: number) {
+  assignDistributor(value: number, dexpectedDeliveryDate: number) {
     const req = this.selectedRequest();
     if (req && value) {
-      this.companyRequestSrv.assignDistributor({ requestId: req.requestID, distributorId: value }).subscribe((res) => {
-        this.msgSrv.showMessage(res.message, res.succeeded);
-        this.assignDistributorVisible = false;
-        this.tableConfig.getSub$.next({});
-      });
+      this.companyRequestSrv
+        .assignDistributor({
+          requestId: req.requestID,
+          distributorId: value,
+          expectedDeliveryDate: dexpectedDeliveryDate,
+        })
+        .subscribe((res) => {
+          this.msgSrv.showMessage(res.message, res.succeeded);
+          this.assignDistributorVisible = false;
+          this.tableConfig.getSub$.next({});
+        });
     }
   }
   clostReturnDialog(event: any) {

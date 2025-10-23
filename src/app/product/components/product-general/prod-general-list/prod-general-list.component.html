@@ -1,5 +1,6 @@
 <div class="container-fluid full-list">
     <div class="row d-flex justify-content-between align-items-center">
+
         <h6 class="my-3 fw-bold text-end w-auto" style="color: var(--p-primary-500);">
             {{header}}
         </h6>
@@ -10,14 +11,24 @@
     </div>
     <div class="row">
         @if(data.length > 0){
-
-        <p-carousel [value]="data" [circular]="true" [numVisible]="5" [numScroll]="1"
+        @if(view==='slider'){
+        <p-carousel [value]="data" [circular]="true" [numVisible]="numVisible" [numScroll]="1"
             [responsiveOptions]="responsiveOptions">
             <ng-template let-item #item>
                 <prod-general-card [product]="item"></prod-general-card>
 
             </ng-template>
         </p-carousel>
+        }@else {
+        <div class="row w-100 gy-2">
+            @for (item of data; track $index) {
+            <div class="col-12 col-md-6 col-lg-4">
+                <prod-general-card [product]="item"></prod-general-card>
+
+            </div>
+            }
+        </div>
+        }
         }@else {
         <h6 class="w-100 text-center" style="color: var(--p-primary-500);">لا يوجد منتجات</h6>
         }

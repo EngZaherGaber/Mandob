@@ -14,7 +14,7 @@ export class CompanyRequestService {
   getAll(isWaiting: boolean, body: TableLazyLoadEvent) {
     return this.http.post<APIResponse<Request[]>>(this.url + 'my-requests/' + isWaiting, body);
   }
-  assignDistributor(body: { requestId: number; distributorId: number }) {
+  assignDistributor(body: { requestId: number; distributorId: number; expectedDeliveryDate: number }) {
     return this.http.put<APIResponse<Request[]>>(this.url + 'assign-distributor', body);
   }
   reject(requestId: number) {

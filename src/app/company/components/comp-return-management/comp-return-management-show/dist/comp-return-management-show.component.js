@@ -10,6 +10,7 @@ exports.CompReturnManagementShowComponent = void 0;
 var core_1 = require("@angular/core");
 var rxjs_1 = require("rxjs");
 var product_general_items_component_1 = require("../../../../general/components/product-general-items/product-general-items.component");
+var users_general_items_component_1 = require("../../../../general/components/users-general-items/users-general-items.component");
 var dynamic_table_component_1 = require("../../../../shared/components/dynamic-table/dynamic-table.component");
 var primeng_shared_module_1 = require("../../../../shared/modules/shared/primeng-shared.module");
 var CompReturnManagementShowComponent = /** @class */ (function () {
@@ -214,7 +215,7 @@ var CompReturnManagementShowComponent = /** @class */ (function () {
     CompReturnManagementShowComponent = __decorate([
         core_1.Component({
             selector: 'app-comp-return-management-show',
-            imports: [dynamic_table_component_1.DynamicTableComponent, primeng_shared_module_1.PrimeNgSharedModule, product_general_items_component_1.ProductGeneralItemsComponent],
+            imports: [dynamic_table_component_1.DynamicTableComponent, primeng_shared_module_1.PrimeNgSharedModule, product_general_items_component_1.ProductGeneralItemsComponent, users_general_items_component_1.UsersGeneralItemsComponent],
             templateUrl: './comp-return-management-show.component.html',
             styleUrl: './comp-return-management-show.component.scss'
         })

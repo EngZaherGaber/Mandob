@@ -4,7 +4,6 @@ import { catchError, concatMap, from, map, of, switchMap, timer } from 'rxjs';
 import { CompGeneralListComponent } from '../../../company/components/comp-general/comp-general-list/comp-general-list.component';
 import { Company } from '../../../company/interfaces/company';
 import { CompanyStoreService } from '../../../company/services/company-store.service';
-import { Category } from '../../../owner/interfaces/category';
 import { CategoryManagementService } from '../../../owner/services/category-management.service';
 import { ProdGeneralListComponent } from '../../../product/components/product-general/prod-general-list/prod-general-list.component';
 import { ProdManagementTableItem } from '../../../product/interfaces/product-management-table-item';
@@ -17,7 +16,7 @@ import { ProductStoreService } from '../../../product/services/product-store.ser
   styleUrl: './client-home-land.component.scss',
 })
 export class ClientHomeLandComponent {
-  categories: Category[] = [];
+  categories: { id: number; name: string }[] = [];
   companies: Company[] = [];
   listToShow: { category: { id: number; name: string }; products: ProdManagementTableItem[] }[] = [];
   constructor(
@@ -27,7 +26,7 @@ export class ClientHomeLandComponent {
   ) {}
   ngOnInit() {
     const productObs$ = this.categoryManagement
-      .getAll({ first: 0, rows: 5, multiSortMeta: [{ field: 'categoryName', order: 1 }] }, true)
+      .getAll({ first: 0, rows: 4, multiSortMeta: [{ field: 'categoryName', order: 1 }] }, true)
       .pipe(
         switchMap((res) => {
           if (res.succeeded) {
