@@ -51,8 +51,10 @@
                 severity="primary" pTooltip="الاشعارات" />
         </p-overlaybadge>
         @if(user?.role !== 'owner'){
-        <p-button icon="pi pi-truck" (onClick)="stateSrv.collapseCart()" [rounded]="true" [text]="true"
-            severity="primary" pTooltip="الشاحنة" />
+        <p-overlaybadge badgeSize="small" severity="danger" size="small" [value]="stateSrv.taskCount()">
+            <p-button icon="pi pi-truck" (onClick)="stateSrv.collapseCart()" [rounded]="true" [text]="true"
+                severity="primary" pTooltip="الشاحنة" />
+        </p-overlaybadge>
         }
         <a (click)="menu.toggle($event)" style="cursor: pointer;">
             @if(user && user.logo){

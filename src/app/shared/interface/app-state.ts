@@ -9,4 +9,5 @@ export interface AppState {
   notficiations: NotificationApp[];
   searchInput: string;
   openSearchMenu: boolean;
+  taskCount: number;
 }

@@ -1,5 +1,5 @@
 <p-table #dt (onContextMenuSelect)="changeVisible()" [(contextMenuSelection)]="selectedItem" [value]="body.data"
-    [paginator]="withPaginator" [rowHover]="true" [rows]="withPaginator ? 25 : totalRecords"
+    [paginator]="withPaginator" [rowHover]="true" [rows]="withPaginator ? 10 : totalRecords"
     [rowsPerPageOptions]="[5,10,25,50,100,200,500,800]" [scrollable]="true"
     [alwaysShowPaginator]="dt.value ? dt.value.length > 0 : false" [exportFilename]="tableName" [lazy]="lazyLoading"
     [size]="'small'" stripedRows (onLazyLoad)="loadCarsLazy($event)" [scrollHeight]="scrollHeight"

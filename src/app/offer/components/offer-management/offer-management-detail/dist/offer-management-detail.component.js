@@ -17,19 +17,22 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 exports.__esModule = true;
-exports.OfferManagementAddComponent = void 0;
+exports.OfferManagementDetailComponent = void 0;
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
+var rxjs_1 = require("rxjs");
 var dynamic_input_component_1 = require("../../../../shared/components/dynamic-input/dynamic-input.component");
 var primeng_shared_module_1 = require("../../../../shared/modules/shared/primeng-shared.module");
-var OfferManagementAddComponent = /** @class */ (function () {
-    function OfferManagementAddComponent(offerManagement, msgSrv, http, offerConditionSrv, router) {
+var OfferManagementDetailComponent = /** @class */ (function () {
+    function OfferManagementDetailComponent(offerManagement, msgSrv, http, offerConditionSrv, router, route) {
         var _this = this;
         this.offerManagement = offerManagement;
         this.msgSrv = msgSrv;
         this.http = http;
         this.offerConditionSrv = offerConditionSrv;
         this.router = router;
+        this.route = route;
+        this.offerId = 0;
         this.metadata = null;
         this.form = new forms_1.FormGroup({});
         this.objs = {};
@@ -54,7 +57,7 @@ var OfferManagementAddComponent = /** @class */ (function () {
         element, // Metadata definition for the current input
         control) {
             var _a;
-            var addNewControl = function (stepKey, groupIndex, element) {
+            var addNewControl = function (value, stepKey, groupIndex, element) {
                 if (element) {
                     _this.objs[stepKey][groupIndex].push(element);
                     // Create a new reactive FormControl
@@ -69,6 +72,7 @@ var OfferManagementAddComponent = /** @class */ (function () {
                         var group = stepControl.at(groupIndex);
                         group.addControl(element.key, newControl_1);
                     }
+                    newControl_1.setValue(value);
                 }
             };
             // Exit early if the element definition is missing
@@ -115,6 +119,8 @@ var OfferManagementAddComponent = /** @class */ (function () {
                             var array = new forms_1.FormArray([group]);
                             // Add this dynamic array to the root form
                             _this.form.addControl(addType.key, array);
+                            var newValue = _this.res[addType.key][groupIndex][nextInputs[addIndex].key];
+                            newControl_2.setValue(value);
                             // Keep track of the first input metadata for this group
                             _this.groupFirstInput = __assign(__assign({}, _this.groupFirstInput), (_d = {}, _d[addType.key] = nextInputs[addIndex], _d));
                         }
@@ -131,13 +137,14 @@ var OfferManagementAddComponent = /** @class */ (function () {
                             _this.http.post(inputMeta.source, {}).subscribe(function (res) {
                                 // Populate options from server response
                                 inputMeta.options = res.data;
+                                //get its own value
                                 // Store metadata structure
-                                addNewControl(stepKey, groupIndex, inputMeta);
+                                addNewControl(_this.res[stepKey][groupIndex][inputMeta.key], stepKey, groupIndex, inputMeta);
                             });
                         }
                         // --- Otherwise, add static options directly ---
                         else {
-                            addNewControl(stepKey, groupIndex, inputMeta);
+                            addNewControl(_this.res[stepKey][groupIndex][inputMeta.key], stepKey, groupIndex, inputMeta);
                         }
                     });
                 }
@@ -156,21 +163,43 @@ var OfferManagementAddComponent = /** @class */ (function () {
                 control === null || control === void 0 ? void 0 : control.disable({ emitEvent: false });
             }
         };
-        this.metadata = this.offerConditionSrv.offerConditionsobjs;
-        console.log(JSON.stringify(this.metadata));
-        this.objs = { generalInfo: this.metadata };
-        this.metadata.forEach(function (item) {
-            var newControl = new forms_1.FormControl();
-            newControl.valueChanges.subscribe(function (value) {
-                _this.nextInputCommand(value, 'generalInfo', 0, item, newControl);
+        this.route.params
+            .pipe(rxjs_1.switchMap(function (param) {
+            var _a;
+            _this.offerId = param['id'];
+            return offerManagement.getOne((_a = _this.offerId) !== null && _a !== void 0 ? _a : 0);
+        }))
+            .subscribe(function (res) {
+            _this.res = res.data.rule;
+            _this.metadata = _this.offerConditionSrv.offerConditionsobjs;
+            _this.objs = { generalInfo: _this.metadata };
+            _this.metadata.forEach(function (item) {
+                var newControl = new forms_1.FormControl();
+                newControl.valueChanges.subscribe(function (value) {
+                    _this.nextInputCommand(value, 'generalInfo', 0, item, newControl);
+                });
+                _this.form.addControl('generalInfo', new forms_1.FormGroup({}));
+                _this.form.controls['generalInfo'].addControl(item.key, newControl);
             });
-            _this.form.addControl('generalInfo', new forms_1.FormGroup({}));
-            _this.form.controls['generalInfo'].addControl(item.key, newControl);
+            _this.keys.push({ stepName: 'معلومات عامة', key: 'generalInfo' });
+            _this.startFill(_this.res['generalInfo']);
         });
-        this.keys.push({ stepName: 'معلومات عامة', key: 'generalInfo' });
         this.showForm = true;
     }
-    OfferManagementAddComponent.prototype.getControl = function (step, name, index) {
+    OfferManagementDetailComponent.prototype.startFill = function (generalInfo) {
+        var _this = this;
+        Object.keys(generalInfo).forEach(function (key) {
+            var control = _this.form.get('generalInfo.' + _this.lowerFirstChar(key));
+            if (control)
+                control.setValue(generalInfo[key]);
+        });
+    };
+    OfferManagementDetailComponent.prototype.lowerFirstChar = function (text) {
+        if (!text)
+            return '';
+        return text.charAt(0).toLocaleLowerCase() + text.slice(1);
+    };
+    OfferManagementDetailComponent.prototype.getControl = function (step, name, index) {
         var stepControl = this.form.get(step);
         var isArray = stepControl instanceof forms_1.FormArray;
         if (!isArray) {
@@ -178,11 +207,11 @@ var OfferManagementAddComponent = /** @class */ (function () {
         }
         return stepControl.controls[index].get(name);
     };
-    OfferManagementAddComponent.prototype.isArray = function (step) {
+    OfferManagementDetailComponent.prototype.isArray = function (step) {
         var stepControl = this.form.get(step);
         return stepControl instanceof forms_1.FormArray;
     };
-    OfferManagementAddComponent.prototype.addnewGroup = function (key) {
+    OfferManagementDetailComponent.prototype.addnewGroup = function (key) {
         var _a;
         var _this = this;
         var index = this.objs[key].length;
@@ -195,26 +224,26 @@ var OfferManagementAddComponent = /** @class */ (function () {
         var group = new forms_1.FormGroup((_a = {}, _a[this.groupFirstInput[key].key] = newControl, _a));
         this.form.get(key).push(group);
     };
-    OfferManagementAddComponent.prototype.removeGroup = function (key, index) {
+    OfferManagementDetailComponent.prototype.removeGroup = function (key, index) {
         this.objs[key].splice(index, 1);
         this.form.get(key).removeAt(index);
         if (this.objs[key].length === 0) {
             this.disableMap[key] = false;
         }
     };
-    OfferManagementAddComponent.prototype.onSelect = function (event) {
+    OfferManagementDetailComponent.prototype.onSelect = function (event) {
         for (var _i = 0, _a = event.files; _i < _a.length; _i++) {
             var file = _a[_i];
             this.uploadedFiles.push(file);
         }
     };
-    OfferManagementAddComponent.prototype.onRemove = function (event) {
+    OfferManagementDetailComponent.prototype.onRemove = function (event) {
         var index = this.uploadedFiles.findIndex(function (x) { return x.name === event.file.name; });
         if (index > -1) {
             this.uploadedFiles.splice(index, 1);
         }
     };
-    OfferManagementAddComponent.prototype.submit = function () {
+    OfferManagementDetailComponent.prototype.submit = function () {
         var _this = this;
         this.offerManagement.add(this.form.getRawValue(), this.uploadedFiles).subscribe(function (res) {
             _this.msgSrv.showMessage(res.message, res.succeeded);
@@ -222,14 +251,14 @@ var OfferManagementAddComponent = /** @class */ (function () {
                 _this.router.navigate(['company/offer-management/show']);
         });
     };
-    OfferManagementAddComponent = __decorate([
+    OfferManagementDetailComponent = __decorate([
         core_1.Component({
-            selector: 'app-offer-management-add',
+            selector: 'app-offer-management-detail',
             imports: [primeng_shared_module_1.PrimeNgSharedModule, dynamic_input_component_1.DynamicInputComponent, forms_1.FormsModule],
-            templateUrl: './offer-management-add.component.html',
-            styleUrl: './offer-management-add.component.scss'
+            templateUrl: './offer-management-detail.component.html',
+            styleUrl: './offer-management-detail.component.scss'
         })
-    ], OfferManagementAddComponent);
-    return OfferManagementAddComponent;
+    ], OfferManagementDetailComponent);
+    return OfferManagementDetailComponent;
 }());
-exports.OfferManagementAddComponent = OfferManagementAddComponent;
+exports.OfferManagementDetailComponent = OfferManagementDetailComponent;

@@ -227,7 +227,7 @@ export class OfferManagementAddComponent {
   }
 
   submit() {
-    this.offerManagement.add(this.form.getRawValue()).subscribe((res) => {
+    this.offerManagement.add(this.form.getRawValue(), this.uploadedFiles).subscribe((res) => {
       this.msgSrv.showMessage(res.message, res.succeeded);
       if (res.succeeded) this.router.navigate(['company/offer-management/show']);
     });

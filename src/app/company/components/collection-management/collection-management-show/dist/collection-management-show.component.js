@@ -70,7 +70,6 @@ var CollectionManagementShowComponent = /** @class */ (function () {
                 },
                 accept: function () {
                     _this.collectionManagement.changeStatus(rowData.id).subscribe(function (res) {
-                        debugger;
                         _this.msgSrv.showMessage(res.message, res.succeeded);
                         _this.tableConfig.getSub$.next({});
                     });

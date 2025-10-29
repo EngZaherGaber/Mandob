@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 exports.__esModule = true;
 exports.CompanyReqManagementShowComponent = void 0;
 var core_1 = require("@angular/core");
+var forms_1 = require("@angular/forms");
 var rxjs_1 = require("rxjs");
 var product_general_items_component_1 = require("../../../../general/components/product-general-items/product-general-items.component");
 var users_general_items_component_1 = require("../../../../general/components/users-general-items/users-general-items.component");
@@ -57,6 +58,11 @@ var CompanyReqManagementShowComponent = /** @class */ (function () {
                 headerType: 'string'
             },
             {
+                field: 'expectedDeliveryDate',
+                header: 'التاريخ المتوقع للوصول',
+                headerType: 'datetime'
+            },
+            {
                 field: 'status',
                 header: 'الحالة',
                 headerType: 'tag'
@@ -84,8 +90,28 @@ var CompanyReqManagementShowComponent = /** @class */ (function () {
             }
         };
         this.assignDistributorVisible = false;
+        this.assignForm = new forms_1.FormGroup({
+            requestId: new forms_1.FormControl(),
+            distributorId: new forms_1.FormControl(),
+            expectedDeliveryDate: new forms_1.FormControl()
+        });
         this.assignDistributorFunc = function (rowData) {
+            var _a, _b, _c;
             _this.selectedRequest.set(rowData);
+            var req = _this.selectedRequest();
+            var days = 0;
+            if (req && req.expectedDeliveryDate) {
+                var expectedDeliveryDate = new Date(req.expectedDeliveryDate);
+                var now = new Date(); // Current date
+                var diffInMs = expectedDeliveryDate.getTime() - now.getTime();
+                // Convert milliseconds to days
+                days = Math.ceil(diffInMs / (1000 * 60 * 60 * 24));
+            }
+            _this.assignForm.setValue({
+                requestId: (_a = req === null || req === void 0 ? void 0 : req.requestID) !== null && _a !== void 0 ? _a : null,
+                distributorId: (_c = (_b = req === null || req === void 0 ? void 0 : req.distributor) === null || _b === void 0 ? void 0 : _b.id) !== null && _c !== void 0 ? _c : null,
+                expectedDeliveryDate: days
+            });
             _this.assignDistributorVisible = true;
         };
         this.rejectFunc = function (rowData) {
@@ -221,18 +247,13 @@ var CompanyReqManagementShowComponent = /** @class */ (function () {
     CompanyReqManagementShowComponent.prototype.onRowExapnd = function (event) {
         console.log(event.requestItems);
     };
-    CompanyReqManagementShowComponent.prototype.assignDistributor = function (value, dexpectedDeliveryDate) {
+    CompanyReqManagementShowComponent.prototype.assignDistributor = function () {
         var _this = this;
         var req = this.selectedRequest();
-        if (req && value) {
-            this.companyRequestSrv
-                .assignDistributor({
-                requestId: req.requestID,
-                distributorId: value,
-                expectedDeliveryDate: dexpectedDeliveryDate
-            })
-                .subscribe(function (res) {
+        if (req) {
+            this.companyRequestSrv.assignDistributor(this.assignForm.value).subscribe(function (res) {
                 _this.msgSrv.showMessage(res.message, res.succeeded);
+                _this.assignForm.setValue({});
                 _this.assignDistributorVisible = false;
                 _this.tableConfig.getSub$.next({});
             });
@@ -251,6 +272,8 @@ var CompanyReqManagementShowComponent = /** @class */ (function () {
                 review_detail_component_1.ReviewDetailComponent,
                 product_general_items_component_1.ProductGeneralItemsComponent,
                 users_general_items_component_1.UsersGeneralItemsComponent,
+                forms_1.FormsModule,
+                forms_1.ReactiveFormsModule,
             ],
             templateUrl: './company-req-management-show.component.html',
             styleUrl: './company-req-management-show.component.scss'

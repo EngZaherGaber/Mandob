@@ -1,1 +1,79 @@
-<p>offer-management-detail works!</p>
+@if(showForm){
+<div class="offer-con conainter-fluid position-relative">
+    <div class="row">
+        <div class="col-1 py-md-0 py-2" style="width: auto;">
+            <!-- router.navigate(['company/offer-management/show']) -->
+            <p-button (onClick)="router.navigate(['company/offer-management/show'])" class="Nbtn" pTooltip="Back"
+                icon="pi pi-arrow-right" />
+        </div>
+        <div class="col-md-6 col-12 px-0 px-md-1">
+            <p-accordion [multiple]="true">
+                @for (key of keys;let index=$index;let last=$last; track $index) {
+                <p-accordion-panel [value]="key.key">
+                    <p-accordion-header>{{key.stepName}}</p-accordion-header>
+                    <p-accordion-content>
+                        @if (isArray(key.key)) {
+                        <div class="d-flex flex-column gap-2 py-2 array-show">
+                            <p-button icon="pi pi-plus" severity="success" size="small" [disabled]="disableMap[key.key]"
+                                (onClick)="addnewGroup(key.key)" [disabled]=""></p-button>
+                            <div class="border border-2 d-flex flex-column gap-1  mb-2">
+                                <p-accordion [multiple]="true">
+                                    @for (group of objs[key.key];let groupIndex=$index ;track
+                                    $index) {
+                                    <p-accordion-panel [value]="key.key + '-'+groupIndex">
+                                        <p-accordion-header>
+                                            <div class="d-flex justify-content-between w-100 py-1 px-2"
+                                                style="background-color: var(--p-amber-500);">
+                                                <p-tag severity="secondary" [value]="`${groupIndex + 1}`"
+                                                    [style]="{'width':'35px','height':'35px'}"></p-tag>
+                                                <p-button icon="pi pi-times" severity="danger" size="small"
+                                                    (onClick)="removeGroup(key.key,groupIndex)"></p-button>
+                                            </div>
+                                        </p-accordion-header>
+                                        <p-accordion-content>
+                                            <div class="d-flex flex-column pt-4 px-2 gap-4">
+                                                @for (control of group;let controlIndex=$index ; track
+                                                $index) {
+                                                <!-- {{control | json}} -->
+                                                <dynamic-input [object]="control"
+                                                    [FEcontrol]="getControl(key.key,control.key,groupIndex)" />
+                                                }
+                                            </div>
+                                        </p-accordion-content>
+                                    </p-accordion-panel>
+                                    }
+                                </p-accordion>
+                            </div>
+                            @if(!disableMap[key.key] && last){
+
+                            <p-button label="حفظ" icon="pi pi-check" severity="success" (onClick)="submit()"></p-button>
+                            }
+                        </div>
+                        }@else {
+                        <div class="d-flex flex-column  px-2 pt-4 gap-4">
+                            @for (obj of objs[key.key]; track $index) {
+                            <dynamic-input [object]="obj" [FEcontrol]="getControl(key.key,obj.key,index)" />
+                            }
+                        </div>
+                        }
+                    </p-accordion-content>
+                </p-accordion-panel>
+
+                }
+            </p-accordion>
+        </div>
+        <div class="col-md-5 col-12 px-0 px-md-1">
+            <p-fileupload #fu accept="image/*" name="myfile[]" [showUploadButton]="false" [showCancelButton]="false"
+                [multiple]="true" maxFileSize="1000000" (onSelect)="onSelect($event)" (onRemove)="onRemove($event)"
+                class="p-0">
+                <ng-template #empty>
+                    <div class="d-flex flex-column align-items-center border border-2 rounded-4 p-4">
+                        <i class="pi pi-cloud-upload" style="font-size: 50px !important;"></i>
+                        <p class="mt-6 mb-0">Drag and drop files to here to upload.</p>
+                    </div>
+                </ng-template>
+            </p-fileupload>
+        </div>
+    </div>
+</div>
+}

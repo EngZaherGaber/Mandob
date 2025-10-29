@@ -8,7 +8,7 @@ import { DistributorTask } from '../../interfaces/distributor-task';
 import { DistributorRequestService } from '../../services/distributor-request.service';
 
 @Component({
-  selector: 'app-distributor-tasks',
+  selector: 'distributor-tasks',
   imports: [PrimeNgSharedModule],
   templateUrl: './distributor-tasks.component.html',
   styleUrl: './distributor-tasks.component.scss',

@@ -1,6 +1,24 @@
 /* Add to your component's styles */
 @use "../../../../../public/mixin" as *;
-
+.leaving {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 500ms ease-out,
+    transform 500ms ease-out;
+}
+.leave-container {
+  border: 1px solid #dddddd;
+  margin-top: 1em;
+  padding: 20px 20px 0px 20px;
+  font-weight: bold;
+  font-size: 20px;
+  opacity: 1;
+  transition: opacity 200ms ease-in;
+  @starting-style {
+    opacity: 0;
+  }
+}
 .main-container {
   position: relative;
   @include forTablet() {

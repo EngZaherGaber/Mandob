@@ -83,6 +83,7 @@ var DistributorReturnManagementShowComponent = /** @class */ (function () {
                 case 'تمت الموافقة':
                     return 'info';
                 case 'مرفوض':
+                case 'ملغى':
                     return 'danger';
                 default:
                     return 'success';

@@ -73,7 +73,6 @@ export class CollectionManagementShowComponent {
 
       accept: () => {
         this.collectionManagement.changeStatus(rowData.id).subscribe((res) => {
-          debugger;
           this.msgSrv.showMessage(res.message, res.succeeded);
           this.tableConfig.getSub$.next({});
         });

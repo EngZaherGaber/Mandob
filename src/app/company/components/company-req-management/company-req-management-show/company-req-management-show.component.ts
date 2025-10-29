@@ -1,4 +1,5 @@
 import { Component, computed, signal } from '@angular/core';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
 import { catchError, of, switchMap } from 'rxjs';
@@ -24,6 +25,8 @@ import { CompanyRequestService } from '../../../services/company-request.service
     ReviewDetailComponent,
     ProductGeneralItemsComponent,
     UsersGeneralItemsComponent,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './company-req-management-show.component.html',
   styleUrl: './company-req-management-show.component.scss',
@@ -64,6 +67,11 @@ export class CompanyReqManagementShowComponent {
       headerType: 'string',
     },
     {
+      field: 'expectedDeliveryDate',
+      header: 'التاريخ المتوقع للوصول',
+      headerType: 'datetime',
+    },
+    {
       field: 'status',
       header: 'الحالة',
       headerType: 'tag',
@@ -94,8 +102,28 @@ export class CompanyReqManagementShowComponent {
     }
   };
   assignDistributorVisible: boolean = false;
+  assignForm: FormGroup = new FormGroup({
+    requestId: new FormControl(),
+    distributorId: new FormControl(),
+    expectedDeliveryDate: new FormControl(),
+  });
   assignDistributorFunc: (rowData: any) => void = (rowData: any) => {
     this.selectedRequest.set(rowData);
+    const req = this.selectedRequest();
+    let days = 0;
+    if (req && req.expectedDeliveryDate) {
+      const expectedDeliveryDate = new Date(req.expectedDeliveryDate);
+      const now = new Date(); // Current date
+      const diffInMs = expectedDeliveryDate.getTime() - now.getTime();
+
+      // Convert milliseconds to days
+      days = Math.ceil(diffInMs / (1000 * 60 * 60 * 24));
+    }
+    this.assignForm.setValue({
+      requestId: req?.requestID ?? null,
+      distributorId: req?.distributor?.id ?? null,
+      expectedDeliveryDate: days,
+    });
     this.assignDistributorVisible = true;
   };
   rejectFunc: (rowData: any) => void = (rowData: any) => {
@@ -245,20 +273,15 @@ export class CompanyReqManagementShowComponent {
   onRowExapnd(event: any) {
     console.log(event.requestItems);
   }
-  assignDistributor(value: number, dexpectedDeliveryDate: number) {
+  assignDistributor() {
     const req = this.selectedRequest();
-    if (req && value) {
-      this.companyRequestSrv
-        .assignDistributor({
-          requestId: req.requestID,
-          distributorId: value,
-          expectedDeliveryDate: dexpectedDeliveryDate,
-        })
-        .subscribe((res) => {
-          this.msgSrv.showMessage(res.message, res.succeeded);
-          this.assignDistributorVisible = false;
-          this.tableConfig.getSub$.next({});
-        });
+    if (req) {
+      this.companyRequestSrv.assignDistributor(this.assignForm.value).subscribe((res) => {
+        this.msgSrv.showMessage(res.message, res.succeeded);
+        this.assignForm.setValue({});
+        this.assignDistributorVisible = false;
+        this.tableConfig.getSub$.next({});
+      });
     }
   }
   clostReturnDialog(event: any) {

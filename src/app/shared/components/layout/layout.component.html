@@ -3,17 +3,21 @@
         @if(stateSrv.isOpenedSideNav()){
         <ng-container *ngTemplateOutlet="openSidenav"></ng-container>
         }
-        <ng-template #openSidenav>
-            <div class="sidebar vh-100 py-2 px-1" [@sidebarAnimation]>
-                <sidenav></sidenav>
-            </div>
-        </ng-template>
-        @if(stateSrv.isOpenedCart()){
-        <ng-container *ngTemplateOutlet="openCart"></ng-container>
-        }
-        @if(stateSrv.isOpenedNotficiation()){
-        <ng-container *ngTemplateOutlet="notificationMenu"></ng-container>
 
+        @if(stateSrv.isOpenedCart() || stateSrv.isOpenedNotficiation()){
+        <div (ClickOutside)="onClickOutside($event)">
+            @if(stateSrv.isOpenedCart() || stateSrv.isOpenedNotficiation()) {
+            <div class="cart position-absolute px-0 start-0 top-0 py-2 h-100 d-flex flex-column" [@sidebarAnimation]
+                style="background-color: var(--p-content-background); z-index: 999;">
+                @if(stateSrv.isOpenedCart()) {
+                <ng-container *ngTemplateOutlet="cartMenu"></ng-container>
+                }
+                @if(stateSrv.isOpenedNotficiation()) {
+                <ng-container *ngTemplateOutlet="notificationMenu"></ng-container>
+                }
+            </div>
+            }
+        </div>
         }
         <div class="main-content my-2 p-0 " style="max-height: 100vh" [@contentAnimation]
             [class.col-lg-10]="stateSrv.isOpenedSideNav()" [class.col-lg-12]="!stateSrv.isOpenedSideNav()">
@@ -32,48 +36,35 @@
         </div>
     </div>
 </div>
-@if(stateSrv.isOpenedCart() || (stateSrv.isOpenedSideNav() && (stateSrv.screenType() === 'mobile' ||
-stateSrv.screenType()
-=== 'tablet'))){
+@if(
+stateSrv.isOpenedCart() ||
+stateSrv.isOpenedNotficiation() ||
+(stateSrv.isOpenedSideNav() && (stateSrv.screenType()=== 'mobile' ||stateSrv.screenType()=== 'tablet'))){
 <div class="w-100 h-100 position-absolute start-0 top-0"
     style="background-color: var(--p-surface-700);opacity: 0.9;z-index: 998;">
 </div>
 }
-<ng-template #openCart>
+<ng-template #openSidenav>
+    <div class="sidebar vh-100 py-2 px-1" [@sidebarAnimation]>
+        <sidenav></sidenav>
+    </div>
+</ng-template>
+<ng-template #openLeftMenu>
     <div class="cart position-absolute px-0 start-0 top-0 py-2 h-100 d-flex flex-column" [@sidebarAnimation]
         style="background-color: var(--p-content-background);z-index: 999;">
-        <ng-container *ngTemplateOutlet="cart"></ng-container>
+        @if(stateSrv.isOpenedCart()){
+        <ng-container *ngTemplateOutlet="cartMenu"></ng-container>
+
+        }
+        @if(stateSrv.isOpenedNotficiation()){
+        <ng-container *ngTemplateOutlet="notificationMenu"></ng-container>
+        }
     </div>
 </ng-template>
 <ng-template #notificationMenu>
-    <div (ClickOutside)="onClickOutside($event)"
-        class="notifications-div d-flex flex-column border border-2 position-absolute overflow-y-auto py-2">
-
-        @for (noti of stateSrv.notficiations(); track $index) {
-
-        <a (click)="goToByNotification(noti)"
-            class="notification-div d-flex flex-column justify-content-end gap-2 px-3 py-2 border-bottom border-2">
-            <div class="d-flex justify-content-between">
-                <span class="fw-bold">
-                    {{noti.type}}
-                </span>
-
-                <p-tag severity="help" [value]="timeSince(noti.timestamp)"></p-tag>
-            </div>
-            <span>{{noti.message}}</span>
-        </a>
-        }
-        @empty {
-        <a class="notification-div d-flex flex-column justify-content-end gap-2 px-3 py-2 border-bottom border-2">
-            <p>
-                لايوجد اشعارات
-            </p>
-        </a>
-
-        }
-    </div>
+    <notification-menu></notification-menu>
 </ng-template>
-<ng-template #cart>
+<ng-template #cartMenu>
     @switch (userState.role()) {
     @case ('client') {
 
@@ -84,15 +75,7 @@ stateSrv.screenType()
 
     }
     @case ('distributor') {
-
+    <distributor-tasks></distributor-tasks>
     }
     }
 </ng-template>
-@if(showSubmitReview && userState.role() === 'client'){
-
-<p-dialog header="اضافة تقييم" [modal]="true" [(visible)]="showSubmitReview" [style]="{ width: '50vw' }"
-    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
-
-    <review-submit [requestID]="requestID" [withOutput]="true" (onSubmit)="showSubmitReview=false"></review-submit>
-</p-dialog>
-}

@@ -49,8 +49,7 @@
                 <span
                     class="d-flex flex-wrap flex-md-nowrap align-items-start align-items-md-center justify-content-end justify-content-md-center gap-2 align-self-end">
                     <!-- <span>{{(product().likes / 1000) | number:'1.1-1'}}K</span> -->
-                    <p-button size="small" icon="pi pi-heart" severity="secondary" [label]="getRating()"
-                        [disabled]="true" />
+                    <p-tag icon="pi pi-heart" [value]="getRating()" severity="secondary"></p-tag>
                     <p-button (onClick)="router.navigate(['/client/product/item/'+product().productID])" size="small"
                         icon="pi pi-eye" styleClass="ml-2" [severity]="'secondary'" />
                     <p-button size="small" icon="pi pi-shopping-cart" styleClass="ml-2" [severity]="'contrast'"

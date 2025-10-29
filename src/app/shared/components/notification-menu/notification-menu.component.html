@@ -1,0 +1,42 @@
+<div class="h-100 d-flex flex-column justify-content-start ">
+
+    <div class="d-flex align-items-center">
+        <p-button (onClick)="stateSrv.collapseNotficiation()" class="w-auto p-0" size="small" icon="pi pi-times"
+            [rounded]="true" [outlined]="true" [text]="true" severity="secondary" pTooltip="اغلاق" />
+        <h6 class="fw-bold">المهمات</h6>
+    </div>
+    <div style="max-height: 90vh;"
+        class=" w-100 overflow-y-auto d-flex flex-column justify-content-between align-items-center mt-4">
+        @for (noti of stateSrv.notficiations(); track $index) {
+        <div class="w-100 px-2 border-bottom" style="text-decoration: none;">
+            <a (click)="goToByNotification(noti)" class="w-100 d-flex flex-column gap-4  p-1 product-div pt-4">
+
+                <div class="d-flex justify-content-between w-100">
+                    <span class="fw-bold">
+                        {{noti.type}}
+                    </span>
+
+                    <p-tag severity="help" [value]="timeSince(noti.timestamp)"></p-tag>
+                </div>
+                <span>{{noti.message}}</span>
+            </a>
+        </div>
+        }@empty {
+        <a class="notification-div d-flex flex-column justify-content-end gap-2 px-3 py-2 border-bottom border-2">
+            <p>
+                لايوجد اشعارات
+            </p>
+        </a>
+
+        }
+    </div>
+
+</div>
+@if(showSubmitReview && userState.role() === 'client'){
+
+<p-dialog header="اضافة تقييم" [modal]="true" [(visible)]="showSubmitReview" [style]="{ width: '50vw' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+
+    <review-submit [requestID]="requestID" [withOutput]="true" (onSubmit)="showSubmitReview=false"></review-submit>
+</p-dialog>
+}

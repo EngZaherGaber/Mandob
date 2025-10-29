@@ -4,19 +4,19 @@
 @if(assignDistributorVisible){
 <p-dialog header="اسناد الطلبية لموزع" [modal]="true" [(visible)]="assignDistributorVisible"
     [style]="{ width: '25rem' }">
-    <div class="d-flex flex-column gap-2 w-100">
+    <div class="d-flex flex-column gap-5 w-100" [formGroup]="assignForm">
         <p-floatlabel class="w-full md:w-56" variant="over">
             <label for="distributor-assign">اسم الموزع</label>
-            <p-select [ngStyle]="{'height':'35px'}" #drop id="distributor-assign" (onChange)="drop.resetFilter()"
-                [appendTo]="'body'" [options]="distributors" [filter]="true" optionLabel="name" optionValue="userId"
-                [showClear]="true" [checkmark]="true"></p-select>
+            <p-select formControlName="distributorId" [ngStyle]="{'height':'35px'}" #drop id="distributor-assign"
+                (onChange)="drop.resetFilter()" [appendTo]="'body'" [options]="distributors" [filter]="true"
+                optionLabel="name" optionValue="userId" [showClear]="true" [checkmark]="true"></p-select>
         </p-floatlabel>
         <p-floatlabel class="w-full md:w-56" variant="over">
             <label for="expectedDeliveryDate">التاريخ المتوقع للتوصيل</label>
-            <p-inputNumber id="expectedDeliveryDate" [step]="1" [min]="1" [showButtons]="true" #days></p-inputNumber>
+            <p-inputNumber id="expectedDeliveryDate" [step]="1" [min]="1" [showButtons]="true" #days
+                formControlName="expectedDeliveryDate"></p-inputNumber>
         </p-floatlabel>
-        <p-button label="حفظ" icon="pi pi-check" severity="success"
-            (onClick)="assignDistributor(drop.value,days.value ?? 0);drop.clear()"></p-button>
+        <p-button label="حفظ" icon="pi pi-check" severity="success" (onClick)="assignDistributor()"></p-button>
     </div>
 
 </p-dialog>

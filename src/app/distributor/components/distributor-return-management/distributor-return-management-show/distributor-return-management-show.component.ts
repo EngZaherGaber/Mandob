@@ -84,6 +84,7 @@ export class DistributorReturnManagementShowComponent {
       case 'تمت الموافقة':
         return 'info';
       case 'مرفوض':
+      case 'ملغى':
         return 'danger';
 
       default:

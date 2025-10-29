@@ -6,6 +6,7 @@ import { RequestItem } from './request-item';
 
 export interface Request {
   requestID: number;
+  expectedDeliveryDate: Date | null;
   userID: number;
   requestDate: Date;
   status: string;

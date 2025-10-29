@@ -70,4 +70,7 @@ export class AuthService {
   myInfo() {
     return this.http.get<APIResponse<any>>(this.url + '/me');
   }
+  getPendingTasksCount() {
+    return this.http.get<APIResponse<any>>(this.url + '/GetPendingTasksCount');
+  }
 }

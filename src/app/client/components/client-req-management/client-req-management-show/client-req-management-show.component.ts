@@ -66,6 +66,11 @@ export class ClientReqManagementShowComponent {
       headerType: 'string',
     },
     {
+      field: 'expectedDeliveryDate',
+      header: 'التاريخ المتوقع للوصول',
+      headerType: 'datetime',
+    },
+    {
       field: 'status',
       header: 'الحالة',
       headerType: 'tag',

@@ -2,7 +2,8 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { isPlatformBrowser } from '@angular/common';
 import { computed, Inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { filter, Subject } from 'rxjs';
+import { catchError, delay, filter, interval, of, retryWhen, Subject, switchMap } from 'rxjs';
+import { UserStateService } from '../../general/services/user-state.service';
 import { WebsocketService } from '../../general/services/websocket.service';
 import { AppState } from '../interface/app-state';
 import { NotificationApp } from '../interface/notficiation-app';
@@ -21,6 +22,7 @@ export class StateService {
     notficiations: [],
     searchInput: '',
     openSearchMenu: false,
+    taskCount: 0,
   });
   searchInput$: Subject<string> = new Subject<string>();
   searchInput = computed(() => this.state().searchInput);
@@ -31,6 +33,7 @@ export class StateService {
   isOpenedNotficiation = computed(() => this.state().isOpenedNotficiation);
   notficiations = computed(() => this.state().notficiations);
   isOpenedCart = computed(() => this.state().isOpenedCart);
+  taskCount = computed(() => this.state().taskCount);
   screenType = computed(() => {
     const w = this.state().width;
     if (w <= 768) return 'mobile';
@@ -42,6 +45,7 @@ export class StateService {
     public wsSrv: WebsocketService,
     private router: Router,
     private breakpointObserver: BreakpointObserver,
+    private userState: UserStateService,
     @Inject(PLATFORM_ID) private platformId: Object,
   ) {
     this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((event: any) => {
@@ -76,6 +80,7 @@ export class StateService {
           break;
       }
     });
+    this.connectWithTaskCount();
   }
 
   private updateTitleFromRoute(): void {
@@ -91,6 +96,33 @@ export class StateService {
       const title = x || 'صفحة غير موجودة';
       this.setPage(title);
     });
+  }
+  connectWithTaskCount() {
+    // Refresh every 10 seconds
+    interval(10000)
+      .pipe(
+        switchMap(() =>
+          this.userState.authSrv.getPendingTasksCount().pipe(
+            // If error happens, retry after 10s
+            retryWhen((errors) =>
+              errors.pipe(
+                delay(10000), // wait 10s before retry
+              ),
+            ),
+            // Handle errors gracefully (avoid breaking stream)
+            catchError((err) => {
+              console.error('Error fetching task count:', err);
+              return of({ data: 0 }); // return fallback value
+            }),
+          ),
+        ),
+      )
+      .subscribe((res) => {
+        this.state.update((prev) => ({
+          ...prev,
+          taskCount: res.data,
+        }));
+      });
   }
   getIsDark() {
     let isDark: string | null = 'false';
